@@ -70,12 +70,13 @@ guideline](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/
 Please review the [RforMassSpectrometry Code of
 Conduct](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#code-of-conduct).
 
-## Aknowledgements
+## Acknowledgements
 
-![European Union Logo](vignettes/images/EU_logo.jpg)
+![European Union Logo](vignettes/images/EULogo.jpg)
 
 The work has been Funded by the European Union under the HORIZON-MSCA-2021
 project 101073062 : HUMAN – Harmonising and unifying blood metabolic analysis
 networks.
 
-See more [here](https://drive.google.com/drive/folders/1tobISsiF2yxShsvXH_M8OcEY4KuIuNf8)
+See more
+[here](https://drive.google.com/drive/folders/1tobISsiF2yxShsvXH_M8OcEY4KuIuNf8)

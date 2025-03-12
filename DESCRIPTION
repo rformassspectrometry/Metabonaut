@@ -60,7 +60,6 @@ Suggests:
     knitr,
     quarto
 Remotes:
-    sneumann/xcms,
     RforMassSpectrometry/MsIO
 URL: https://github.com/rformassspectrometry/metabonaut/, https://rformassspectrometry.github.io/metabonaut/
 BugReports: https://github.com/rformassspectrometry/metabonaut/issues/new

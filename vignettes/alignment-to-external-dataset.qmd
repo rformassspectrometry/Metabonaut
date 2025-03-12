@@ -79,7 +79,8 @@ lcms1 <- readMsObject(
 
 ## Load unprocessed LC-MS/MS data
 
-Next, we will load the unprocessed LC-MS/MS data from the MetaboLights database:
+Next, we will load the unprocessed LC-MS/MS data from the MetaboLights
+database:
 
 ```{r, message=FALSE, warning=FALSE}
 #' Load form the MetaboLights Database
@@ -118,8 +119,8 @@ sampleData(lcms2)[, c("derived_spectra_data_file",
 
 ```
 
-We will only keep the MS runs (not MS/MS) and remove pooled samples, focusing on
-samples *A* and *E* that are common to both runs.
+We will only keep the MS runs (not MS/MS) and remove pooled samples, focusing
+on samples *A* and *E* that are common to both runs.
 
 ```{r}
 # Only keep MS run
@@ -224,8 +225,8 @@ adjust their retention times and minimize differences between the two datasets.
 Now we can define our parameter object `LamaParama` to prepare for the
 alignment. Parameters such as `tolerance`, `toleranceRt`, and `ppm` relate to
 the matching between chromatographic peaks and lamas. Other parameters are
-related to the type of fitting generated between these data points. More details
-on each parameter and the overall method can be found by searching
+related to the type of fitting generated between these data points. More
+details on each parameter and the overall method can be found by searching
 `?adjustRtime`. Below is an example using default parameters.
 
 ```{r}
@@ -312,13 +313,13 @@ points(rtime(bpc2_adj[1, 2]), intensity(bpc2_adj[1, 2]), type = "l",
        col = "#0000ff80")
 ```
 
-Although the overall matching is imperfect due to initial sample issues, certain
-regions show significant improvement. The alignment of the signal’s start is
-particularly well done. Specifically, the regions right before and after 150
-seconds show substantial improvement.
+Although the overall matching is imperfect due to initial sample issues,
+certain regions show significant improvement. The alignment of the signal’s
+start is particularly well done. Specifically, the regions right before and
+after 150 seconds show substantial improvement.
 
-Below is a visualization of the distribution of chromatographic peaks matched to
-anchor peaks (lamas) for Sample A. The red vertical lines represent the
+Below is a visualization of the distribution of chromatographic peaks matched
+to anchor peaks (lamas) for Sample A. The red vertical lines represent the
 positions of these matched peaks.
 
 ```{r, message = FALSE, warning = FALSE}
@@ -339,8 +340,8 @@ abline(v = ref_vs_obs[[1]]$obs, col = "#c4114510")
 ### Quantitative Evaluation of Alignment
 
 To quantitatively assess the quality of the alignment, we compute the distance
-between the chromatographic peaks in our LC-MS data and the anchor peaks (Lamas)
-both before and after the alignment.
+between the chromatographic peaks in our LC-MS data and the anchor peaks
+(Lamas) both before and after the alignment.
 
 ```{r}
 #| tbl-cap: "Figure 6. Distance to Anchor Peaks: Before vs. After Alignment."
@@ -376,8 +377,8 @@ Furthermore, a more detailed examination of the matching and the model used for
 fitting each file is possible. Numerical information can be obtained using the
 `summarizeLamaMatch()` function. From this, the percentage of chromatographic
 peaks utilized for alignment can be computed relative to the total number of
-peaks in the file. Additionally, it is feasible to directly `plot()` the `param`
-object for the file of interest, showcasing the distribution of these
+peaks in the file. Additionally, it is feasible to directly `plot()` the
+`param` object for the file of interest, showcasing the distribution of these
 chromatographic peaks along with the fitted model line.
 
 ```{r warning=FALSE}
@@ -409,12 +410,12 @@ This tutorial demonstrated how to align LC-MS and LC-MS/MS datasets to correct
 retention time shifts, crucial for handling data from different runs or
 platforms. We preprocessed the data, detected chromatographic peaks, and used
 landmark features (lamas) from QC samples to adjust retention times via the
-adjustRtime() function. Visual comparisons of base peak chromatograms before and
-after alignment, along with distance calculations, showed clear improvements in
-RT synchronization.
+adjustRtime() function. Visual comparisons of base peak chromatograms before
+and after alignment, along with distance calculations, showed clear
+improvements in RT synchronization.
 
-Ultimately, aligning chromatographic data ensures that subsequent analyses, such
-as feature extraction and statistical comparisons, are based on consistent time
-points, improving data quality and reliability. This tutorial outlined an
+Ultimately, aligning chromatographic data ensures that subsequent analyses,
+such as feature extraction and statistical comparisons, are based on consistent
+time points, improving data quality and reliability. This tutorial outlined an
 end-to-end workflow that can be adapted to various LC-MS-based metabolomics
 studies, helping researchers manage retention time variation effectively.

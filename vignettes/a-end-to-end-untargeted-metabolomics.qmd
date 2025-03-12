@@ -35,7 +35,7 @@ features to metabolites. Note that also alternative analysis options and R
 packages could be used for different steps and some examples are mentioned
 throughout the workflow.
 
-![Steps of the end-to-end workflow and possible
+![Figure 1. Steps of the end-to-end workflow and possible
 alternatives](images/workflow.png)
 
 # Data description
@@ -254,9 +254,8 @@ reference, internal standards help achieve consistent and accurate analytical
 results.
 
 As LC signal is the most variable because of the unstable nature of the LC, we
-will only show the BPC and their similarity. More in depth inspection and
-discussion of spectra and chromatrograhic data cna be found in the [data
-exploration
+will only evaluate this below. More in depth inspection and discussion of
+spectra and chromatrograhic data can be found in the [data exploration
 vignette](https://rformassspectrometry.github.io/Metabonaut/articles/data-investigation.html).
 
 ## Chromatographic Data Visualization: BPC and TIC
@@ -281,7 +280,7 @@ report the maximum signal per spectrum. Conversely, when setting
 creating a TIC.
 
 ```{r bpc1, echo=TRUE}
-#| fig-cap: "Figure 5. BPC of all samples colored by phenotype."
+#| fig-cap: "Figure 2. BPC of all samples colored by phenotype."
 #' Extract and plot BPC for full data
 bpc <- chromatogram(lcms1, aggregationFun = "max")
 
@@ -302,7 +301,7 @@ bpc <- chromatogram(lcms1, aggregationFun = "max")
 ```
 
 ```{r bpc2, echo=TRUE}
-#| fig-cap: "Figure 6. BPC after filtering retention time."
+#| fig-cap: "Figure 3. BPC after filtering retention time."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Plot after filtering
@@ -331,7 +330,7 @@ can then calculate pairwise similarities between these data vectors using the
 `cor()` function and visualize the result using `pheatmap()`.
 
 ```{r heatmap1}
-#| fig-cap: "Figure 7. Heatmap of TIC similarities."
+#| fig-cap: "Figure 4. Heatmap of TIC similarities."
 #' Total ion chromatogram
 tic <- chromatogram(lcms1, aggregationFun = "sum") |>
   bin(binSize = 2)
@@ -359,13 +358,13 @@ Throughout the entire process, it is crucial to have reference points within
 the dataset, such as well-known ions. Most experiments nowadays include
 internal standards (IS), and it was the case here. We strongly recommend using
 them for visualization throughout the entire analysis. For this experiment, a
-set of 15 IS was spiked to all samples. After reviewing signal of all of them,
-we selected two to guide this analysis process. However, we also advise to plot
-and evaluate all the ions after each steps.
+set of 15 IS was spiked to all samples. After reviewing their respective 
+chromatoraphic peaks, we selected two to guide this analysis process. However, 
+we advise to plot and evaluate all the ions after each steps.
 
 To illustrate this, we generate Extracted Ion Chromatograms (EIC) for these
 selected *test ions*. By restricting the MS data to intensities within a
-restricted, small *m/z* range and a selected retention time window, EICs are
+restricted, *m/z* range and a selected retention time window, EICs are
 expected to contain only signal from a single type of ion. The expected *m/z*
 and retention times for our set of IS was determined in a different experiment.
 Additionally, in cases where internal standards are not available, commonly
@@ -374,9 +373,11 @@ these compounds should be distributed across the entire retention time range of
 the experiment.
 
 ```{r EIC-extract-for-internal-standard}
-#| tbl-cap: "Table 4. Internal standard list with respective m/z and expected retention time [s]."
-#| tbl-style: "font-size: 0.8em"
+#| tbl-cap: "Table 3. Internal standard list with respective m/z and expected retention time [s]."
+#| tbl-style: "font-size: 0.6em"
 #| tbl-colwidths: [20, 20, 20]
+#| code-fold: true
+#| code-summary: "Show the code"
 #' Load our list of standard
 intern_standard <- read.delim("intern_standard_list.txt")
 
@@ -396,14 +397,15 @@ rownames(fData(eic_is)) <- intern_standard$abbreviation
 fdata <- fData(eic_is)
 
 #' Summary of IS information
-fData(eic_is)[, c("name", "mz", "rt")] |>
+fData(eic_is)[c("cystine_13C_15N", "methionine_13C_15N"), 
+              c("name", "mz", "rt")] |>
     kable(format = "pipe")
 ```
 
 We below plot the EICs for isotope labeled cystine and methionine.
 
 ```{r}
-#| fig-cap: "Figure 9. EIC of cystine and methionine."
+#| fig-cap: "Figure 5. EIC of cystine and methionine."
 #| fig-align: center
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -435,9 +437,10 @@ retention time shift between samples.
 # Data preprocessing
 
 Preprocessing stands as the inaugural step in the analysis of untargeted LC-MS.
-It is characterized by 3 main stages: chromatographic peak detection, retention
-time shift correction (alignment) and correspondence which results in features
-defined. The primary objective of preprocessing is the quantification of
+It is characterized by 3 main stages: **chromatographic peak detection**, **retention
+time shift correction** (alignment) and **correspondence** which results in features
+defined.
+The primary objective of preprocessing is the quantification of
 signals from ions measured in a sample, addressing any potential retention time
 drifts between samples, and ensuring alignment of quantified signals across
 samples within an experiment. The final result of LC-MS data preprocessing is a
@@ -459,8 +462,7 @@ chromatographic peaks or peaks with varying retention time widths, which are
 commonly encountered in HILIC separations.
 
 Below we apply the CentWave algorithm with its default settings on the
-extracted ion chromatogram for cystine and methionine ions and evaluate its
-results.
+EICs of cystine and methionine ions and evaluate the results.
 
 ```{r Default-centwave-param-test}
 #' Use default Centwave parameter
@@ -478,7 +480,7 @@ met_test <- findChromPeaks(eic_met, param = param)
 chromPeaks(met_test)
 ```
 
-While *CentWave* is a highly performant algorithm, it requires to be costumized
+While *CentWave* is a highly performant algorithm, it requires to be customized
 to each dataset. This implies that the parameters should be fine-tuned based on
 the user's data. The example above serves as a clear motivation for users to
 familiarize themselves with the various parameters and the need to adapt them
@@ -544,8 +546,9 @@ on our EICs. It is important to note that, to properly estimate background
 noise, sufficient data points outside the chromatographic peak need to be
 present. This is generally no problem if peak detection is performed on the
 full LC-MS data set, but for peak detection on EICs the retention time range of
-the EIC needs to be sufficiently wide. If the function fails to find a peak in
-an EIC, the initial troubleshooting step should be to increase this range.
+the EIC needs to be sufficiently wide. 
+If the function fails to find a peak in an EIC, the initial troubleshooting
+step should be to increase this range.
 Additionally, the signal-to-noise threshold `snthresh` should be reduced for
 peak detection in EICs, because within the small retention time range, not
 enough signal is present to properly estimate the background noise. Finally, in
@@ -571,7 +574,7 @@ sample. Below, we use the `plot()` function on the EICs to visualize these
 results.
 
 ```{r}
-#| fig-cap: "Figure 11. Chromatographic peak detection on EICs."
+#| fig-cap: "Figure 6. Chromatographic peak detection on EICs."
 #| fig-align: center
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -592,8 +595,8 @@ legend("topright", col = col_phenotype,
        legend = names(col_phenotype), lty = 1, bty = "n")
 ```
 
-We can see a peak seems ot be detected in each sample for both ions. This
-indicates that our custom settings seem thus to be suitable for our dataset. We
+We can see a peak seems to be detected in each sample for both ions. This
+indicates that our custom settings are suitable for our dataset. We
 now proceed and apply them to the entire dataset, extracting EICs again for the
 same ions to evaluate and confirm that chromatographic peak detection worked as
 expected. Note:
@@ -605,12 +608,13 @@ expected. Note:
 -   Parameter `chunkSize` of `findChromPeaks()` defines the number of data
     files that are loaded into memory and processed simultaneously. This
     parameter thus allows to fine-tune the memory demand as well as performance
-    of the chromatographic peak detection step.
+    of the chromatographic peak detection step. This should correspond to our 
+    initial set up of parallel processing above.
 
 ```{r run-find-chrompeak-on-entire-dataset}
 #' Using the same settings, but with default snthresh
 param <- CentWaveParam(peakwidth = c(1, 8), ppm = 15, integrate = 2)
-lcms1 <- findChromPeaks(lcms1, param = param, chunkSize = 5)
+lcms1 <- findChromPeaks(lcms1, param = param, chunkSize = 2)
 
 #' Update EIC internal standard object
 eics_is_noprocess <- eic_is
@@ -624,7 +628,7 @@ Below we plot the EICs of the two selected internal standards to evaluate the
 chromatographic peak detection results.
 
 ```{r plot-new-eics, echo=FALSE}
-#| fig-cap: "Figure 12. Chromatographic peak detection on EICs after processing."
+#| fig-cap: "Figure 7. Chromatographic peak detection on EICs after processing."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Test if we find peaks for Cystine and Methionine again
@@ -660,8 +664,8 @@ this issue, the `refineChromPeaks()` function is utilized, in conjunction with
 Below we show some examples of *CentWave* peak detection artifacts. These
 examples are pre-selected to illustrate the necessity of the next step:
 
-```{r}
-#| fig-cap: "Figure 13. Examples of CentWave peak detection artifacts."
+```{r, message=FALSE}
+#| fig-cap: "Figure 8. Examples of CentWave peak detection artifacts."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Extract m/z-rt regions for selected peaks
@@ -701,7 +705,7 @@ for this algorithm are defined below:
 We test these settings below on the EICs with the split peaks.
 
 ```{r test-merging}
-#| fig-cap: "Figure 14. Examples of CentWave peak detection artifacts after merging."
+#| fig-cap: "Figure 9. Examples of CentWave peak detection artifacts after merging."
 #' set up the parameter
 param <- MergeNeighboringPeaksParam(expandRt = 2.5, expandMz = 0.0015,
                                     minProp = 0.75)
@@ -749,7 +753,7 @@ samples. Below we count the number of chromatographic peaks per sample and show
 these numbers in a table.
 
 ```{r}
-#| tbl-cap: "Table 5. Samples and number of identified chromatographic peaks."
+#| tbl-cap: "Table 4. Samples and number of identified chromatographic peaks."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Count the number of peaks per sample and summarize them in a table.
@@ -779,7 +783,7 @@ To evaluate the presence of a shift we extract and plot below the BPC from the
 QC samples.
 
 ```{r}
-#| fig-cap: "Figure 15. BPC of QC samples."
+#| fig-cap: "Figure 10. BPC of QC samples."
 #| fig-align: center
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -815,7 +819,7 @@ package.
 After calculating how much to adjust the retention time in these samples, we
 apply this shift also on the study samples.
 
-In *xcms* retention time alignment can be performed using the `adjustRtime()`
+In *xcms*, retention time alignment can be performed using the `adjustRtime()`
 function with an alignment algorithm. For this example we use the *PeakGroups*
 method [@smith_xcms_2006] that performs the alignment by minimizing differences
 in retention times of a set of *anchor peaks* in the different samples. This
@@ -868,7 +872,7 @@ and hence define for `sampleGroups` a binary variable grouping samples either
 into a study, or QC group.
 
 ```{r}
-#| fig-cap: "Figure 16. Initial correspondence analysis."
+#| fig-cap: "Figure 11. Initial correspondence analysis."
 # Initial correspondence analysis
 param <- PeakDensityParam(sampleGroups = sampleData(lcms1)$phenotype == "QC",
                           minFraction = 0.9,
@@ -936,7 +940,7 @@ alignment in all areas along the retention time axis, these anchor peaks should
 be scattered all over the retention time dimension.
 
 ```{r}
-#| fig-cap: "Figure 17. Retention time alignment results."
+#| fig-cap: "Figure 12. Retention time alignment results."
 #' Visualize alignment results
 plotAdjustedRtime(lcms1, col = paste0(col_sample, 80), peakGroupsPch = 1)
 grid()
@@ -963,7 +967,7 @@ lcms1 <- applyAdjustedRtime(lcms1)
 ```
 
 ```{r bpc-before-and-after1}
-#| fig-cap: "Figure 18. BPC before and after alignment."
+#| fig-cap: "Figure 13. BPC before and after alignment."
 #| fig-align: center
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -988,11 +992,16 @@ Apart from that retention time range, only little changes can be observed.
 
 We next evaluate the impact of the alignment on the EICs of the selected
 internal standards. We thus below first extract the ion chromatograms after
-alignment.
+alignment, and subsequently plot them. 
 
 ```{r, message=FALSE}
 #| code-fold: true
 #| code-summary: "Show the code"
+
+#' Extract the EICs for the test ions before alignment
+old_eic_cystine <- eic_is["cystine_13C_15N"]
+old_eic_met <- eic_is["methionine_13C_15N"]
+
 #' Update the EICs
 eic_is <- chromatogram(lcms1,
                        rt = as.matrix(intern_standard[, c("rtmin", "rtmax")]),
@@ -1004,24 +1013,18 @@ eic_cystine <- eic_is["cystine_13C_15N"]
 eic_met <- eic_is["methionine_13C_15N"]
 ```
 
-We can now evaluate the alignment effect in our test ions. We will plot the
-EICs before and after alignment for both the isotope labeled cystine and
-methionine.
-
 ```{r specific-ion-before-and-after1}
-#| fig-cap: "Figure 19. EICs of cystine and methionine before and after alignment."
+#| fig-cap: "Figure 14. EICs of cystine and methionine before and after alignment."
 #| fig-align: center
 #| code-fold: true
 #| code-summary: "Show the code"
 par(mfrow = c(2, 2), mar = c(4, 4.5, 2, 1))
 
-old_eic_cystine <- eic_is["cystine_13C_15N"]
 plot(old_eic_cystine, main = "Cystine before alignment", peakType = "none",
      col = paste0(col_sample, 80))
 grid()
 abline(v = intern_standard["cystine_13C_15N", "RT"], col = "red", lty = 3)
 
-old_eic_met <- eic_is["methionine_13C_15N"]
 plot(old_eic_met, main = "Methionine before alignment",
      peakType = "none", col = paste0(col_sample, 80))
 grid()
@@ -1041,7 +1044,7 @@ abline(v = intern_standard["methionine_13C_15N", "RT"], col = "red", lty = 3)
 ```
 
 The non-endogenous cystine ion was already well aligned so the difference is
-minimal. The methionine ion, however, shows an improvement in alignment.
+minimal. The methionine ion, however, shows a slight improvement in alignment.
 
 In addition to a visual inspection of the results, we also evaluate the impact
 of the alignment by comparing the variance in retention times for internal
@@ -1109,7 +1112,7 @@ We can now evaluate the impact of the alignment on the retention times of
 internal standards across the full data set:
 
 ```{r}
-#| fig-cap: "Figure 20. Retention time variation of internal standards before and after alignment."
+#| fig-cap: "Figure 15. Retention time variation of internal standards before and after alignment."
 list(all_raw = rowSds(rt_raw, na.rm = TRUE),
      all_adj = rowSds(rt_adj, na.rm = TRUE)
      ) |>
@@ -1142,7 +1145,7 @@ param
 ```
 
 ```{r}
-#| fig-cap: "Figure 21. Initial correspondence analysis, Cystine."
+#| fig-cap: "Figure 16. Initial correspondence analysis, Cystine."
 #| code-fold: true
 #| code-summary: "Show the code"
 plotChromPeakDensity(
@@ -1154,7 +1157,7 @@ plotChromPeakDensity(
 ```
 
 ```{r}
-#| fig-cap: "Figure 22. Initial correspondence analysis, Methionine."
+#| fig-cap: "Figure 17. Initial correspondence analysis, Methionine."
 #| code-fold: true
 #| code-summary: "Show the code"
 plotChromPeakDensity(eic_met, param = param,
@@ -1172,7 +1175,7 @@ default parameters, we can observe that indeed, the `bw` parameter is set to
 this parameter to 1.8 and evaluate its impact.
 
 ```{r}
-#| fig-cap: "Figure 23. Correspondence analysis with optimized parameters, Cystine."
+#| fig-cap: "Figure 18. Correspondence analysis with optimized parameters, Cystine."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Updating parameters
@@ -1187,7 +1190,7 @@ plotChromPeakDensity(
 ```
 
 ```{r}
-#| fig-cap: "Figure 24. Correspondence analysis with optimized parameters, Methionine."
+#| fig-cap: "Figure 19. Correspondence analysis with optimized parameters, Methionine."
 #| code-fold: true
 #| code-summary: "Show the code"
 plotChromPeakDensity(eic_met, param = param,
