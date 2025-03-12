@@ -12,3 +12,6 @@ vignettes/.quarto/
 *.css
 vignettes/objects/
 man/figures
+/vignettes/res
+*.log
+vignettes/images/sitcker_draft.xcf

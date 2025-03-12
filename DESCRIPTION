@@ -29,7 +29,7 @@ Encoding: UTF-8
 LazyData: false
 Roxygen: list(markdown = TRUE)
 Depends:
-    R (>= 4.3),
+    R (>= 4.4),
     BiocParallel (>= 1.8.0)
 Suggests:
     alabaster.se,
