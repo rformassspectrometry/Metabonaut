@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Complete end-to-end LC-MS/MS Metabolomic Data analysis • Metabonaut</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -62,10 +61,10 @@
 </nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1></h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Complete end-to-end LC-MS/MS Metabolomic Data analysis</h1>
 
 
-      <p class="date">2024-12-09</p>
+      <p class="date">2025-03-12</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/metabonaut/blob/main/vignettes/a-end-to-end-untargeted-metabolomics.qmd" class="external-link"><code>vignettes/a-end-to-end-untargeted-metabolomics.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -76,7 +75,7 @@
 
 
 
-    <header id="title-block-header" class="quarto-title-block"><h1 class="title">Complete end-to-end LC-MS/MS Metabolomic Data analysis</h1></header><div class="cell">
+    <div class="cell">
 <style type="text/css">
 .verysmall .table{
   font-size: 8px;
@@ -145,7 +144,7 @@
 <span>                      keepProtocol <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                      simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>We next configure the parallel processing setup. Most functions from the <em>xcms</em> package allow per-sample parallel processing, which can improve the performance of the analysis, especially for large data sets. <em>xcms</em> and all packages from the <em>RforMassSpectrometry</em> package ecosystem use the parallel processing setup configured through the <em><a href="https://bioconductor.org/packages/3.20/BiocParallel" class="external-link">BiocParallel</a></em> Bioconductor package. With the code below we use a <em>fork-based</em> parallel processing on unix system, and a <em>socket-based</em> parallel processing on the Windows operating system.</p>
+<p>We next configure the parallel processing setup. Most functions from the <em>xcms</em> package allow per-sample parallel processing, which can improve the performance of the analysis, especially for large data sets. <em>xcms</em> and all packages from the <em>RforMassSpectrometry</em> package ecosystem use the parallel processing setup configured through the <em><a href="https://bioconductor.org/packages/3.21/BiocParallel" class="external-link">BiocParallel</a></em> Bioconductor package. With the code below we use a <em>fork-based</em> parallel processing on unix system, and a <em>socket-based</em> parallel processing on the Windows operating system.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Set up parallel processing using 2 cores</span></span>
@@ -157,7 +156,7 @@
 </div>
 </section><section class="section level2"><h2 id="data-organisation">Data organisation<a class="anchor" aria-label="anchor" href="#data-organisation"></a>
 </h2>
-<p>The experimental data is now represented by a <code>MsExperiment</code> object from the <em><a href="https://bioconductor.org/packages/3.20/MsExperiment" class="external-link">MsExperiment</a></em> package. The <code>MsExperiment</code> object is a container for metadata and spectral data that provides and manages also the linkage between samples and spectra.</p>
+<p>The experimental data is now represented by a <code>MsExperiment</code> object from the <em><a href="https://bioconductor.org/packages/3.21/MsExperiment" class="external-link">MsExperiment</a></em> package. The <code>MsExperiment</code> object is a container for metadata and spectral data that provides and manages also the linkage between samples and spectra.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lcms1</span></span></code></pre></div>
@@ -415,7 +414,7 @@
 <span>                          <span class="st">"CTR"</span><span class="op">)</span> <span class="co"># purple</span></span>
 <span><span class="va">col_sample</span> <span class="op">&lt;-</span> <span class="va">col_phenotype</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span><span class="op">]</span></span></code></pre></div>
 </div>
-<p>The MS data of this experiment is stored as a <code>Spectra</code> object (from the <em><a href="https://bioconductor.org/packages/3.20/Spectra" class="external-link">Spectra</a></em> Bioconductor package) within the <code>MsExperiment</code> object and can be accessed using <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra()</a></code> function. Each element in this object is a spectrum - they are organised linearly and are all combined in the same <code>Spectra</code> object one after the other (ordered by retention time and samples).</p>
+<p>The MS data of this experiment is stored as a <code>Spectra</code> object (from the <em><a href="https://bioconductor.org/packages/3.21/Spectra" class="external-link">Spectra</a></em> Bioconductor package) within the <code>MsExperiment</code> object and can be accessed using <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra()</a></code> function. Each element in this object is a spectrum - they are organised linearly and are all combined in the same <code>Spectra</code> object one after the other (ordered by retention time and samples).</p>
 <p>Below we access the dataset’s <code>Spectra</code> object which will summarize its available information and provide, among other things, the total number of spectra of the data set.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
@@ -436,7 +435,7 @@
 17208         1   479.610      1719
 17209         1   479.889      1720
 17210         1   480.168      1721
- ... 36 more variables/columns.
+ ... 37 more variables/columns.
 
 file(s):
 MS_QC_POOL_1_POS.mzML
@@ -507,7 +506,7 @@ MS_B_POS.mzML
 </div>
 <p>Initially, we examined the entire BPC and subsequently filtered it based on the desired retention times. This not only results in a smaller file size but also facilitates a more straightforward interpretation of the BPC.</p>
 <p>The final plot illustrates the BPC for each sample colored by phenotype, providing insights on the signal measured along the retention times of each sample. It reveals the points at which compounds eluted from the LC column. In essence, a BPC condenses the three-dimensional LC-MS data (<em>m/z</em> by retention time by intensity) into two dimensions (retention time by intensity).</p>
-<p>We can also here compare similarities of the BPCs in a heatmap. The retention times will however not be identical between different samples. Thus we <em>bin()</em> the chromatographic signal per sample along the retention time axis into bins of two seconds resulting in data with the same number of bins/data points. We can then calculate pairwise similarities between these data vectors using the <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor()</a></code> function and visualize the result using <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap()</a></code>.</p>
+<p>We can also here compare similarities of the TICs in a heatmap. The retention times will however not be identical between different samples. Thus we <em>bin()</em> the chromatographic signal per sample along the retention time axis into bins of two seconds resulting in data with the same number of bins/data points. We can then calculate pairwise similarities between these data vectors using the <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor()</a></code> function and visualize the result using <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap()</a></code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Total ion chromatogram</span></span>
@@ -528,7 +527,7 @@ MS_B_POS.mzML
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure><p><img src="a-end-to-end-untargeted-metabolomics_files/figure-html/heatmap1-1.png" width="672"></p>
-<figcaption>Figure 7. Heatmap of BPC similarities.</figcaption></figure>
+<figcaption>Figure 7. Heatmap of TIC similarities.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -768,14 +767,14 @@ MS_B_POS.mzML
 <span><span class="va">cystine_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/findChromPeaks.html" class="external-link">findChromPeaks</a></span><span class="op">(</span><span class="va">eic_cystine</span>, param <span class="op">=</span> <span class="va">param</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeaks</a></span><span class="op">(</span><span class="va">cystine_test</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     rt rtmin rtmax into intb maxo sn row column</code></pre>
+<pre><code>     mz mzmin mzmax rt rtmin rtmax into intb maxo sn row column</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Evaluate for Methionine</span></span>
 <span><span class="va">met_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/findChromPeaks.html" class="external-link">findChromPeaks</a></span><span class="op">(</span><span class="va">eic_met</span>, param <span class="op">=</span> <span class="va">param</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeaks</a></span><span class="op">(</span><span class="va">met_test</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     rt rtmin rtmax into intb maxo sn row column</code></pre>
+<pre><code>     mz mzmin mzmax rt rtmin rtmax into intb maxo sn row column</code></pre>
 </div>
 </div>
 <p>While <em>CentWave</em> is a highly performant algorithm, it requires to be costumized to each dataset. This implies that the parameters should be fine-tuned based on the user’s data. The example above serves as a clear motivation for users to familiarize themselves with the various parameters and the need to adapt them to a data set. We will discuss the main parameters that can be easily adjusted to suit the user’s dataset:</p>
@@ -826,34 +825,56 @@ MS_B_POS.mzML
 <span><span class="va">cystine_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/findChromPeaks.html" class="external-link">findChromPeaks</a></span><span class="op">(</span><span class="va">eic_cystine</span>, param <span class="op">=</span> <span class="va">param</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeaks</a></span><span class="op">(</span><span class="va">cystine_test</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           rt   rtmin   rtmax      into      intb      maxo sn row column
- [1,] 209.251 207.577 212.878  4085.675  2911.376  2157.459  4   1      1
- [2,] 209.251 206.182 213.995 24625.728 19074.407 12907.487  4   1      2
- [3,] 209.252 207.020 214.274 19467.836 14594.041  9996.466  4   1      3
- [4,] 209.251 207.577 212.041  4648.229  3202.617  2458.485  3   1      4
- [5,] 208.974 206.184 213.159 23801.825 18126.978 11300.289  3   1      5
- [6,] 209.250 207.018 213.714 25990.327 21036.768 13650.329  5   1      6
- [7,] 209.252 207.857 212.879  4528.767  3259.039  2445.841  4   1      7
- [8,] 209.252 207.299 213.995 23119.449 17274.140 12153.410  4   1      8
- [9,] 208.972 206.740 212.878 28943.188 23436.119 14451.023  4   1      9
-[10,] 209.252 207.578 213.437  4470.552  3065.402  2292.881  4   1     10</code></pre>
+<pre><code>            mz    mzmin    mzmax      rt   rtmin   rtmax      into      intb
+mzmin 249.0453 249.0403 249.0503 209.251 207.577 212.878  4085.675  2911.376
+mzmin 249.0453 249.0403 249.0503 209.251 206.182 213.995 24625.728 19074.407
+mzmin 249.0453 249.0403 249.0503 209.252 207.020 214.274 19467.836 14594.041
+mzmin 249.0453 249.0403 249.0503 209.251 207.577 212.041  4648.229  3202.617
+mzmin 249.0453 249.0403 249.0503 208.974 206.184 213.159 23801.825 18126.978
+mzmin 249.0453 249.0403 249.0503 209.250 207.018 213.714 25990.327 21036.768
+mzmin 249.0453 249.0403 249.0503 209.252 207.857 212.879  4528.767  3259.039
+mzmin 249.0453 249.0403 249.0503 209.252 207.299 213.995 23119.449 17274.140
+mzmin 249.0453 249.0403 249.0503 208.972 206.740 212.878 28943.188 23436.119
+mzmin 249.0453 249.0403 249.0503 209.252 207.578 213.437  4470.552  3065.402
+           maxo sn row column
+mzmin  2157.459  4   1      1
+mzmin 12907.487  4   1      2
+mzmin  9996.466  4   1      3
+mzmin  2458.485  3   1      4
+mzmin 11300.289  3   1      5
+mzmin 13650.329  5   1      6
+mzmin  2445.841  4   1      7
+mzmin 12153.410  4   1      8
+mzmin 14451.023  4   1      9
+mzmin  2292.881  4   1     10</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Evaluate on the methionine ion</span></span>
 <span><span class="va">met_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/findChromPeaks.html" class="external-link">findChromPeaks</a></span><span class="op">(</span><span class="va">eic_met</span>, param <span class="op">=</span> <span class="va">param</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeaks</a></span><span class="op">(</span><span class="va">met_test</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           rt   rtmin   rtmax     into     intb      maxo sn row column
- [1,] 159.867 157.913 162.378 20026.61 14715.42 12555.601  4   1      1
- [2,] 160.425 157.077 163.215 16827.76 11843.39  8407.699  3   1      2
- [3,] 160.425 157.356 163.215 18262.45 12881.67  9283.375  3   1      3
- [4,] 159.588 157.635 161.820 20987.72 15424.25 13327.811  4   1      4
- [5,] 160.985 156.799 163.217 16601.72 11968.46 10012.396  4   1      5
- [6,] 160.982 157.634 163.214 17243.24 12389.94  9150.079  4   1      6
- [7,] 159.867 158.193 162.099 21120.10 16202.05 13531.844  3   1      7
- [8,] 160.426 157.356 162.937 18937.40 13739.73 10336.000  3   1      8
- [9,] 160.704 158.472 163.215 17882.21 12299.43  9395.548  3   1      9
-[10,] 160.146 157.914 162.379 20275.80 14279.50 12669.821  3   1     10</code></pre>
+<pre><code>            mz    mzmin    mzmax      rt   rtmin   rtmax     into     intb
+mzmin 156.0722 156.0672 156.0772 159.867 157.913 162.378 20026.61 14715.42
+mzmin 156.0722 156.0672 156.0772 160.425 157.077 163.215 16827.76 11843.39
+mzmin 156.0722 156.0672 156.0772 160.425 157.356 163.215 18262.45 12881.67
+mzmin 156.0722 156.0672 156.0772 159.588 157.635 161.820 20987.72 15424.25
+mzmin 156.0722 156.0672 156.0772 160.985 156.799 163.217 16601.72 11968.46
+mzmin 156.0722 156.0672 156.0772 160.982 157.634 163.214 17243.24 12389.94
+mzmin 156.0722 156.0672 156.0772 159.867 158.193 162.099 21120.10 16202.05
+mzmin 156.0722 156.0672 156.0772 160.426 157.356 162.937 18937.40 13739.73
+mzmin 156.0722 156.0672 156.0772 160.704 158.472 163.215 17882.21 12299.43
+mzmin 156.0722 156.0672 156.0772 160.146 157.914 162.379 20275.80 14279.50
+           maxo sn row column
+mzmin 12555.601  4   1      1
+mzmin  8407.699  3   1      2
+mzmin  9283.375  3   1      3
+mzmin 13327.811  4   1      4
+mzmin 10012.396  4   1      5
+mzmin  9150.079  4   1      6
+mzmin 13531.844  3   1      7
+mzmin 10336.000  3   1      8
+mzmin  9395.548  3   1      9
+mzmin 12669.821  3   1     10</code></pre>
 </div>
 </div>
 <p>With the customized parameters, a chromatographic peak was detected in each sample. Below, we use the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function on the EICs to visualize these results.</p>
@@ -1081,7 +1102,7 @@ FALSE  TRUE
 </div>
 </div>
 <p>These QC samples representing the same sample (pool) were measured at regular intervals during the measurement run of the experiment and were all measured on the same day. Still, small shifts can be observed, especially in the region between 100 and 150 seconds. To facilitate proper correspondence of signals across samples (and hence definition of the LC-MS features), it is essential to minimize these differences in retention times.</p>
-<p>Theoretically, we proceed in two steps: first we select only the QC samples of our dataset and do a first alignment on these, using the so-called <em>anchor peaks</em>. In this way we can assume a linear shift in time, since we are always measuring the same sample in different regular time intervals. Despite having external QCs in our data set, we still use the subset-based alignment assuming retention time shifts to be independent of the different sample matrix (human serum or plasma) and instead are mostly instrument-dependent. Note that it would also be possible to manually specify anchor peaks, respectively their retention times or to align a data set against an external, reference, data set. More information is provided in the vignettes of the <em><a href="https://bioconductor.org/packages/3.20/xcms" class="external-link">xcms</a></em> package.</p>
+<p>Theoretically, we proceed in two steps: first we select only the QC samples of our dataset and do a first alignment on these, using the so-called <em>anchor peaks</em>. In this way we can assume a linear shift in time, since we are always measuring the same sample in different regular time intervals. Despite having external QCs in our data set, we still use the subset-based alignment assuming retention time shifts to be independent of the different sample matrix (human serum or plasma) and instead are mostly instrument-dependent. Note that it would also be possible to manually specify anchor peaks, respectively their retention times or to align a data set against an external, reference, data set. More information is provided in the vignettes of the <em><a href="https://bioconductor.org/packages/3.21/xcms" class="external-link">xcms</a></em> package.</p>
 <p>After calculating how much to adjust the retention time in these samples, we apply this shift also on the study samples.</p>
 <p>In <em>xcms</em> retention time alignment can be performed using the <code><a href="https://rdrr.io/pkg/xcms/man/adjustRtime.html" class="external-link">adjustRtime()</a></code> function with an alignment algorithm. For this example we use the <em>PeakGroups</em> method <span class="citation" data-cites="smith_xcms_2006">(<a href="#ref-smith_xcms_2006" role="doc-biblioref">Smith et al. 2006</a>)</span> that performs the alignment by minimizing differences in retention times of a set of <em>anchor peaks</em> in the different samples. This method requires an initial correspondence analysis to match/group chromatographic peaks across samples from which the algorithm then selects the anchor peaks for the alignment.</p>
 <p>For the initial correspondence, we use the <em>PeakDensity</em> approach <span class="citation" data-cites="smith_xcms_2006">(<a href="#ref-smith_xcms_2006" role="doc-biblioref">Smith et al. 2006</a>)</span> that groups chromatographic peaks with similar <em>m/z</em> and retention time into LC-MS features. The parameters for this algorithm, that can be configured using the <code>PeakDensityParam</code> object, are <code>sampleGroups</code>, <code>minFraction</code>, <code>binSize</code>, <code>ppm</code> and <code>bw</code>.</p>
@@ -1236,7 +1257,7 @@ FALSE  TRUE
 </div>
 </div>
 <p>The non-endogenous cystine ion was already well aligned so the difference is minimal. The methionine ion, however, shows an improvement in alignment.</p>
-<p>In addition to a visual inspection of the results, we also evaluate the impact of the alignment by comparing the variance in retention times for internal standards before and after alignment. To this end, we first need to identify chromatographic peaks in each sample with an <em>m/z</em> and retention time close to the expected values for each internal standard. For this we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchValues.html" class="external-link">matchValues()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.20/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package <span class="citation" data-cites="rainer_modular_2022">(<a href="#ref-rainer_modular_2022" role="doc-biblioref">Rainer et al. 2022</a>)</span> using the <code>MzRtParam</code> method to identify all chromatographic peaks with similar <em>m/z</em> (+/- 50 ppm) and retention time (+/- 10 seconds) to the internal standard’s values. With parameters <code>mzColname</code> and <code>rtColname</code> we specify the column names in the query (our IS) and target (chromatographic peaks) that contain the <em>m/z</em> and retention time values on which to match entities. We perform this matching separately for each sample. For each internal standard in every sample, we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">filterMatches()</a></code> function and the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">SingleMatchParam()</a></code> parameter to select the chromatographic peak with the highest intensity.</p>
+<p>In addition to a visual inspection of the results, we also evaluate the impact of the alignment by comparing the variance in retention times for internal standards before and after alignment. To this end, we first need to identify chromatographic peaks in each sample with an <em>m/z</em> and retention time close to the expected values for each internal standard. For this we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchValues.html" class="external-link">matchValues()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.21/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package <span class="citation" data-cites="rainer_modular_2022">(<a href="#ref-rainer_modular_2022" role="doc-biblioref">Rainer et al. 2022</a>)</span> using the <code>MzRtParam</code> method to identify all chromatographic peaks with similar <em>m/z</em> (+/- 50 ppm) and retention time (+/- 10 seconds) to the internal standard’s values. With parameters <code>mzColname</code> and <code>rtColname</code> we specify the column names in the query (our IS) and target (chromatographic peaks) that contain the <em>m/z</em> and retention time values on which to match entities. We perform this matching separately for each sample. For each internal standard in every sample, we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">filterMatches()</a></code> function and the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">SingleMatchParam()</a></code> parameter to select the chromatographic peak with the highest intensity.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Extract the matrix with all chromatographic peaks and add a column</span></span>
@@ -1613,7 +1634,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The linear regression line has a slope of 1.12 and an intercept of -1.62. This indicates that the filled-in signal is on average 1.12 times higher than the detected signal.</p>
 </section><section class="level2"><h3 id="filtering-features-missing-values">Filtering Features: Missing values<a class="anchor" aria-label="anchor" href="#filtering-features-missing-values"></a>
 </h3>
-<p>We now restrict the data set to features for which a chromatographic peak was detected in at least 2/3 of samples of at least one of the study samples groups. This ensures the statistical tests carried out later on the study samples are being performed on <em>reliable</em> signal. Also, with this filter we remove features that were mostly detected in QC samples, but not the study samples. Such filter can be performed with <code><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.20/xcms" class="external-link">xcms</a></em> package with the <code>PercentMissingFilter</code> setting. The parameters of this filer:</p>
+<p>We now restrict the data set to features for which a chromatographic peak was detected in at least 2/3 of samples of at least one of the study samples groups. This ensures the statistical tests carried out later on the study samples are being performed on <em>reliable</em> signal. Also, with this filter we remove features that were mostly detected in QC samples, but not the study samples. Such filter can be performed with <code><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.21/xcms" class="external-link">xcms</a></em> package with the <code>PercentMissingFilter</code> setting. The parameters of this filer:</p>
 <ul>
 <li>
 <code>threshold</code>: defines the maximal acceptable percentage of samples with missing value(s) in at least one of the sample groups defined by parameter <code>f</code>.</li>
@@ -1644,7 +1665,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class "XProcessHistory"
  type: Peak detection
- date: Mon Dec  9 09:13:32 2024
+ date: Wed Mar 12 12:51:50 2025
  info:
  fileIndex: 1,2,3,4,5,6,7,8,9,10
  Parameter class: CentWaveParam
@@ -1736,19 +1757,19 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="co">#' XcmsExperiment object: </span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/saveMsObject.html" class="external-link">saveMsObject</a></span><span class="op">(</span><span class="va">lcms1</span>,</span>
 <span>             <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/AlabasterParam.html" class="external-link">AlabasterParam</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"objects/preprocessed_lcms1"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' Below we remove the processHistory of the res object to allow for export, </span></span>
+<span><span class="co">#lcms1 &lt;- readMsObject(XcmsExperiment(), AlabasterParam(path = file.path("objects/preprocessed_lcms1")))</span></span>
+<span><span class="co">#' Below we remove the processHistory of the res object to allow for export,</span></span>
 <span><span class="co">#' this need to be fixed later.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/alabaster.base/man/saveObject.html" class="external-link">saveObject</a></span><span class="op">(</span><span class="va">res</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"objects/preprocessed_res"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </section></section><section class="section level2"><h2 id="data-normalization">Data normalization<a class="anchor" aria-label="anchor" href="#data-normalization"></a>
 </h2>
-<p>After preprocessing, data normalization or scaling might need to be applied to remove any technical variances from the data. While simple approaches like median scaling can be implemented with a few lines of R code, more advanced normalization algorithms are available in packages such as Bioconductor’s <em><a href="https://bioconductor.org/packages/3.20/preprocessCore" class="external-link">preprocessCore</a></em>. The comprehensive workflow “Notame” also propose a very interesting normalization approach adaptable and scalable to the user dataset <span class="citation" data-cites="klavus_notame_2020">(<a href="#ref-klavus_notame_2020" role="doc-biblioref">Klåvus et al. 2020</a>)</span>.</p>
+<p>After preprocessing, data normalization or scaling might need to be applied to remove any technical variances from the data. While simple approaches like median scaling can be implemented with a few lines of R code, more advanced normalization algorithms are available in packages such as Bioconductor’s <em><a href="https://bioconductor.org/packages/3.21/preprocessCore" class="external-link">preprocessCore</a></em>. The comprehensive workflow “Notame” also propose a very interesting normalization approach adaptable and scalable to the user dataset <span class="citation" data-cites="klavus_notame_2020">(<a href="#ref-klavus_notame_2020" role="doc-biblioref">Klåvus et al. 2020</a>)</span>.</p>
 <p>Generally, for LC-MS data, bias can be categorized into three main groups<span class="citation" data-cites="broadhurst_guidelines_2018">(<a href="#ref-broadhurst_guidelines_2018" role="doc-biblioref">Broadhurst et al. 2018</a>)</span>:</p>
 <ul>
 <li><p>Variances introduced by sample collection and initial processing, which can include differences in sample amounts. This type of bias is expected to be sample-specific and affect all signals in a sample in the same way. Methods like median scaling, LOESS or quantiles normalization can adjust this bias.</p></li>
-<li><p>Signal drifts along measurement of samples from an experiment. Reasons for such drifts can be related to aging of the instrumentation used (columns, detector), but also to changes in metabolite abundances and characteristics due to reactions and modifications, such as oxidation. These changes are expected to affect more the samples measured later in a run rather than the ones measured at the beginning. For this reason, this bias can play a major role in large experiments bias can play a major role in large experiments measured over a long time range and is usually considered to affect individual metabolites (or metabolite groups) differently. For adjustment, moving average or linear regression-based approaches can be used. The latter can for example be performed using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.20/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p></li>
+<li><p>Signal drifts along measurement of samples from an experiment. Reasons for such drifts can be related to aging of the instrumentation used (columns, detector), but also to changes in metabolite abundances and characteristics due to reactions and modifications, such as oxidation. These changes are expected to affect more the samples measured later in a run rather than the ones measured at the beginning. For this reason, this bias can play a major role in large experiments bias can play a major role in large experiments measured over a long time range and is usually considered to affect individual metabolites (or metabolite groups) differently. For adjustment, moving average or linear regression-based approaches can be used. The latter can for example be performed using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.21/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p></li>
 <li><p>Batch-related biases. These comprise any noise that is specific to a larger set of samples, which can be the set of samples measured in one LC-MS measurement run (i.e. from one analysis plate) or samples measured using a specific batch of reagents. This noise is assumed to affect all samples in one batch in the same way and linear modeling-based approaches can be used to adjust for this.</p></li>
 </ul>
 <p>Unwanted variation can arise from various sources and is highly dependent on the experiment. Therefore, data normalization should be chosen carefully based on experimental design, statistical aims, and the balance of accuracy and precision achieved through the use of auxiliary information.</p>
@@ -1840,7 +1861,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </div>
 <p>The upper part of the plot show that the gap filling steps allowed to rescue a substantial number of <em>NAs</em> and allowed us to have a more consistent number of feature values per sample. This consistency aligns with our asspumption that every sample should have a similar amount of features detected. Additionally we observe that, on average, the signal distribution from the individual samples is very similar.</p>
-<p>An alternative way to evaluate differences in abundances between samples are <em>relative log abundance</em> (RLA) plots <span class="citation" data-cites="de_livera_normalizing_2012">(<a href="#ref-de_livera_normalizing_2012" role="doc-biblioref">De Livera et al. 2012</a>)</span>. An RLA value is the abundance of a feature in a sample relative to the median abundance of the same feature across multiple samples. We can discriminate between <em>within group</em> and <em>across group</em> RLAs, depending whether the abundance is compared against samples within the same sample group or across all samples. Within group RLA plots assess the tightness of replicates within groups and should have a median close to zero and low variation around it. When used across groups, they allow to compare behavior between groups. Generally, between-sample differences can be easily spotted using RLA plots. Below we calculate and visualize within group RLA values using the <code><a href="https://rdrr.io/pkg/xcms/man/rla.html" class="external-link">rowRla()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.20/MsCoreUtils" class="external-link">MsCoreUtils</a></em> package defining with parameter <code>f</code> the sample groups.</p>
+<p>An alternative way to evaluate differences in abundances between samples are <em>relative log abundance</em> (RLA) plots <span class="citation" data-cites="de_livera_normalizing_2012">(<a href="#ref-de_livera_normalizing_2012" role="doc-biblioref">De Livera et al. 2012</a>)</span>. An RLA value is the abundance of a feature in a sample relative to the median abundance of the same feature across multiple samples. We can discriminate between <em>within group</em> and <em>across group</em> RLAs, depending whether the abundance is compared against samples within the same sample group or across all samples. Within group RLA plots assess the tightness of replicates within groups and should have a median close to zero and low variation around it. When used across groups, they allow to compare behavior between groups. Generally, between-sample differences can be easily spotted using RLA plots. Below we calculate and visualize within group RLA values using the <code><a href="https://rdrr.io/pkg/xcms/man/rla.html" class="external-link">rowRla()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.21/MsCoreUtils" class="external-link">MsCoreUtils</a></em> package defining with parameter <code>f</code> the sample groups.</p>
 <div class="cell">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">4.5</span>, <span class="fl">2.5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -1970,7 +1991,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>The normalization process has effectively centered the data around the median and medians for all samples are now closer to zero.</p>
 </section><section class="level3"><h4 id="coefficient-of-variation">Coefficient of variation<a class="anchor" aria-label="anchor" href="#coefficient-of-variation"></a>
 </h4>
-<p>We next evaluate the coefficient of variation (CV, also referred to as <em>relative standard deviation</em> RSD) for features across samples from either QC or study samples. In QC samples, the CV would represent technical noise, while in study samples it would include also expected biological differences. Thus, normalization should reduce the CV in QC samples, while only slightly reducing the CV in study samples. The CV is calculated below using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.20/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package. By setting <code>mad = TRUE</code> we use a more robust calculation using the median absolute deviation instead of the standard deviation.</p>
+<p>We next evaluate the coefficient of variation (CV, also referred to as <em>relative standard deviation</em> RSD) for features across samples from either QC or study samples. In QC samples, the CV would represent technical noise, while in study samples it would include also expected biological differences. Thus, normalization should reduce the CV in QC samples, while only slightly reducing the CV in study samples. The CV is calculated below using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.21/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package. By setting <code>mad = TRUE</code> we use a more robust calculation using the median absolute deviation instead of the standard deviation.</p>
 <div class="cell">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Calculate the CV values</span></span>
@@ -2048,7 +2069,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>The table above shows the distribution of the CV for both raw and normalized data. The first column highlights the % of the data which is below a given CV value, e.g. 25% of the data has a CV equal or lower than 0.04557 at the <em>QC_raw</em> data. As anticipated, the CV values for the QCs, which reflect technical variance, are lower compared to those for the study samples, which include both technical and biological variance. Overall, minimal disparity exists between the raw and normalized data, which is a positive indication that the normalization process has not introduced bias into the dataset, but also reflects the little differences in average abundances between sample in the raw data.</p>
 </section><section class="level3"><h4 id="conclusion-on-normalization">Conclusion on normalization<a class="anchor" aria-label="anchor" href="#conclusion-on-normalization"></a>
 </h4>
-<p>The overall conclusion of the normalization process is that very little variance was present from the beginning, normalization was however able to center the data around the median (as shown by the RLA plot). Given the simplicity and limited size of our example dataset, we will conclude the normalization process at this stage. For more intricate datasets with diverse biases, a tailored approach would be devised. This could include also approaches to adjust for signal drifts or batch effects. One possible option would be to use a linear-model based approach such as can for example be applied with the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.20/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p>
+<p>The overall conclusion of the normalization process is that very little variance was present from the beginning, normalization was however able to center the data around the median (as shown by the RLA plot). Given the simplicity and limited size of our example dataset, we will conclude the normalization process at this stage. For more intricate datasets with diverse biases, a tailored approach would be devised. This could include also approaches to adjust for signal drifts or batch effects. One possible option would be to use a linear-model based approach such as can for example be applied with the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.21/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p>
 </section></section></section><section class="section level2"><h2 id="quality-control-feature-prefiltering">Quality control: Feature prefiltering<a class="anchor" aria-label="anchor" href="#quality-control-feature-prefiltering"></a>
 </h2>
 <p>After normalizing our data we can now pre-filter to clean the data before performing any statistical analysis. In general, pre-filtering of samples and features is performed to remove outliers.</p>
@@ -2076,27 +2097,27 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span>                              mad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">res</span>, filter <span class="op">=</span> <span class="va">filter_dratio</span>, assay <span class="op">=</span> <span class="st">"norm_imputed"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>4214 features were removed</code></pre>
+<pre><code>4212 features were removed</code></pre>
 </div>
 </div>
 <p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>)of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
-<p>Note that the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowDratio()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.20/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package could be used to calculate the actual numeric values for the estimates used for filtering, to e.g. to evaluate their distribution in the whole data set or identify data set-dependent threshold values.</p>
+<p>Note that the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowDratio()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.21/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package could be used to calculate the actual numeric values for the estimates used for filtering, to e.g. to evaluate their distribution in the whole data set or identify data set-dependent threshold values.</p>
 <p>Finally, we evaluate the number of features left after the filtering steps and calculate the percentage of features that were removed.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb107"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Number of features after analysis</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4510</code></pre>
+<pre><code>[1] 4512</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Percentage left: end/beginning</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res_unfilt</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 51.69647</code></pre>
+<pre><code>[1] 51.71939</code></pre>
 </div>
 </div>
-<p>The dataset has been reduced from 8724 to 4510 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
+<p>The dataset has been reduced from 8724 to 4512 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_qc</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></span>
@@ -2149,7 +2170,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </section><section class="section level2"><h2 id="differential-abundance-analysis">Differential abundance analysis<a class="anchor" aria-label="anchor" href="#differential-abundance-analysis"></a>
 </h2>
-<p>After normalization and quality control, the next step is to identify features that are differentially abundant between the study groups. This crucial step allows us to identify potential biomarkers or metabolites that are associated with the study groups. There are various approaches and methods available for the identification of such features of interest. In this workflow we use a multiple linear regression analysis to identify features with significantly difference in abundances between the CVD or CTR study group.</p>
+<p>After normalization and quality control, the next step is to identify features that are differential abundant between the study groups. This crucial step allows us to identify potential biomarkers or metabolites that are associated with the study groups. There are various approaches and methods available for the identification of such features of interest. In this workflow we use a multiple linear regression analysis to identify features with significantly difference in abundances between the CVD or CTR study group.</p>
 <p>Before performing the tests we evaluate similarities between study samples using a PCA (after excluding the QC samples to avoid them influencing the results).</p>
 <div class="cell">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb115"><pre class="downlit sourceCode r">
@@ -2188,7 +2209,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>According to the PCA above, PC1 does not seem to be related to age.</p>
 <p>Even if there is some variance in the data set we can’t explain at this stage, we proceed with the (supervised) statistical tests to identify features of interest. We compute linear models for each metabolite explaining the observed feature abundance by the available study variables. While we could also use the base R function <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, we utilize the <code>R Biocpkg("limma")</code> package to conduct the differential abundance analysis: the <em>moderated</em> test statistics <span class="citation" data-cites="smyth_linear_2004">(<a href="#ref-smyth_linear_2004" role="doc-biblioref">Smyth 2004</a>)</span> provided by this package are specifically well suited for experiments with a limited number of replicates. For our tests we use a linear model <code>~ phenotype + age</code>, hence explaining the abundances of one metabolite accounting for the study group assignment and age of each individual. The analysis might benefit from inclusion of a study covariate associated with PC2 or explaining the variance seen in that principal component, but for the present analysis only the participant’s age and disease association was provided.</p>
-<p>Below we define the design of the study with the <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix()</a></code> function and fit feature-wise linear models to the log2-transformed abundances using the <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit()</a></code> function. P-values for significance of association are then calculated using the <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function, that also performs the empirical Bayes-based robust estimation of the standard errors. See also the excellent vignette/user guide of the <em><a href="https://bioconductor.org/packages/3.20/limma" class="external-link">limma</a></em> package for examples and details on the linear model procedure.</p>
+<p>Below we define the design of the study with the <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix()</a></code> function and fit feature-wise linear models to the log2-transformed abundances using the <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit()</a></code> function. P-values for significance of association are then calculated using the <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function, that also performs the empirical Bayes-based robust estimation of the standard errors. See also the excellent vignette/user guide of the <em><a href="https://bioconductor.org/packages/3.21/limma" class="external-link">limma</a></em> package for examples and details on the linear model procedure.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Define the linear model to be applied to the data</span></span>
@@ -2301,10 +2322,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0732</td>
 <td style="text-align: right;">182.0749</td>
 <td style="text-align: right;">34.83789</td>
-<td style="text-align: right;">-8.606580</td>
-<td style="text-align: right;">0.0069346</td>
+<td style="text-align: right;">-8.633816</td>
+<td style="text-align: right;">0.0063381</td>
 <td style="text-align: right;">12.229286</td>
-<td style="text-align: right;">3.740037</td>
+<td style="text-align: right;">3.728630</td>
 <td style="text-align: right;">0.2116471</td>
 </tr>
 <tr class="even">
@@ -2312,59 +2333,49 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: right;">195.0877</td>
 <td style="text-align: right;">32.65668</td>
 <td style="text-align: right;">-6.330400</td>
-<td style="text-align: right;">0.0420851</td>
+<td style="text-align: right;">0.0350712</td>
 <td style="text-align: right;">16.905340</td>
 <td style="text-align: right;">10.454994</td>
 <td style="text-align: right;">0.0304712</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">FT0676</td>
-<td style="text-align: right;">176.0106</td>
-<td style="text-align: right;">147.55872</td>
-<td style="text-align: right;">-6.117308</td>
-<td style="text-align: right;">0.0461954</td>
-<td style="text-align: right;">8.788476</td>
-<td style="text-align: right;">2.587564</td>
-<td style="text-align: right;">0.7734774</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
 <td style="text-align: right;">162.13668</td>
-<td style="text-align: right;">-5.642740</td>
-<td style="text-align: right;">0.0446145</td>
+<td style="text-align: right;">-5.541975</td>
+<td style="text-align: right;">0.0350712</td>
 <td style="text-align: right;">10.287074</td>
-<td style="text-align: right;">4.450325</td>
+<td style="text-align: right;">4.505566</td>
 <td style="text-align: right;">0.0360903</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">FT0371</td>
-<td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
-<td style="text-align: right;">-5.387570</td>
-<td style="text-align: right;">0.0388819</td>
-<td style="text-align: right;">9.914862</td>
-<td style="text-align: right;">4.151948</td>
-<td style="text-align: right;">0.5564435</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FT1171</td>
 <td style="text-align: right;">229.1299</td>
 <td style="text-align: right;">181.08828</td>
-<td style="text-align: right;">-5.287131</td>
-<td style="text-align: right;">0.0168328</td>
+<td style="text-align: right;">-5.309560</td>
+<td style="text-align: right;">0.0177234</td>
 <td style="text-align: right;">10.721195</td>
-<td style="text-align: right;">5.599892</td>
+<td style="text-align: right;">5.581937</td>
 <td style="text-align: right;">0.0706276</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">FT0371</td>
+<td style="text-align: right;">138.0547</td>
+<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">-5.281443</td>
+<td style="text-align: right;">0.0184595</td>
+<td style="text-align: right;">9.914862</td>
+<td style="text-align: right;">4.291514</td>
+<td style="text-align: right;">0.5564435</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">FT5606</td>
 <td style="text-align: right;">560.3603</td>
 <td style="text-align: right;">33.54917</td>
-<td style="text-align: right;">-3.795633</td>
-<td style="text-align: right;">0.0420851</td>
+<td style="text-align: right;">-3.765428</td>
+<td style="text-align: right;">0.0350712</td>
 <td style="text-align: right;">8.885918</td>
-<td style="text-align: right;">4.861594</td>
+<td style="text-align: right;">4.903058</td>
 <td style="text-align: right;">1.2139903</td>
 </tr>
 </tbody>
@@ -2403,7 +2414,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>We have now identified the features with significant differences in abundances between the two study groups. These provide information on metabolic pathways that differentiate affected from healthy individuals and might hence also serve as biomarkers. However, at this stage of the analysis we do not know what compounds/metabolites they actually represent. We thus need now to annotate these signals. Annotation can be performed at different level of confidence <span class="citation" data-cites="sumner_proposed_2007">Schymanski et al. (<a href="#ref-schymanski_identifying_2014" role="doc-biblioref">2014</a>)</span>. The lowest level of annotation, with the highest rate of false positive hits, bases on the features <em>m/z</em> ratios. Higher levels of annotations employ fragment spectra (MS2 spectra) of ions of interest requiring this however acquisition of additional data. In this section, we will demonstrate multiple ways to annotate our significant features using functionality provided through Bioconductor packages. Alternative approaches and external software tools, which may be better suited, will also be discussed later in the section.</p>
 <section class="level2"><h3 id="ms1-based-annotation">MS1-based annotation<a class="anchor" aria-label="anchor" href="#ms1-based-annotation"></a>
 </h3>
-<p>Our data set was acquired using an LC-MS setup and our features are thus only characterized by their <em>m/z</em> and retention times. The retention time is LC-setup-specific and, without prior data/knowledge provide only little information on the features’ identity. Modern MS instruments have a high accuracy and the <em>m/z</em> values should therefore be reliable estimates of the compound ion’s mass-to-charge ratio. As first approach, we use the features’ <em>m/z</em> values and match them against reference values, i.e., exact masses of chemical compounds that are provided by a reference database, in our case the MassBank database. The full MassBank data is re-distributed through Bioconductor’s <em><a href="https://bioconductor.org/packages/3.20/AnnotationHub" class="external-link">AnnotationHub</a></em> resource, which simplifies their integration into reproducible R-based analysis workflows.</p>
+<p>Our data set was acquired using an LC-MS setup and our features are thus only characterized by their <em>m/z</em> and retention times. The retention time is LC-setup-specific and, without prior data/knowledge provide only little information on the features’ identity. Modern MS instruments have a high accuracy and the <em>m/z</em> values should therefore be reliable estimates of the compound ion’s mass-to-charge ratio. As first approach, we use the features’ <em>m/z</em> values and match them against reference values, i.e., exact masses of chemical compounds that are provided by a reference database, in our case the MassBank database. The full MassBank data is re-distributed through Bioconductor’s <em><a href="https://bioconductor.org/packages/3.21/AnnotationHub" class="external-link">AnnotationHub</a></em> resource, which simplifies their integration into reproducible R-based analysis workflows.</p>
 <p>Below we load the resource, list all available MassBank data sets/releases and load one of them.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb123"><pre class="downlit sourceCode r">
@@ -2412,8 +2423,8 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span><span class="co">#' List available MassBank data sets</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">ah</span>, <span class="st">"MassBank"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>AnnotationHub with 6 records
-# snapshotDate(): 2024-10-28
+<pre><code>AnnotationHub with 8 records
+# snapshotDate(): 2025-03-11
 # $dataprovider: MassBank
 # $species: NA
 # $rdataclass: CompDb
@@ -2428,13 +2439,15 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
   AH111334 | MassBank CompDb for release 2022.12.1
   AH116164 | MassBank CompDb for release 2023.06
   AH116165 | MassBank CompDb for release 2023.09
-  AH116166 | MassBank CompDb for release 2023.11  </code></pre>
+  AH116166 | MassBank CompDb for release 2023.11
+  AH119518 | MassBank CompDb for release 2024.06
+  AH119519 | MassBank CompDb for release 2024.11  </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Load one MAssBank release</span></span>
 <span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="va">ah</span><span class="op">[[</span><span class="st">"AH116166"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 </div>
-<p>The MassBank data is provided as a self-contained SQLite database and data can be queried and accessed through the <em><a href="https://bioconductor.org/packages/3.20/CompoundDb" class="external-link">CompoundDb</a></em> Bioconductor package. Below we use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compounds()</a></code> function to extract small compound annotations from the database.</p>
+<p>The MassBank data is provided as a self-contained SQLite database and data can be queried and accessed through the <em><a href="https://bioconductor.org/packages/3.21/CompoundDb" class="external-link">CompoundDb</a></em> Bioconductor package. Below we use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compounds()</a></code> function to extract small compound annotations from the database.</p>
 <div class="cell" data-tbl-cap="Table 8. MassBank database extract.">
 <div class="sourceCode cell-code" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Extract compound annotations</span></span>
@@ -2468,7 +2481,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class Matched
 Total number of matches: 43
-Number of query objects: 7 (4 matched)
+Number of query objects: 6 (4 matched)
 Number of target objects: 25685 (43 matched)</code></pre>
 </div>
 </div>
@@ -2482,7 +2495,7 @@ Number of target objects: 25685 (43 matched)</code></pre>
 <span>                                <span class="st">"target_inchikey"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">mtch_res</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>DataFrame with 46 rows and 8 columns
+<pre><code>DataFrame with 45 rows and 8 columns
         feature_id     mzmed     rtmed      adduct ppm_error target_formula
        &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt; &lt;numeric&gt;    &lt;character&gt;
 FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
@@ -2906,17 +2919,17 @@ FT5606            NA              NA</code></pre>
 <code class="sourceCode R"><span><span class="co">#' Size of the object before loading into memory</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"MB"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>5.1 Mb</code></pre>
+<pre><code>5.2 Mb</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Load the MS data subset into memory</span></span>
 <span><span class="va">ms2_ctr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/backendInitialize.html" class="external-link">setBackend</a></span><span class="op">(</span><span class="va">ms2_ctr</span>, <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackendMemory</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">ms2_ctr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/addProcessing.html" class="external-link">applyProcessing</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span></span>
+<span><span class="va">ms2_ctr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/processingQueue.html" class="external-link">applyProcessing</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#' Size of the object after loading into memory</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"MB"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>18.2 Mb</code></pre>
+<pre><code>18.4 Mb</code></pre>
 </div>
 </div>
 <p>There is thus only a moderate increase in memory demand after loading the MS data into memory (also because we filtered and cleaned the MS2 data).</p>
@@ -2931,7 +2944,6 @@ FT5606            NA              NA</code></pre>
 <pre><code>          mzmin    mzmax     rtmin     rtmax
 FT0371 138.0544 138.0552 146.32270 152.86115
 FT0565 161.0391 161.0407 159.00234 164.30799
-FT0676 176.0105 176.0117 146.32270 148.95415
 FT0732 182.0726 182.0756  32.71242  42.28755
 FT0845 195.0799 195.0887  30.73235  35.67337
 FT1171 229.1282 229.1335 178.01450 183.35303
@@ -2948,8 +2960,8 @@ FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
 <span>                     spectraVariables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtime"</span>, <span class="st">"precursorMz"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html" class="external-link">lengths</a></span><span class="op">(</span><span class="va">ms2_ctr_fts</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>FT0371 FT0565 FT0676 FT0732 FT0845 FT1171 FT5606
-    38     36      0    135     68     38      0 </code></pre>
+<pre><code>FT0371 FT0565 FT0732 FT0845 FT1171 FT5606
+    38     36    135     68     38      0 </code></pre>
 </div>
 </div>
 <p>The result from this <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> call is a <code>list</code> of <code>Spectra</code>, each element representing the result for one feature. With the exception of the last feature, multiple MS2 spectra could be identified. We next combine the <code>list</code> of <code>Spectra</code> into a single <code>Spectra</code> object using the <code><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra()</a></code> function and add an additional spectra variable containing the respective feature identifier.</p>
@@ -2973,7 +2985,7 @@ FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/addProcessing.html" class="external-link">scalePeaks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>Note that here we could switch to a <code>MsBackendMemory</code> backend hence loading the full data from the reference database into memory. This could have a positive impact on the performance of the subsequent spectra matching, however it would also increase the memory demand of the present analysis.</p>
-<p>Now that both the <code>Spectra</code> object for the second run and the database spectra have been prepared, we can proceed with the matching process. We use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchSpectra.html" class="external-link">matchSpectra()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.20/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package with the <code>CompareSpectraParam</code> to define the settings for the matching. With the following parameters:</p>
+<p>Now that both the <code>Spectra</code> object for the second run and the database spectra have been prepared, we can proceed with the matching process. We use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchSpectra.html" class="external-link">matchSpectra()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.21/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package with the <code>CompareSpectraParam</code> to define the settings for the matching. With the following parameters:</p>
 <ul>
 <li>
 <code>requirePrecursor = TRUE</code>: Limits spectra similarity calculations to fragment spectra with a similar precursor <em>m/z</em>.</li>
@@ -3080,7 +3092,7 @@ Number of target objects: 69561 (21 matched)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Thus, from the 7 significant features, only one could be annotated to a compound based on the MS2-based approach. There could be many reasons for the failure to find matches for the other features. Although MS2 spectra were selected for each feature, most appear to only represent noise, as for most features, in the LC-MS/MS run, no or only very low MS1 signal was recorded, indicating that in that selected sample the original compound might not (or no longer) be present. Also, most reference databases contain predominantly fragment spectra for protonated (<em>[M+H]+</em>) ions of compounds, while some of the features might represent signal from other types of ions which would result in a different fragmentation pattern. Finally, fragment spectra of compounds of interest might also simply not be present in the used reference database.</p>
+<p>Thus, from the 6 significant features, only one could be annotated to a compound based on the MS2-based approach. There could be many reasons for the failure to find matches for the other features. Although MS2 spectra were selected for each feature, most appear to only represent noise, as for most features, in the LC-MS/MS run, no or only very low MS1 signal was recorded, indicating that in that selected sample the original compound might not (or no longer) be present. Also, most reference databases contain predominantly fragment spectra for protonated (<em>[M+H]+</em>) ions of compounds, while some of the features might represent signal from other types of ions which would result in a different fragmentation pattern. Finally, fragment spectra of compounds of interest might also simply not be present in the used reference database.</p>
 <p>Thus, combining the information from the MS1- and MS2 based annotation we can only annotate one feature with a considerable confidence. The feature with the <em>m/z</em> of 195.0879 and a retention time of 32 seconds seems to be an ion of caffeine. While the result is somewhat disappointing it also clearly shows the importance of proper experimental planning and the need to control for all potential confounding factors. For the present experiment, no disease-specific biomarker could be identified, but a life-style property of individuals suffering from this disease: coffee consumption was probably contraindicated to patients of the CVD group to reduce the risk of heart arrhythmia.</p>
 <p>We below plot the EIC for this feature highlighting the retention time at which the highest scoring MS2 spectra was recorded and create a mirror plot comparing this MS2 spectra to the reference fragment spectra for caffeine.</p>
 <div class="cell">
@@ -3142,8 +3154,8 @@ Number of target objects: 69561 (21 matched)</code></pre>
 </div>
 </section><section class="level2"><h3 id="external-tools-or-alternative-annotation-approaches">External tools or alternative annotation approaches<a class="anchor" aria-label="anchor" href="#external-tools-or-alternative-annotation-approaches"></a>
 </h3>
-<p>The present workflow highlights how annotation could be performed within R using packages from the Bioconductor project, but there are also other excellent external softwares that could be used as an alternative, such as SIRIUS <span class="citation" data-cites="duhrkop_sirius_2019">(<a href="#ref-duhrkop_sirius_2019" role="doc-biblioref">Dührkop et al. 2019</a>)</span>, mummichog <span class="citation" data-cites="li_predicting_2013">(<a href="#ref-li_predicting_2013" role="doc-biblioref">Li et al. 2013</a>)</span> or GNPS <span class="citation" data-cites="nothias_feature-based_2020">(<a href="#ref-nothias_feature-based_2020" role="doc-biblioref">Nothias et al. 2020</a>)</span> among others. To use these, the data would need to be exported in a format supported by these. For MS2 spectra, the data could easily be exported in the required MGF file format using the <em><a href="https://bioconductor.org/packages/3.20/MsBackendMgf" class="external-link">MsBackendMgf</a></em> Bioconductor package. Integration of <em>xcms</em> into feature-based molecular networking with GNPS is described in the <a href="https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-xcms3/" class="external-link">GNPS documentation</a>.</p>
-<p>In alternative, or in addition, evidence for the potential matching chemical formula of a feature could be derived by evaluating the isotope pattern of its full MS1 scan. This could provide information on the isotope composition. Also for this, various functions such as the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html" class="external-link">isotopologues()</a></code> from the or <em><a href="https://bioconductor.org/packages/3.20/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package or the functionality of the <em>envipat</em> R package <span class="citation" data-cites="loos_accelerated_2015">(<a href="#ref-loos_accelerated_2015" role="doc-biblioref">Loos et al. 2015</a>)</span> could be used.</p>
+<p>The present workflow highlights how annotation could be performed within R using packages from the Bioconductor project, but there are also other excellent external softwares that could be used as an alternative, such as SIRIUS <span class="citation" data-cites="duhrkop_sirius_2019">(<a href="#ref-duhrkop_sirius_2019" role="doc-biblioref">Dührkop et al. 2019</a>)</span>, mummichog <span class="citation" data-cites="li_predicting_2013">(<a href="#ref-li_predicting_2013" role="doc-biblioref">Li et al. 2013</a>)</span> or GNPS <span class="citation" data-cites="nothias_feature-based_2020">(<a href="#ref-nothias_feature-based_2020" role="doc-biblioref">Nothias et al. 2020</a>)</span> among others. To use these, the data would need to be exported in a format supported by these. For MS2 spectra, the data could easily be exported in the required MGF file format using the <em><a href="https://bioconductor.org/packages/3.21/MsBackendMgf" class="external-link">MsBackendMgf</a></em> Bioconductor package. Integration of <em>xcms</em> into feature-based molecular networking with GNPS is described in the <a href="https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-xcms3/" class="external-link">GNPS documentation</a>.</p>
+<p>In alternative, or in addition, evidence for the potential matching chemical formula of a feature could be derived by evaluating the isotope pattern of its full MS1 scan. This could provide information on the isotope composition. Also for this, various functions such as the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html" class="external-link">isotopologues()</a></code> from the or <em><a href="https://bioconductor.org/packages/3.21/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package or the functionality of the <em>envipat</em> R package <span class="citation" data-cites="loos_accelerated_2015">(<a href="#ref-loos_accelerated_2015" role="doc-biblioref">Loos et al. 2015</a>)</span> could be used.</p>
 </section></section><section class="section level2"><h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <p>In this tutorial, we describe an end-to-end workflow for LC-MS-based untargeted metabolomics experiments, conducted entirely within R using packages from the Bioconductor project or base R functionality. While other excellent software exists to perform similar analyses, the power of an R-based workflow lies in its adaptability to individual data sets or research questions and its ability to build reproducible workflows and documentation.</p>
@@ -3155,7 +3167,7 @@ Number of target objects: 69561 (21 matched)</code></pre>
 <div class="sourceCode cell-code" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R version 4.4.2 (2024-10-31)
+<pre><code>R Under development (unstable) (2025-02-24 r87814)
 Platform: x86_64-pc-linux-gnu
 Running under: Ubuntu 24.04.1 LTS
 
@@ -3180,90 +3192,89 @@ attached base packages:
 
 other attached packages:
  [1] UpSetR_1.4.0                ggVennDiagram_1.5.2
- [3] MetaboAnnotation_1.10.1     CompoundDb_1.10.0
- [5] AnnotationFilter_1.30.0     AnnotationHub_3.14.0
- [7] BiocFileCache_2.14.0        dbplyr_2.5.0
+ [3] MetaboAnnotation_1.11.1     CompoundDb_1.11.2
+ [5] AnnotationFilter_1.31.0     AnnotationHub_3.15.0
+ [7] BiocFileCache_2.15.1        dbplyr_2.5.0
  [9] gridExtra_2.3               ggfortify_0.4.17
-[11] ggplot2_3.5.1               vioplot_0.5.0
-[13] zoo_1.8-12                  sm_2.2-6.0
+[11] ggplot2_3.5.1               vioplot_0.5.1
+[13] zoo_1.8-13                  sm_2.2-6.0
 [15] pheatmap_1.0.12             RColorBrewer_1.1-3
-[17] pander_0.6.5                limma_3.62.1
-[19] MetaboCoreUtils_1.14.0      xcms_4.5.1
-[21] MsBackendMetaboLights_1.0.0 Spectra_1.16.0
-[23] BiocParallel_1.40.0         alabaster.se_1.6.0
-[25] alabaster.base_1.6.1        SummarizedExperiment_1.36.0
-[27] Biobase_2.66.0              GenomicRanges_1.58.0
-[29] GenomeInfoDb_1.42.1         IRanges_2.40.0
-[31] S4Vectors_0.44.0            BiocGenerics_0.52.0
-[33] MatrixGenerics_1.18.0       matrixStats_1.4.1
-[35] MsIO_0.0.8                  MsExperiment_1.8.0
-[37] ProtGenerics_1.38.0         readxl_1.4.3
-[39] BiocStyle_2.34.0            quarto_1.4.4
-[41] knitr_1.49
+[17] pander_0.6.6                limma_3.63.8
+[19] MetaboCoreUtils_1.15.0      xcms_4.5.3
+[21] MsBackendMetaboLights_1.1.0 Spectra_1.17.9
+[23] BiocParallel_1.41.2         alabaster.se_1.7.0
+[25] alabaster.base_1.7.8        SummarizedExperiment_1.37.0
+[27] Biobase_2.67.0              GenomicRanges_1.59.1
+[29] GenomeInfoDb_1.43.4         IRanges_2.41.3
+[31] S4Vectors_0.45.4            BiocGenerics_0.53.6
+[33] generics_0.1.3              MatrixGenerics_1.19.1
+[35] matrixStats_1.5.0           MsIO_0.0.8
+[37] MsExperiment_1.9.1          ProtGenerics_1.39.2
+[39] readxl_1.4.5                BiocStyle_2.35.0
+[41] quarto_1.4.4.9004           knitr_1.49
 
 loaded via a namespace (and not attached):
   [1] later_1.4.1                 bitops_1.0-9
   [3] filelock_1.0.3              tibble_3.2.1
-  [5] cellranger_1.1.0            preprocessCore_1.68.0
-  [7] XML_3.99-0.17               lifecycle_1.0.4
-  [9] doParallel_1.0.17           processx_3.8.4
- [11] lattice_0.22-6              MASS_7.3-61
- [13] MultiAssayExperiment_1.32.0 magrittr_2.0.3
+  [5] cellranger_1.1.0            preprocessCore_1.69.0
+  [7] XML_3.99-0.18               lifecycle_1.0.4
+  [9] doParallel_1.0.17           processx_3.8.6
+ [11] lattice_0.22-6              MASS_7.3-65
+ [13] MultiAssayExperiment_1.33.9 magrittr_2.0.3
  [15] rmarkdown_2.29              yaml_2.3.10
- [17] MsCoreUtils_1.18.0          DBI_1.2.3
- [19] abind_1.4-8                 zlibbioc_1.52.0
- [21] purrr_1.0.2                 RCurl_1.98-1.16
- [23] rappdirs_0.3.3              GenomeInfoDbData_1.2.13
- [25] MSnbase_2.32.0              ncdf4_1.23
- [27] codetools_0.2-20            DelayedArray_0.32.0
- [29] xml2_1.3.6                  DT_0.33
- [31] tidyselect_1.2.1            farver_2.1.2
- [33] UCSC.utils_1.2.0            base64enc_0.1-3
- [35] jsonlite_1.8.9              iterators_1.0.14
- [37] foreach_1.5.2               tools_4.4.2
- [39] progress_1.2.3              Rcpp_1.0.13-1
- [41] glue_1.8.0                  SparseArray_1.6.0
- [43] xfun_0.49                   dplyr_1.1.4
- [45] HDF5Array_1.34.0            withr_3.0.2
+ [17] MsCoreUtils_1.19.0          DBI_1.2.3
+ [19] abind_1.4-8                 purrr_1.0.4
+ [21] RCurl_1.98-1.16             rappdirs_0.3.3
+ [23] GenomeInfoDbData_1.2.13     MSnbase_2.33.3
+ [25] ncdf4_1.23                  codetools_0.2-20
+ [27] DelayedArray_0.33.6         DT_0.33
+ [29] xml2_1.3.7                  tidyselect_1.2.1
+ [31] farver_2.1.2                UCSC.utils_1.3.1
+ [33] base64enc_0.1-3             jsonlite_1.9.1
+ [35] iterators_1.0.14            foreach_1.5.2
+ [37] tools_4.5.0                 progress_1.2.3
+ [39] Rcpp_1.0.14                 glue_1.8.0
+ [41] SparseArray_1.7.6           BiocBaseUtils_1.9.0
+ [43] xfun_0.51                   dplyr_1.1.4
+ [45] HDF5Array_1.35.15           withr_3.0.2
  [47] BiocManager_1.30.25         fastmap_1.2.0
- [49] rhdf5filters_1.18.0         fansi_1.0.6
- [51] digest_0.6.37               mime_0.12
- [53] R6_2.5.1                    colorspace_2.1-1
- [55] rsvg_2.6.1                  RSQLite_2.3.9
- [57] utf8_1.2.4                  tidyr_1.3.1
- [59] generics_0.1.3              prettyunits_1.2.0
- [61] PSMatch_1.10.0              httr_1.4.7
- [63] htmlwidgets_1.6.4           S4Arrays_1.6.0
- [65] pkgconfig_2.0.3             gtable_0.3.6
- [67] blob_1.2.4                  impute_1.80.0
- [69] MassSpecWavelet_1.72.0      XVector_0.46.0
- [71] htmltools_0.5.8.1           MALDIquant_1.22.3
- [73] clue_0.3-66                 scales_1.3.0
- [75] alabaster.matrix_1.6.1      png_0.1-8
- [77] rstudioapi_0.17.1           reshape2_1.4.4
- [79] rjson_0.2.23                curl_6.0.1
- [81] cachem_1.1.0                rhdf5_2.50.0
- [83] stringr_1.5.1               BiocVersion_3.20.0
- [85] parallel_4.4.2              AnnotationDbi_1.68.0
- [87] mzID_1.44.0                 vsn_3.74.0
- [89] pillar_1.9.0                grid_4.4.2
- [91] alabaster.schemas_1.6.0     vctrs_0.6.5
- [93] MsFeatures_1.14.0           pcaMethods_1.98.0
- [95] cluster_2.1.6               evaluate_1.0.1
- [97] cli_3.6.3                   compiler_4.4.2
- [99] rlang_1.1.4                 crayon_1.5.3
-[101] labeling_0.4.3              QFeatures_1.16.0
-[103] ChemmineR_3.58.0            ps_1.8.1
-[105] affy_1.84.0                 plyr_1.8.9
-[107] fs_1.6.5                    stringi_1.8.4
-[109] munsell_0.5.1               Biostrings_2.74.0
-[111] lazyeval_0.2.2              Matrix_1.7-1
-[113] hms_1.1.3                   bit64_4.5.2
-[115] Rhdf5lib_1.28.0             KEGGREST_1.46.0
-[117] statmod_1.5.0               alabaster.ranges_1.6.0
-[119] mzR_2.40.0                  igraph_2.1.1
-[121] memoise_2.0.1               affyio_1.76.0
-[123] bit_4.5.0.1                </code></pre>
+ [49] rhdf5filters_1.19.2         digest_0.6.37
+ [51] mime_0.12                   R6_2.6.1
+ [53] colorspace_2.1-1            rsvg_2.6.1
+ [55] RSQLite_2.3.9               h5mread_0.99.4
+ [57] tidyr_1.3.1                 prettyunits_1.2.0
+ [59] PSMatch_1.11.0              httr_1.4.7
+ [61] htmlwidgets_1.6.4           S4Arrays_1.7.3
+ [63] pkgconfig_2.0.3             gtable_0.3.6
+ [65] blob_1.2.4                  impute_1.81.0
+ [67] MassSpecWavelet_1.73.1      XVector_0.47.2
+ [69] htmltools_0.5.8.1           MALDIquant_1.22.3
+ [71] clue_0.3-66                 scales_1.3.0
+ [73] alabaster.matrix_1.7.8      png_0.1-8
+ [75] rstudioapi_0.17.1           reshape2_1.4.4
+ [77] rjson_0.2.23                curl_6.2.1
+ [79] cachem_1.1.0                rhdf5_2.51.2
+ [81] stringr_1.5.1               BiocVersion_3.21.1
+ [83] parallel_4.5.0              AnnotationDbi_1.69.0
+ [85] mzID_1.45.0                 vsn_3.75.0
+ [87] pillar_1.10.1               grid_4.5.0
+ [89] alabaster.schemas_1.7.0     vctrs_0.6.5
+ [91] MsFeatures_1.15.0           pcaMethods_1.99.0
+ [93] cluster_2.1.8               evaluate_1.0.3
+ [95] cli_3.6.4                   compiler_4.5.0
+ [97] rlang_1.1.5                 crayon_1.5.3
+ [99] labeling_0.4.3              QFeatures_1.17.4
+[101] ChemmineR_3.59.0            ps_1.9.0
+[103] affy_1.85.1                 plyr_1.8.9
+[105] fs_1.6.5                    stringi_1.8.4
+[107] munsell_0.5.1               Biostrings_2.75.4
+[109] lazyeval_0.2.2              Matrix_1.7-3
+[111] hms_1.1.3                   bit64_4.6.0-1
+[113] Rhdf5lib_1.29.1             KEGGREST_1.47.0
+[115] statmod_1.5.0               alabaster.ranges_1.7.0
+[117] mzR_2.41.4                  igraph_2.1.4
+[119] memoise_2.0.1               affyio_1.77.3
+[121] bit_4.6.0                  </code></pre>
 </div>
 </div>
 </section><section class="section level2"><h2 id="aknowledgment">Aknowledgment<a class="anchor" aria-label="anchor" href="#aknowledgment"></a>
@@ -3429,7 +3440,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
 </div>
 
     </footer>
