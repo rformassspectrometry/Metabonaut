@@ -9,7 +9,7 @@ describing how to analyze LC-MS/MS data, from raw files
 to annotation, using Bioconductor packages.
 
 THe tutorials are rendered and can be found on this page
-Metabonaut\link{https://rformassspectrometry.github.io/Metabonaut/}
+\href{https://rformassspectrometry.github.io/Metabonaut/}{Metabonaut}
 For more information you can find the source code
-(here)\link{https://github.com/rformassspectrometry/Metabonaut}
+\href{https://github.com/rformassspectrometry/Metabonaut}{here}
 }

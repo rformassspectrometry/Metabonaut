@@ -1,4 +1,4 @@
-FROM bioconductor/bioconductor_docker:RELEASE_3_21
+FROM bioconductor/bioconductor_docker:devel
 
 LABEL name="rformassspectrometry/Metabonaut" \
       url="https://github.com/rformassspectrometry/Metabonaut" \

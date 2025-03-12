@@ -8,8 +8,8 @@
 #' to annotation, using Bioconductor packages.
 #'
 #' THe tutorials are rendered and can be found on this page
-#' Metabonaut[https://rformassspectrometry.github.io/Metabonaut/]
+#' [Metabonaut](https://rformassspectrometry.github.io/Metabonaut/)
 #' For more information you can find the source code
-#' (here)[https://github.com/rformassspectrometry/Metabonaut]
+#' [here](https://github.com/rformassspectrometry/Metabonaut)
 #'
 NULL

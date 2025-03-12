@@ -323,7 +323,7 @@ sample. It reveals the points at which compounds eluted from the LC column. In
 essence, a BPC condenses the three-dimensional LC-MS data (*m/z* by retention
 time by intensity) into two dimensions (retention time by intensity).
 
-We can also here compare similarities of the BPCs in a heatmap. The retention
+We can also here compare similarities of the TICs in a heatmap. The retention
 times will however not be identical between different samples. Thus we *bin()*
 the chromatographic signal per sample along the retention time axis into bins
 of two seconds resulting in data with the same number of bins/data points. We
@@ -331,7 +331,7 @@ can then calculate pairwise similarities between these data vectors using the
 `cor()` function and visualize the result using `pheatmap()`.
 
 ```{r heatmap1}
-#| fig-cap: "Figure 7. Heatmap of BPC similarities."
+#| fig-cap: "Figure 7. Heatmap of TIC similarities."
 #' Total ion chromatogram
 tic <- chromatogram(lcms1, aggregationFun = "sum") |>
   bin(binSize = 2)
