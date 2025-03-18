@@ -10,8 +10,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-For manual installation, an [R](https://www.r-project.org/) version \>= 4.4.0 is
-required.
+For manual installation, an [R](https://www.r-project.org/) version \>= 4.4.0
+is required.
 
 [Notes]{.underline}: only a development version of `metabonaut` is available as
 of now but a stable version will come soon. Therefore, if you are having
@@ -21,8 +21,8 @@ presented in these workflows.
 
 # Running workflows locally
 
-To install on your computer all the packages necessary for the workflows run the
-code as follow:
+To install on your computer all the packages necessary for the workflows run
+the code as follow:
 
 ```{r eval=FALSE}
 install.packages("BiocManager")
@@ -34,7 +34,7 @@ BiocManager::install("RforMassSpectrometry/metabonaut",
 ```
 
 If you get some error message when downloading form GitHub it might be due to
-an expired token. Remove them using this code below and try to install again: 
+an expired token. Remove them using this code below and try to install again:
 
 ```{r eval=FALSE}
 #See if any token is there:
@@ -44,11 +44,11 @@ gitcreds::gitcreds_get()
 gitcreds::gitcreds_delete()
 ```
 
-
 # Docker image
 
 The vignettes files along with an R runtime environment including all required
-packages and the RStudio (Posit) editor are all bundled in a *docker* container.
+packages and the RStudio (Posit) editor are all bundled in a *docker*
+container.
 
 After installation, this docker container can be run on the computer and the
 code and examples from the vignettes can be evaluated within this environment

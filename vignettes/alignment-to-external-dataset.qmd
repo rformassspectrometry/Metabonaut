@@ -16,6 +16,12 @@ library(quarto)
 knitr::opts_knit$set(root.dir = './')
 ```
 
+```{css, echo = FALSE}
+.verysmall .table{
+  font-size: 8px;
+}
+```
+
 # Introduction
 
 In certain experiments, aligning datasets recorded at different times is
@@ -51,7 +57,6 @@ if (.Platform$OS.type == "unix") {
 } else {
     register(SnowParam(2))
 }
-
 ```
 
 ## Load preprocessed LC-MS object
@@ -59,23 +64,23 @@ if (.Platform$OS.type == "unix") {
 First, let's load our pre-processed LC-MS object. This *xcms* result object was
 created during the [End-to-end
 worflow](https://rformassspectrometry.github.io/metabonaut/articles/end-to-end-untargeted-metabolomics.html)
-vignette and is also available in the *metabonaut* R package. The result object
+vignette and is also available in the *Metabonaut* R package. The result object
 (an `XcmsExperiment` object) was stored using Bioconductor's *alabaster*
 framework and we below load the object using the `readMsObject()` function
 providing the path to the stored data. The import function also takes care of
 eventually retrieving missing MS data files from the MetaboLights repository.
 
-
-```{r}
+```{r message=FALSE}
 lcms1 <- readMsObject(
     XcmsExperiment(),
     AlabasterParam(system.file("extdata", "preprocessed_lcms1",
-                               package = "metabonaut")))
+                               package = "Metabonaut")))
 ```
 
 ## Load unprocessed LC-MS/MS data
 
-Next, we will load the unprocessed LC-MS/MS data from the MetaboLights database:
+Next, we will load the unprocessed LC-MS/MS data from the MetaboLights
+database:
 
 ```{r, message=FALSE, warning=FALSE}
 #' Load form the MetaboLights Database
@@ -96,7 +101,7 @@ We will adjust the `sampleData()` of the LC-MS/MS object to make it easier to
 access:
 
 ```{r}
-#| tbl-cap: "Table 10. Samples from the LC-MS/MS data set."
+#| tbl-cap: "Table 1. Samples from the LC-MS/MS data set."
 #| code-fold: true
 #| code-summary: "Show the code"
 #adjust sampleData
@@ -114,8 +119,8 @@ sampleData(lcms2)[, c("derived_spectra_data_file",
 
 ```
 
-We will only keep the MS runs (not MS/MS) and remove pooled samples, focusing on
-samples *A* and *E* that are common to both runs.
+We will only keep the MS runs (not MS/MS) and remove pooled samples, focusing
+on samples *A* and *E* that are common to both runs.
 
 ```{r}
 # Only keep MS run
@@ -142,7 +147,7 @@ lcms2 <- filterRt(lcms2, range(rtime(lcms1)))
 
 To evaluate retention time shifts, we'll plot the base peak chromatogram (BPC):
 
-```{r}
+```{r, message=FALSE}
 idx_A <- which(sampleData(lcms1)$sample_name == "A")
 idx_E <- which(sampleData(lcms1)$sample_name == "E")
 bpc1 <-chromatogram(lcms1[c(idx_A,idx_E)], aggregationFun = "max",
@@ -153,6 +158,9 @@ bpc2 <- chromatogram(lcms2, aggregationFun = "max", msLevel = 1)
 Compare run1 sample A with run2 sample A
 
 ```{r ini-bpc1}
+#| tbl-cap: "Figure 1. BPC for sample A LC-MS and LC-MS/MS."
+#| code-fold: true
+#| code-summary: "Show the code"
 plot(bpc1[1, 1], col = "#00000080",
      main = "BPC sample A LC-MS vs A LC-MS/MS", lwd = 1.5, peakType = "none")
 grid()
@@ -164,6 +172,9 @@ legend("topleft", col = c("#00000080", "#0000ff80"),
 Similarly, compare the BPC for sample E:
 
 ```{r, ini-bpc2}
+#| tbl-cap: "Figure 2. BPC for sample E LC-MS and LC-MS/MS."
+#| code-fold: true
+#| code-summary: "Show the code"
 plot(bpc1[1, 2], col = "#00000080",
      main = "BPC sample E LC-MS vs E LC-MS/MS", lwd = 1.5, peakType = "none")
 grid()
@@ -212,10 +223,10 @@ the experimental data to the lamas, fitting a model based on this match to
 adjust their retention times and minimize differences between the two datasets.
 
 Now we can define our parameter object `LamaParama` to prepare for the
-alignment.  Parameters such as `tolerance`, `toleranceRt`, and `ppm` relate to
+alignment. Parameters such as `tolerance`, `toleranceRt`, and `ppm` relate to
 the matching between chromatographic peaks and lamas. Other parameters are
-related to the type of fitting generated between these data points. More details
-on each parameter and the overall method can be found by searching
+related to the type of fitting generated between these data points. More
+details on each parameter and the overall method can be found by searching
 `?adjustRtime`. Below is an example using default parameters.
 
 ```{r}
@@ -240,15 +251,27 @@ Now we can adjust the retention time of the LC-MS/MS dataset using the
 ```{r warning=FALSE}
 #' input into `adjustRtime()`
 lcms2 <- adjustRtime(lcms2, param = lp)
-lcms2 <- applyAdjustedRtime(lcms2)
 ```
 
 ## Evaluation
 
+We can initially visualizes the difference between adjusted and raw retention
+tim in each samples.
+
+```{r}
+plotAdjustedRtime(lcms2, peakGroupsPch = 1)
+grid()
+```
+
+We can see that the shift was fairly large between 100 and 150s and extremely
+important between 170-205 seconds. Further analysis of peaks in this area would
+help us determine if we are over-correcting the retention time. For now, we
+will go on like this.
+
 We extract the base peak chromatogram (BPC) of our aligned object:
 
 ```{r, message=FALSE}
-#' evaluate the results with BPC
+lcms2 <- applyAdjustedRtime(lcms2)
 bpc2_adj <- chromatogram(lcms2, aggregationFun = "max",
                          msLevel = 1)
 ```
@@ -260,6 +283,9 @@ comparing the alignment of the reference dataset (in black) with our LC-MS data
 before (in red) and after (in blue) the adjustment.
 
 ```{r, fig.height=6, fig.width=6}
+#| tbl-cap: "Figure 3. BPC for sample A before and after alignment."
+#| code-fold: true
+#| code-summary: "Show the code"
 #' BPC of sample A
 par(mfrow = c(2, 1),  mar = c(2.5, 2.5, 2.5, 0.5), mgp = c(1.5, 0.5, 0))
 plot(bpc1[1, 1], col = "#00000080", main = "Before Alignment", lwd = 1.5,
@@ -280,6 +306,9 @@ points(rtime(bpc2_adj[1,1]), intensity(bpc2_adj[1,1]),
 ```
 
 ```{r, fig.height=6, fig.width=6}
+#| tbl-cap: "Figure 4. BPC for sample B before and after alignment."
+#| code-fold: true
+#| code-summary: "Show the code"
 #' BPC of sample B
 par(mfrow = c(2, 1),  mar = c(2.5, 2.5, 2.5, 0.5), mgp = c(1.5, 0.5, 0))
 plot(bpc1[1, 2], col = "#00000080", main = "Before Alignment", lwd = 1.5,
@@ -297,16 +326,19 @@ points(rtime(bpc2_adj[1, 2]), intensity(bpc2_adj[1, 2]), type = "l",
        col = "#0000ff80")
 ```
 
-Although the overall matching is imperfect due to initial sample issues, certain
-regions show significant improvement. The alignment of the signal’s start is
-particularly well done. Specifically, the regions right before and after 150
-seconds show substantial improvement.
+Although the overall matching is imperfect due to initial sample issues,
+certain regions show significant improvement. The alignment of the signal’s
+start is particularly well done. Specifically, the regions right before and
+after 150 seconds show substantial improvement.
 
-Below is a visualization of the distribution of chromatographic peaks matched to
-anchor peaks (lamas) for Sample A. The red vertical lines represent the
+Below is a visualization of the distribution of chromatographic peaks matched
+to anchor peaks (lamas) for Sample A. The red vertical lines represent the
 positions of these matched peaks.
 
 ```{r, message = FALSE, warning = FALSE}
+#| tbl-cap: "Figure 5. Distribution of CP matched to Lamas for sample A."
+#| code-fold: true
+#| code-summary: "Show the code"
 #' BPC of the first sample with matches to lamas overlay
 par(mfrow = c(1, 1))
 plot(bpc1[1, 1], col = "#00000080", main = "Distribution CP matched to Lamas",
@@ -321,10 +353,11 @@ abline(v = ref_vs_obs[[1]]$obs, col = "#c4114510")
 ### Quantitative Evaluation of Alignment
 
 To quantitatively assess the quality of the alignment, we compute the distance
-between the chromatographic peaks in our LC-MS data and the anchor peaks (Lamas)
-both before and after the alignment.
+between the chromatographic peaks in our LC-MS data and the anchor peaks
+(Lamas) both before and after the alignment.
 
 ```{r}
+#| tbl-cap: "Figure 6. Distance to Anchor Peaks: Before vs. After Alignment."
 # Extract data for sample 3 directly
 ref_obs_sample_1 <- ref_vs_obs[["1"]]
 
@@ -357,8 +390,8 @@ Furthermore, a more detailed examination of the matching and the model used for
 fitting each file is possible. Numerical information can be obtained using the
 `summarizeLamaMatch()` function. From this, the percentage of chromatographic
 peaks utilized for alignment can be computed relative to the total number of
-peaks in the file. Additionally, it is feasible to directly `plot()` the `param`
-object for the file of interest, showcasing the distribution of these
+peaks in the file. Additionally, it is feasible to directly `plot()` the
+`param` object for the file of interest, showcasing the distribution of these
 chromatographic peaks along with the fitted model line.
 
 ```{r warning=FALSE}
@@ -371,7 +404,12 @@ summary$Matched_peaks / summary$Total_peaks * 100
 
 #' Access the information on the model of for the first file
 summary$Model_summary[[1]]
+```
 
+```{r}
+#| tbl-cap: "Figure 7. Model fit for the first file."
+#| code-fold: true
+#| code-summary: "Show the code"
 #' Plot obs vs. lcms1 with fitting line
 plot(lp, index = 1L, main = "ChromPeaks versus Lamas for sample A",
      colPoint = "red")
@@ -385,12 +423,12 @@ This tutorial demonstrated how to align LC-MS and LC-MS/MS datasets to correct
 retention time shifts, crucial for handling data from different runs or
 platforms. We preprocessed the data, detected chromatographic peaks, and used
 landmark features (lamas) from QC samples to adjust retention times via the
-adjustRtime() function. Visual comparisons of base peak chromatograms before and
-after alignment, along with distance calculations, showed clear improvements in
-RT synchronization.
+adjustRtime() function. Visual comparisons of base peak chromatograms before
+and after alignment, along with distance calculations, showed clear
+improvements in RT synchronization.
 
-Ultimately, aligning chromatographic data ensures that subsequent analyses, such
-as feature extraction and statistical comparisons, are based on consistent time
-points, improving data quality and reliability. This tutorial outlined an
+Ultimately, aligning chromatographic data ensures that subsequent analyses,
+such as feature extraction and statistical comparisons, are based on consistent
+time points, improving data quality and reliability. This tutorial outlined an
 end-to-end workflow that can be adapted to various LC-MS-based metabolomics
 studies, helping researchers manage retention time variation effectively.

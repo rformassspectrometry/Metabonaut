@@ -14,4 +14,7 @@
 _pkgdown.yml
 ^_pkgdown\.yml$
 ^docs$
-^.RData$   
+^.RData$
+^vignettes/objects/
+
+
