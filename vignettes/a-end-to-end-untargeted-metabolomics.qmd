@@ -185,7 +185,7 @@ sampleData(lcms1)[, c("derived_spectra_data_file",
     kable(format = "pipe")
 ```
 
-There are `r length(sampleData(lcms1))` samples in this data set. Below are
+There are `r nrow(sampleData(lcms1))` samples in this data set. Below are
 abbreviations essential for proper interpretation of this metadata information:
 
 -   *phenotype*: The sample groups of the experiment:
@@ -358,15 +358,15 @@ Throughout the entire process, it is crucial to have reference points within
 the dataset, such as well-known ions. Most experiments nowadays include
 internal standards (IS), and it was the case here. We strongly recommend using
 them for visualization throughout the entire analysis. For this experiment, a
-set of 15 IS was spiked to all samples. After reviewing their respective 
-chromatoraphic peaks, we selected two to guide this analysis process. However, 
+set of 15 IS was spiked to all samples. After reviewing their respective
+chromatoraphic peaks, we selected two to guide this analysis process. However,
 we advise to plot and evaluate all the ions after each steps.
 
 To illustrate this, we generate Extracted Ion Chromatograms (EIC) for these
 selected *test ions*. By restricting the MS data to intensities within a
-restricted, *m/z* range and a selected retention time window, EICs are
-expected to contain only signal from a single type of ion. The expected *m/z*
-and retention times for our set of IS was determined in a different experiment.
+restricted, *m/z* range and a selected retention time window, EICs are expected
+to contain only signal from a single type of ion. The expected *m/z* and
+retention times for our set of IS was determined in a different experiment.
 Additionally, in cases where internal standards are not available, commonly
 present ions in the sample matrix can serve as suitable alternatives. Ideally,
 these compounds should be distributed across the entire retention time range of
@@ -437,15 +437,14 @@ retention time shift between samples.
 # Data preprocessing
 
 Preprocessing stands as the inaugural step in the analysis of untargeted LC-MS.
-It is characterized by 3 main stages: **chromatographic peak detection**, **retention
-time shift correction** (alignment) and **correspondence** which results in features
-defined.
-The primary objective of preprocessing is the quantification of
-signals from ions measured in a sample, addressing any potential retention time
-drifts between samples, and ensuring alignment of quantified signals across
-samples within an experiment. The final result of LC-MS data preprocessing is a
-numeric matrix with abundances of quantified entities in the samples of the
-experiment.
+It is characterized by 3 main stages: **chromatographic peak detection**,
+**retention time shift correction** (alignment) and **correspondence** which
+results in features defined. The primary objective of preprocessing is the
+quantification of signals from ions measured in a sample, addressing any
+potential retention time drifts between samples, and ensuring alignment of
+quantified signals across samples within an experiment. The final result of
+LC-MS data preprocessing is a numeric matrix with abundances of quantified
+entities in the samples of the experiment.
 
 ## Chromatographic peak detection
 
@@ -461,8 +460,8 @@ method is known for its effectiveness in handling non-Gaussian shaped
 chromatographic peaks or peaks with varying retention time widths, which are
 commonly encountered in HILIC separations.
 
-Below we apply the CentWave algorithm with its default settings on the
-EICs of cystine and methionine ions and evaluate the results.
+Below we apply the CentWave algorithm with its default settings on the EICs of
+cystine and methionine ions and evaluate the results.
 
 ```{r Default-centwave-param-test}
 #' Use default Centwave parameter
@@ -546,9 +545,8 @@ on our EICs. It is important to note that, to properly estimate background
 noise, sufficient data points outside the chromatographic peak need to be
 present. This is generally no problem if peak detection is performed on the
 full LC-MS data set, but for peak detection on EICs the retention time range of
-the EIC needs to be sufficiently wide. 
-If the function fails to find a peak in an EIC, the initial troubleshooting
-step should be to increase this range.
+the EIC needs to be sufficiently wide. If the function fails to find a peak in
+an EIC, the initial troubleshooting step should be to increase this range.
 Additionally, the signal-to-noise threshold `snthresh` should be reduced for
 peak detection in EICs, because within the small retention time range, not
 enough signal is present to properly estimate the background noise. Finally, in
@@ -596,10 +594,10 @@ legend("topright", col = col_phenotype,
 ```
 
 We can see a peak seems to be detected in each sample for both ions. This
-indicates that our custom settings are suitable for our dataset. We
-now proceed and apply them to the entire dataset, extracting EICs again for the
-same ions to evaluate and confirm that chromatographic peak detection worked as
-expected. Note:
+indicates that our custom settings are suitable for our dataset. We now proceed
+and apply them to the entire dataset, extracting EICs again for the same ions
+to evaluate and confirm that chromatographic peak detection worked as expected.
+Note:
 
 -   We revert the value for parameter `snthresh` to its default, because, as
     mentioned above, background noise estimation is more reliable when
@@ -608,7 +606,7 @@ expected. Note:
 -   Parameter `chunkSize` of `findChromPeaks()` defines the number of data
     files that are loaded into memory and processed simultaneously. This
     parameter thus allows to fine-tune the memory demand as well as performance
-    of the chromatographic peak detection step. This should correspond to our 
+    of the chromatographic peak detection step. This should correspond to our
     initial set up of parallel processing above.
 
 ```{r run-find-chrompeak-on-entire-dataset}
@@ -992,7 +990,7 @@ Apart from that retention time range, only little changes can be observed.
 
 We next evaluate the impact of the alignment on the EICs of the selected
 internal standards. We thus below first extract the ion chromatograms after
-alignment, and subsequently plot them. 
+alignment, and subsequently plot them.
 
 ```{r, message=FALSE}
 #| code-fold: true
@@ -1215,7 +1213,8 @@ feature for each test ion. The other important parameters optimized here are:
     samples of one of the sample groups.
 
 -   `sampleGroups`: We use the information available in our `sampleData`'s
-    `"phenotype"` column.
+    `"phenotype"` column. Note that this parameter also accept factors, and
+    therefore more complicated groupings can be performed if wanted.
 
 ```{r}
 #' Define the settings for the param
@@ -1234,9 +1233,10 @@ show the actual correspondence results, we set `simulate = FALSE` for the
 `plotChromPeakDensity()` function.
 
 ```{r, message=FALSE}
-#| fig-cap: "Figure 25. Correspondence analysis results, Methionine."
+#| fig-cap: "Figure 20. Correspondence analysis results, Methionine."
 #| fig-align: center
 #| code-fold: true
+#| code-summary: "Show the code"
 #' Extract chromatogram for an m/z similar to the one of the labeled methionine
 chr_test <- chromatogram(lcms1,
                          mz = as.matrix(intern_standard["methionine_13C_15N",
@@ -1293,7 +1293,7 @@ featureValues(lcms1, method = "sum") |>
     head()
 ```
 
-We can note that some features (e.g. F0003 and F0006) have missing values in
+We can note that a few features (e.g. F0003 and F0006) have missing values in
 some samples. This is expected to a certain degree as not in all samples
 features, respectively their ions, need to be present. We will address this in
 the next section.
@@ -1320,7 +1320,7 @@ example features for which a chromatographic peak was only detected in some
 samples:
 
 ```{r, message=FALSE}
-#| fig-cap: "Figure 26. Examples of chromatographic peaks with missing values."
+#| fig-cap: "Figure 21. Examples of chromatographic peaks with missing values."
 #| code-fold: true
 #| code-summary: "Show the code"
 ftidx <- which(is.na(rowSums(featureValues(lcms1))))
@@ -1361,7 +1361,7 @@ case noise would be integrated, which is expected to be much lower than actual
 chromatographic peak signal. Let's look at our previously missing values again:
 
 ```{r echo=FALSE, message=FALSE}
-#| fig-cap: "Figure 27. Examples of chromatographic peaks with missing values after gap-filling."
+#| fig-cap: "Figure 22. Examples of chromatographic peaks with missing values after gap-filling."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Extract EICs again and plot them
@@ -1394,7 +1394,7 @@ Then, we calculate the row averages of both of these matrices and plot them
 against each other.
 
 ```{r Detected-vs-filled-signal1}
-#| fig-cap: "Figure 28. Detected vs. filled-in signal."
+#| fig-cap: "Figure 23. Detected vs. filled-in signal."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Get only detected signal in QC samples
@@ -1568,9 +1568,8 @@ Javascript as well as loaded easily back into R.
 #' XcmsExperiment object: 
 saveMsObject(lcms1,
              AlabasterParam(path = file.path("objects/preprocessed_lcms1")))
-#lcms1 <- readMsObject(XcmsExperiment(), AlabasterParam(path = file.path("objects/preprocessed_lcms1")))
-#' Below we remove the processHistory of the res object to allow for export,
-#' this need to be fixed later.
+
+#' Below we remove the processHistory of the res object to allow for export.
 metadata(res) <- list()
 saveObject(res, file.path("objects/preprocessed_res"))
 ```
@@ -1676,7 +1675,7 @@ The log2 transformation is applied to stabilize the variance while centering to
 remove dependency on absolute abundances.
 
 ```{r unsupervised-checks1, fig.height=8, fig.width=6}
-#| fig-cap: "Figure 28. PCA of the data coloured by phenotypes."
+#| fig-cap: "Figure 24. PCA of the data coloured by phenotypes."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Log2 transform and scale data
@@ -1715,7 +1714,7 @@ show the number of detected chromatographic peaks per sample and the
 distribution of the log2 transformed feature abundances.
 
 ```{r counts1}
-#| fig-cap: "Figure 29. Number of detected peaks and feature abundances."
+#| fig-cap: "Figure 25. Number of detected peaks and feature abundances."
 #| code-fold: true
 #| code-summary: "Show the code"
 layout(mat = matrix(1:3, ncol = 1), height = c(0.2, 0.2, 0.8))
@@ -1763,7 +1762,7 @@ from the `r Biocpkg("MsCoreUtils")` package defining with parameter `f` the
 sample groups.
 
 ```{r rla-plot-raw-and-filled1}
-#| fig-cap: "Figure 30. RLA plot for the raw data and filled data."
+#| fig-cap: "Figure 26. RLA plot for the raw data and filled data."
 #| code-fold: true
 #| code-summary: "Show the code"
 par(mfrow = c(1, 1), mar = c(3.5, 4.5, 2.5, 1))
@@ -1841,7 +1840,7 @@ behavior between groups.
 ### Principal Component Analysis
 
 ```{r, fig.height=8, fig.width=6}
-#| fig-cap: "Figure 31. PC1 and PC2 of the data before and after normalization."
+#| fig-cap: "Figure 27. PC1 and PC2 of the data before and after normalization."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Data before normalization
@@ -1869,7 +1868,7 @@ the study groups on PC3 seems to be better and difference between QC samples
 lower after normalization (see below).
 
 ```{r, fig.height=8, fig.width=6}
-#| fig-cap: "Figure 32. PC3 and PC4 of the data before and after normalization."
+#| fig-cap: "Figure 28. PC3 and PC4 of the data before and after normalization."
 #| code-fold: true
 #| code-summary: "Show the code"
 pca_raw <- autoplot(pca_res, data = vals_st ,
@@ -1893,7 +1892,7 @@ We compare the RLA plots before and after between-sample normalization to
 evaluate its impact on the data.
 
 ```{r rla-plot-after-norm2, fig.height=8, fig.width=6}
-#| fig-cap: "Figure 33. RLA plot before and after normalization."
+#| fig-cap: "Figure 29. RLA plot before and after normalization."
 #| code-fold: true
 #| code-summary: "Show the code"
 par(mfrow = c(2, 1), mar = c(3.5, 4.5, 2.5, 1))
@@ -2085,26 +2084,15 @@ to biology.
 
 # Overlapping features
 
-Before performing complex statistical analysis we can evaluate the data
-
-A possible evaluation is to which features are overlapping between the
-different samples.
+Before performing complex statistical analysis we do some short quality
+analysis. A possible evaluation is to which features are overlapping between
+the different groups. In our case grouping per condition (CTR versus CVD group)
+would be the most interesting plot. However we want to address the case when
+people test more than 3 condition therefore we will show the overlapping
+feature per sample (therefore comparing 6 groups).
 
 ```{r eval=FALSE, include=FALSE}
-#age group
-low <- res$age < 40
-middle <- res$age > 40 & res$age < 60
-high <- res$age > 60
-
 df_logical <- !is.na(assay(res, "raw_filled"))
-
-low 
-middle 
-high
-
-df_logical
-
-              
 ```
 
 ```{r}
@@ -2121,7 +2109,7 @@ ggVennDiagram(l_logical, label = "count",
 
 ```
 
-In case of a large number of groups a Venn diagram can be replace by an upset
+In case of a large number of groups a Venn diagram can be replace by an Upset
 plot which can handle a larger number of groups, while being still readable.
 
 ```{r}
@@ -2131,6 +2119,11 @@ binary_data <-apply(df_logical, MARGIN = 2, as.integer)
 upset(as.data.frame(binary_data), nset = 6, sets = colnames(df_logical), keep.order = TRUE)
 
 ```
+
+Other quality analysis of the data could be, evaluating the number of feature
+detected per group, the overall abundance, the noise, ... This all depends on
+the goal of the user research. R has a lot of flexibility, you can do many
+things !
 
 # Differential abundance analysis
 
@@ -2147,7 +2140,7 @@ using a PCA (after excluding the QC samples to avoid them influencing the
 results).
 
 ```{r}
-#| fig-cap: "Figure 34. PCA of the data after normalization and quality control."
+#| fig-cap: "Figure 30. PCA of the data after normalization and quality control."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Define the colors for the plot
@@ -2171,7 +2164,7 @@ drives the separation on PC1 is not clear. Below we evaluate whether this could
 be explained by the other available variable of our study, i.e., age:
 
 ```{r}
-#| fig-cap: "Figure 35. PCA colored by age of the data after normalization and quality control."
+#| fig-cap: "Figure 31. PCA colored by age of the data after normalization and quality control."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Add age to the PCA plot
@@ -2249,7 +2242,7 @@ We can now proceed to visualize the distribution of the raw and adjusted
 p-values.
 
 ```{r histogram}
-#| fig-cap: "Figure 36. Distribution of raw (left) and adjusted p-values (right)."
+#| fig-cap: "Figure 32. Distribution of raw (left) and adjusted p-values (right)."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Plot the distribution of p-values
@@ -2278,7 +2271,7 @@ significantly different between the two study groups. These are highlighted
 with a blue color in the plot below.
 
 ```{r volcano}
-#| fig-cap: "Figure 37. Volcano plot showing the analysis results."
+#| fig-cap: "Figure 33. Volcano plot showing the analysis results."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Plot volcano plot of the statistical results
@@ -2327,7 +2320,7 @@ signal. We restrict the MS data set to study samples. Parameters
     chromatographic peak in the EIC object.
 
 ```{r}
-#| fig-cap: "Figure 38. Extracted ion chromatograms of the significant features."
+#| fig-cap: "Figure 34. Extracted ion chromatograms of the significant features."
 #' Restrict the raw data to study samples.
 lcms1_study <- lcms1[sampleData(lcms1)$phenotype != "QC", keepFeatures = TRUE]
 #' Extract EICs for the significant features
@@ -2345,6 +2338,10 @@ intensities are (as already observed above) much larger in the CTR than in the
 CVD samples. With the exception of the second feature (second EIC in the top
 row), the intensities for all significant features are however generally low.
 This might make it challenging to identify them using an LC-MS/MS setup.
+
+# Multivariate Analysis
+
+Coming soon...
 
 # Annotation
 
@@ -2385,7 +2382,7 @@ load one of them.
 ah <- AnnotationHub()
 #' List available MassBank data sets
 query(ah, "MassBank")
-#' Load one MAssBank release
+#' Load one MassBank release
 mb <- ah[["AH116166"]]
 ```
 
@@ -2595,6 +2592,7 @@ will represent only noise. The plot below shows the location of precursor ions
 in the *m/z* - retention time plane for the three files.
 
 ```{r, echo=TRUE, fig.height=8, fig.width=5}
+#| fig-cap: "Figure 35. Precursor ions in the LC-MS/MS data set."
 plotPrecursorIons(lcms2)
 ```
 
@@ -2767,7 +2765,7 @@ register(SerialParam())
 #' Define the settings for the spectra matching.
 prm <- CompareSpectraParam(ppm = 40, tolerance = 0.05,
                            requirePrecursor = TRUE,
-                           THRESHFUN = function(x) which(x >= 0.6))
+                           THRESHFUN = function(x) which(x >= 0.7))
 
 ms2_mtch <- matchSpectra(ms2_ctr_fts, ms2_ref, param = prm)
 ms2_mtch
@@ -2791,7 +2789,7 @@ ms2_mtch_res <- matchedData(ms2_mtch)
 nrow(ms2_mtch_res)
 ```
 
-Now, we have query-target pairs with a spectra similarity higher than 0.6.
+Now, we have query-target pairs with a spectra similarity higher than 0.7.
 Similar to the MS1-based annotation also this result table contains redundant
 information: we have multiple fragment spectra per feature and also MassBank
 contains several fragment spectra for each compound, measured using differing
@@ -2850,7 +2848,7 @@ the highest scoring MS2 spectra was recorded and create a mirror plot comparing
 this MS2 spectra to the reference fragment spectra for caffeine.
 
 ```{r fig.height=5, fig.width=5}
-#| fig-cap: "Figure 39. Extracted ion chromatograms and MS2 spectra for the annotated feature."
+#| fig-cap: "Figure 36. Extracted ion chromatograms and MS2 spectra for the annotated feature."
 #| code-fold: true
 #| code-summary: "Show the code"
 col_sample <- col_phenotype[sampleData(lcms1)$phenotype]
@@ -2868,7 +2866,7 @@ abline(v = ms2_mtch_res$rtime[idx])
 ```
 
 ```{r}
-#| fig-cap: "Figure 40. MS2 spectra for the annotated feature."
+#| fig-cap: "Figure 37. MS2 spectra for the annotated feature."
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Get the index of the MS2 spectrum in the query object
@@ -2961,7 +2959,9 @@ sessionInfo()
 # Aknowledgment
 
 Thanks to Steffen Neumann for his continuous work to develop and maintain the
-xcms software...
+xcms software. And the Bioconductor and RforMassSpectrometry community for 
+their continuous support and development of the software used in this tutorial.
+
 
 ```{r eval=FALSE, include=FALSE}
 plot(eics_is_noprocess)

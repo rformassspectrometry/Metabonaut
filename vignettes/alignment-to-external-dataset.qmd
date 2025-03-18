@@ -251,14 +251,27 @@ Now we can adjust the retention time of the LC-MS/MS dataset using the
 ```{r warning=FALSE}
 #' input into `adjustRtime()`
 lcms2 <- adjustRtime(lcms2, param = lp)
-lcms2 <- applyAdjustedRtime(lcms2)
 ```
 
 ## Evaluation
 
+We can initially visualizes the difference between adjusted and raw retention
+tim in each samples.
+
+```{r}
+plotAdjustedRtime(lcms2, peakGroupsPch = 1)
+grid()
+```
+
+We can see that the shift was fairly large between 100 and 150s and extremely
+important between 170-205 seconds. Further analysis of peaks in this area would
+help us determine if we are over-correcting the retention time. For now, we
+will go on like this.
+
 We extract the base peak chromatogram (BPC) of our aligned object:
 
 ```{r, message=FALSE}
+lcms2 <- applyAdjustedRtime(lcms2)
 bpc2_adj <- chromatogram(lcms2, aggregationFun = "max",
                          msLevel = 1)
 ```

@@ -1,5 +1,12 @@
 # metabonaut 0.0
 
+## Changes in 0.0.7 
+
+- Fix typo and cut-off for MS2 annotation. 
+- Updated figure numbering. 
+- Added acknowledgment to community.
+- added a figure in retention time alignment vignette.
+
 ## Changes in 0.0.6
 
 - Moving The PercentMissing filtering at the end of
@@ -26,7 +33,6 @@
 - Save an load *lcms1* and *res* object from the end-to-end workflow
   to be used in the Seamless Alignment vignette. Using *MsIO* and
   *alabaster.se*
-
 
 ## Changes in 0.0.3
 - Require *xcms* version 4.3.4 and install the package from github.
