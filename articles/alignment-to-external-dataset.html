@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset</h1>
 
 
-      <p class="date">2025-03-12</p>
+      <p class="date">2025-03-19</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/metabonaut/blob/main/vignettes/alignment-to-external-dataset.qmd" class="external-link"><code>vignettes/alignment-to-external-dataset.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -362,22 +362,35 @@ FT0007 54.01010 235.9032</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' input into `adjustRtime()`</span></span>
-<span><span class="va">lcms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/adjustRtime.html" class="external-link">adjustRtime</a></span><span class="op">(</span><span class="va">lcms2</span>, param <span class="op">=</span> <span class="va">lp</span><span class="op">)</span></span>
-<span><span class="va">lcms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/applyAdjustedRtime.html" class="external-link">applyAdjustedRtime</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">lcms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/adjustRtime.html" class="external-link">adjustRtime</a></span><span class="op">(</span><span class="va">lcms2</span>, param <span class="op">=</span> <span class="va">lp</span><span class="op">)</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h3 id="evaluation">Evaluation<a class="anchor" aria-label="anchor" href="#evaluation"></a>
 </h3>
-<p>We extract the base peak chromatogram (BPC) of our aligned object:</p>
+<p>We can initially visualizes the difference between adjusted and raw retention tim in each samples.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bpc2_adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span><span class="va">lcms2</span>, aggregationFun <span class="op">=</span> <span class="st">"max"</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/plotAdjustedRtime.html" class="external-link">plotAdjustedRtime</a></span><span class="op">(</span><span class="va">lcms2</span>, peakGroupsPch <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that the shift was fairly large between 100 and 150s and extremely important between 170-205 seconds. Further analysis of peaks in this area would help us determine if we are over-correcting the retention time. For now, we will go on like this.</p>
+<p>We extract the base peak chromatogram (BPC) of our aligned object:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">lcms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/applyAdjustedRtime.html" class="external-link">applyAdjustedRtime</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span></span>
+<span><span class="va">bpc2_adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span><span class="va">lcms2</span>, aggregationFun <span class="op">=</span> <span class="st">"max"</span>,</span>
 <span>                         msLevel <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
 <section class="level3"><h4 id="visualizing-alignment-quality">Visualizing Alignment Quality<a class="anchor" aria-label="anchor" href="#visualizing-alignment-quality"></a>
 </h4>
 <p>To evaluate the performance of our alignment process, we generate plots comparing the alignment of the reference dataset (in black) with our LC-MS data before (in red) and after (in blue) the adjustment.</p>
 <div class="cell" data-tbl-cap="Figure 3. BPC for sample A before and after alignment.">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' BPC of sample A</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,  mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">0.5</span><span class="op">)</span>, mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bpc1</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"#00000080"</span>, main <span class="op">=</span> <span class="st">"Before Alignment"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>,</span>
@@ -397,13 +410,13 @@ FT0007 54.01010 235.9032</code></pre>
 <span>       col <span class="op">=</span> <span class="st">"#0000ff80"</span><span class="op">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-16-1.png" width="576"></p>
+<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell" data-tbl-cap="Figure 4. BPC for sample B before and after alignment.">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' BPC of sample B</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,  mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">0.5</span><span class="op">)</span>, mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bpc1</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"#00000080"</span>, main <span class="op">=</span> <span class="st">"Before Alignment"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>,</span>
@@ -421,7 +434,7 @@ FT0007 54.01010 235.9032</code></pre>
 <span>       col <span class="op">=</span> <span class="st">"#0000ff80"</span><span class="op">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
+<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-18-1.png" width="576"></p>
 </figure>
 </div>
 </div>
@@ -429,7 +442,7 @@ FT0007 54.01010 235.9032</code></pre>
 <p>Although the overall matching is imperfect due to initial sample issues, certain regions show significant improvement. The alignment of the signal’s start is particularly well done. Specifically, the regions right before and after 150 seconds show substantial improvement.</p>
 <p>Below is a visualization of the distribution of chromatographic peaks matched to anchor peaks (lamas) for Sample A. The red vertical lines represent the positions of these matched peaks.</p>
 <div class="cell" data-tbl-cap="Figure 5. Distribution of CP matched to Lamas for sample A.">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' BPC of the first sample with matches to lamas overlay</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bpc1</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"#00000080"</span>, main <span class="op">=</span> <span class="st">"Distribution CP matched to Lamas"</span>,</span>
@@ -441,7 +454,7 @@ FT0007 54.01010 235.9032</code></pre>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="va">ref_vs_obs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">obs</span>, col <span class="op">=</span> <span class="st">"#c4114510"</span><span class="op">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
+<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 </figure>
 </div>
 </div>
@@ -450,7 +463,7 @@ FT0007 54.01010 235.9032</code></pre>
 </h4>
 <p>To quantitatively assess the quality of the alignment, we compute the distance between the chromatographic peaks in our LC-MS data and the anchor peaks (Lamas) both before and after the alignment.</p>
 <div class="cell" data-tbl-cap="Figure 6. Distance to Anchor Peaks: Before vs. After Alignment.">
-<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Extract data for sample 3 directly</span></span>
 <span><span class="va">ref_obs_sample_1</span> <span class="op">&lt;-</span> <span class="va">ref_vs_obs</span><span class="op">[[</span><span class="st">"1"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
@@ -478,14 +491,14 @@ FT0007 54.01010 235.9032</code></pre>
 <span>        main <span class="op">=</span> <span class="st">"Distance to Anchor Peaks: Before vs. After Alignment"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
+<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Furthermore, a more detailed examination of the matching and the model used for fitting each file is possible. Numerical information can be obtained using the <code><a href="https://rdrr.io/pkg/xcms/man/LamaParama.html" class="external-link">summarizeLamaMatch()</a></code> function. From this, the percentage of chromatographic peaks utilized for alignment can be computed relative to the total number of peaks in the file. Additionally, it is feasible to directly <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> the <code>param</code> object for the file of interest, showcasing the distribution of these chromatographic peaks along with the fitted model line.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Access summary of matches and model information</span></span>
 <span><span class="va">summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/LamaParama.html" class="external-link">summarizeLamaMatch</a></span><span class="op">(</span><span class="va">lp</span><span class="op">)</span></span>
 <span><span class="va">summary</span></span></code></pre></div>
@@ -495,13 +508,13 @@ FT0007 54.01010 235.9032</code></pre>
 2        6860          1785        5374  1617, c(....
 3        7588          2082        5374  1869, c(....</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Coverage for each file</span></span>
 <span><span class="va">summary</span><span class="op">$</span><span class="va">Matched_peaks</span> <span class="op">/</span> <span class="va">summary</span><span class="op">$</span><span class="va">Total_peaks</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 26.71253 26.02041 27.43806</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Access the information on the model of for the first file</span></span>
 <span><span class="va">summary</span><span class="op">$</span><span class="va">Model_summary</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -525,7 +538,7 @@ drop.square:  FALSE </code></pre>
 </div>
 </div>
 <div class="cell" data-tbl-cap="Figure 7. Model fit for the first file.">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb36"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Plot obs vs. lcms1 with fitting line</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lp</span>, index <span class="op">=</span> <span class="fl">1L</span>, main <span class="op">=</span> <span class="st">"ChromPeaks versus Lamas for sample A"</span>,</span>
 <span>     colPoint <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
@@ -533,7 +546,7 @@ drop.square:  FALSE </code></pre>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<figure><p><img src="alignment-to-external-dataset_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 </figure>
 </div>
 </div>
