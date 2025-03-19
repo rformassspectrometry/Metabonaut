@@ -17,6 +17,7 @@ RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, d
 ## Create the BiocFileCache and cache the data files to avoid repeated downloads
 USER rstudio
 RUN Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
+USER root
 
 ## Install the current package with vignettes
 RUN Rscript -e "devtools::install('.', dependencies = TRUE, type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
