@@ -1,0 +1,178 @@
+---
+title: "Large Scale Analysis"
+format: html
+editor: visual
+---
+
+## Loading object
+
+```{r}
+library(MsBackendMetaboLights)
+library(xcms)
+library(MsExperiment)
+library(MsIO)
+
+param <- MetaboLightsParam(mtblsId = "MTBLS93",
+                           filePattern = "10101.CDF") 
+
+lcms1 <- readMsObject(MsExperiment(),
+                      param,
+                      keepOntology = FALSE,
+                      keepProtocol = FALSE,
+                      simplify = FALSE)
+
+```
+
+```{r}
+lcms1
+```
+
+FYI, just took 19 random samples from the dataset.
+
+```{r par-process, message=FALSE, warning=FALSE}
+#' Set up parallel processing using 2 cores
+if (.Platform$OS.type == "unix") {
+    register(MulticoreParam(2))
+} else {
+    register(SnowParam(2))
+}
+```
+
+```{r}
+sampleData(lcms1)["Sample Name"] |> unique()
+
+range(rtime(lcms1)) 
+```
+
+Looked a bit at the metadata. Also there retention time range is huge
+
+```{r eval=FALSE}
+bpc <- chromatogram(lcms1, aggregationFun = "max", chunkSize = 2)
+plot(bpc)
+```
+
+Filter rt DEFINITELY needed, everything after 700s is contaminants
+
+```{r}
+lcms1 <- filterRt(lcms1, rt = c(20, 700))
+```
+
+Based on the paper here:
+https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004801
+Figure S2. I created a little excel sheet with the know lipids that they
+identified.
+
+```{r}
+## taking mz and rt that they have annotedted in the supplementary table
+## open table of known compound
+library(readxl)
+kc <- read_xlsx("known_compounds_largescale.xlsx") |> as.data.frame()
+rownames(kc) <- kc$name
+kc$rtmin <- kc$rt - 20
+kc$rtmax <- kc$rt + 20
+kc$mzmin <- kc$mz - 0.01
+kc$mzmax <- kc$mz + 0.01
+
+eics <- chromatogram(lcms1, mz = c(kc$mzmin, kc$mzmax), rt = c(kc$rtmin, kc$rtmax), chunkSize = 2)
+
+plot(eics)
+```
+
+The first is a bit noisy but actually nice example, and allows to check that
+peak detection performs properly on noisy peaks too.
+
+Below test peakpicking on the eics. I based the parameters on the ones in their
+publication. But i changed some. ppm=25 , peakwidth=c(2:15), snthresh=8,
+mzCenterFun="wMean", integrate=2, mzdiff=0.05 , prefilter=c(1,5), sleep=0.0001,
+fitgauss=T)
+
+```{r}
+param <- CentWaveParam(ppm=25 , 
+                       peakwidth=c(2,20),
+                       snthresh=2, 
+                       mzCenterFun="wMean",
+                       integrate=2,
+                       fitgauss=T)
+met_test <- findChromPeaks(eics, param = param)
+chromPeaks(met_test[1])
+plot(met_test)
+```
+
+Works nicely !
+
+```{r}
+param <- CentWaveParam(ppm=25 , 
+                       peakwidth=c(2,20),
+                       snthresh=8, 
+                       mzCenterFun="wMean",
+                       integrate=2,
+                       fitgauss=T)
+
+lcms1 <- findChromPeaks(lcms1, param = param, chunkSize = 2)
+
+param <- MergeNeighboringPeaksParam(expandRt = 5, expandMz = 0.0015,
+                                    minProp = 0.75)
+lcms1 <- refineChromPeaks(lcms1, param = param, chunkSize = 2)
+
+eics_peak <- chromatogram(lcms1, mz = c(kc$mzmin, kc$mzmax), rt = c(kc$rtmin, kc$rtmax), chunkSize = 2)
+
+plot(eics_peak)
+```
+
+I have some fear that maybe some of the peaks are merged, but i check for it
+during correspondence.
+
+```{r}
+# Initial correspondence analysis - i'm being quite strict, let's see if we get any res
+gr <- seq_len(nrow(sampleData(lcms1)))
+param <- PeakDensityParam(sampleGroups = gr,
+                          minFraction = 0.9,
+                          binSize = 0.01, ppm = 10,
+                          bw = 3) #larger bw to accomodate the large shift. 
+
+plotChromPeakDensity(
+    eics_peak[1], param = param,
+    peakPch = 16)
+
+lcms1 <- groupChromPeaks(lcms1, param = param)
+
+#' Define parameters of choice
+param <- PeakGroupsParam(minFraction = 0.9, extraPeaks = 50, 
+                         span = 0.5)
+#' Perform the alignment
+lcms1 <- adjustRtime(lcms1, param = param)
+eics_align <- chromatogram(lcms1, mz = c(kc$mzmin, kc$mzmax), rt = c(kc$rtmin, kc$rtmax), chunkSize = 2)
+
+plot(eics_align)
+```
+
+It works better than I expected !! so nice though.
+
+Running correspodencne below one more time, this time being stricter on the
+`bw` and looser for the `minFraction`.
+
+```{r}
+param <- PeakDensityParam(sampleGroups = gr,
+                          minFraction = 0.5,# also lower because sample variability.
+                          binSize = 0.01, ppm = 10,
+                          bw = 2) #now reduced
+
+lcms1 <- groupChromPeaks(lcms1, param = param)
+```
+
+Quick check of the results below.
+
+```{r}
+nrow(featureDefinitions(lcms1)) # ok that's a crazy number ahah
+# Bin features per RT slices
+vc <- featureDefinitions(lcms1)$rtmed
+breaks <- seq(0, max(vc, na.rm = TRUE) + 1, length.out = 15) |>
+    round(0)
+cuts <- cut(vc, breaks = breaks, include.lowest = TRUE)
+table(cuts)
+```
+
+```{r}
+lcms1_filt <- filterFeatures(lcms1, filter = RsdFilter(qcIndex = gr)) 
+## reduces the crazy number. Idk if it matters but ye, i guess that's a possiblity
+```
