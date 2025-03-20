@@ -5,17 +5,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Dataset investigation: What to do when you get your data • metabonaut</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<title>Dataset investigation: What to do when you get your data • Metabonaut</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="dataset-investigation_files/libs/quarto-html/popper.min.js"></script><script src="dataset-investigation_files/libs/quarto-html/tippy.umd.min.js"></script><link href="dataset-investigation_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="dataset-investigation_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Dataset investigation: What to do when you get your data">
@@ -27,9 +26,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">metabonaut</a>
+    <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +64,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Dataset investigation: What to do when you get your data</h1>
 
 
-      <p class="date">2024-10-30</p>
+      <p class="date">2025-03-20</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/metabonaut/blob/main/vignettes/dataset-investigation.qmd" class="external-link"><code>vignettes/dataset-investigation.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -76,9 +75,7 @@
 
 
 
-    <section class="section level3"><h3 id="in-construction">In Construction<a class="anchor" aria-label="anchor" href="#in-construction"></a>
-</h3>
-</section><section class="section level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+    <section class="section level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>So, you (or your amazing lab mate) have finally finished the data acquisition, and now you have a dataset in hand. What’s next? Unfortunately, the work isn’t over yet. Before diving into any analysis, it’s crucial to understand the dataset itself. This is the first step in any data analysis workflow, ensuring that the data is of good quality and is well-prepared for preprocessing and any downstream analysis you plan to perform.</p>
 <p>In this vignette, we present the dataset used throughout the different vignettes of this website. It’s far from a <em>perfect</em> dataset, which actually mirrors the reality of most datasets you’ll encounter in research.</p>
@@ -94,10 +91,560 @@
 <p>The data and metadata for this workflow are available on the MetaboLights database under the ID: MTBLS8735.</p>
 <p>The detailed materials and methods used for the sample analysis are also available in the MetaboLights entry. This is particularly important for understanding the analysis and the parameters used. It should be noted that the samples were analyzed using ultra-high-performance liquid chromatography (UHPLC) coupled to a Q-TOF mass spectrometer (TripleTOF 5600+), and chromatographic separation was achieved using hydrophilic interaction liquid chromatography (HILIC).</p>
 <ul>
-<li>Consider moving visualizations from the end-to-end vignette to here for a clearer understanding of the dataset.</li>
 <li>Provide more in-depth visualizations to explore and understand the dataset quality.</li>
 <li>Compare pool lc-ms and pool lc-ms/ms and show that we have better separation on the second run.</li>
-</ul></section><script id="quarto-html-after-body" type="application/javascript">
+</ul></section><section class="section level2"><h2 id="package">Package<a class="anchor" aria-label="anchor" href="#package"></a>
+</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Data Import and handling</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MsExperiment" class="external-link">MsExperiment</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MsIO" class="external-link">MsIO</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MsBackendMetaboLights" class="external-link">MsBackendMetaboLights</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Preprocessing of LC-MS data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sneumann/xcms" class="external-link">xcms</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biobase" class="external-link">Biobase</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Visualisation</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rapporter.github.io/pander/" class="external-link">pander</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RColorBrewer</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pheatmap</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="section level2"><h2 id="ms1-level-data">MS1 level data<a class="anchor" aria-label="anchor" href="#ms1-level-data"></a>
+</h2>
+<p>We first load the raw data from MetaboLights:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/MetaboLightsParam.html" class="external-link">MetaboLightsParam</a></span><span class="op">(</span>mtblsId <span class="op">=</span> <span class="st">"MTBLS8735"</span>,</span>
+<span>                           assayName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"a_MTBLS8735_LC-MS_positive_"</span>,</span>
+<span>                                              <span class="st">"hilic_metabolite_profiling.txt"</span><span class="op">)</span>,</span>
+<span>                           filePattern <span class="op">=</span> <span class="st">".mzML"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lcms1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/saveMsObject.html" class="external-link">readMsObject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">MsExperiment</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                      <span class="va">param</span>,</span>
+<span>                      keepOntology <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                      keepProtocol <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                      simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+<p>We set up parallel processing to facilitate futher computations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Set up parallel processing using 2 cores</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="va">.Platform</span><span class="op">$</span><span class="va">OS.type</span> <span class="op">==</span> <span class="st">"unix"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/register.html" class="external-link">register</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html" class="external-link">MulticoreParam</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/register.html" class="external-link">register</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SnowParam-class.html" class="external-link">SnowParam</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<p>We update the metadata to make the column names easier to access:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Let's rename the column for easier access</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample_name"</span>, <span class="st">"derived_spectra_data_file"</span>,</span>
+<span>                                <span class="st">"metabolite_asssignment_file"</span>,</span>
+<span>                                <span class="st">"source_name"</span>,</span>
+<span>                                <span class="st">"organism"</span>,</span>
+<span>                                <span class="st">"blood_sample_type"</span>,</span>
+<span>                                <span class="st">"sample_type"</span>, <span class="st">"age"</span>, <span class="st">"unit"</span>, <span class="st">"phenotype"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add "QC" to the phenotype of the QC samples</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_name</span> <span class="op">==</span> <span class="st">"POOL"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"QC"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_name</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_name</span> <span class="op">==</span> <span class="st">"POOL"</span> <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POOL1"</span>, <span class="st">"POOL2"</span>, <span class="st">"POOL3"</span>, <span class="st">"POOL4"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#  Add injection index column</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">injection_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#let's look at the updated sample data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"derived_spectra_data_file"</span>,</span>
+<span>                     <span class="st">"phenotype"</span>, <span class="st">"sample_name"</span>, <span class="st">"age"</span>,</span>
+<span>                     <span class="st">"injection_index"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">kable</span><span class="op">(</span>format <span class="op">=</span> <span class="st">"pipe"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top" style="width:100%;">
+<caption>Table 2. Simplified sample data.</caption>
+<colgroup>
+<col style="width: 39%">
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 5%">
+<col style="width: 22%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">derived_spectra_data_file</th>
+<th style="text-align: left;">phenotype</th>
+<th style="text-align: left;">sample_name</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">injection_index</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FILES/MS_QC_POOL_1_POS.mzML</td>
+<td style="text-align: left;">QC</td>
+<td style="text-align: left;">POOL1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FILES/MS_A_POS.mzML</td>
+<td style="text-align: left;">CVD</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FILES/MS_B_POS.mzML</td>
+<td style="text-align: left;">CTR</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FILES/MS_QC_POOL_2_POS.mzML</td>
+<td style="text-align: left;">QC</td>
+<td style="text-align: left;">POOL2</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FILES/MS_C_POS.mzML</td>
+<td style="text-align: left;">CTR</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FILES/MS_D_POS.mzML</td>
+<td style="text-align: left;">CVD</td>
+<td style="text-align: left;">D</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FILES/MS_QC_POOL_3_POS.mzML</td>
+<td style="text-align: left;">QC</td>
+<td style="text-align: left;">POOL3</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FILES/MS_E_POS.mzML</td>
+<td style="text-align: left;">CTR</td>
+<td style="text-align: left;">E</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FILES/MS_F_POS.mzML</td>
+<td style="text-align: left;">CVD</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FILES/MS_QC_POOL_4_POS.mzML</td>
+<td style="text-align: left;">QC</td>
+<td style="text-align: left;">POOL4</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Define colors for the different phenotypes</span></span>
+<span><span class="va">col_phenotype</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">9</span>, name <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">5</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">col_phenotype</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QC"</span>, <span class="co"># grey</span></span>
+<span>                          <span class="st">"CVD"</span>, <span class="co"># orange</span></span>
+<span>                          <span class="st">"CTR"</span><span class="op">)</span> <span class="co"># purple</span></span>
+<span><span class="va">col_sample</span> <span class="op">&lt;-</span> <span class="va">col_phenotype</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span><span class="op">]</span></span></code></pre></div>
+</div>
+<section class="level2"><h3 id="spectra-exploration">Spectra exploration<a class="anchor" aria-label="anchor" href="#spectra-exploration"></a>
+</h3>
+<p>Quick reminder that we access the spectra data as below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Access Spectra Object</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MSn data (Spectra) with 17210 spectra in a MsBackendMetaboLights backend:
+        msLevel     rtime scanIndex
+      &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt;
+1             1     0.274         1
+2             1     0.553         2
+3             1     0.832         3
+4             1     1.111         4
+5             1     1.390         5
+...         ...       ...       ...
+17206         1   479.052      1717
+17207         1   479.331      1718
+17208         1   479.610      1719
+17209         1   479.889      1720
+17210         1   480.168      1721
+ ... 37 more variables/columns.
+
+file(s):
+MS_QC_POOL_1_POS.mzML
+MS_A_POS.mzML
+MS_B_POS.mzML
+ ... 7 more files</code></pre>
+</div>
+</div>
+<p>One of the first check that should be done is evaluatating the number of spectra per sample. Below we summarize the number of spectra and their respective MS level (extracted with the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">msLevel()</a></code> function). The <code>fromFile()</code> function returns for each spectrum the index of its sample (data file) and can thus be used to split the information (MS level in this case) by sample to further summarize using the base R <code><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table()</a></code> function and combine the result into a matrix.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Count the number of spectra with a specific MS level per file.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">msLevel</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="fu">fromFile</span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="va">cbind</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     1    2    3    4    5    6    7    8    9   10
+1 1721 1721 1721 1721 1721 1721 1721 1721 1721 1721</code></pre>
+</div>
+</div>
+<p>The present data set thus contains only MS1 data, which is ideal for quantification of the signal. A second (LC-MS/MS) data set also with fragment (MS2) spectra of the same samples will be used later on in the workflow. We also cannot see any large difference in number of spectra between the samples, which is a good sign that the data is of good quality. If one sample had a significantly lower number of spectra, it would be a sign of a potential issue with the sample.</p>
+<p>Data obtained from LC-MS experiments are typically analyzed along the retention time axis, while MS data is organized by spectrum, orthogonal to the retention time axis. As another example, we below determine the retention time range for the entire data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Retention time range for entire dataset</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   0.273 480.169</code></pre>
+</div>
+</div>
+</section></section><section class="section level2"><h2 id="data-visualization-and-general-quality-assessment">Data visualization and general quality assessment<a class="anchor" aria-label="anchor" href="#data-visualization-and-general-quality-assessment"></a>
+</h2>
+<p>Effective visualization is paramount for inspecting and assessing the quality of MS data. For a general overview of our LC-MS data, we can:</p>
+<ul>
+<li>Combine all mass peaks from all (MS1) spectra of a sample into a single spectrum in which each mass peak then represents the maximum signal of all mass peaks with a similar <em>m/z</em>. This spectrum might then be called Base Peak Spectrum (BPS), providing information on the most abundant ions of a sample.</li>
+<li>Aggregate mass peak intensities for each spectrum, resulting in the Base Peak Chromatogram (BPC). The BPC shows the highest measured intensity for each distinct retention time (hence spectrum) and is thus orthogonal to the BPS.</li>
+<li>Sum the mass peak intensities for each spectrum to create a Total Ion Chromatogram (TIC).</li>
+<li>Compare the BPS of all samples in an experiment to evaluate similarity of their ion content.</li>
+<li>Compare the BPC of all samples in an experiment to identify samples with similar or dissimilar chromatographic signal.</li>
+</ul>
+<p>In addition to such general data evaluation and visualization, it is also crucial to investigate specific signal of e.g. internal standards or compounds/ions known to be present in the samples. By providing a reliable reference, internal standards help achieve consistent and accurate analytical results.</p>
+<section class="level2"><h3 id="spectra-data-visualization-bps">Spectra Data Visualization: BPS<a class="anchor" aria-label="anchor" href="#spectra-data-visualization-bps"></a>
+</h3>
+<p>The BPS collapses data in the retention time dimension and reveals the most prevalent ions present in each of the samples, creation of such BPS is however not straightforward. Mass peaks, even if representing signals from the same ion, will never have identical <em>m/z</em> values in consecutive spectra due to the measurement error/resolution of the instrument.</p>
+<p>Below we use the <code>combineSpectra</code> function to combine all spectra from one file (defined using parameter <code>f = fromFile(data)</code>) into a single spectrum. All mass peaks with a difference in <em>m/z</em> value smaller than 3 parts-per-million (ppm) are combined into one mass peak, with an intensity representing the maximum of all such grouped mass peaks. To reduce memory requirement, we in addition first <em>bin</em> each spectrum combining all mass peaks within a spectrum, aggregating mass peaks into bins with 0.01 <em>m/z</em> width. In case of large datasets, it is also recommended to set the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/processingQueue.html" class="external-link">processingChunkSize()</a></code> parameter of the <code>MsExperiment</code> object to a finite value (default is <code>Inf</code>) causing the data to be processed (and loaded into memory) in chunks of <code><a href="https://rdrr.io/pkg/ProtGenerics/man/processingQueue.html" class="external-link">processingChunkSize()</a></code> spectra. This can reduce memory demand and speed up the process.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Setting the chunksize</span></span>
+<span><span class="va">chunksize</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/processingQueue.html" class="external-link">processingChunkSize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">chunksize</span></span></code></pre></div>
+</div>
+<p>We can now generate BPS for each sample and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Combining all spectra per file into a single spectrum</span></span>
+<span><span class="va">bps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">bin</a></span><span class="op">(</span>binSize <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">combineSpectra</a></span><span class="op">(</span>f <span class="op">=</span> <span class="fu">fromFile</span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span>, intensityFun <span class="op">=</span> <span class="va">max</span>, ppm <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Plot the base peak spectra</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">bps</span>, main<span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/bps-1.png" width="672"></p>
+<figcaption>Figure 1. BPS of all samples.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Here, there is observable overlap in ion content between the files, particularly around 300 <em>m/z</em> and 700 <em>m/z</em>. There are however also differences between sets of samples. In particular, BPS 1, 4, 7 and 10 (counting row-wise from left to right) seem different than the others. In fact, these four BPS are from QC samples, and the remaining six from the study samples. The observed differences might be explained by the fact that the QC samples are pools of serum samples from a different cohort, while the study samples represent plasma samples, from a different sample collection.</p>
+<p>Next to the visual inspection above, we can also calculate and express the similarity between the BPS with a heatmap. Below we use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> function to calculate pairwise similarities between all BPS and use then the <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap()</a></code> function from the <em>pheatmap</em> package to cluster and visualize this result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Calculate similarities between BPS</span></span>
+<span><span class="va">sim_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra</a></span><span class="op">(</span><span class="va">bps</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Add sample names as rownames and colnames</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_matrix</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_matrix</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_name</span></span>
+<span><span class="va">ann</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>phenotype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">[</span>, <span class="st">"phenotype"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ann</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Plot the heatmap</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap</a></span><span class="op">(</span><span class="va">sim_matrix</span>, annotation_col <span class="op">=</span> <span class="va">ann</span>,</span>
+<span>         annotation_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>phenotype <span class="op">=</span> <span class="va">col_phenotype</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/compare-spectra-1.png" width="672"></p>
+<figcaption>Figure 2. Heatmap of MS signals similarities.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>We get a first glance at how our different samples distribute in terms of similarity. The heatmap confirms the observations made with the BPS, showing distinct clusters for the QCs and the study samples, owing to the different matrices and sample collections.</p>
+<p>It is also strongly recommended to delve deeper into the data by exploring it in more detail. This can be accomplished by carefully assessing our data and extracting spectra or regions of interest for further examination. In the next chunk, we will look at how to extract information for a specific spectrum from distinct samples.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Accessing a single spectrum - comparing with QC</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">spec1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">125</span><span class="op">]</span></span>
+<span><span class="va">spec2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">125</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">spec1</span>, main <span class="op">=</span> <span class="st">"QC sample"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">spec2</span>, main <span class="op">=</span> <span class="st">"CTR sample"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/unnamed-chunk-5-1.png" style="width:90.0%"></p>
+<figcaption>Figure 3. Intensity and m/z values of the 125th spectrum of two CTR samples.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>The significant dissimilarities in peak distribution and intensity confirm the difference in composition between QCs and study samples. We next compare a full MS1 spectrum from a CVD and a CTR sample.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Accessing a single spectrum - comparing CVD and CTR</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">spec1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">125</span><span class="op">]</span></span>
+<span><span class="va">spec2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">125</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">spec1</span>, main <span class="op">=</span> <span class="st">"CVD sample"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">spec2</span>, main <span class="op">=</span> <span class="st">"CTR sample"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/unnamed-chunk-6-1.png" style="width:90.0%"></p>
+<figcaption>Figure 4. Intensity and m/z values of the 125th spectrum of one CVD and one CTR sample.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Above, we can observe that the spectra between CVD and CTR samples are not entirely similar, but they do exhibit similar main peaks between 200 and 600 m/z with a general higher intensity in control samples. However the peak distribution (or at least intensity) seems to vary the most between an <em>m/z</em> of 10 to 210 and after an <em>m/z</em> of 600.</p>
+<p>The CTR spectrum above exhibits significant peaks around an <em>m/z</em> of 150 - 200 that have a much lower intensity in the CVD sample. To delve into more details about this specific spectrum, a wide range of functions can be employed:</p>
+<div class="cell" data-tbl-style="border: 1px solid black; width: 50%; border-collapse: collapse;">
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Checking its intensity</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">intensity</a></span><span class="op">(</span><span class="va">spec2</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NumericList of length 1
+[[1]] 18.3266733266736 45.1666666666667 ... 27.1048951048951 34.9020979020979</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Checking its rtime</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">spec2</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 34.872</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Checking its m/z</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">mz</a></span><span class="op">(</span><span class="va">spec2</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NumericList of length 1
+[[1]] 51.1677328505635 53.0461968245186 ... 999.139446289161 999.315208803072</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Filtering for a specific m/z range and viewing in a tabular format</span></span>
+<span><span class="va">filt_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterMzRange</a></span><span class="op">(</span><span class="va">spec2</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">200</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>intensity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">intensity</a></span><span class="op">(</span><span class="va">filt_spec</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>           mz <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">mz</a></span><span class="op">(</span><span class="va">filt_spec</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>format <span class="op">=</span> <span class="st">"markdown"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top">
+<caption>Table 3. Intensity and m/z values of the 125th spectrum of one CTR sample.</caption>
+<thead><tr class="header">
+<th style="text-align: right;">intensity</th>
+<th style="text-align: right;">mz</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">18.32667</td>
+<td style="text-align: right;">51.16773</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">45.16667</td>
+<td style="text-align: right;">53.04620</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">23.07692</td>
+<td style="text-align: right;">53.70114</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">41.36364</td>
+<td style="text-align: right;">53.84408</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">32.86713</td>
+<td style="text-align: right;">53.88130</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1159.03030</td>
+<td style="text-align: right;">54.01002</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section class="level2"><h3 id="chromatographic-info">Chromatographic info<a class="anchor" aria-label="anchor" href="#chromatographic-info"></a>
+</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Filter the data based on retention time</span></span>
+<span><span class="va">lcms1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterRt</a></span><span class="op">(</span><span class="va">lcms1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">240</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Filter spectra</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bpc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span><span class="va">lcms1</span>, aggregationFun <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Plot after filtering</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bpc</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">col_sample</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>     main <span class="op">=</span> <span class="st">"BPC after filtering retention time"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col <span class="op">=</span> <span class="va">col_phenotype</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">col_phenotype</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">2</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span>, bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/filter-rt-1.png" width="672"></p>
+<figcaption>Figure 6. BPC after filtering retention time.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Initially, we examined the entire BPC and subsequently filtered it based on the desired retention times. This not only results in a smaller file size but also facilitates a more straightforward interpretation of the BPC.</p>
+<p>The final plot illustrates the BPC for each sample colored by phenotype, providing insights on the signal measured along the retention times of each sample. It reveals the points at which compounds eluted from the LC column. In essence, a BPC condenses the three-dimensional LC-MS data (<em>m/z</em> by retention time by intensity) into two dimensions (retention time by intensity).</p>
+<p>We can also here compare similarities of the BPCs in a heatmap. The retention times will however not be identical between different samples. Thus we <em>bin()</em> the chromatographic signal per sample along the retention time axis into bins of two seconds resulting in data with the same number of bins/data points. We can then calculate pairwise similarities between these data vectors using the <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor()</a></code> function and visualize the result using <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Total ion chromatogram</span></span>
+<span><span class="va">tic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span><span class="va">lcms1</span>, aggregationFun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">bin</a></span><span class="op">(</span>binSize <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Calculate similarity (Pearson correlation) between BPCs</span></span>
+<span><span class="va">ticmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">cbind</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">tic</span>, <span class="va">intensity</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ticmap</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ticmap</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_name</span></span>
+<span><span class="va">ann</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>phenotype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">[</span>, <span class="st">"phenotype"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ann</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ticmap</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Plot heatmap</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap</a></span><span class="op">(</span><span class="va">ticmap</span>, annotation_col <span class="op">=</span> <span class="va">ann</span>,</span>
+<span>         annotation_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>phenotype <span class="op">=</span> <span class="va">col_phenotype</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/heatmap1-1.png" width="672"></p>
+<figcaption>Figure 7. Heatmap of BPC similarities.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>The heatmap above reinforces what our exploration of spectra data showed, which is a strong separation between the QC and study samples. This is important to bear in mind for later analyses.</p>
+<p>Additionally, study samples group into two clusters, cluster <em>I</em> containing samples <em>C</em> and <em>F</em> and cluster <em>II</em> with all other samples. Below we plot the TIC of all samples, using a different color for each cluster.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cluster_I_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_name</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F"</span>, <span class="st">"C"</span><span class="op">)</span></span>
+<span><span class="va">cluster_II_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_name</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"D"</span>, <span class="st">"E"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">temp_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"grey"</span>, <span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">temp_col</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Cluster II"</span>, <span class="st">"Cluster I"</span><span class="op">)</span></span>
+<span><span class="va">col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">temp_col</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">col</span><span class="op">[</span><span class="va">cluster_I_idx</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">temp_col</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">col</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span></span>
+<span><span class="va">lcms1</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span>aggregationFun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span> col <span class="op">=</span> <span class="va">col</span>,</span>
+<span>     main <span class="op">=</span> <span class="st">"TIC after filtering retention time"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col <span class="op">=</span> <span class="va">temp_col</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">temp_col</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>       horiz <span class="op">=</span> <span class="cn">TRUE</span>, bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<figcaption>Figure 8. Example of TIC of unusual signal.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>While the TIC of all samples look similar, the samples from cluster I show a different signal in the retention time range from about 40 to 160 seconds. Whether, and how strong this difference will impact the following analysis remains to be determined.</p>
+</section><section class="level2"><h3 id="known-compounds">known compounds<a class="anchor" aria-label="anchor" href="#known-compounds"></a>
+</h3>
+<p>While the artificially isotope labeled compounds were spiked to the individual samples, there should also be the signal from the endogenous compounds in serum (or plasma) samples. Thus, we calculate next the mass and <em>m/z</em> of an <em>[M+H]+</em> ion of the endogenous cystine from its chemical formula and extract also the EIC from this ion. For calculation of the exact mass and the <em>m/z</em> of the selected ion adduct we use the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/calculateMass.html" class="external-link">calculateMass()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.21/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' extract endogenous cystine mass and EIC and plot.</span></span>
+<span><span class="va">cysmass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/calculateMass.html" class="external-link">calculateMass</a></span><span class="op">(</span><span class="st">"C6H12N2O4S2"</span><span class="op">)</span></span>
+<span><span class="va">cys_endo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="va">cysmass</span>, adduct <span class="op">=</span> <span class="st">"[M+H]+"</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">eic_cys_endo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span><span class="va">lcms1</span>, mz <span class="op">=</span> <span class="va">cys_endo</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.005</span>, <span class="fl">0.005</span><span class="op">)</span>,</span>
+<span>                             rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">199</span>, <span class="fl">219</span><span class="op">)</span>, aggregationFun <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></span>
+<span><span class="va">eic_cys_spiked</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span><span class="va">lcms1</span> , mz <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">249.040276</span>, <span class="fl">249.050276</span><span class="op">)</span>, </span>
+<span>                                rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">199</span>,<span class="fl">219</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Plot versus spiked</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eic_cys_endo</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">col_sample</span>, <span class="fl">80</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eic_cys_spiked</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">col_sample</span>, <span class="fl">80</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col <span class="op">=</span> <span class="va">col_phenotype</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">col_phenotype</span><span class="op">)</span>, </span>
+<span>       lty <span class="op">=</span> <span class="fl">1</span>, bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="dataset-investigation_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+<figcaption>Figure 10. EIC of endogenous cystine vs spiked.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>The two cystine EICs above look highly similar (the endogenous shown left, the isotope labeled right in the plot above), if not for the shift in m/z, which arises from the artificial labeling. This shift allows us to discriminate between the endogenous and non-endogenous compound.</p>
+</section><section class="level2"><h3 id="further-post-processing-analysis">Further post-processing analysis<a class="anchor" aria-label="anchor" href="#further-post-processing-analysis"></a>
+</h3>
+<p>Below we load the <code>lcms1</code> object that we saved after preprocessing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#load preprocessed xcmsExperiment</span></span>
+<span><span class="va">lcms1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/saveMsObject.html" class="external-link">readMsObject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XcmsExperiment.html" class="external-link">XcmsExperiment</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/AlabasterParam.html" class="external-link">AlabasterParam</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"preprocessed_lcms1"</span>,</span>
+<span>                               package <span class="op">=</span> <span class="st">"Metabonaut"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/alabaster.base/man/readObject.html" class="external-link">readObject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"preprocessed_res"</span>,</span>
+<span>                               package <span class="op">=</span> <span class="st">"Metabonaut"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="level2"><h3 id="noise-analysis">Noise analysis<a class="anchor" aria-label="anchor" href="#noise-analysis"></a>
+</h3>
+<p>Below we plot the backgrounds signal for each study group. This can be interesting in cases on technical evaluation. In our cases we expect very similar background noise in both CVD and CTR.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># overall signal in the dataset </span></span>
+<span><span class="co">#' - for each file calculate the sum of intensities </span></span>
+<span><span class="va">background</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="fu">fromFile</span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">tic</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sum</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Overall signal that is in the chromatographic peaks detection </span></span>
+<span><span class="va">detected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">background</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">detected</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span></span>
+<span><span class="va">idx_qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span></span>
+<span><span class="va">noise</span> <span class="op">&lt;-</span> <span class="va">background</span><span class="op">[</span><span class="op">!</span><span class="va">idx_qc</span><span class="op">]</span> <span class="op">-</span> <span class="va">detected</span><span class="op">[</span><span class="op">!</span><span class="va">idx_qc</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">noise</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">noise</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">noise</span><span class="op">)</span>, <span class="va">f</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="cn">NULL</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>     xaxt <span class="op">=</span> <span class="st">"n"</span>, xlab <span class="op">=</span> <span class="st">"Devices"</span>, ylab <span class="op">=</span> <span class="st">"Noise"</span>, </span>
+<span>     main <span class="op">=</span> <span class="st">"log2 background signal comparison between study group"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">i</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">group</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="va">group</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="dataset-investigation_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There seems to be more background noise in the CVD samples…</p>
+<p>More coming soon…</p>
+</section></section><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -198,7 +745,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script></main>
+</script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
@@ -207,7 +755,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
 </div>
 
     </footer>
