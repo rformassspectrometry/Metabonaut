@@ -72,7 +72,7 @@ Conduct](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/Rf
 
 ## Acknowledgements
 
-![European Union Logo](vignettes/images/EULogo.jpg)
+![EU Logo](https://github.com/rformassspectrometry/Metabonaut/raw/main/vignettes/images/EULogo.jpg)
 
 The work has been Funded by the European Union under the HORIZON-MSCA-2021
 project 101073062 : HUMAN – Harmonising and unifying blood metabolic analysis
