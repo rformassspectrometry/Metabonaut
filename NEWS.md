@@ -1,4 +1,14 @@
-# metabonaut 0.0
+# Metabonaut 1.0
+
+## Changes in 1.0.0
+
+- More plots in the data investigation vignette.
+- In the main end to end vignette: added saving of the Spectra object with the
+  significant features associated MS1 and MS2 data. To be used later by other
+  vignettes.
+
+
+# Metabonaut 0.0
 
 ## Changes in 0.0.7 
 
