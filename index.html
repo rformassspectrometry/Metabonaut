@@ -62,47 +62,104 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="lets-explore-and-learn-to-analyze-untargeted-metabolomics-data">Let’s explore and learn to analyze untargeted metabolomics data<a class="anchor" aria-label="anchor" href="#lets-explore-and-learn-to-analyze-untargeted-metabolomics-data"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="lets-explore-and-learn-to-analyze-untargeted-metabolomics-data">Let’s Explore and Learn to Analyze Untargeted Metabolomics Data<a class="anchor" aria-label="anchor" href="#lets-explore-and-learn-to-analyze-untargeted-metabolomics-data"></a>
 </h1>
 </div>
-<p><a href="https://creativecommons.org/licenses/by-nc/4.0/" class="external-link"><img src="https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg" alt="License: CC BY-NC 4.0"></a></p>
-<p>Welcome to <strong>Metabonaut</strong>! <span class="emoji" data-emoji="astronaut">🧑‍🚀</span></p>
-<p>This initiative presents a series of workflows based on a small LC-MS/MS dataset, utilizing R and Bioconductor packages. Throughout these workflows, we demonstrate how to adapt various algorithms to specific datasets and how to seamlessly integrate R packages to ensure efficient, reproducible processing.</p>
-<p>The primary workflow is the <a href="https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html" class="external-link">“Complete End-to-End LC-MS/MS Metabolomic Data Analysis”</a>.</p>
-<p>The full R code for all examples, along with detailed descriptions, is available in the <a href="https://rformassspectrometry.github.io/Metabonaut/vignettes/a-end-to-end-untargeted-metabolomics.qmd" class="external-link">end-to-end-untargeted-metabolomics.qmd</a> file. This file can be opened in RStudio, allowing you to execute each individual R command.</p>
-<p>Other vignettes on this website are interlinked, and you can find a detailed description of the dataset used throughout <a href="https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html" class="external-link">here</a>.</p>
-<p>We strive for reproducibility. These workflows are designed to remain stable over time, allowing you to run all the vignettes together as one comprehensive “super-vignette”. Any <strong>major</strong> change will be document here and for smaller updates check the <a href="https://rformassspectrometry.github.io/Metabonaut/news/index.html" class="external-link">News</a></p>
+<p><a href="https://creativecommons.org/licenses/by-nc/4.0/" class="external-link"><img src="https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg" alt="License: CC BY-NC 4.0"></a><br><a href="https://doi.org/10.5281/zenodo.15062929" class="external-link"><img src="https://zenodo.org/badge/849331979.svg" alt="DOI"></a></p>
 <div class="section level2">
-<h2 id="for-r-beginners">For R beginners<a class="anchor" aria-label="anchor" href="#for-r-beginners"></a>
+<h2 id="welcome-to-metabonaut-rocket">Welcome to <strong>Metabonaut</strong>! 🚀<a class="anchor" aria-label="anchor" href="#welcome-to-metabonaut-rocket"></a>
 </h2>
-<p>The tutorials provided assume that users have basic knowledge of R and RMarkdown. If you’re unfamiliar with either, we recommend completing a short tutorial to help you test the code and adapt it to your data. The vignettes are written in Quarto format, to learn more about this go <a href="https://quarto.org/docs/guide/" class="external-link">here</a>, this is a farily new format, and some functionallity are shared with the <a href="https://bookdown.org/yihui/rmarkdown/" class="external-link">RMarkdown</a> format, therefore learning about it can be usefull to you too.</p>
-<p>For basic R course and documentation, I would recommand to check out <a href="https://learn-r.org/" class="external-link">this website</a> or try an interactive course <a href="https://swirlstats.com/students.html" class="external-link">here</a> for a fun introduction to basic R programming. This <a href="https://github.com/wurli/r-best-practice" class="external-link">cheatsheet</a> could also be of help.</p>
+<p>Metabonaut presents a series of workflows based on a small LC-MS/MS dataset, utilizing <strong>R</strong> and <strong>Bioconductor</strong> packages. These workflows demonstrate how to adapt various algorithms to specific datasets and seamlessly integrate R packages for efficient, reproducible data processing.</p>
 </div>
 <div class="section level2">
-<h2 id="known-issues">Known Issues<a class="anchor" aria-label="anchor" href="#known-issues"></a>
+<h2 id="available-vignettes">Available Vignettes<a class="anchor" aria-label="anchor" href="#available-vignettes"></a>
 </h2>
-<p>This is just the beginning of our Metabonaut journey, and the website is still being refined. We’re actively addressing any ongoing issues. If we’re aware of a problem, we’ll list it below.</p>
-<p>Currently, there are no known issues with the code. If you encounter any, please ensure you have the latest versions of all required packages (as detailed above). If the issue persists, please report it with a reproducible example on GitHub <a href="https://github.com/rformassspectrometry/Metabonaut/issues" class="external-link">here</a>.</p>
-<p>If you encounter any other issues, don’t hesitate to let us know!</p>
+<div class="section level3">
+<h3 id="id_1-complete-end-to-end-lc-msms-metabolomic-data-analysis">1. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.html" class="external-link">Complete End-to-End LC-MS/MS Metabolomic Data Analysis</a>
+<a class="anchor" aria-label="anchor" href="#id_1-complete-end-to-end-lc-msms-metabolomic-data-analysis"></a>
+</h3>
+<p>This primary workflow guides you through each step of the analysis, from <strong>preprocessing raw data</strong> to <strong>statistical analysis</strong> and <strong>metabolite annotation</strong>.<br>
+📄 Full R code: <a href="https://rformassspectrometry.github.io/Metabonaut/vignettes/a-end-to-end-untargeted-metabolomics.qmd" class="external-link">end-to-end-untargeted-metabolomics.qmd</a></p>
+</div>
+<div class="section level3">
+<h3 id="id_2-dataset-investigation">2. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html" class="external-link">Dataset Investigation</a>
+<a class="anchor" aria-label="anchor" href="#id_2-dataset-investigation"></a>
+</h3>
+<p>Before diving into the analysis, learn about <strong>key aspects to examine in your dataset</strong> to ensure smooth processing and avoid troubleshooting later.</p>
+</div>
+<div class="section level3">
+<h3 id="id_3-seamless-alignment-merging-new-data-with-an-existing-preprocessed-dataset">3. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.html" class="external-link">Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset</a>
+<a class="anchor" aria-label="anchor" href="#id_3-seamless-alignment-merging-new-data-with-an-existing-preprocessed-dataset"></a>
+</h3>
+<p>Discover how to use a <strong>flexible alignment algorithm</strong> to integrate new datasets with previously processed ones based on features of interest.</p>
+<p>For a full list of all available vignettes, visit the <strong><a href="https://rformassspectrometry.github.io/Metabonaut/" class="external-link">Metabonaut website</a></strong>.</p>
+<hr>
+</div>
 </div>
 <div class="section level2">
-<h2 id="contribution">Contribution<a class="anchor" aria-label="anchor" href="#contribution"></a>
+<h2 id="pushpin-reproducibility--updates">📌 Reproducibility &amp; Updates<a class="anchor" aria-label="anchor" href="#pushpin-reproducibility--updates"></a>
 </h2>
-<p>For contributions, please see the <a href="https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#contributions" class="external-link">RforMassSpectrometry contributions guideline</a>.</p>
+<p>We strive for <strong>reproducibility</strong>. These workflows are designed to remain stable over time, allowing you to run all vignettes together as one comprehensive <strong>super-vignette</strong>.</p>
+<ul>
+<li>
+<strong>Major updates</strong> will be documented here.<br>
+</li>
+<li>
+<strong>Minor updates</strong> can be found in the <a href="https://rformassspectrometry.github.io/Metabonaut/news/index.html" class="external-link">News section</a>.</li>
+</ul>
+<hr>
 </div>
 <div class="section level2">
-<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+<h2 id="mortar_board-for-r-beginners">🎓 For R Beginners<a class="anchor" aria-label="anchor" href="#mortar_board-for-r-beginners"></a>
 </h2>
-<p>Please review the <a href="https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#code-of-conduct" class="external-link">RforMassSpectrometry Code of Conduct</a>.</p>
+<p>The tutorials assume basic knowledge of <strong>R</strong> and <strong>RMarkdown</strong>. If you’re new to these, we recommend starting with a short tutorial before running the vignettes.</p>
+<ul>
+<li>
+<strong>Learn Quarto (used for vignettes)</strong>: <a href="https://quarto.org/docs/guide/" class="external-link">Quarto Guide</a><br>
+</li>
+<li>
+<strong>Learn RMarkdown</strong>: <a href="https://bookdown.org/yihui/rmarkdown/" class="external-link">RMarkdown Book</a><br>
+</li>
+<li>
+<strong>Intro to R</strong>: <a href="https://learn-r.org/" class="external-link">Learn-R.org</a><br>
+</li>
+<li>
+<strong>Interactive R course</strong>: <a href="https://swirlstats.com/students.html" class="external-link">Swirl</a><br>
+</li>
+<li>
+<strong>Best Practices Cheatsheet</strong>: <a href="https://github.com/wurli/r-best-practice" class="external-link">GitHub Repository</a>
+</li>
+</ul>
+<hr>
 </div>
 <div class="section level2">
-<h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+<h2 id="hammer_and_wrench-known-issues">🛠️ Known Issues<a class="anchor" aria-label="anchor" href="#hammer_and_wrench-known-issues"></a>
+</h2>
+<p>This is just the beginning of our <strong>Metabonaut journey</strong>, and we’re actively refining the website. If you’re experiencing any issues:</p>
+<p>✅ Ensure you have the latest versions of all required packages.<br>
+🐛 If the issue persists, report it with a <strong>reproducible example</strong> on <strong><a href="https://github.com/rformassspectrometry/Metabonaut/issues" class="external-link">GitHub Issues</a></strong>.</p>
+<p>Currently, there are <strong>no known issues</strong> with the code.</p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="handshake-contribution">🤝 Contribution<a class="anchor" aria-label="anchor" href="#handshake-contribution"></a>
+</h2>
+<p>Interested in contributing? Please check out the <strong><a href="https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#contributions" class="external-link">RforMassSpectrometry Contributions Guide</a></strong>.</p>
+<div class="section level3">
+<h3 id="scroll-code-of-conduct">📜 Code of Conduct<a class="anchor" aria-label="anchor" href="#scroll-code-of-conduct"></a>
+</h3>
+<p>We follow the <strong><a href="https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#code-of-conduct" class="external-link">RforMassSpectrometry Code of Conduct</a></strong> to maintain an inclusive and respectful community.</p>
+<hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="raised_hands-acknowledgements">🙌 Acknowledgements<a class="anchor" aria-label="anchor" href="#raised_hands-acknowledgements"></a>
 </h2>
 <div class="float">
 <img src="https://github.com/rformassspectrometry/Metabonaut/raw/main/vignettes/images/EULogo.jpg" alt="EU Logo"><div class="figcaption">EU Logo</div>
 </div>
-<p>The work has been Funded by the European Union under the HORIZON-MSCA-2021 project 101073062 : HUMAN – Harmonising and unifying blood metabolic analysis networks.</p>
-<p>See more <a href="https://drive.google.com/drive/folders/1tobISsiF2yxShsvXH_M8OcEY4KuIuNf8" class="external-link">here</a></p>
+<p>This work is funded by the <strong>European Union</strong> under the <strong>HORIZON-MSCA-2021</strong> project <strong>101073062: HUMAN – Harmonising and Unifying Blood Metabolic Analysis Networks</strong>.</p>
+<p>🔗 Learn more: <a href="https://human-dn.eu/" class="external-link">HUMAN Project Website</a></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

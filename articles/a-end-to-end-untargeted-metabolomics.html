@@ -1555,7 +1555,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class "XProcessHistory"
  type: Peak detection
- date: Fri Mar 21 13:08:07 2025
+ date: Fri Mar 21 19:54:53 2025
  info:
  fileIndex: 1,2,3,4,5,6,7,8,9,10
  Parameter class: CentWaveParam
@@ -1986,7 +1986,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span>                              mad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">res</span>, filter <span class="op">=</span> <span class="va">filter_dratio</span>, assay <span class="op">=</span> <span class="st">"norm_imputed"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>4204 features were removed</code></pre>
+<pre><code>4209 features were removed</code></pre>
 </div>
 </div>
 <p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>)of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
@@ -1997,16 +1997,16 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="co">#' Number of features after analysis</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4520</code></pre>
+<pre><code>[1] 4515</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb107"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Percentage left: end/beginning</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res_unfilt</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 51.8111</code></pre>
+<pre><code>[1] 51.75378</code></pre>
 </div>
 </div>
-<p>The dataset has been reduced from 8724 to 4520 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
+<p>The dataset has been reduced from 8724 to 4515 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_qc</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></span>
@@ -2211,10 +2211,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0732</td>
 <td style="text-align: right;">182.0749</td>
 <td style="text-align: right;">34.83789</td>
-<td style="text-align: right;">-8.466653</td>
-<td style="text-align: right;">0.0061161</td>
+<td style="text-align: right;">-8.445376</td>
+<td style="text-align: right;">0.0060813</td>
 <td style="text-align: right;">12.229286</td>
-<td style="text-align: right;">3.878473</td>
+<td style="text-align: right;">3.890070</td>
 <td style="text-align: right;">0.2116471</td>
 </tr>
 <tr class="even">
@@ -2222,7 +2222,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: right;">195.0877</td>
 <td style="text-align: right;">32.65668</td>
 <td style="text-align: right;">-6.330400</td>
-<td style="text-align: right;">0.0375956</td>
+<td style="text-align: right;">0.0351865</td>
 <td style="text-align: right;">16.905340</td>
 <td style="text-align: right;">10.454994</td>
 <td style="text-align: right;">0.0304712</td>
@@ -2231,40 +2231,40 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
 <td style="text-align: right;">162.13668</td>
-<td style="text-align: right;">-5.473214</td>
-<td style="text-align: right;">0.0318538</td>
+<td style="text-align: right;">-5.453437</td>
+<td style="text-align: right;">0.0315455</td>
 <td style="text-align: right;">10.287074</td>
-<td style="text-align: right;">4.595486</td>
+<td style="text-align: right;">4.630568</td>
 <td style="text-align: right;">0.0360903</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
 <td style="text-align: right;">148.39599</td>
-<td style="text-align: right;">-5.280018</td>
-<td style="text-align: right;">0.0183598</td>
+<td style="text-align: right;">-5.271832</td>
+<td style="text-align: right;">0.0178686</td>
 <td style="text-align: right;">9.914862</td>
-<td style="text-align: right;">4.293387</td>
+<td style="text-align: right;">4.304152</td>
 <td style="text-align: right;">0.5564435</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FT1171</td>
 <td style="text-align: right;">229.1299</td>
 <td style="text-align: right;">181.08828</td>
-<td style="text-align: right;">-5.182557</td>
-<td style="text-align: right;">0.0164633</td>
+<td style="text-align: right;">-5.194252</td>
+<td style="text-align: right;">0.0162444</td>
 <td style="text-align: right;">10.721195</td>
-<td style="text-align: right;">5.683606</td>
+<td style="text-align: right;">5.674244</td>
 <td style="text-align: right;">0.0706276</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FT5606</td>
 <td style="text-align: right;">560.3603</td>
 <td style="text-align: right;">33.54917</td>
-<td style="text-align: right;">-3.852775</td>
-<td style="text-align: right;">0.0375956</td>
+<td style="text-align: right;">-3.816343</td>
+<td style="text-align: right;">0.0351865</td>
 <td style="text-align: right;">8.885918</td>
-<td style="text-align: right;">4.799652</td>
+<td style="text-align: right;">4.840594</td>
 <td style="text-align: right;">1.2139903</td>
 </tr>
 </tbody>
@@ -2316,7 +2316,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">ah</span>, <span class="st">"MassBank"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>AnnotationHub with 8 records
-# snapshotDate(): 2025-03-11
+# snapshotDate(): 2025-03-21
 # $dataprovider: MassBank
 # $species: NA
 # $rdataclass: CompDb
