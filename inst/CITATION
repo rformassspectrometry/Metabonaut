@@ -1,20 +1,22 @@
 citHeader("To cite this workflow:")
 
-citEntry(entry = "Manual",
-         title  = "Streamlining LC-MS/MS Data Analysis in R with Open-Source xcms and RforMassSpectrometry: An End-to-End Workflow",
+citEntry(entry = "Software",
+         title  = "rformassspectrometry/Metabonaut: Metabonaut version 1.0.0",
          author = personList(
            person(given = "Philippine", family = "Louail"),
+           person(given = "Anna", family = "Tagliaferri"),
+           person(given = "Vinicius", family = "Verri Hernandes"),
+           person(given = "Daniel", family = "Marques de Sá e Silva"),
            person(given = "Johannes", family = "Rainer")
          ),
          publisher = "Zenodo",
-         year = "2024",
-         month = "may",
-         version = "v1.1.0",
-         doi = "10.5281/zenodo.11370612",
-         url = "https://doi.org/10.5281/zenodo.11370612",
-         textVersion = paste0("Philippine Louail, & Johannes Rainer. (2024). ",
-                              "Streamlining LC-MS/MS Data Analysis in R with ",
-                              "Open-Source xcms and RforMassSpectrometry: An ",
-                              "End-to-End Workflow (Version v1).",
-                              "Zenodo. https://doi.org/10.5281/zenodo.11370612")
-         )
+         year = "2025",
+         month = "march",
+         version = "v1.0.0",
+         doi = "10.5281/zenodo.15062930",
+         url = "https://zenodo.org/doi/10.5281/zenodo.15062930",
+         textVersion = paste0("Philippine Louail, Anna Tagliaferri, Vinicius Verri Hernandes, ",
+                              "Daniel Marques de Sá e Silva, & Johannes Rainer. (2025). ",
+                              "rformassspectrometry/Metabonaut: Metabonaut version 1.0.0. ",
+                              "Zenodo. https://doi.org/10.5281/zenodo.15062930")
+)
