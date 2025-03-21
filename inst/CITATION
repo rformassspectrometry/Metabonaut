@@ -1,6 +1,6 @@
 citHeader("To cite this workflow:")
 
-citEntry(entry = "Software",
+citEntry(entry = "Misc",
          title  = "rformassspectrometry/Metabonaut: Metabonaut version 1.0.0",
          author = personList(
            person(given = "Philippine", family = "Louail"),
