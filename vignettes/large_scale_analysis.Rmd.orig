@@ -1,0 +1,856 @@
+---
+title: "Large Scale Data Preprocessing with xcms"
+output:
+  rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Large Scale Data Preprocessing with xcms}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<!--
+# Pre-render with
+knitr::knit("vignettes/large_scale_analysis.Rmd.orig", output = "vignettes/large_scale_analysis.Rmd")
+-->
+
+```{r vignette-setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "vignettes/"
+)
+#' tictoc::tic()
+
+```
+
+```{r, message = FALSE, echo = FALSE}
+library(BiocStyle)
+```
+
+**Note**: this vignette is
+[**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/)
+because execution of its content is computationally too demanding for the GitHub
+servers that are used to render this document.
+
+
+# Introduction
+
+By design, *xcms* supports preprocessing of large scale data. Recent updates to
+*xcms*, which include full support of the MS data infrastructure provided by the
+*Spectra* package as well as a new *on-disk* storage mode for preprocessing
+results, further reduce *xcms*' memory demand and hence enable large scale data
+processing also on regular computer setups. In this document a large public
+metabolomics data set is analyzed and *xcms*' memory usage and performance
+tracked. Performance and memory usage for different configurations are compared
+on a smaller data subset. Finally, details on the data flow in *xcms* are
+presented and properties of different configurations for efficient (and
+parallel) processing of large scale data are discussed.
+
+
+# Data import
+
+The data analyzed in this document was originally described in [this
+paper](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004801). The
+full data is available in the MetaboLights repository with the accession ID
+[MTBLS93](https://www.ebi.ac.uk/metabolights/editor/MTBLS93/descriptors).
+Detailed description on the study cohort, LC-MS setup and the data acquisition
+are provided in the original article's
+[supplement](https://doi.org/10.1371/journal.pgen.1004801.s013). In brief,
+samples were analyzed in Waters MSe mode, i.e., following an MS1 scan, an
+all-ion fragmentation was performed and recorded as a MS2 scan. MS1 and MS2 data
+are for each samples are stored in two separate MS data files in CDF format. MS1
+data in files ending wiht *01.CDF* and the respective MS2 scans in a file with
+same name, but ending in *02.CDF*. For the present analysis we focus on MS1 data
+only and thus restrict the import to the MS1-only data files. The *MsIO* R
+package and Bioconductor's `r Biocpkg("MsBackendMetaboLights")` packages are
+used to retrieve and cache the MS data directly from the MetaboLights
+repository.
+
+```{r}
+#' Load required libraries
+library(MsBackendMetaboLights)
+library(MsExperiment)
+library(MsIO)
+library(xcms)
+
+library(peakRAM) # Track memory usage and processing time
+library(pander)  # To render tables
+
+library(readxl) # Import of spreadsheets
+
+#' Retrieve the MS1 data from the MetaboLights data set
+mlp <- MetaboLightsParam(mtblsId = "MTBLS93", filePattern = "01.CDF$")
+
+twins <- readMsObject(MsExperiment(), mlp, keepOntology = FALSE,
+                      keepProtocol = FALSE, simplify = FALSE)
+twins
+```
+
+The data set includes in total `r length(spectra(twins))` MS spectra for
+`r length(twins)` samples.
+
+The size of the data object in memory:
+
+```{r}
+print(object.size(twins), units = "GB")
+```
+
+Note that this data object contains only the MS metadata (i.e., retention times,
+MS levels etc), but no MS peaks data (i.e., *m/z* and intensity values). With
+the default data representation of the *Spectra* package, MS peaks data are only
+loaded upon demand from the original data files.
+
+
+## Overview of sample and experiment metadata
+
+Various experimental and sample metadata are available for the data set in the
+imported object's `sampleData()`. These are directly imported from the
+respective data files in *MetaboLights*. The format of the imported variable
+names is however not ideal for R-based data processing and we thus rename the
+most relevant ones below.
+
+```{r}
+#' Select variable names with eventually interesting information
+scol <- c("Factor Value[Gender]", "Factor Value[Age]",
+          "Factor Value[Cluster effect]", "Factor Value[RMSD]",
+          "Factor Value[Injection number]", "Factor Value[Spectrum type]",
+          "Factor Value[Analysis date]", "Sample Name")
+#' Define R-save names for these
+names(scol) <- c("sex", "age", "cluster_effect", "rmsd", "injection_number",
+                 "spectrum_type", "analysis_date", "sample_name")
+#' Rename the variables
+colnames(sampleData(twins))[match(scol, colnames(sampleData(twins)))] <-
+    names(scol)
+
+table(sampleData(twins)$sex)
+```
+
+
+```{r, eval = FALSE}
+library(RSQLite)
+con <- dbConnect(SQLite(), "twins.sqlite")
+
+library(MsBackendSql)
+twins_db <- twins
+
+twins_db@spectra <- setBackend(twins_db@spectra, MsBackendSql(), dbcon = con)
+#' took: db size:
+```
+
+## Parallel processing setup
+
+Many functions from *xcms*, in particular the ones requiring heavy calculations,
+support parallel processing. Processing functions, will then split the data
+among these processes and perform the calculations in parallel. While parallel
+processing can reduce the processing, it is important to note that it also
+requires all data that is being processed to be in memory. There should thus
+always be a balance between the number of parallel processes and the available
+and required main memory needed. See also section *Performance evaluation* below
+for more information. In our example we choose to use 8 CPUs in parallel.
+
+```{r}
+#' Default parallel processing setup.
+register(MulticoreParam(8L))
+```
+
+Every function from *xcms* supporting parallel processing will now use this
+default parallel processing setup.
+
+
+## Initial data evaluation
+
+Before preprocessing, we inspect the available LC-MS data and create a base peak
+chromatogram (BPC). To reduce the processing time, we create this BPC on 200
+randomly selected samples.
+
+```{r}
+#' Select 200 randomly selected samples
+set.seed(123)
+twins_rand <- twins[sample(seq_along(twins), 200)]
+```
+
+We next create the BPC. With parameter `chunkSize = 8L` we specify to load and
+process the MS peaks data of 8 MS data files at a time. The `peakRAM()` function
+is used to track memory usage and processing time. While the function will
+process the data of 8 files at a time in parallel, there is no large performance
+gain for that, because the processing consists of simply returning the maximum
+intensity per spectrum.
+
+```{r}
+#' Create the BPC for the data subset
+p <- peakRAM(
+    bpc <- chromatogram(twins_rand, aggregationFun = "max", chunkSize = 8)
+)
+```
+
+The time and maximal (peak) memory used are:
+
+```{r, results = "asis"}
+tmp <- data.frame(
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "BPC extraction from 200 random samples."))
+```
+
+The BPC of these 200 random samples is shown below.
+
+```{r large-scale-bpc, eval = FALSE}
+plot(bpc, col = "#00000060")
+```
+
+Based on the BPC above, we filter the data set to spectra measured between 20
+and 900 seconds. Such restriction of the data set also avoids to perform the
+chromatographic peak detection in the part of the LC where no compounds are
+expected to elute.
+
+```{r, eval = FALSE}
+twins <- filterSpectra(twins, filterRt, rt = c(20, 900))
+```
+
+We next inspect the signal for selected lipids that have been annotated in the
+original article (described in Figure S2 of the [original
+paper](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004801)).
+The retention times and *m/z* of these compounds is imported from a spreadsheet
+available within the *Metabonaut* package.
+
+```{r, results = "asis", eval = FALSE}
+kc <- read_xlsx("vignettes/known_compounds_largescale.xlsx") |>
+    as.data.frame()
+rownames(kc) <- kc$name
+kc$rtmin <- kc$rt - 20
+kc$rtmax <- kc$rt + 20
+kc$mzmin <- kc$mz - 0.01
+kc$mzmax <- kc$mz + 0.01
+
+pandoc.table(
+    kc, split.table = Inf, style = "rmarkdown",
+    caption = "Selected lipids that were annotated in the original article.")
+```
+
+We extract and plot the ion chromatograms (EIC) for these 3 compounds from the
+200 randomly selected samples.
+
+```{r large-scale-eic-random, eval = FALSE}
+#' Extract the ion chromatogram for the 3 compounds
+eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
+                     rt = cbind(kc$rtmin, kc$rtmax), chunkSize = 8)
+#' Plot the EICs
+plot(eics)
+```
+
+Apparent retention time shifts are visible for all 3 compounds. We can next
+evaluate chromatographic peak detection settings on these example signals.
+
+```{r large-scale-eic-random-cp, eval = FALSE}
+param <- CentWaveParam(ppm = 25,
+                       peakwidth = c(2, 20),
+                       snthresh = 0,
+                       mzCenterFun = "wMean",
+                       integrate = 2)
+met_test <- findChromPeaks(eics, param = param)
+chromPeaks(met_test[1])
+plot(met_test)
+```
+
+Chromatographic peaks were detected in all cases, but due to the large number of
+samples investigated it is not easy to evaluate the results properly. We thus
+create the same plot for only the first 5 samples.
+
+```{r large-scale-eic-random-cp-5, eval = FALSE}
+plot(met_test[, 1:5])
+```
+
+The large peak was thus correctly identified. Also the lower abundance peak
+would be detected if the `snthresh` would be reduced for the peak detection in
+the EIC signal. Noise estimation is difficult for peak detection in extracted
+ion signals, as most of the chromatogram contains actual signal from the
+ion. This is different for the preprocessing on the full data set performed in
+the next section as much more *real* background signal is present in the full MS
+data to properly estimate the noise.
+
+
+## Preprocessing
+
+We next perform the preprocessing of the LC-MS data. Settings of the individual
+processing steps were taken from the original [data analysis R
+script](https://github.com/andgan/metabolomics_pipeline) and adapted to the new
+*xcms* interface.
+
+At first we perform the chromatographic peak detection using the *centWave*
+method. With the parameter `hdf5File` we define the name (and eventually path)
+for a file to keep the preprocessing results. Information on identified
+chromatographic peaks and results from later preprocessing steps will then be
+stored into this file. The HDF5 file format guarantees efficient storage, and
+retrieval, of these results or subsets thereof. The memory footprint of this new
+result object is thus very small which is ideal for the processing of very large
+data sets, also on conventional computing infrastructure. With `chunkSize = 8`
+we define to load and process the MS data of 8 data files at a time. Peak
+detection is then performed in parallel on 8 CPUs using our predefined default
+parallel processing setup.
+
+```{r, eval = FALSE}
+cwp <- CentWaveParam(ppm = 25,
+                     peakwidth = c(2, 20),
+                     prefilter = c(3, 500),
+                     snthresh = 8,
+                     mzCenterFun = "wMean",
+                     integrate = 2)
+
+if (file.exists("twins.h5")) invisible(file.remove("twins.h5"))
+p <- peakRAM(
+    twins <- findChromPeaks(twins, param = cwp, chunkSize = 8,
+                            hdf5File = "twins.h5")
+)
+save(twins, file = "twins.RData")
+
+#' this took: (SerialParam)
+#' - 103530 seconds: 28.7 hours
+#' - Total RAM: 3GB
+#' - Peak RAM: 13GB
+#' - memory size of `twins`: 8.3 GB, chromPeaks: 3.8 GB, chromPeakData: 1.9 GB
+#' - `nrow(chromPeaks)`: 25,213,069
+
+#' this took: (MulticoreParam(8), HDF5 backend)
+#' - 24601 seconds: 6.8 hours
+#' - Total RAM: 1.4MB
+#' - Peak RAM: 8152GB
+#' - memory size of `twins`: 1.8 GB, chromPeaks: 3.4 GB, chromPeakData: 1.7 GB
+#' - `nrow(chromPeaks)`: 22,568,648
+```
+
+Memory usage and time elapsed for this processing step where:
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "the chromatographic peak detection step on the",
+                     " full data."))
+
+```
+
+As a result, the `findChromPeaks()` function returned an object of type
+`XcmsExperimentHdf5`, which, as described above, stored all preprocessing
+results on-disk in a file in HDF5 format. The size of this result object in
+memory is thus not much larger than the original object representing the MS
+data:
+
+```{r, eval = FALSE}
+print(object.size(twins), units = "GB")
+```
+
+The identified chromatographic peaks are stored as a numeric matrix. Depending
+on the size of the experiment and MS data files as well as the used peak
+detection settings, this matrix can also be very large and use a big part of the
+main memory, which can significantly slow down subsequent analysis steps. Below
+we load this data matrix into memory to evaluate its size.
+
+```{r, eval = FALSE}
+#' Load the chromatographic peak detection results and
+#' get its size.
+chromPeaks(twins) |>
+    object.size() |>
+    print(units = "GB")
+
+```
+
+For the present data set and the used settings, the size of the chromatographic
+peak matrix seems manageable also for regular computers. However, having this
+data object all the time in memory can have negative impact on processing
+efficiency and in the worst case have R running out of memory along the
+further analysis.
+
+Below we count the number of chromatographic peaks detected per sample and
+determine also their total sum. Here we take advantage of the possibility to
+load only selected columns of the chromatographic peak matrix, which will reduce
+the memory need for the present calculation. Also, we use `bySample = TRUE`
+which returns the result as a `list` of chromatographic peak matrices, one per
+sample.
+
+```{r, eval = FALSE}
+#' Load the "into" column from the chrom peak matrix
+pc <- chromPeaks(twins, columns = "into", bySample = TRUE)
+
+#' The distribution of the number of peaks counts
+vapply(pc, nrow, integer(1)) |>
+    quantile()
+```
+
+Between 5000 and 6000 chromatographic peaks have been detected per sample. The
+total number of peaks is:
+
+```{r, eval = FALSE}
+vapply(pc, nrow, integer(1)) |>
+    sum()
+```
+
+Next we perform the *peak refinement*. This step helps to reduce common peak
+detection artifacts, such as duplicated peaks, overlapping peaks or artificially
+split peaks. Again, we process the data in chunks of 8 data files at a time to
+keep memory usage manageable for the used computer system.
+
+```{r, eval = FALSE}
+#' Perform peak refinement
+mnpp <- MergeNeighboringPeaksParam(expandRt = 5)
+
+p <- peakRAM(
+    twins <- refineChromPeaks(twins, param = mnpp, chunkSize = 8)
+)
+
+#' Maybe test if serialparam would not be more efficient? memory wise? processing speed?
+```
+
+Memory usage and time elapsed for this processing step where:
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "the chromatographic peak refinement."))
+
+```
+
+LLLLL continue with correspondence etc.
+
+I have some fear that maybe some of the peaks are merged, but i check for it
+during correspondence.
+
+```{r, eval = FALSE}
+# Initial correspondence analysis - i'm being quite strict, let's see if we get any res
+gr <- seq_len(nrow(sampleData(lcms1)))
+param <- PeakDensityParam(sampleGroups = gr,
+                          minFraction = 0.9,
+                          binSize = 0.01, ppm = 10,
+                          bw = 3) #larger bw to accomodate the large shift.
+
+plotChromPeakDensity(
+    eics_peak[1], param = param,
+    peakPch = 16)
+
+lcms1 <- groupChromPeaks(lcms1, param = param)
+
+#' Define parameters of choice
+param <- PeakGroupsParam(minFraction = 0.9, extraPeaks = 50,
+                         span = 0.5)
+#' Perform the alignment
+lcms1 <- adjustRtime(lcms1, param = param)
+eics_align <- chromatogram(lcms1, mz = c(kc$mzmin, kc$mzmax), rt = c(kc$rtmin, kc$rtmax), chunkSize = 2)
+
+plot(eics_align)
+```
+
+It works better than I expected !! so nice though.
+
+Running correspodencne below one more time, this time being stricter on the
+`bw` and looser for the `minFraction`.
+
+```{r, eval = FALSE}
+param <- PeakDensityParam(sampleGroups = gr,
+                          minFraction = 0.5,# also lower because sample variability.
+                          binSize = 0.01, ppm = 10,
+                          bw = 2) #now reduced
+
+lcms1 <- groupChromPeaks(lcms1, param = param)
+```
+
+Quick check of the results below.
+
+```{r, eval = FALSE}
+nrow(featureDefinitions(lcms1)) # ok that's a crazy number ahah
+# Bin features per RT slices
+vc <- featureDefinitions(lcms1)$rtmed
+breaks <- seq(0, max(vc, na.rm = TRUE) + 1, length.out = 15) |>
+    round(0)
+cuts <- cut(vc, breaks = breaks, include.lowest = TRUE)
+table(cuts)
+```
+
+```{r, eval = FALSE}
+lcms1_filt <- filterFeatures(lcms1, filter = RsdFilter(qcIndex = gr))
+## reduces the crazy number. Idk if it matters but ye, i guess that's a possiblity
+```
+
+# Performance evaluation
+
+In this section we evaluate performance and memory requirements of *xcms* for
+data preprocessing. R's copy-on-change strategy can be a bottleneck, in
+particular for very large data sets as data objects (and hence preprocessing
+results) are copied temporarily during a data analysis. We compare memory usage
+for the default `XcmsExperiment` object as well as the new `XcmsExperimentHdf5`
+result object and evaluate scalability of the preprocessing by distributing the
+load to separate CPUs. In contract to the `XcmsExperiment` object, the
+`XcmsExperimentHdf5` object keeps all preprocessing results *on-disk* in an HDF5
+file reducing thus the memory footprint. Below we create a subset of the data
+consisting of 100 randomly selected files.
+
+```{r, eval = FALSE}
+library(MsBackendMetaboLights)
+library(MsExperiment)
+library(MsIO)
+library(xcms)
+
+#' retrieve the MS1 data from the MetaboLights data set
+mlp <- MetaboLightsParam(mtblsId = "MTBLS93")
+
+twins <- readMsObject(MsExperiment(), mlp, keepOntology = FALSE,
+                      keepProtocol = FALSE, simplify = FALSE)
+
+set.seed(123)
+tsub <- twins[sample(seq_along(twins), 100)]
+```
+
+We perform chromatographic peak detection on this subset for different
+configurations:
+
+- Peak detection using the default `XcmsExperiment` result object.
+- Peak detection using the `XcmsExperimentHdf5` result object.
+- Peak detection using 1, 2, 4 and 8 CPUs for both result objects.
+
+We use a `chunkSize = 8` for all these setups, which will load the MS data for 8
+data files into memory. The time and memory usage to access this data is:
+
+```{r, eval = FALSE}
+library(peakRAM)
+
+peakRAM(tmp <- peaksData(spectra(tsub[1:8])))
+```
+
+And the memory used of the resulting MS data:
+
+```{r, eval = FALSE}
+print(object.size(tmp), units = "GB")
+```
+
+We next execute the performance tests. To use the new `XcmsExperimentHdf5`, we
+need to specify the path and file name of the HDF5 file where the results should
+be stored to.
+
+```{r, eval = FALSE}
+#' Eventually remove the result HDF5 object if present
+if (file.exists("tres.h5")) invisible(file.remove("tres.h5"))
+p <- peakRAM(
+    tres <- findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                           BPPARAM = SerialParam()),
+    findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                   BPPARAM = MulticoreParam(2)),
+    findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                   BPPARAM = MulticoreParam(4)),
+    findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                   BPPARAM = MulticoreParam(8)),
+    tres_h5 <- findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                              BPPARAM = SerialParam(), hdf5File = "tres.h5"),
+    findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                   BPPARAM = MulticoreParam(2), hdf5File = tempfile()),
+    findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                   BPPARAM = MulticoreParam(4), hdf5File = tempfile()),
+    findChromPeaks(tsub, param = cwp, chunkSize = 8,
+                   BPPARAM = MulticoreParam(8), hdf5File = tempfile())
+)
+#' Results from 2025-03-24:
+#' Total RAM used: 50MB for XcmsExperiment, 0MB for others
+#' Peak RAM used: 7.5GB for all
+#' Time: ~ 2000, 1200, 750, 600 seconds with about 5-10 seconds more for HDF5
+
+```
+
+*peakRAM* can not correctly monitor the memory usage for multi-core processing,
+thus we evaluate memory usage only for the *serial* processing setup.
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
+    `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "chromatographic peak detection using different number ",
+                     "of CPUs. Data was loaded and processed in chunks of ",
+                     "8 data files."))
+```
+
+The memory demand is dependent on the `chunkSize` parameter, i.e. the number of
+files (samples) from which the MS data is loaded and processed at a time. The
+peak RAM usage for `chunkSize = 8` is, for the present data set, about twice as
+large as the size of the respective MS data in memory. The processing time is
+reduced with an increase in the number of CPUs used, but this relationship is
+not linear.
+
+```{r, eval = FALSE}
+plot(tmp[1:4, "CPUs"], tmp[1:4, "Processing time [min]"],
+     type = "b", col = "#ff000080", xlab = "CPUs", ylab = "Time [min]")
+points(tmp[5:8, "CPUs"], tmp[5:8, "Processing time [min]"],
+       type = "b", col = "#0000ff80")
+grid()
+legend("topright", col = c("#ff000080", "#0000ff80"), pch = 1,
+       legend = c("Memory", "HDF5 file"))
+```
+
+The largest performance gain is between serial processing and parallel
+processing with two CPUs. Importantly, the performance of keeping the results in
+memory (for the `XcmsExperiment` result object) or storing them to a HDF5 file
+(for the `XcmsExperimentHdf5` file) is comparable.
+
+We next evaluate the performance of the peak refinement step for the different
+setups re-using the parameter object from the peak refinement on the full
+data. Processing an `XcmsExperimentHdf5` object will overwrite the results in
+the associated HDF5 files. To perform the peak refinement on the same initial
+data we thus need to create copies of the original HDF5 file for each
+configuration.
+
+```{r, eval = FALSE}
+#' Create copies of the original peak detection results
+t1 <- tres_h5
+tf <- tempfile()
+file.copy(tres_h5@hdf5_file, tf)
+t1@hdf5_file <- tf
+
+t2 <- tres_h5
+tf <- tempfile()
+file.copy(tres_h5@hdf5_file, tf)
+t2@hdf5_file <- tf
+
+t4 <- tres_h5
+tf <- tempfile()
+file.copy(tres_h5@hdf5_file, tf)
+t4@hdf5_file <- tf
+
+t8 <- tres_h5
+tf <- tempfile()
+file.copy(tres_h5@hdf5_file, tf)
+t8@hdf5_file <- tf
+
+#' Run peak refinement with different configurations
+p <- peakRAM(
+    tres_2 <- refineChromPeaks(tres, param = mnpp, chunkSize = 8,
+                               BPPARAM = SerialParam()),
+    refineChromPeaks(tres, param = mnpp, chunkSize = 8,
+                     BPPARAM = MulticoreParam(2)),
+    refineChromPeaks(tres, param = mnpp, chunkSize = 8,
+                     BPPARAM = MulticoreParam(4)),
+    refineChromPeaks(tres, param = mnpp, chunkSize = 8,
+                     BPPARAM = MulticoreParam(8)),
+    t1 <- refineChromPeaks(t1, param = mnpp, chunkSize = 8,
+                           BPPARAM = SerialParam()),
+    t2 <- refineChromPeaks(t2, param = mnpp, chunkSize = 8,
+                           BPPARAM = MulticoreParam(2)),
+    t4 <- refineChromPeaks(t4, param = mnpp, chunkSize = 8,
+                           BPPARAM = MulticoreParam(4)),
+    t8 <- refineChromPeaks(t8, param = mnpp, chunkSize = 8,
+                           BPPARAM = MulticoreParam(8))
+)
+```
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
+    `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "chromatographic peak refinement using different number ",
+                     "of CPUs. Data was loaded and processed in chunks of ",
+                     "8 data files."))
+```
+
+The maximum memory usage is the same for all settings and is again depending on
+the number of data files from which raw data is imported. The processing time is
+not reduced considerably by the number of CPUs. This however depends also on
+the data set and the number of candidate peaks for merging. Processing times are
+also similar between the in-memory and on-disk results of the `XcmsExperiment`
+and `XcmsExperimentHdf5` objects.
+
+Next we evaluate the performance of a correspondence analysis with the *peak
+density* method. This method uses only the `chromPeaks()` matrix for the
+analysis and does thus not support the `chunkSize` parameter nor does it support
+parallel processing. We thus only compare the performance of in-memory and
+on-disk results below.
+
+```{r, eval = FALSE}
+pdp <- PeakDensityParam(sampleGroups = rep(1, length(tsub)),
+                        minFraction = 0.3,
+                        binSize = 0.01, ppm = 10,
+                        bw = 3)
+
+#' Evaluate performance of the correspondence analysis
+p <- peakRAM(
+    tres_2 <- groupChromPeaks(tres_2, param = pdp),
+    t1 <- groupChromPeaks(t1, param = pdp)
+)
+```
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5")),
+    `CPUs` = c(1, 1),
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [sec]` = p$Elapsed_Time_sec,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "correspondence analysis."))
+```
+
+The performance and memory demand is similar for the two result objects.
+
+```{r, echo = FALSE, message = FALSE, eval = FALSE}
+#' Silently running the correspondence for all HDF5 result objects
+t2 <- groupChromPeaks(t2, param = pdp)
+t4 <- groupChromPeaks(t4, param = pdp)
+t8 <- groupChromPeaks(t8, param = pdp)
+```
+
+Next we evaluate the performance of the retention time alignment step using the
+*peak groups* approach. This method relies on the peak detection and
+correspondence results and does not support parallel processing.
+
+```{r, eval = FALSE}
+pgp <- PeakGroupsParam(minFraction = 0.9, extraPeaks = 1000,
+                       span = 0.5)
+
+#' Evaluate performance of the correspondence analysis
+p <- peakRAM(
+    tres_2 <- adjustRtime(tres_2, param = pgp),
+    t1 <- adjustRtime(t1, param = pgp)
+)
+```
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5")),
+    `CPUs` = c(1, 1),
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [sec]` = p$Elapsed_Time_sec,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "retention time alignment analysis."))
+```
+
+```{r, echo = FALSE, message = FALSE, eval = FALSE}
+#' Silently performing alignment for all HDF5 result objects
+t2 <- adjustRtime(t2, param = pgp)
+t4 <- adjustRtime(t4, param = pgp)
+t8 <- adjustRtime(t8, param = pgp)
+
+#' Silently performing the final correspondence
+tres_2 <- groupChromPeaks(tres_2, param = pdp)
+t1 <- groupChromPeaks(t1, param = pdp)
+t2 <- groupChromPeaks(t2, param = pdp)
+t4 <- groupChromPeaks(t4, param = pdp)
+t8 <- groupChromPeaks(t8, param = pdp)
+```
+
+Processing time is very similar for both result objects, but the memory
+requirement is much lower for the `XcmsExperimentHdf5` object.
+
+Finally we evaluate the performance of the gap-filling step. This method
+requires access to the full MS data and can thus again be configured with the
+`chunkSize` parameter and different parallel processing setups.
+
+```{r, eval = FALSE}
+cpap <- ChromPeakAreaParam()
+
+p <- peakRAM(
+    tres_2 <- fillChromPeaks(tres_2, param = cpap, chunkSize = 8,
+                             BPPARAM = SerialParam()),
+    fillChromPeaks(tres_2, param = cpap, chunkSize = 8,
+                   BPPARAM = MulticoreParam(2)),
+    fillChromPeaks(tres_2, param = cpap, chunkSize = 8,
+                   BPPARAM = MulticoreParam(4)),
+    fillChromPeaks(tres_2, param = cpap, chunkSize = 8,
+                   BPPARAM = MulticoreParam(8)),
+    t1 <- fillChromPeaks(t1, param = cpap, chunkSize = 8,
+                         BPPARAM = SerialParam()),
+    t2 <- fillChromPeaks(t2, param = cpap, chunkSize = 8,
+                         BPPARAM = MulticoreParam(2)),
+    t4 <- fillChromPeaks(t4, param = cpap, chunkSize = 8,
+                         BPPARAM = MulticoreParam(4)),
+    t8 <- fillChromPeaks(t8, param = cpap, chunkSize = 8,
+                         BPPARAM = MulticoreParam(8))
+)
+```
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
+    `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "gap filling using different number ",
+                     "of CPUs. Data was loaded and processed in chunks of ",
+                     "8 data files."))
+```
+
+
+## Details of the software structure and data flow
+
+To reduce memory demand, most processing steps are applied to *chunks* of the
+data at a time. Thus, only the MS data for the currently processed chunks are
+realized in memory. By using the `r Biocpkg("Spectra")` package to represent and
+provide the MS data, *xcms* now also benefits from dedicated `Spectra` data
+*backends* that e.g. retrieve the MS data on-the-fly from the original MS data
+files (`MsBackendMzR`) or from an SQL database (using backends from the `r
+Biocpkg("MsBackendSql")` package). These alternative data representations are
+seamlessly integrated with *xcms* and increase flexibility while reducing memory
+demand. The `XcmsExperiment` result object keeps, similar to the older result
+objects from *xcms*, all preprocessing results in memory, the chromatographic
+peak detection results (`chromPeaks()` matrix) in a large numeric matrix and the
+correspondence results (`featureDefinitions()`) in a data frame. Accessing these
+data is thus fast, but, depending on the size of the experiment, they can also
+be very large eventually blocking a large part of the system's main
+memory. Further, for some additional analysis steps, these tables might need to
+be further processed, e.g. split by sample, which can result in (at least
+temporary) additional copies of the data in memory (which can be further
+complicated by R's copy-on-change strategy). Memory usage can thus, unexpectedly
+to the user, exceed the available system memory. The new `XcmsExperimentHdf5`
+was designed to address this issue by storing all preprocessing results in a
+HDF5 file on disk, keeping thus a very lean memory footprint. Thus, the above
+described chunk-wise processing of *xcms* will also only load preprocessing
+results from the currently processed chunk into memory. Importing preprocessing
+results from the HDF5 file comes with an overhead, but the functions have been
+optimized for import of subsets of data at a time.
+
+## Summary and guidance
+
+- Use the parameter `chunkSize` to specify the number of samples/files that
+  should be processed at a time. Ensure to set this value according to the
+  system's main memory. The MS data of samples from one chunk should not exceed
+  the still available (!) system memory.
+- Parallel processing helps reduce processing time, but does not scale linearly,
+  since parallel processing involves also distribution of data to, and
+  collection of results from, the individual processing nodes.
+- Storing the original MS data in an SQL database (either SQLite or
+  MariaDB/MySQL) can further improve performance. See the `r
+  Biocpkg("MsbackendSql")` for details.
+
+
+
+# Session information
+
+```{r}
+sessionInfo()
+```
