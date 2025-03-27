@@ -9,8 +9,8 @@ vignette: >
 ---
 
 <!--
-# Pre-render with
-knitr::knit("vignettes/large_scale_analysis.Rmd.orig", output = "vignettes/large_scale_analysis.Rmd")
+# Pre-render with (in the vignettes folder)
+knitr::knit("large_scale_analysis.Rmd.orig", output = "large_scale_analysis.Rmd")
 -->
 
 
@@ -18,9 +18,9 @@ knitr::knit("vignettes/large_scale_analysis.Rmd.orig", output = "vignettes/large
 
 
 **Note**: this vignette is
-[**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/)
-because execution of its content is computationally too demanding for the GitHub
-servers that are used to render this document.
+[**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/).
+See the session info for information on packages used and the date the vignette
+was rendered.
 
 
 # Introduction
@@ -207,7 +207,7 @@ pandoc.table(
 
 | Peak RAM [MiB] | Processing time [min] |
 |:--------------:|:---------------------:|
-|      6376      |         5.731         |
+|      6376      |         5.416         |
 
 Table: Peak RAM memory usage and processing time for BPC extraction from 200 random samples.
 
@@ -218,7 +218,7 @@ The BPC of these 200 random samples is shown below.
 plot(bpc, col = "#00000060")
 ```
 
-![plot of chunk large-scale-bpc](vignettes/large-scale-bpc-1.png)
+![plot of chunk bpc](large-scale-bpc-1.png)
 
 Based on the BPC above, we filter the data set to spectra measured between 20
 and 900 seconds. Such restriction of the data set also avoids to perform the
@@ -238,25 +238,28 @@ available within the *Metabonaut* package.
 
 
 ``` r
-kc <- read_xlsx("vignettes/known_compounds_largescale.xlsx") |>
+kc <- read_xlsx("known_compounds_largescale.xlsx") |>
     as.data.frame()
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': `path` does not exist: 'vignettes/known_compounds_largescale.xlsx'
 rownames(kc) <- kc$name
-#> Error: object 'kc' not found
 kc$rtmin <- kc$rt - 20
-#> Error: object 'kc' not found
 kc$rtmax <- kc$rt + 20
-#> Error: object 'kc' not found
 kc$mzmin <- kc$mz - 0.01
-#> Error: object 'kc' not found
 kc$mzmax <- kc$mz + 0.01
-#> Error: object 'kc' not found
 
 pandoc.table(
     kc, split.table = Inf, style = "rmarkdown",
     caption = "Selected lipids that were annotated in the original article.")
-#> Error: object 'kc' not found
 ```
+
+
+
+|      &nbsp;      |     name     |  rt   |  mz   | rtmin | rtmax | mzmin | mzmax |
+|:----------------:|:------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| **LysoPC_18∶1**  | LysoPC_18∶1  | 382.2 | 522.4 | 362.2 | 402.2 | 522.3 | 522.4 |
+| ** LysoPC_18∶2** |  LysoPC_18∶2 | 347.3 | 520.3 | 327.3 | 367.3 | 520.3 | 520.4 |
+|   **MG_18∶2**    |   MG_18∶2    |  384  | 337.3 |  364  |  404  | 337.3 | 337.3 |
+
+Table: Selected lipids that were annotated in the original article.
 
 We extract and plot the ion chromatograms (EIC) for these 3 compounds from the
 200 randomly selected samples.
@@ -266,11 +269,11 @@ We extract and plot the ion chromatograms (EIC) for these 3 compounds from the
 #' Extract the ion chromatogram for the 3 compounds
 eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
                      rt = cbind(kc$rtmin, kc$rtmax), chunkSize = 8)
-#> Error: object 'kc' not found
 #' Plot the EICs
 plot(eics, col = "#00000040")
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'eics' not found
 ```
+
+![plot of chunk eic-random](large-scale-eic-random-1.png)
 
 Apparent retention time shifts are visible for all 3 compounds. We can next
 evaluate chromatographic peak detection settings on these example signals.
@@ -909,6 +912,8 @@ optimized for import of subsets of data at a time.
 
 
 ``` r
+date()
+#> [1] "Thu Mar 27 16:36:16 2025"
 sessionInfo()
 #> R version 4.4.2 (2024-10-31)
 #> Platform: x86_64-pc-linux-gnu

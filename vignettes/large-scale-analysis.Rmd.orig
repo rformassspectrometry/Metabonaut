@@ -9,8 +9,8 @@ vignette: >
 ---
 
 <!--
-# Pre-render with
-knitr::knit("vignettes/large_scale_analysis.Rmd.orig", output = "vignettes/large_scale_analysis.Rmd")
+# Pre-render with (in the vignettes folder)
+knitr::knit("large_scale_analysis.Rmd.orig", output = "large_scale_analysis.Rmd")
 -->
 
 ```{r vignette-setup, include = FALSE}
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   message = FALSE,
-  fig.path = "vignettes/"
+  fig.path = "large-scale-"
 )
 #' tictoc::tic()
 
@@ -29,9 +29,9 @@ library(BiocStyle)
 ```
 
 **Note**: this vignette is
-[**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/)
-because execution of its content is computationally too demanding for the GitHub
-servers that are used to render this document.
+[**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/).
+See the session info for information on packages used and the date the vignette
+was rendered.
 
 
 # Introduction
@@ -76,8 +76,6 @@ library(xcms)
 
 library(peakRAM) # Track memory usage and processing time
 library(pander)  # To render tables
-
-library(readxl) # Import of spreadsheets
 
 #' Retrieve the MS1 data from the MetaboLights data set
 mlp <- MetaboLightsParam(mtblsId = "MTBLS93", filePattern = "01.CDF$")
@@ -199,7 +197,7 @@ pandoc.table(
 
 The BPC of these 200 random samples is shown below.
 
-```{r large-scale-bpc}
+```{r bpc}
 plot(bpc, col = "#00000060")
 ```
 
@@ -215,12 +213,16 @@ twins <- filterSpectra(twins, filterRt, rt = c(20, 900))
 We next inspect the signal for selected lipids that have been annotated in the
 original article (described in Figure S2 of the [original
 paper](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004801)).
-The retention times and *m/z* of these compounds is imported from a spreadsheet
-available within the *Metabonaut* package.
+The retention times and *m/z* values for these compounds were taken from the
+original publication.
 
 ```{r, results = "asis"}
-kc <- read_xlsx("vignettes/known_compounds_largescale.xlsx") |>
-    as.data.frame()
+#' Define m/z and retention times for annotated lipids
+kc <- data.frame(
+    name = c("LysoPC_18:1", "LysoPC_18:2", "MG_18:2"),
+    mz = c(522.356, 520.341, 337.269),
+    rt = c(382.20, 347.28, 384.00)
+)
 rownames(kc) <- kc$name
 kc$rtmin <- kc$rt - 20
 kc$rtmax <- kc$rt + 20
@@ -235,7 +237,7 @@ pandoc.table(
 We extract and plot the ion chromatograms (EIC) for these 3 compounds from the
 200 randomly selected samples.
 
-```{r large-scale-eic-random}
+```{r eic-random}
 #' Extract the ion chromatogram for the 3 compounds
 eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
                      rt = cbind(kc$rtmin, kc$rtmax), chunkSize = 8)
@@ -246,7 +248,7 @@ plot(eics, col = "#00000040")
 Apparent retention time shifts are visible for all 3 compounds. We can next
 evaluate chromatographic peak detection settings on these example signals.
 
-```{r large-scale-eic-random-cp, eval = FALSE}
+```{r eic-random-cp, eval = FALSE}
 param <- CentWaveParam(ppm = 25,
                        peakwidth = c(2, 20),
                        snthresh = 0,
@@ -261,7 +263,7 @@ Chromatographic peaks were detected in all cases, but due to the large number of
 samples investigated it is not easy to evaluate the results properly. We thus
 create the same plot for only the first 5 samples.
 
-```{r large-scale-eic-random-cp-5, eval = FALSE}
+```{r eic-random-cp-5, eval = FALSE}
 plot(met_test[, 1:5])
 ```
 
@@ -422,7 +424,6 @@ pandoc.table(
     tmp, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the chromatographic peak refinement."))
-
 ```
 
 For retention time alignment we will use the *peak groups* method, that adjusts
@@ -432,8 +433,73 @@ next an initial correspondence analysis (with relaxed settings for retention
 time differences) in order to define these.
 
 ```{r, eval = FALSE}
-#' Define settings for an initial correspondence analysis
-pdp <- PeakDensityParam(sampleGroups = rep(1L))
+#' Define settings for an initial correspondence analysis:
+#' require anchor peaks to be present in 70% of samples, but use a
+#' larger bw to allow rt shifts
+pdp <- PeakDensityParam(sampleGroups = rep(1L, length(twins)),
+                        minFraction = 0.7,
+                        binSize = 0.01,
+                        ppm = 10,
+                        bw = 3.5)
+
+p <- peakRAM(
+    twins <- groupChromPeaks(twins, param = pdp)
+)
+```
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "a correspondence analysis."))
+```
+
+We can next perform the retention time alignment using the *peak groups*
+method.
+
+```{r, eval = FALSE}
+pgp <- PeakGroupsParam(minFraction = 0.8, extraPeaks = 100,
+                       span = 0.5)
+#' Perform the alignment
+p <- peakRAM(
+    twins <- adjustRtime(twins, param = pgp)
+)
+save(twins, file = "twins.RData")
+```
+
+```{r, results = "asis", eval = FALSE}
+tmp <- data.frame(
+    `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
+    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    check.names = FALSE)
+pandoc.table(
+    tmp, style = "rmarkdown", split.table = Inf,
+    caption = paste0("Peak RAM memory usage and processing time for ",
+                     "the retention time alignment analysis."))
+```
+
+We evaluate the performance of the alignment on EICs for the 3 known compounds
+in 200 random samples.
+
+```{r, eval = FALSE}
+#' Select 200 random samples and extract ion chromatograms for the 3
+#' annotated lipids. We reuse the same random seed to choose the same
+#' random samples selected before. Note that we use `keepAdjustedRtime = TRUE`
+#' to avoid the retention times being restored to the original values.
+set.seed(123)
+twins_rand <- twins[sample(seq_along(twins), 200), keepAdjustedRtime = TRUE]
+```
+
+```{r eic-random-align}
+#' Extract the ion chromatogram for the 3 compounds
+eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
+                     rt = cbind(kc$rtmin, kc$rtmax), chunkSize = 8)
+#' Plot the EICs
+plot(eics, col = "#00000040", peakBg = "#00000020")
 ```
 
 
@@ -867,5 +933,6 @@ optimized for import of subsets of data at a time.
 # Session information
 
 ```{r}
+date()
 sessionInfo()
 ```
