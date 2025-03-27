@@ -1,4 +1,5 @@
 FROM bioconductor/bioconductor_docker:devel
+## update to 3.21 in april to have stable versioning. 
 
 LABEL name="rformassspectrometry/Metabonaut" \
       url="https://github.com/rformassspectrometry/Metabonaut" \

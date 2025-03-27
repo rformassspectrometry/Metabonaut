@@ -6,7 +6,6 @@ local_data
 vignettes/.quarto/
 /_site/
 *.html
-*.RData
 *.rmarkdown
 *.js
 *.css
