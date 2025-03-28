@@ -58,7 +58,8 @@ Suggests:
     SummarizedExperiment,
     pheatmap,
     knitr,
-    quarto
+    quarto, 
+    peakRAM
 Remotes:
     RforMassSpectrometry/MsIO
 URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
