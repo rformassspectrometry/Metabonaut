@@ -6,6 +6,7 @@ vignette: >
   %\VignetteIndexEntry{Large Scale Data Preprocessing with xcms}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{peakRAM,MsBackendMetaboLights,MsExperiment,xcms,MsIO,pander}
 ---
 
 <!--
@@ -21,7 +22,7 @@ knitr::opts_chunk$set(
   fig.path = "large-scale-"
 )
 
-eval_preprocess <- FALSE
+eval_preprocess <- TRUE
 eval_performance <- TRUE
 ```
 
