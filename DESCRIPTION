@@ -1,6 +1,6 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.0.0
+Version: 1.1.0
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
             email = "philippine.louail@eurac.edu",
@@ -38,6 +38,7 @@ Suggests:
     Spectra (>= 1.11.10),
     MsExperiment,
     MsIO (>= 0.0.8),
+    SpectriPy,
     MsBackendMetaboLights,
     ggVennDiagram,
     UpSetR,
@@ -58,12 +59,17 @@ Suggests:
     SummarizedExperiment,
     pheatmap,
     knitr,
+    reticulate,
     quarto
 Remotes:
     RforMassSpectrometry/MsIO
+    RforMassSpectrometry/SpectriPy
 URL: https://github.com/rformassspectrometry/metabonaut/, https://rformassspectrometry.github.io/metabonaut/
 BugReports: https://github.com/rformassspectrometry/metabonaut/issues/new
 BiocType: Workflow
 RoxygenNote: 7.3.2
 VignetteBuilder: quarto
-SystemRequirements: pandoc
+SystemRequirements:
+    pandoc,
+    python (>= 3.10),
+    quarto
