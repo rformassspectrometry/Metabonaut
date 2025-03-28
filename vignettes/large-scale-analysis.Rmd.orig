@@ -6,7 +6,7 @@ vignette: >
   %\VignetteIndexEntry{Large Scale Data Preprocessing with xcms}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{peakRAM,MsBackendMetaboLights,MsExperiment,xcms,MsIO,pander}
+  %\VignetteDepends{MsBackendMetaboLights,MsExperiment,xcms,MsIO,pander}
 ---
 
 <!--
@@ -28,6 +28,8 @@ eval_performance <- TRUE
 
 ```{r, message = FALSE, echo = FALSE}
 library(BiocStyle)
+if (is.na(packageDescription("peakRAM")[1L]))
+    install.packages("peakRAM")
 ```
 
 **Note**: this vignette is
@@ -310,21 +312,7 @@ p <- peakRAM(
     twins <- findChromPeaks(twins, param = cwp, chunkSize = 8,
                             hdf5File = "twins.h5")
 )
-save(twins, file = "twins.RData")
 
-#' this took: (SerialParam)
-#' - 103530 seconds: 28.7 hours
-#' - Total RAM: 3GB
-#' - Peak RAM: 13GB
-#' - memory size of `twins`: 8.3 GB, chromPeaks: 3.8 GB, chromPeakData: 1.9 GB
-#' - `nrow(chromPeaks)`: 25,213,069
-
-#' this took: (MulticoreParam(8), HDF5 backend)
-#' - 24601 seconds: 6.8 hours
-#' - Total RAM: 1.4MB
-#' - Peak RAM: 8152GB
-#' - memory size of `twins`: 1.8 GB, chromPeaks: 3.4 GB, chromPeakData: 1.7 GB
-#' - `nrow(chromPeaks)`: 22,568,648
 ```
 
 Memory usage and time elapsed for this processing step where:
@@ -410,9 +398,6 @@ p <- peakRAM(
     twins <- refineChromPeaks(twins, param = mnpp, chunkSize = 8)
 )
 
-save(twins, file = "twins.RData")
-
-#' Maybe test if serialparam would not be more efficient? memory wise? processing speed?
 ```
 
 Memory usage and time elapsed for this processing step where:
@@ -470,7 +455,6 @@ pgp <- PeakGroupsParam(minFraction = 0.8, extraPeaks = 100,
 p <- peakRAM(
     twins <- adjustRtime(twins, param = pgp)
 )
-save(twins, file = "twins.RData")
 ```
 
 ```{r, results = "asis", eval = eval_preprocess}
@@ -1010,7 +994,22 @@ optimized for import of subsets of data at a time.
 
 # Session information
 
+The R code was run on:
+
 ```{r}
 date()
+```
+
+Information on the computer system:
+
+```{r}
+library(benchmarkme)
+get_cpu()
+get_ram()
+```
+
+Information on the R session:
+
+```{r}
 sessionInfo()
 ```

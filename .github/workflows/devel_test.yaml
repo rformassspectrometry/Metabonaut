@@ -51,7 +51,6 @@ jobs:
         run: |
           BiocManager::install('RforMassSpectrometry/MsBackendMetaboLights', ask = FALSE, dependencies = TRUE)
           BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, dependencies = TRUE)
-          BiocManager::install('peakRAM', ask = FALSE, dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Run R CMD check
