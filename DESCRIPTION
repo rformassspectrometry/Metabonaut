@@ -1,6 +1,6 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.0.0
+Version: 1.0.1
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
             email = "philippine.louail@eurac.edu",
@@ -61,8 +61,8 @@ Suggests:
     quarto
 Remotes:
     RforMassSpectrometry/MsIO
-URL: https://github.com/rformassspectrometry/metabonaut/, https://rformassspectrometry.github.io/metabonaut/
-BugReports: https://github.com/rformassspectrometry/metabonaut/issues/new
+URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
+BugReports: https://github.com/rformassspectrometry/Metabonaut/issues/new
 BiocType: Workflow
 RoxygenNote: 7.3.2
 VignetteBuilder: quarto

@@ -1,5 +1,10 @@
 # Metabonaut 1.0
 
+## Changes in 1.0.1
+
+- Minor fixes of DESCRIPTION and .yml 
+- Addition of a devel branch to the repository to maintain a stable version.
+
 ## Changes in 1.0.0
 
 - More plots in the data investigation vignette.
