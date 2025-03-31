@@ -69,8 +69,8 @@ Suggests:
 Remotes:
     RforMassSpectrometry/MsIO
     RforMassSpectrometry/SpectriPy
-URL: https://github.com/rformassspectrometry/metabonaut/, https://rformassspectrometry.github.io/metabonaut/
-BugReports: https://github.com/rformassspectrometry/metabonaut/issues/new
+URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
+BugReports: https://github.com/rformassspectrometry/Metabonaut/issues/new
 BiocType: Workflow
 RoxygenNote: 7.3.2
 VignetteBuilder: quarto
