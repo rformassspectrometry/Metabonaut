@@ -6,6 +6,7 @@ vignette: >
   %\VignetteIndexEntry{Large Scale Data Preprocessing with xcms}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{MsBackendMetaboLights,MsExperiment,xcms,MsIO,pander}
 ---
 
 <!--
@@ -205,7 +206,7 @@ pandoc.table(
 
 | Peak RAM [MiB] | Processing time [min] |
 |:--------------:|:---------------------:|
-|      4866      |         5.409         |
+|      6374      |         5.085         |
 
 Table: Peak RAM memory usage and processing time for BPC extraction from 200 random samples.
 
@@ -895,21 +896,7 @@ p <- peakRAM(
     twins <- findChromPeaks(twins, param = cwp, chunkSize = 8,
                             hdf5File = "twins.h5")
 )
-save(twins, file = "twins.RData")
 
-#' this took: (SerialParam)
-#' - 103530 seconds: 28.7 hours
-#' - Total RAM: 3GB
-#' - Peak RAM: 13GB
-#' - memory size of `twins`: 8.3 GB, chromPeaks: 3.8 GB, chromPeakData: 1.9 GB
-#' - `nrow(chromPeaks)`: 25,213,069
-
-#' this took: (MulticoreParam(8), HDF5 backend)
-#' - 24601 seconds: 6.8 hours
-#' - Total RAM: 1.4MB
-#' - Peak RAM: 8152GB
-#' - memory size of `twins`: 1.8 GB, chromPeaks: 3.4 GB, chromPeakData: 1.7 GB
-#' - `nrow(chromPeaks)`: 22,568,648
 ```
 
 Memory usage and time elapsed for this processing step where:
@@ -925,8 +912,15 @@ pandoc.table(
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the chromatographic peak detection step on the",
                      " full data."))
-
 ```
+
+
+
+| Peak RAM [MiB] | Processing time [min] |
+|:--------------:|:---------------------:|
+|      8162      |          414          |
+
+Table: Peak RAM memory usage and processing time for the chromatographic peak detection step on the full data.
 
 As a result, the `findChromPeaks()` function returned an object of type
 `XcmsExperimentHdf5`, which, as described above, stored all preprocessing
@@ -937,6 +931,7 @@ data:
 
 ``` r
 print(object.size(twins), units = "GB")
+#> 1.8 Gb
 ```
 
 The identified chromatographic peaks are stored as a numeric matrix. Depending
@@ -952,7 +947,7 @@ we load this data matrix into memory to evaluate its size.
 chromPeaks(twins) |>
     object.size() |>
     print(units = "GB")
-
+#> 3.4 Gb
 ```
 
 For the present data set and the used settings, the size of the chromatographic
@@ -976,6 +971,8 @@ pc <- chromPeaks(twins, columns = "into", bySample = TRUE)
 #' The distribution of the number of peaks counts
 vapply(pc, nrow, integer(1)) |>
     quantile()
+#>     0%    25%    50%    75%   100% 
+#> 3344.0 4919.5 5511.0 6124.0 9167.0
 ```
 
 Between 5000 and 6000 chromatographic peaks have been detected per sample. The
@@ -985,6 +982,7 @@ total number of peaks is:
 ``` r
 vapply(pc, nrow, integer(1)) |>
     sum()
+#> [1] 22568648
 ```
 
 Next we perform the *peak refinement*. This step helps to reduce common peak
@@ -1001,9 +999,6 @@ p <- peakRAM(
     twins <- refineChromPeaks(twins, param = mnpp, chunkSize = 8)
 )
 
-save(twins, file = "twins.RData")
-
-#' Maybe test if serialparam would not be more efficient? memory wise? processing speed?
 ```
 
 Memory usage and time elapsed for this processing step where:
@@ -1019,6 +1014,14 @@ pandoc.table(
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the chromatographic peak refinement."))
 ```
+
+
+
+| Peak RAM [MiB] | Processing time [hours] |
+|:--------------:|:-----------------------:|
+|      5294      |          3.049          |
+
+Table: Peak RAM memory usage and processing time for the chromatographic peak refinement.
 
 For retention time alignment we will use the *peak groups* method, that adjusts
 retention time shifts between samples based on the retention times of common
@@ -1054,6 +1057,14 @@ pandoc.table(
                      "a correspondence analysis."))
 ```
 
+
+
+| Peak RAM [MiB] | Processing time [min] |
+|:--------------:|:---------------------:|
+|      5294      |         1.542         |
+
+Table: Peak RAM memory usage and processing time for a correspondence analysis.
+
 We can next perform the retention time alignment using the *peak groups*
 method.
 
@@ -1065,7 +1076,6 @@ pgp <- PeakGroupsParam(minFraction = 0.8, extraPeaks = 100,
 p <- peakRAM(
     twins <- adjustRtime(twins, param = pgp)
 )
-save(twins, file = "twins.RData")
 ```
 
 
@@ -1079,6 +1089,14 @@ pandoc.table(
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the retention time alignment analysis."))
 ```
+
+
+
+| Peak RAM [MiB] | Processing time [min] |
+|:--------------:|:---------------------:|
+|      2424      |         1.887         |
+
+Table: Peak RAM memory usage and processing time for the retention time alignment analysis.
 
 We evaluate the performance of the alignment on EICs for the 3 known compounds
 in 200 random samples.
@@ -1101,6 +1119,8 @@ eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
 #' Plot the EICs
 plot(eics, col = "#00000020", peakBg = NA)
 ```
+
+![plot of chunk eic-random-align](large-scale-eic-random-align-1.png)
 
 The EICs are nicely aligned.
 
@@ -1134,6 +1154,14 @@ pandoc.table(
                      "the final correspondence analysis."))
 ```
 
+
+
+| Peak RAM [MiB] | Processing time [min] |
+|:--------------:|:---------------------:|
+|      5220      |         2.479         |
+
+Table: Peak RAM memory usage and processing time for the final correspondence analysis.
+
 We also evaluate whether the correspondence could correctly define features for
 the 3 selected lipids.
 
@@ -1154,6 +1182,8 @@ the center peaks into a separate feature.
 plotChromPeakDensity(eics[1])
 ```
 
+![plot of chunk feature-1](large-scale-feature-1-1.png)
+
 Also for the second example, the chromatographic peaks were assigned to two
 separate features.
 
@@ -1162,6 +1192,8 @@ separate features.
 plotChromPeakDensity(eics[2])
 ```
 
+![plot of chunk feature-2](large-scale-feature-2-1.png)
+
 Finally, also for the last example chromatographic peaks were correctly assigned
 to features.
 
@@ -1169,6 +1201,8 @@ to features.
 ``` r
 plotChromPeakDensity(eics[3])
 ```
+
+![plot of chunk feature-3](large-scale-feature-3-1.png)
 
 Below we extract the feature abundances for all features in all samples and
 count the total number of defined features. The `featureValues()` function
@@ -1180,6 +1214,7 @@ store the correspondence results.
 #' Extract the feature abundances for all features in all samples
 fvals <- featureValues(twins, value = "into", method = "sum")
 nrow(fvals)
+#> [1] 4981
 ```
 
 The total number of missing values in this data matrix is:
@@ -1187,6 +1222,7 @@ The total number of missing values in this data matrix is:
 
 ``` r
 sum(is.na(fvals))
+#> [1] 6690736
 ```
 
 As a last step we therefore perform the gap-filling to *rescue* abundances for
@@ -1216,11 +1252,20 @@ pandoc.table(
                      "gap filling."))
 ```
 
+
+
+| Peak RAM [MiB] | Processing time [hours] |
+|:--------------:|:-----------------------:|
+|      6710      |          2.97           |
+
+Table: Peak RAM memory usage and processing time for gap filling.
+
 The number of missing values after gap filling:
 
 
 ``` r
 sum(is.na(featureValues(twins, value = "into", method = "sum")))
+#> [1] 61443
 ```
 
 Since all preprocessing results are stored in an HDF5 file and hence on-disk,
@@ -1233,6 +1278,7 @@ storing the MS data in a SQL database and representing/interfacing it with a
 
 ``` r
 print(object.size(twins), unit = "GB")
+#> 1.9 Gb
 ```
 
 The results from the preprocessing could now be converted to a
@@ -1278,9 +1324,9 @@ library(peakRAM)
 
 peakRAM(tmp <- peaksData(spectra(tsub[1:8])))
 #>                        Function_Call Elapsed_Time_sec Total_RAM_Used_MiB
-#> 1 tmp<-peaksData(spectra(tsub[1:8]))             5.47             1922.9
+#> 1 tmp<-peaksData(spectra(tsub[1:8]))            5.861             1922.9
 #>   Peak_RAM_Used_MiB
-#> 1            3821.1
+#> 1            3865.1
 ```
 
 And the memory used of the resulting MS data:
@@ -1358,14 +1404,14 @@ pandoc.table(
 
 |   Result object    | CPUs | Peak RAM [MiB] | Processing time [min] |
 |:------------------:|:----:|:--------------:|:---------------------:|
-|   XcmsExperiment   |  1   |      5310      |         36.94         |
-|   XcmsExperiment   |  2   |      4948      |         20.77         |
-|   XcmsExperiment   |  4   |      4948      |         12.91         |
-|   XcmsExperiment   |  8   |      4948      |         9.808         |
-| XcmsExperimentHdf5 |  1   |      5055      |         37.37         |
-| XcmsExperimentHdf5 |  2   |      5053      |         21.23         |
-| XcmsExperimentHdf5 |  4   |      5053      |         13.3          |
-| XcmsExperimentHdf5 |  8   |      5053      |         10.49         |
+|   XcmsExperiment   |  1   |      6804      |         39.37         |
+|   XcmsExperiment   |  2   |      6740      |         22.98         |
+|   XcmsExperiment   |  4   |      6740      |         14.19         |
+|   XcmsExperiment   |  8   |      6740      |         11.81         |
+| XcmsExperimentHdf5 |  1   |      6740      |         39.67         |
+| XcmsExperimentHdf5 |  2   |      6740      |         23.02         |
+| XcmsExperimentHdf5 |  4   |      6740      |         14.26         |
+| XcmsExperimentHdf5 |  8   |      6741      |         11.31         |
 
 Table: Peak RAM memory usage and processing time for chromatographic peak detection using different number of CPUs. Data was loaded and processed in chunks of 8 data files.
 
@@ -1472,14 +1518,14 @@ pandoc.table(
 
 |   Result object    | CPUs | Peak RAM [MiB] | Processing time [min] |
 |:------------------:|:----:|:--------------:|:---------------------:|
-|   XcmsExperiment   |  1   |      5053      |         5.861         |
-|   XcmsExperiment   |  2   |      4996      |         4.618         |
-|   XcmsExperiment   |  4   |      4996      |         3.688         |
-|   XcmsExperiment   |  8   |      4996      |         3.767         |
-| XcmsExperimentHdf5 |  1   |      4996      |         6.207         |
-| XcmsExperimentHdf5 |  2   |      4996      |         4.721         |
-| XcmsExperimentHdf5 |  4   |      4996      |         3.774         |
-| XcmsExperimentHdf5 |  8   |      4996      |         3.675         |
+|   XcmsExperiment   |  1   |      6740      |         6.71          |
+|   XcmsExperiment   |  2   |      6689      |         5.373         |
+|   XcmsExperiment   |  4   |      6689      |         4.435         |
+|   XcmsExperiment   |  8   |      6689      |         5.509         |
+| XcmsExperimentHdf5 |  1   |      6689      |         7.021         |
+| XcmsExperimentHdf5 |  2   |      6689      |         5.472         |
+| XcmsExperimentHdf5 |  4   |      6689      |         4.495         |
+| XcmsExperimentHdf5 |  8   |      6689      |         4.462         |
 
 Table: Peak RAM memory usage and processing time for chromatographic peak refinement using different number of CPUs. Data was loaded and processed in chunks of 8 data files.
 
@@ -1529,8 +1575,8 @@ pandoc.table(
 
 |   Result object    | CPUs | Peak RAM [MiB] | Processing time [sec] |
 |:------------------:|:----:|:--------------:|:---------------------:|
-|   XcmsExperiment   |  1   |      1288      |         25.28         |
-| XcmsExperimentHdf5 |  1   |      1202      |         26.52         |
+|   XcmsExperiment   |  1   |      3462      |         27.39         |
+| XcmsExperimentHdf5 |  1   |      3240      |         27.42         |
 
 Table: Peak RAM memory usage and processing time for correspondence analysis.
 
@@ -1553,6 +1599,7 @@ p <- peakRAM(
     tres_2 <- adjustRtime(tres_2, param = pgp),
     t1 <- adjustRtime(t1, param = pgp)
 )
+#> Error in .local(object, param, ...): Alignment results already present. Please either remove them with 'dropAdjustedRtime' in order to perform an alternative, new, alignment, or use 'applyAdjustedRtime' prior 'adjustRtime' to perform a second round of alignment.
 ```
 
 
@@ -1573,12 +1620,17 @@ pandoc.table(
 
 |   Result object    | CPUs | Peak RAM [MiB] | Processing time [sec] |
 |:------------------:|:----:|:--------------:|:---------------------:|
-|   XcmsExperiment   |  1   |      1832      |         2.003         |
-| XcmsExperimentHdf5 |  1   |     381.6      |         2.786         |
+|   XcmsExperiment   |  1   |      3462      |         27.39         |
+| XcmsExperimentHdf5 |  1   |      3240      |         27.42         |
 
 Table: Peak RAM memory usage and processing time for retention time alignment analysis.
 
 
+```
+#> Error in .local(object, param, ...): Alignment results already present. Please either remove them with 'dropAdjustedRtime()' in order to perform an alternative, new, alignment, or use 'applyAdjustedRtime()' prior 'adjustRtime()' to perform a second round of alignment.
+#> Error in .local(object, param, ...): Alignment results already present. Please either remove them with 'dropAdjustedRtime()' in order to perform an alternative, new, alignment, or use 'applyAdjustedRtime()' prior 'adjustRtime()' to perform a second round of alignment.
+#> Error in .local(object, param, ...): Alignment results already present. Please either remove them with 'dropAdjustedRtime()' in order to perform an alternative, new, alignment, or use 'applyAdjustedRtime()' prior 'adjustRtime()' to perform a second round of alignment.
+```
 
 Processing time is very similar for both result objects, but the memory
 requirement is much lower for the `XcmsExperimentHdf5` object.
@@ -1638,14 +1690,14 @@ pandoc.table(
 
 |   Result object    | CPUs | Peak RAM [MiB] | Processing time [min] |
 |:------------------:|:----:|:--------------:|:---------------------:|
-|   XcmsExperiment   |  1   |      4984      |         5.22          |
-|   XcmsExperiment   |  2   |      4959      |         2.237         |
-|   XcmsExperiment   |  4   |      4959      |         2.257         |
-|   XcmsExperiment   |  8   |      4959      |         2.299         |
-| XcmsExperimentHdf5 |  1   |      4959      |         5.263         |
-| XcmsExperimentHdf5 |  2   |      4959      |         4.523         |
-| XcmsExperimentHdf5 |  4   |      4959      |         3.724         |
-| XcmsExperimentHdf5 |  8   |      4959      |         4.072         |
+|   XcmsExperiment   |  1   |      6690      |         6.429         |
+|   XcmsExperiment   |  2   |      6664      |         2.465         |
+|   XcmsExperiment   |  4   |      6664      |         2.579         |
+|   XcmsExperiment   |  8   |      6664      |         2.58          |
+| XcmsExperimentHdf5 |  1   |      6664      |         6.547         |
+| XcmsExperimentHdf5 |  2   |      6664      |         5.379         |
+| XcmsExperimentHdf5 |  4   |      6664      |         4.499         |
+| XcmsExperimentHdf5 |  8   |      6664      |         4.731         |
 
 Table: Peak RAM memory usage and processing time for gap filling using different number of CPUs. Data was loaded and processed in chunks of 8 data files.
 
@@ -1697,10 +1749,36 @@ optimized for import of subsets of data at a time.
 
 # Session information
 
+The R code was run on:
+
 
 ``` r
 date()
-#> [1] "Fri Mar 28 15:48:49 2025"
+#> [1] "Sun Mar 30 03:50:38 2025"
+```
+
+Information on the computer system:
+
+
+``` r
+library(benchmarkme)
+get_cpu()
+#> $vendor_id
+#> [1] "GenuineIntel"
+#> 
+#> $model_name
+#> [1] "13th Gen Intel(R) Core(TM) i7-1370P"
+#> 
+#> $no_of_cores
+#> [1] 20
+get_ram()
+#> 67.1 GB
+```
+
+Information on the R session:
+
+
+``` r
 sessionInfo()
 #> R version 4.4.2 (2024-10-31)
 #> Platform: x86_64-pc-linux-gnu
@@ -1726,12 +1804,13 @@ sessionInfo()
 #> [8] base     
 #> 
 #> other attached packages:
-#>  [1] pander_0.6.6                peakRAM_1.0.2              
-#>  [3] xcms_4.5.4                  MsIO_0.0.9                 
-#>  [5] MsExperiment_1.9.1          ProtGenerics_1.39.2        
-#>  [7] MsBackendMetaboLights_1.1.4 Spectra_1.17.9             
-#>  [9] BiocParallel_1.40.0         S4Vectors_0.44.0           
-#> [11] BiocGenerics_0.52.0         BiocStyle_2.34.0           
+#>  [1] benchmarkme_1.0.8           pander_0.6.6               
+#>  [3] peakRAM_1.0.2               xcms_4.5.4                 
+#>  [5] MsIO_0.0.9                  MsExperiment_1.9.1         
+#>  [7] ProtGenerics_1.39.2         MsBackendMetaboLights_1.1.4
+#>  [9] Spectra_1.17.9              BiocParallel_1.40.0        
+#> [11] S4Vectors_0.44.0            BiocGenerics_0.52.0        
+#> [13] BiocStyle_2.34.0           
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.5                
@@ -1747,12 +1826,12 @@ sessionInfo()
 #>  [21] purrr_1.0.4                 bit_4.6.0                  
 #>  [23] xfun_0.51                   MultiAssayExperiment_1.32.0
 #>  [25] zlibbioc_1.52.0             cachem_1.1.0               
-#>  [27] GenomeInfoDb_1.42.3         jsonlite_1.9.1             
+#>  [27] GenomeInfoDb_1.42.3         jsonlite_2.0.0             
 #>  [29] progress_1.2.3              blob_1.2.4                 
 #>  [31] rhdf5filters_1.18.1         DelayedArray_0.32.0        
 #>  [33] Rhdf5lib_1.28.0             parallel_4.4.2             
 #>  [35] prettyunits_1.2.0           cluster_2.1.8.1            
-#>  [37] R6_2.6.1                    stringi_1.8.4              
+#>  [37] R6_2.6.1                    stringi_1.8.7              
 #>  [39] RColorBrewer_1.1-3          limma_3.62.2               
 #>  [41] GenomicRanges_1.58.0        iterators_1.0.14           
 #>  [43] Rcpp_1.0.14                 SummarizedExperiment_1.36.0
@@ -1764,30 +1843,31 @@ sessionInfo()
 #>  [55] curl_6.2.2                  lattice_0.22-6             
 #>  [57] tibble_3.2.1                plyr_1.8.9                 
 #>  [59] withr_3.0.2                 Biobase_2.66.0             
-#>  [61] evaluate_1.0.3              BiocFileCache_2.15.2       
-#>  [63] alabaster.schemas_1.6.0     affyio_1.76.0              
-#>  [65] pillar_1.10.1               BiocManager_1.30.25        
-#>  [67] filelock_1.0.3              MatrixGenerics_1.18.1      
-#>  [69] foreach_1.5.2               MALDIquant_1.22.3          
-#>  [71] MSnbase_2.32.0              ncdf4_1.24                 
-#>  [73] generics_0.1.3              hms_1.1.3                  
-#>  [75] ggplot2_3.5.1               munsell_0.5.1              
-#>  [77] scales_1.3.0                alabaster.base_1.6.1       
-#>  [79] glue_1.8.0                  MsFeatures_1.14.0          
-#>  [81] lazyeval_0.2.2              tools_4.4.2                
-#>  [83] mzID_1.44.0                 data.table_1.17.0          
-#>  [85] vsn_3.74.0                  QFeatures_1.16.0           
-#>  [87] mzR_2.40.0                  XML_3.99-0.18              
-#>  [89] fs_1.6.5                    rhdf5_2.50.2               
-#>  [91] grid_4.4.2                  impute_1.80.0              
-#>  [93] tidyr_1.3.1                 MsCoreUtils_1.19.2         
-#>  [95] colorspace_2.1-1            GenomeInfoDbData_1.2.13    
-#>  [97] PSMatch_1.10.0              cli_3.6.4                  
-#>  [99] S4Arrays_1.6.0              dplyr_1.1.4                
-#> [101] AnnotationFilter_1.30.0     pcaMethods_1.98.0          
-#> [103] gtable_0.3.6                digest_0.6.37              
-#> [105] SparseArray_1.6.2           memoise_2.0.1              
-#> [107] htmltools_0.5.8.1           lifecycle_1.0.4            
-#> [109] httr_1.4.7                  statmod_1.5.0              
-#> [111] bit64_4.6.0-1               MASS_7.3-65
+#>  [61] benchmarkmeData_1.0.4       evaluate_1.0.3             
+#>  [63] BiocFileCache_2.15.2        alabaster.schemas_1.6.0    
+#>  [65] affyio_1.76.0               pillar_1.10.1              
+#>  [67] BiocManager_1.30.25         filelock_1.0.3             
+#>  [69] MatrixGenerics_1.18.1       foreach_1.5.2              
+#>  [71] MALDIquant_1.22.3           MSnbase_2.32.0             
+#>  [73] ncdf4_1.24                  generics_0.1.3             
+#>  [75] hms_1.1.3                   ggplot2_3.5.1              
+#>  [77] munsell_0.5.1               scales_1.3.0               
+#>  [79] alabaster.base_1.6.1        glue_1.8.0                 
+#>  [81] MsFeatures_1.14.0           lazyeval_0.2.2             
+#>  [83] tools_4.4.2                 mzID_1.44.0                
+#>  [85] data.table_1.17.0           vsn_3.74.0                 
+#>  [87] QFeatures_1.16.0            mzR_2.40.0                 
+#>  [89] XML_3.99-0.18               fs_1.6.5                   
+#>  [91] rhdf5_2.50.2                grid_4.4.2                 
+#>  [93] impute_1.80.0               tidyr_1.3.1                
+#>  [95] MsCoreUtils_1.19.2          colorspace_2.1-1           
+#>  [97] GenomeInfoDbData_1.2.13     PSMatch_1.10.0             
+#>  [99] cli_3.6.4                   S4Arrays_1.6.0             
+#> [101] dplyr_1.1.4                 AnnotationFilter_1.30.0    
+#> [103] pcaMethods_1.98.0           gtable_0.3.6               
+#> [105] digest_0.6.37               SparseArray_1.6.2          
+#> [107] memoise_2.0.1               htmltools_0.5.8.1          
+#> [109] lifecycle_1.0.4             httr_1.4.7                 
+#> [111] statmod_1.5.0               bit64_4.6.0-1              
+#> [113] MASS_7.3-65
 ```
