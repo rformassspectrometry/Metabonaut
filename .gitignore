@@ -6,7 +6,6 @@ local_data
 vignettes/.quarto/
 /_site/
 *.html
-*.RData
 *.rmarkdown
 *.js
 *.css
@@ -15,3 +14,4 @@ man/figures
 /vignettes/res
 *.log
 vignettes/images/sitcker_draft.xcf
+/vignettes/dataset-investigation_files
