@@ -1,5 +1,5 @@
 FROM bioconductor/bioconductor_docker:devel
-## update to 3.21 in april to have stable versioning. 
+## update to 3.21 in april to have stable versioning.
 
 LABEL name="rformassspectrometry/Metabonaut" \
       url="https://github.com/rformassspectrometry/Metabonaut" \
@@ -14,6 +14,10 @@ COPY --chown=rstudio:rstudio . /home/rstudio/
 ## Install the required packages
 RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsBackendMetaboLights', ask = FALSE, dependencies = TRUE)"
 RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, dependencies = TRUE)"
+
+## Install reticulate and miniconda for the SpectriPy vignette
+RUN Rscript -e "install.packages('reticulate')" \
+    && Rscript -e "reticulate::install_miniconda()"
 
 ## Create the BiocFileCache and cache the data files to avoid repeated downloads
 USER rstudio

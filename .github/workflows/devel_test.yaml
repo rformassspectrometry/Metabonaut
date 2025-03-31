@@ -33,6 +33,11 @@ jobs:
           echo ".libPaths('/__w/_temp/Library')" > ~/.Rprofile
         shell: bash
 
+      - name: Install Miniconda
+        run: |
+          Rscript -e "install.packages('reticulate')"
+          Rscript -e "reticulate::install_miniconda()"
+
       - name: Query dependencies
         run: |
           install.packages('remotes')
