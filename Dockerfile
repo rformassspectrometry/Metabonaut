@@ -21,7 +21,9 @@ RUN Rscript -e "install.packages('reticulate')" \
 
 ## Create the BiocFileCache and cache the data files to avoid repeated downloads
 USER rstudio
-RUN Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
+RUN Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())" \
+    && Rscript -e "install.packages('reticulate')" \
+    && Rscript -e "reticulate::install_miniconda()"
 USER root
 
 ## Install the current package with vignettes
