@@ -2,10 +2,15 @@
 
 ## Changes in 1.1.0
 
-- Addition of a devel branch to the repository to maintain a stable version. 
-- Addition of a new vignette depicting a large scale processing using xcms. 
+- Addition of a devel branch to the repository to maintain a stable version.
+- Addition of a new vignette depicting a large scale processing using xcms.
   Do to its size, this is added as a pre-computed vignette to prevent re-knitting
-  as much as possible. 
+  as much as possible.
+
+## Changes in 1.0.1
+
+- Minor fixes of DESCRIPTION and .yml
+- Addition of a devel branch to the repository to maintain a stable version.
 
 ## Changes in 1.0.0
 
@@ -17,19 +22,19 @@
 
 # Metabonaut 0.0
 
-## Changes in 0.0.7 
+## Changes in 0.0.7
 
-- Fix typo and cut-off for MS2 annotation. 
-- Updated figure numbering. 
+- Fix typo and cut-off for MS2 annotation.
+- Updated figure numbering.
 - Added acknowledgment to community.
 - added a figure in retention time alignment vignette.
 
 ## Changes in 0.0.6
 
 - Moving The PercentMissing filtering at the end of
-  the pre-processing steps as it needs to be done 
+  the pre-processing steps as it needs to be done
   before normalization.
-- Addition  of collapsing code to improve readability. 
+- Addition  of collapsing code to improve readability.
 - Reduction of table size
 
 ## Changes in 0.0.5
