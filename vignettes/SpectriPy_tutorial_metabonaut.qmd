@@ -24,7 +24,7 @@ vignette: >
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative}
   %\VignettePackage{SpectriPy}
   %\VignetteEngine{quarto::html}
-  %\VignetteDepends{Spectra,BiocStyle,SpectriPy,reticulate,MsBackendMgf,msdata,mzR}
+  %\VignetteDepends{SpectriPy,pander,reticulate,Spectra}
 ---
 
 # Introduction
