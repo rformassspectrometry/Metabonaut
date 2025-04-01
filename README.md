@@ -19,6 +19,9 @@ Before diving into the analysis, learn about **key aspects to examine in your da
 ### 3. [Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset](https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.html)  
 Discover how to use a **flexible alignment algorithm** to integrate new datasets with previously processed ones based on features of interest.  
 
+### 4. [Large Scale Processing Using *xcms*](https://rformassspectrometry.github.io/Metabonaut/articles/large_scale_analysis.html)
+We often boast about the scalability of *xcms*, here we show how to actually deal with a large dataset (>4000 files) processing on an ordinary computer. 
+
 For a full list of all available vignettes, visit the **[Metabonaut website](https://rformassspectrometry.github.io/Metabonaut/)**.  
 
 ---
