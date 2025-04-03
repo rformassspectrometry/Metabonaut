@@ -51,6 +51,7 @@ jobs:
         env:
           QUARTO_PRINT_STACK: true
           QUARTO_LOG_LEVEL: DEBUG
+          SPECTRIPY_USE_CONDA: FALSE
         run: |
           install.packages("unixtools", repos = "http://www.rforge.net/")
           unixtools::set.tempdir("/__w/Rtmp")
