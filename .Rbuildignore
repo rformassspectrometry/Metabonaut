@@ -16,5 +16,10 @@ _pkgdown.yml
 ^docs$
 ^.RData$
 ^vignettes/objects/
-
-
+.virtualenvs/*
+^.bash*
+.cache/*
+.config/*
+.local/*
+.profile
+.quarto/*
