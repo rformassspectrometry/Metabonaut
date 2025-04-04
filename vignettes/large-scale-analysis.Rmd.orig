@@ -2,6 +2,17 @@
 title: "Large Scale Data Preprocessing with xcms"
 output:
   rmarkdown::html_document
+author:
+  - name: Johannes Rainer
+    orcid: 0000-0002-6977-7147
+    affiliations:
+      - ref: ifb
+affiliations:
+  - id: ifb
+    name: Eurac Research
+    department: Institute for Biomedicine
+    city: Bolzano
+    country: Italy
 vignette: >
   %\VignetteIndexEntry{Large Scale Data Preprocessing with xcms}
   %\VignetteEngine{knitr::rmarkdown}
@@ -28,8 +39,11 @@ eval_performance <- TRUE
 
 ```{r, message = FALSE, echo = FALSE}
 library(BiocStyle)
+#' Optional install of additionally needed packages
 if (is.na(packageDescription("peakRAM")[1L]))
     install.packages("peakRAM")
+if (is.na(packageDescription("benchmarkme")[1L]))
+    install.packages("benchmarkme")
 ```
 
 **Note**: this vignette is
