@@ -1,0 +1,73 @@
+on:
+  pull_request:
+    branches:
+      - devel
+
+env:
+  has_testthat: 'true'
+  run_covr: 'true'
+  run_pkgdown: 'true'
+  has_RUnit: 'false'
+  has_BiocCheck: 'false'
+  cache-version: 'cache-v4'
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    container: rformassspectrometry/metabonaut:latest
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      NOT_CRAN: true
+      TZ: UTC
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set R Library home
+        run: |
+          mkdir -p /__w/_temp/Library
+          echo ".libPaths('/__w/_temp/Library')" > ~/.Rprofile
+        shell: bash
+
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+        shell: Rscript {0}
+
+      - name: Install system dependencies
+        run: |
+          sysreqs=$(Rscript -e 'cat("apt-get update -y && apt-get install -y", paste(gsub("apt-get install -y ", "", remotes::system_requirements("ubuntu", "20.04")), collapse = " "))')
+          echo $sysreqs
+          sudo -s eval "$sysreqs"
+          ## To build the quarto vignette with pkgdown
+          Rscript -e "install.packages('unixtools', repos = 'http://www.rforge.net/')"
+        shell: bash {0}
+
+      - name: Cache R packages
+        if: "!contains(github.event.head_commit.message, '/nocache')"
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/work/_temp/Library
+          key: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-
+
+      - name: Install Miniconda
+        run: |
+          Rscript -e "install.packages('reticulate')"
+          Rscript -e "reticulate::install_miniconda()"
+        shell: bash {0}
+
+      - name: Install github dependencies
+        run: |
+          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = TRUE)
+        shell: Rscript {0}
+
+      - name: Run R CMD check
+        run: |
+          rcmdcheck::rcmdcheck(args = c('--no-manual', '--timings'), build_args = c('--no-manual', '--no-resave-data'), error_on = 'error', check_dir = 'check')
+        shell: Rscript {0}

@@ -6,12 +6,10 @@ local_data
 vignettes/.quarto/
 /_site/
 *.html
-*.RData
 *.rmarkdown
 *.js
 *.css
 vignettes/objects/
-man/figures
 /vignettes/res
 *.log
 vignettes/images/sitcker_draft.xcf
