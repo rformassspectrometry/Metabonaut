@@ -29,6 +29,7 @@ jobs:
           mkdir /__w/_temp/Library
           mkdir /__w/Rtmp
           echo ".libPaths('/__w/_temp/Library')" > ~/.Rprofile
+          echo "options(quarto.quiet = FALSE)" >> ~/.Rprofile
 
       - name: Checkout package
         uses: actions/checkout@v4
