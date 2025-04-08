@@ -1,6 +1,6 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.0.1
+Version: 1.1.0
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
             email = "philippine.louail@eurac.edu",
@@ -20,7 +20,12 @@ Authors@R:
      person(given = "Johannes", family = "Rainer",
             email = "Johannes.Rainer@eurac.edu",
             role = "aut",
-            comment = "ORCID: 0000-0002-6977-7147"))
+            comment = "ORCID: 0000-0002-6977-7147"),
+     person(given = "Marilyn", family = "De Graeve",
+            email = "marilyn.degraeve@eurac.edu",
+            role = c("ctb"),
+            comment = c(ORCID = "0000-0001-6916-401X"))
+            )
 Description: This resource hosts tutorials and end-to-end workflows
              describing how to analyze LC-MS/MS data, from raw files
              to annotation, using Bioconductor packages.
@@ -38,6 +43,7 @@ Suggests:
     Spectra (>= 1.11.10),
     MsExperiment,
     MsIO (>= 0.0.8),
+    SpectriPy (>= 0.5.0),
     MsBackendMetaboLights,
     ggVennDiagram,
     UpSetR,
@@ -58,12 +64,17 @@ Suggests:
     SummarizedExperiment,
     pheatmap,
     knitr,
+    reticulate,
     quarto
 Remotes:
-    RforMassSpectrometry/MsIO
+    RforMassSpectrometry/MsIO,
+    RforMassSpectrometry/SpectriPy
 URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
 BugReports: https://github.com/rformassspectrometry/Metabonaut/issues/new
 BiocType: Workflow
 RoxygenNote: 7.3.2
 VignetteBuilder: quarto
-SystemRequirements: pandoc
+SystemRequirements:
+    pandoc,
+    python (>= 3.10),
+    quarto

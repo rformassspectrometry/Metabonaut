@@ -39,6 +39,15 @@ jobs:
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
+      - name: Install system dependencies
+        run: |
+          sysreqs=$(Rscript -e 'cat("apt-get update -y && apt-get install -y", paste(gsub("apt-get install -y ", "", remotes::system_requirements("ubuntu", "20.04")), collapse = " "))')
+          echo $sysreqs
+          sudo -s eval "$sysreqs"
+          ## To build the quarto vignette with pkgdown
+          Rscript -e "install.packages('unixtools', repos = 'http://www.rforge.net/')"
+        shell: bash {0}
+
       - name: Cache R packages
         if: "!contains(github.event.head_commit.message, '/nocache')"
         uses: actions/cache@v4
@@ -47,10 +56,15 @@ jobs:
           key: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-
 
-      - name: Install Bioconductor dependencies
+      - name: Install Miniconda
         run: |
-          BiocManager::install('RforMassSpectrometry/MsBackendMetaboLights', ask = FALSE, dependencies = TRUE)
-          BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, dependencies = TRUE)
+          Rscript -e "install.packages('reticulate')"
+          Rscript -e "reticulate::install_miniconda()"
+        shell: bash {0}
+
+      - name: Install github dependencies
+        run: |
+          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Run R CMD check
