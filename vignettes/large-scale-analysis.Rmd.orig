@@ -22,7 +22,7 @@ vignette: >
 
 <!--
 # Pre-render with (in the vignettes folder)
-knitr::knit("large_scale_analysis.Rmd.orig", output = "large_scale_analysis.Rmd")
+knitr::knit("large-scale-analysis.Rmd.orig", output = "large-scale-analysis.Rmd")
 -->
 
 ```{r vignette-setup, include = FALSE}
@@ -53,6 +53,10 @@ was rendered. The vignette is completely reproducible and can be run and
 evaluated locally. The full MS data is available in the MetaboLights
 repository and is downloaded and cached as part of this vignette. Thus, to run
 the code locally about 800GB or free disk space is required.
+
+**Note**: the *xcms* version used for this document is currently available in
+the *large_scale_data* branch. It can be installed using
+`remotes::install_github("sneumann/xcms", ref = "large_scale_data")`.
 
 **Information on computational setup**: this vignette was rendered on a Notebook
 with an 13th Gen Intel(R) Core(TM) i7-1370P CPU and 64GB of main memory.
