@@ -1,5 +1,4 @@
 ^Abstract\.md$
-^README\.md$
 ^\.editorconfig$
 ^\.git$
 ^\.github$
@@ -11,8 +10,6 @@
 ^revdep$
 ^scripts$
 ^Dockerfile$
-_pkgdown.yml
-^_pkgdown\.yml$
 ^docs$
 ^.RData$
 ^vignettes/objects/
@@ -23,4 +20,3 @@ _pkgdown.yml
 .local/*
 .profile
 .quarto/*
-.dockerignore
