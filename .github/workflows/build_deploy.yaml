@@ -52,9 +52,9 @@ jobs:
           remotes::install_github("quarto-dev/quarto-r")
         shell: Rscript {0}
 
-      - name: Install SpectriPy and setup env
+      - name: Load SpectriPy and setup env for GH user
         run: |
-          remotes::install_github("RforMassSpectrometry/SpectriPy")
+          library(SpectriPy)
         shell: Rscript {0}
 
       - name: Build site
