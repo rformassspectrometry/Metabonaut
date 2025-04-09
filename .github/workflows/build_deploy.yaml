@@ -1,6 +1,5 @@
 name: pkgdown
 
-
 on:
   repository_dispatch:
     types: [trigger-workflow-2]
