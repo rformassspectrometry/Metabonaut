@@ -1,7 +1,6 @@
 ---
 title: "LC-MS/MS Data Annotation using R and Python"
 format: html
-minimal: true
 author:
   - name: Marilyn De Graeve
     orcid: 0000-0001-6916-401X
