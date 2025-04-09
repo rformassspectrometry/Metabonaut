@@ -52,6 +52,11 @@ jobs:
           remotes::install_github("quarto-dev/quarto-r")
         shell: Rscript {0}
 
+      - name: Install SpectriPy and setup env
+        run: |
+          remotes::install_github("RforMassSpectrometry/SpectriPy")
+        shell: Rscript {0}
+
       - name: Build site
         env:
           QUARTO_PRINT_STACK: true
