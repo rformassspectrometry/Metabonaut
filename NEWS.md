@@ -1,5 +1,11 @@
 # Metabonaut 1.0
 
+## Changes in 1.1.1
+
+- Update docker to skip installation of R packages and caching of data files for
+  the *root* user.
+- Fix GHA to properly install all Python libraries during `library(SpectriPy)`.
+
 ## Changes in 1.1.0
 
 - Add a vignette for combined R/Python data analysis using *reticulate* and

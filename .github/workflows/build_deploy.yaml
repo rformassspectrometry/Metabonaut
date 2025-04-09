@@ -1,13 +1,9 @@
 name: pkgdown
 
 
-# on:
-#   repository_dispatch:
-#     types: [trigger-workflow-2]
 on:
-  push:
-    branches:
-    - main
+  repository_dispatch:
+    types: [trigger-workflow-2]
 
 env:
   has_testthat: 'false'
