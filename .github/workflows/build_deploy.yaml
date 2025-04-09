@@ -1,9 +1,13 @@
 name: pkgdown
 
 
+# on:
+#   repository_dispatch:
+#     types: [trigger-workflow-2]
 on:
-  repository_dispatch:
-    types: [trigger-workflow-2]
+  push:
+    branches:
+    - main
 
 env:
   has_testthat: 'false'
@@ -53,6 +57,7 @@ jobs:
           QUARTO_PRINT_STACK: true
           QUARTO_LOG_LEVEL: DEBUG
           SPECTRIPY_USE_CONDA: FALSE
+          QUARTO_R_QUIET: FALSE
         run: |
           install.packages("unixtools", repos = "http://www.rforge.net/")
           unixtools::set.tempdir("/__w/Rtmp")

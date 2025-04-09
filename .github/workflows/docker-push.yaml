@@ -5,7 +5,7 @@ name: docker
 on:
   push:
     branches:
-    - main
+    - mainno
 
 jobs:
   build-docker-and-push:
