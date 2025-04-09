@@ -18,7 +18,7 @@
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="install_v0_files/libs/quarto-html/popper.min.js"></script><script src="install_v0_files/libs/quarto-html/tippy.umd.min.js"></script><link href="install_v0_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="install_v0_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Install">
-<meta property="og:image" content="https://rformassspectrometry.github.io/metabonaut/logo.png">
+<meta property="og:image" content="https://rformassspectrometry.github.io/Metabonaut/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@
 <li><a class="dropdown-item" href="../articles/a-end-to-end-untargeted-metabolomics.html">End-to-end workflow for untargeted metabolomics data analysis in R</a></li>
     <li><a class="dropdown-item" href="../articles/dataset-investigation.html">Dataset investigation: What to do when you get your data</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/SpectriPy_tutorial_metabonaut.html">LC-MS/MS Data Annotation using R and Python</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -52,7 +53,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rformassspectrometry/metabonaut/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rformassspectrometry/Metabonaut/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -64,9 +65,9 @@
       <img src="../logo.png" class="logo" alt=""><h1>Install</h1>
 
 
-      <p class="date">2025-03-21</p>
+      <p class="date">2025-04-09</p>
 
-      <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/metabonaut/blob/main/vignettes/install_v0.qmd" class="external-link"><code>vignettes/install_v0.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/main/vignettes/install_v0.qmd" class="external-link"><code>vignettes/install_v0.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -76,7 +77,6 @@
 
 
     <p>For manual installation, an <a href="https://www.r-project.org/" class="external-link">R</a> version &gt;= 4.4.0 is required.</p>
-<p><u>Notes</u>: only a development version of <code>metabonaut</code> is available as of now but a stable version will come soon. Therefore, if you are having difficulty to run some part of the code we strongly recommend to use the Docker image, as it will have all the package necessary to run all the analysis presented in these workflows.</p>
 <section class="section level2"><h2 id="running-workflows-locally">Running workflows locally<a class="anchor" aria-label="anchor" href="#running-workflows-locally"></a>
 </h2>
 <p>To install on your computer all the packages necessary for the workflows run the code as follow:</p>
@@ -86,7 +86,7 @@
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">'RforMassSpectrometry/MsIO'</span>, ask <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>                     dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"RforMassSpectrometry/metabonaut"</span>,</span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"RforMassSpectrometry/Metabonaut"</span>,</span>
 <span>                     dependencies <span class="op">=</span> <span class="cn">TRUE</span>, ask <span class="op">=</span> <span class="cn">FALSE</span>, update <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>If you get some error message when downloading form GitHub it might be due to an expired token. Remove them using this code below and try to install again:</p>
@@ -106,7 +106,7 @@
 <li>If you don’t already have, install <a href="https://www.docker.com/" class="external-link">docker</a>. Find installation information <a href="https://docs.docker.com/desktop/" class="external-link">here</a>.</li>
 <li>Get the <a href="https://hub.docker.com/r/rformassspectrometry/metabonaut" class="external-link">docker image</a> of this tutorial e.g. from the command line with:</li>
 </ul>
-<pre><code>    docker pull rformassspectrometry/metabonaut:latest</code></pre>
+<pre><code>docker pull rformassspectrometry/metabonaut:latest</code></pre>
 <ul>
 <li>Start the docker container, either through the Docker Desktop, or on the command line with</li>
 </ul>

@@ -18,7 +18,7 @@
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="alignment-to-external-dataset_files/libs/quarto-html/popper.min.js"></script><script src="alignment-to-external-dataset_files/libs/quarto-html/tippy.umd.min.js"></script><link href="alignment-to-external-dataset_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="alignment-to-external-dataset_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset">
-<meta property="og:image" content="https://rformassspectrometry.github.io/metabonaut/logo.png">
+<meta property="og:image" content="https://rformassspectrometry.github.io/Metabonaut/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@
 <li><a class="dropdown-item" href="../articles/a-end-to-end-untargeted-metabolomics.html">End-to-end workflow for untargeted metabolomics data analysis in R</a></li>
     <li><a class="dropdown-item" href="../articles/dataset-investigation.html">Dataset investigation: What to do when you get your data</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/SpectriPy_tutorial_metabonaut.html">LC-MS/MS Data Annotation using R and Python</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -52,7 +53,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rformassspectrometry/metabonaut/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rformassspectrometry/Metabonaut/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -64,9 +65,9 @@
       <img src="../logo.png" class="logo" alt=""><h1>Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset</h1>
 
 
-      <p class="date">2025-03-21</p>
+      <p class="date">2025-04-09</p>
 
-      <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/metabonaut/blob/main/vignettes/alignment-to-external-dataset.qmd" class="external-link"><code>vignettes/alignment-to-external-dataset.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/main/vignettes/alignment-to-external-dataset.qmd" class="external-link"><code>vignettes/alignment-to-external-dataset.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -85,7 +86,7 @@
 <section class="section level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>In certain experiments, aligning datasets recorded at different times is necessary. This can involve comparing runs of the same samples from different laboratories or matching MS2 data to an initial MS1 run. Variation in retention time across laboratories and LC systems often requires an alignment step using <code><a href="https://rdrr.io/pkg/xcms/man/adjustRtime.html" class="external-link">adjustRtime()</a></code> with the <code>LamaParama</code> parameter.</p>
-<p>As described in the <a href="https://rformassspectrometry.github.io/metabonaut/articles/dataset-investigation.html">data description</a> vignette, some of our samples were run twice: once in LC-MS mode and again in LC-MS/MS mode. This tutorial will show how to align the LC-MS/MS run to the preprocessed LC-MS dataset.</p>
+<p>As described in the <a href="https://rformassspectrometry.github.io/metabonaut/articles/dataset-investigation.html" class="external-link">data description</a> vignette, some of our samples were run twice: once in LC-MS mode and again in LC-MS/MS mode. This tutorial will show how to align the LC-MS/MS run to the preprocessed LC-MS dataset.</p>
 <p>The following packages are needed:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
@@ -109,7 +110,7 @@
 </div>
 <section class="level2"><h3 id="load-preprocessed-lc-ms-object">Load preprocessed LC-MS object<a class="anchor" aria-label="anchor" href="#load-preprocessed-lc-ms-object"></a>
 </h3>
-<p>First, let’s load our pre-processed LC-MS object. This <em>xcms</em> result object was created during the <a href="https://rformassspectrometry.github.io/metabonaut/articles/end-to-end-untargeted-metabolomics.html">End-to-end worflow</a> vignette and is also available in the <em>Metabonaut</em> R package. The result object (an <code>XcmsExperiment</code> object) was stored using Bioconductor’s <em>alabaster</em> framework and we below load the object using the <code><a href="https://rdrr.io/pkg/MsIO/man/saveMsObject.html" class="external-link">readMsObject()</a></code> function providing the path to the stored data. The import function also takes care of eventually retrieving missing MS data files from the MetaboLights repository.</p>
+<p>First, let’s load our pre-processed LC-MS object. This <em>xcms</em> result object was created during the <a href="https://rformassspectrometry.github.io/metabonaut/articles/end-to-end-untargeted-metabolomics.html" class="external-link">End-to-end worflow</a> vignette and is also available in the <em>Metabonaut</em> R package. The result object (an <code>XcmsExperiment</code> object) was stored using Bioconductor’s <em>alabaster</em> framework and we below load the object using the <code><a href="https://rdrr.io/pkg/MsIO/man/saveMsObject.html" class="external-link">readMsObject()</a></code> function providing the path to the stored data. The import function also takes care of eventually retrieving missing MS data files from the MetaboLights repository.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lcms1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/saveMsObject.html" class="external-link">readMsObject</a></span><span class="op">(</span></span>
