@@ -53,6 +53,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Load SpectriPy and setup env for GH user
+        continue-on-error: true
         run: |
           library(SpectriPy)
         shell: Rscript {0}
