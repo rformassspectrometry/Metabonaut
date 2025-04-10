@@ -1,21 +1,7 @@
 ---
 title: "LC-MS/MS Data Annotation using R and Python"
 format: html
-author:
-  - name: Marilyn De Graeve
-    orcid: 0000-0001-6916-401X
-    affiliations:
-      - ref: ifb
-  - name: Johannes Rainer
-    orcid: 0000-0002-6977-7147
-    affiliations:
-      - ref: ifb
-affiliations:
-  - id: ifb
-    name: Eurac Research
-    department: Institute for Biomedicine
-    city: Bolzano
-    country: Italy
+author: "Marilyn De Graeve, Johannes Rainer"
 bibliography: SpectriPy_tutorial_metabonaut.bib
 date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 vignette: >
@@ -29,36 +15,35 @@ vignette: >
 # Introduction
 
 The *SpectriPy* R package enables powerful mass spectrometry (MS) data analysis
-workflows combining the strengths of Python and R MS libraries. General concepts
-and examples of the package are available in the package's [*main*
+workflows combining the strengths of Python and R MS libraries. General
+concepts and examples of the package are available in the package's [*main*
 vignette](https://rformassspectrometry.github.io/SpectriPy/articles/SpectriPy.html).
 
-As an example for a combined R/Python workflow, we annotate the LC-MS/MS spectra
-from the main end-to-end vignette using Python's *matchms* library.
+As an example for a combined R/Python workflow, we annotate the LC-MS/MS
+spectra from the main end-to-end vignette using Python's *matchms* library.
 
-The MS2 processing methods which will be demonstrated on the used spectral reference
-library consists of the default filtering functionality from *matchms*
-[@huber_matchms_2020] (`default_filters()`, `add_parent_mass()` and
+The MS2 processing methods which will be demonstrated on the used spectral
+reference library consists of the default filtering functionality from
+*matchms* [@huber_matchms_2020] (`default_filters()`, `add_parent_mass()` and
 `normalize_intensities()`).
 
 The MS2 spectral similarity algorithm which is demonstrated here is the
 `ModifiedCosine()` from *matchms* [@huber_matchms_2020].
 
 The spectral reference library used for the annotation of the unknown features
-in this tutorial originates from a small  *in-house* reference library
-(provided in MGF format) available in the *SpectriPy* package.
+in this tutorial originates from a small *in-house* reference library (provided
+in MGF format) available in the *SpectriPy* package.
 
 The analysis in this document is performed using R and Python code chunks. A
-comment *#' R session:* or *#' Python session:* is used for easier distinction
-of these.
-
+comment *\#' R session:* or *\#' Python session:* is used for easier
+distinction of these.
 
 # Load *SpectriPy*
 
 Load the required R *SpectriPy* package. If you already have a Python
 environment opened, please restart your Integrated Development Environment and
-run this as a first command, to load the required package *reticulate* and setup
-the conda environment 'r-spectripy' correctly. Please see the [Detailed
+run this as a first command, to load the required package *reticulate* and
+setup the conda environment 'r-spectripy' correctly. Please see the [Detailed
 information on installation and
 configuration](https://rformassspectrometry.github.io/SpectriPy/articles/detailed-installation-configuration.html)
 document for other options.
@@ -70,20 +55,19 @@ document for other options.
 library(SpectriPy)
 ```
 
-
 # Load query MS2 data
 
 The LC-MS/MS query data used in this tutorial, are derived from the Metabonaut
 resource [@louail_metabonaut_2025]. Introduction and a thorough description of
-the preprocessing steps performed are described in [A Complete
-End-to-End Workflow for untargeted LC-MS/MS Metabolomics Data Analysis in
+the preprocessing steps performed are described in [A Complete End-to-End
+Workflow for untargeted LC-MS/MS Metabolomics Data Analysis in
 R](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html).
 
-First, we load the `Spectra` object with the MS2 spectra of the unknown features
-found to be significant in the "Differential abundance analysis", see section
-[MS2-based
-annotation](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html#differential-abundance-analysis). This
-`Spectra` object is shared as part of the *Metabonaut* package.
+First, we load the `Spectra` object with the MS2 spectra of the unknown
+features found to be significant in the "Differential abundance analysis", see
+section [MS2-based
+annotation](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html#differential-abundance-analysis).
+This `Spectra` object is shared as part of the *Metabonaut* package.
 
 ```{r}
 #| warning: false
@@ -104,7 +88,6 @@ spectraVariables(ms2_ctr_fts)
 ms2_ctr_fts$feature_id[1]
 ```
 
-
 # Filter query data
 
 To ensure this `Spectra` object only contains MS2 data, we filter to only MS2
@@ -122,7 +105,6 @@ ms2_ctr_fts <- ms2_ctr_fts[lengths(ms2_ctr_fts) >= 3]
 ms2_ctr_fts
 ```
 
-
 # Load reference MS2 data
 
 As the *in-house* spectral library, we import a small test data file in MGF
@@ -136,9 +118,9 @@ path on the local computer.
 mgf_file <- system.file("extdata", "mgf", "test.mgf", package = "SpectriPy")
 ```
 
-The loading of this file is then performed using the Python *matchms*
-library. The variable with the MGF file name can be accessed in the associated
-Python session using `r.mgf_file`. The loaded object is a Python list of
+The loading of this file is then performed using the Python *matchms* library.
+The variable with the MGF file name can be accessed in the associated Python
+session using `r.mgf_file`. The loaded object is a Python list of
 `matchms.Spectrum` objects.
 
 ```{python}
@@ -167,7 +149,6 @@ the command with `py$`.
 py$mgf_py[[1]]
 ```
 
-
 # Translate query MS data to Python
 
 First, we check if the R `Spectra` object containing the query MS2 data can be
@@ -186,9 +167,8 @@ r.ms2_ctr_fts[0].metadata.keys()
 
 Second, we translate the `Spectra` object `ms2_ctr_fts` to respective Python
 `matchms.Spectrum` objects using the `rspec_to_pyspec()` function. With the
-`py_set_attr()` function we assign the variable directly to an attribute in
-the Python session (which avoids repeated cross-programming language
-references).
+`py_set_attr()` function we assign the variable directly to an attribute in the
+Python session (which avoids repeated cross-programming language references).
 
 ```{r}
 #' R session:
@@ -211,13 +191,12 @@ We can now access the converted `Spectra` object in Python.
 ms2_ctr_fts_py[0]
 ```
 
-
 # Filter the reference library
 
 Before we run the spectral comparisons of our query data to the MGF reference
 library, we first apply some MS2 processing from *matchms*. Default filtering
-from *matchms* is performed to standardize ion mode, correct charge and
-more. See the [matchms filtering
+from *matchms* is performed to standardize ion mode, correct charge and more.
+See the [matchms filtering
 documentation](https://matchms.readthedocs.io/en/latest/api/matchms.filtering.html).
 Also, we keep only reference spectra with a precursor m/z as the similarity
 algorithm we use later requires spectra to have a precursor m/z.
@@ -247,7 +226,6 @@ for spectrum in mgf_py:
 len(clean_mgf_py)
 ```
 
-
 # Calculating spectra similarities using the Modified Cosine algorithm from *matchms*
 
 We calculate the pairwise spectral similarity between the query spectra and the
@@ -255,7 +233,7 @@ reference library spectra using Python's *matchms* library.
 
 Here, we use the spectral similarity algorithm ModifiedCosine from *matchms*,
 from source
-[matchms](https://github.com/matchms/matchms/blob/master/README.rst).  This
+[matchms](https://github.com/matchms/matchms/blob/master/README.rst). This
 algorithm can easily be exchanged for another spectral similarity calculation
 from *matchms* (see
 [here](https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html)).
@@ -276,9 +254,9 @@ scores = calculate_scores(references = clean_mgf_py,
 scores
 ```
 
-We next rearrange the spectra similarity results to make a data frame containing
-the best matched compound name (derived from the reference library) per queried
-spectrum.
+We next rearrange the spectra similarity results to make a data frame
+containing the best matched compound name (derived from the reference library)
+per queried spectrum.
 
 First, we extract and transpose the scores as a python array. Each row of the
 array will contain the similarity scores of one spectrum from our query spectra
@@ -330,16 +308,16 @@ df = pd.DataFrame(results)
 df.head()
 ```
 
-[!] **Caution**: As the higest score is taken as criteria for the annotation, a
-lot of caution is needed evaluation the trueness of the match. A low score is
+\[!\] **Caution**: As the higest score is taken as criteria for the annotation,
+a lot of caution is needed evaluation the trueness of the match. A low score is
 not reliable, as the similarity algorithm will calculate a score for each pair
 of spectra. Therefore, a match will always be found. In addition, if your
 unknown compound is absent in the reference library, it will match wrongly to
 another compound that is present in the database.
 
-Below we filter the results retaining only matches with a similarity value above
-0.6. Above this value, the potential annotations need to be validated using
-e.g. rerunning samples in the presence of commercial standards.
+Below we filter the results retaining only matches with a similarity value
+above 0.6. Above this value, the potential annotations need to be validated
+using e.g. rerunning samples in the presence of commercial standards.
 
 ```{python}
 #' Python session:
@@ -356,12 +334,11 @@ library(pander)
 pandoc.table(py$df_filtered, style = "rmarkdown", split.table = Inf)
 ```
 
-To visually inspect how good the query and reference spectra match, we refer
-to the
-[Metabonaut resource](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html)
+To visually inspect how good the query and reference spectra match, we refer to
+the [Metabonaut
+resource](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html)
 on how to generate the mirror plots and perform precursor *m/z* filtering (e.g.
 maximum 1 Da difference).
-
 
 # Session information
 
@@ -370,6 +347,5 @@ maximum 1 Da difference).
 
 sessionInfo()
 ```
-
 
 # References
