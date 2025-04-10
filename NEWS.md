@@ -1,4 +1,11 @@
-# Metabonaut 1.0
+# Metabonaut 1.1
+
+## Changes in 1.1.2
+
+- Adding authors that have contributed to specific method/vignettes to the
+  respective vignette's header. 
+- Update README.md to add the link to SpectriPy vignette. 
+- fix ORCID  in description so it gets recognize as an ORCID. 
 
 ## Changes in 1.1.1
 

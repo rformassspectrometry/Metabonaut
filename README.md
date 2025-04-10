@@ -10,14 +10,21 @@ Metabonaut presents a series of workflows based on a small LC-MS/MS dataset, uti
 ## Available Vignettes  
 
 ### 1. [Complete End-to-End LC-MS/MS Metabolomic Data Analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.html)  
-This primary workflow guides you through each step of the analysis, from **preprocessing raw data** to **statistical analysis** and **metabolite annotation**.  
+This primary workflow guides you through each step of the analysis, from
+**preprocessing raw data** to **statistical analysis** and **metabolite annotation**.  
 📄 Full R code: [end-to-end-untargeted-metabolomics.qmd](https://rformassspectrometry.github.io/Metabonaut/vignettes/a-end-to-end-untargeted-metabolomics.qmd)  
 
 ### 2. [Dataset Investigation](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html)  
 Before diving into the analysis, learn about **key aspects to examine in your dataset** to ensure smooth processing and avoid troubleshooting later.  
 
 ### 3. [Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset](https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.html)  
-Discover how to use a **flexible alignment algorithm** to integrate new datasets with previously processed ones based on features of interest.  
+Discover how to use a **flexible alignment algorithm** to integrate new 
+datasets with previously processed ones based on features of interest.  
+
+### 4. [LC-MS/MS Data Annotation using R and Python](https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html)
+Explore the **SpectriPy** package for **LC-MS/MS data annotation**. This 
+tutorial demonstrates how to combining the strengths of Python and R MS 
+libraries for annotation.
 
 For a full list of all available vignettes, visit the **[Metabonaut website](https://rformassspectrometry.github.io/Metabonaut/)**.  
 
