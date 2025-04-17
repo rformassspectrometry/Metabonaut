@@ -11,17 +11,24 @@ WORKDIR /home/rstudio
 
 COPY --chown=rstudio:rstudio . /home/rstudio/
 
-## Install the required packages
-RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsBackendMetaboLights', ask = FALSE, dependencies = TRUE)" \
-    && Rscript -e "BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, dependencies = TRUE)"
+## Global installation of required packages
+RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsBackendMetaboLights', ask = FALSE, dependencies = TRUE)" && \
+    Rscript -e "BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, dependencies = TRUE)"
 
-## Create the BiocFileCache and cache the data files to avoid repeated downloads
+## Use SpectriPy with virtual env to avoid need to install miniconda
+ENV SPECTRIPY_USE_CONDA="FALSE"
+
+## Install SpectriPy and caching files for rstudio user
 USER rstudio
-RUN Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
-USER root
+RUN Rscript -e "install.packages('reticulate')" && \
+    Rscript -e "BiocManager::install('RforMassSpectrometry/SpectriPy')" && \
+    Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
 
 ## Install the current package with vignettes
-RUN Rscript -e "devtools::install('.', dependencies = TRUE, type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())" \
-    && find vignettes/ -name "*.html" -type f -delete \
-    && find vignettes/ -name "*_files" -type d -exec rm -r {} + \
-    && rm -rf /tmp/*
+RUN Rscript -e "devtools::install('.', dependencies = TRUE, type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())" && \
+    find vignettes/ -name "*.html" -type f -delete && \
+    find vignettes/ -name "*_files" -type d -exec rm -r {} + && \
+    rm -rf /tmp/*
+
+## root user needed for rstudio server properly working
+USER root

@@ -1,6 +1,5 @@
 name: pkgdown
 
-
 on:
   repository_dispatch:
     types: [trigger-workflow-2]
@@ -29,6 +28,7 @@ jobs:
           mkdir /__w/_temp/Library
           mkdir /__w/Rtmp
           echo ".libPaths('/__w/_temp/Library')" > ~/.Rprofile
+          echo "options(quarto.quiet = FALSE)" >> ~/.Rprofile
 
       - name: Checkout package
         uses: actions/checkout@v4
@@ -47,10 +47,18 @@ jobs:
           remotes::install_github("quarto-dev/quarto-r")
         shell: Rscript {0}
 
+      - name: Load SpectriPy and setup env for GH user
+        continue-on-error: true
+        run: |
+          library(SpectriPy)
+        shell: Rscript {0}
+
       - name: Build site
         env:
           QUARTO_PRINT_STACK: true
           QUARTO_LOG_LEVEL: DEBUG
+          SPECTRIPY_USE_CONDA: FALSE
+          QUARTO_R_QUIET: FALSE
         run: |
           install.packages("unixtools", repos = "http://www.rforge.net/")
           unixtools::set.tempdir("/__w/Rtmp")

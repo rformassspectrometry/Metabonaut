@@ -19,3 +19,11 @@ _pkgdown.yml
 twins.RData
 twins.h5
 tres.h5
+.virtualenvs/*
+^.bash*
+.cache/*
+.config/*
+.local/*
+.profile
+.quarto/*
+.dockerignore

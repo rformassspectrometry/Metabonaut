@@ -1,6 +1,7 @@
 ---
 title: "Dataset investigation: What to do when you get your data"
 format: html
+author: "Philippine Louail"
 code_folding: hide
 editor: visual
 minimal: true

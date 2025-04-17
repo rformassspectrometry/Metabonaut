@@ -1,5 +1,6 @@
 ---
 title: "Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset"
+author: "Philippine Louail, Anton Ribbenstedt, Olle Hartvigsson, Carl Brunius, Johannes Rainer"
 format: html
 editor: visual
 minimal: true
