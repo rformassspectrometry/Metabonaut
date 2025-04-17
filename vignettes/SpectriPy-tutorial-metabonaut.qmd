@@ -2,7 +2,7 @@
 title: "LC-MS/MS Data Annotation using R and Python"
 format: html
 author: "Marilyn De Graeve, Johannes Rainer"
-bibliography: SpectriPy_tutorial_metabonaut.bib
+bibliography: SpectriPy-tutorial-metabonaut.bib
 date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 vignette: >
   %\VignetteIndexEntry{LC-MS/MS Data Annotation using R and Python}

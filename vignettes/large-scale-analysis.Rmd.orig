@@ -54,9 +54,10 @@ evaluated locally. The full MS data is available in the MetaboLights
 repository and is downloaded and cached as part of this vignette. Thus, to run
 the code locally about 800GB or free disk space is required.
 
-**Note**: the *xcms* version used for this document is currently available in
-the *large_scale_data* branch. It can be installed using
-`remotes::install_github("sneumann/xcms", ref = "large_scale_data")`.
+**Note**: the memory-saving functionality used in this document requires *xcms*
+version >= 3.7.1 which is currently (April 2025) available in Bioconductor's
+3.22 developmental branch. It can be installed from GitHub using
+`remotes::install_github("sneumann/xcms")`.
 
 **Information on computational setup**: this vignette was rendered on a Notebook
 with an 13th Gen Intel(R) Core(TM) i7-1370P CPU and 64GB of main memory.
@@ -69,14 +70,14 @@ By design, *xcms* supports preprocessing of large scale data even with over
 non-trivial and can require a very large amount of main memory. Recent updates
 to *xcms*, which include full support of the MS data infrastructure provided by
 the *Spectra* package as well as a new *on-disk* storage mode for preprocessing
-results, further reduce *xcms*' memory demand and hence enable large scale data
-processing also on regular computer setups. In this document a large public
-metabolomics data set with about 4,000 data files is analyzed and *xcms*' memory
-usage and performance tracked. Performance and memory usage for different
-configurations are compared on a smaller data subset. Finally, details on the
-internal data and memory handling of *xcms* are presented and properties of
-different configurations for efficient (and parallel) processing of large scale
-data are discussed.
+results, further reduce *xcms*' memory demand and hence enable memory-saving
+large scale data processing also on regular computer setups. In this document a
+large public metabolomics data set with about 4,000 data files is analyzed and
+*xcms*' memory usage and performance tracked. Performance and memory usage for
+different configurations are compared on a smaller data subset. Finally, details
+on the internal data and memory handling of *xcms* are presented and properties
+of different configurations for efficient (and parallel) processing of large
+scale data are discussed.
 
 
 # Data import

@@ -18,9 +18,9 @@ navbar:
     - text: 'Seamless Alignment: Merging New data with Existing Preprocessed Datasets'
       href: articles/alignment-to-external-dataset.html
     - text: 'LC-MS/MS Data Annotation using R and Python'
-      href: articles/SpectriPy_tutorial_metabonaut.html
+      href: articles/SpectriPy-tutorial-metabonaut.html
     - text: 'Large Scale Data Preprocessing with xcms'
-      href: articles/large_scale_analysis.html
+      href: articles/large-scale-analysis.html
   - text: News
     href: news/index.html
 structure:
