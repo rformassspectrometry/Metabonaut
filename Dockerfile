@@ -25,9 +25,10 @@ RUN Rscript -e "install.packages('reticulate')" && \
     Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
 
 ## Install the current package with vignettes
-RUN Rscript -e "devtools::install('.', dependencies = TRUE, type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
-
-RUN find vignettes/ -name "*.html" -type f -delete && find vignettes/ -name "*_files" -type d -exec rm -r {} +
+RUN Rscript -e "devtools::install('.', dependencies = TRUE, type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())" && \
+    find vignettes/ -name "*.html" -type f -delete && \
+    find vignettes/ -name "*_files" -type d -exec rm -r {} + && \
+    rm -rf /tmp/*
 
 ## root user needed for rstudio server properly working
 USER root

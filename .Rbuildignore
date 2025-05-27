@@ -16,6 +16,9 @@ _pkgdown.yml
 ^docs$
 ^.RData$
 ^vignettes/objects/
+twins.RData
+twins.h5
+tres.h5
 .virtualenvs/*
 ^.bash*
 .cache/*

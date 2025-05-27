@@ -18,6 +18,13 @@
 - Add a vignette for combined R/Python data analysis using *reticulate* and
   *SpectriPy*.
 
+## Changes in 1.1.0
+
+- Addition of a devel branch to the repository to maintain a stable version.
+- Addition of a new vignette depicting a large scale processing using xcms.
+  Do to its size, this is added as a pre-computed vignette to prevent re-knitting
+  as much as possible.
+
 ## Changes in 1.0.1
 
 - Minor fixes of DESCRIPTION and .yml

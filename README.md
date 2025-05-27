@@ -26,6 +26,9 @@ Explore the **SpectriPy** package for **LC-MS/MS data annotation**. This
 tutorial demonstrates how to combining the strengths of Python and R MS 
 libraries for annotation.
 
+### 4. [Large Scale Processing Using *xcms*](https://rformassspectrometry.github.io/Metabonaut/articles/large_scale_analysis.html)
+We often boast about the scalability of *xcms*, here we show how to actually deal with a large dataset (>4000 files) processing on an ordinary computer. 
+
 For a full list of all available vignettes, visit the **[Metabonaut website](https://rformassspectrometry.github.io/Metabonaut/)**.  
 
 ---
