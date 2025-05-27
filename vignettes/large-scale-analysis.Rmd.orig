@@ -52,7 +52,7 @@ See the session info for information on packages used and the date the vignette
 was rendered. The vignette is completely reproducible and can be run and
 evaluated locally. The full MS data is available in the MetaboLights
 repository and is downloaded and cached as part of this vignette. Thus, to run
-the code locally about 800GB or free disk space is required.
+the code locally about 800GB of free disk space is required.
 
 **Note**: the memory-saving functionality used in this document requires *xcms*
 version >= 3.7.1 which is currently (April 2025) available in Bioconductor's
