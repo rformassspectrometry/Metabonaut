@@ -36,7 +36,7 @@ jobs:
       - name: Query dependencies
         run: |
           install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          saveRDS(remotes::dev_package_deps(dependencies = c("Depends", "Imports", "Suggests")), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
       - name: Install system dependencies
@@ -64,7 +64,7 @@ jobs:
 
       - name: Install github dependencies
         run: |
-          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = TRUE)
+          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = c("Depends", "Imports"))
         shell: Rscript {0}
 
       - name: Run R CMD check
