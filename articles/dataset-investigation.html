@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,8 @@
 <li><a class="dropdown-item" href="../articles/a-end-to-end-untargeted-metabolomics.html">End-to-end workflow for untargeted metabolomics data analysis in R</a></li>
     <li><a class="dropdown-item" href="../articles/dataset-investigation.html">Dataset investigation: What to do when you get your data</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
-    <li><a class="dropdown-item" href="../articles/SpectriPy_tutorial_metabonaut.html">LC-MS/MS Data Annotation using R and Python</a></li>
+    <li><a class="dropdown-item" href="../articles/SpectriPy-tutorial-metabonaut.html">LC-MS/MS Data Annotation using R and Python</a></li>
+    <li><a class="dropdown-item" href="../articles/large-scale-analysis.html">Large Scale Data Preprocessing with xcms</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -65,7 +66,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Dataset investigation: What to do when you get your data</h1>
 
       <p class="author">Philippine Louail</p>
-      <p class="date">2025-04-10</p>
+      <p class="date">2025-05-28</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/dataset-investigation.qmd" class="external-link"><code>vignettes/dataset-investigation.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -565,7 +566,7 @@ MS_B_POS.mzML
 <p>While the TIC of all samples look similar, the samples from cluster I show a different signal in the retention time range from about 40 to 160 seconds. Whether, and how strong this difference will impact the following analysis remains to be determined.</p>
 </section><section class="level2"><h3 id="known-compounds">known compounds<a class="anchor" aria-label="anchor" href="#known-compounds"></a>
 </h3>
-<p>While the artificially isotope labeled compounds were spiked to the individual samples, there should also be the signal from the endogenous compounds in serum (or plasma) samples. Thus, we calculate next the mass and <em>m/z</em> of an <em>[M+H]+</em> ion of the endogenous cystine from its chemical formula and extract also the EIC from this ion. For calculation of the exact mass and the <em>m/z</em> of the selected ion adduct we use the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/calculateMass.html" class="external-link">calculateMass()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.21/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p>
+<p>While the artificially isotope labeled compounds were spiked to the individual samples, there should also be the signal from the endogenous compounds in serum (or plasma) samples. Thus, we calculate next the mass and <em>m/z</em> of an <em>[M+H]+</em> ion of the endogenous cystine from its chemical formula and extract also the EIC from this ion. For calculation of the exact mass and the <em>m/z</em> of the selected ion adduct we use the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/calculateMass.html" class="external-link">calculateMass()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.22/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' extract endogenous cystine mass and EIC and plot.</span></span>
@@ -756,7 +757,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
 </div>
 
     </footer>

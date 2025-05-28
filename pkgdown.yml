@@ -1,13 +1,14 @@
-pandoc: 3.6.3
-pkgdown: 2.1.1.9000
-pkgdown_sha: 66477c0dbb4f4925ec872cf64d5eaa316cc70bac
+pandoc: 3.6.4
+pkgdown: 2.1.3.9000
+pkgdown_sha: f950aed41af49c732ba7884d0806c3641a7b94b3
 articles:
   a-end-to-end-untargeted-metabolomics: a-end-to-end-untargeted-metabolomics.html
   alignment-to-external-dataset: alignment-to-external-dataset.html
   dataset-investigation: dataset-investigation.html
   install_v0: install_v0.html
-  SpectriPy_tutorial_metabonaut: SpectriPy_tutorial_metabonaut.html
-last_built: 2025-04-10T14:43Z
+  large-scale-analysis: large-scale-analysis.html
+  SpectriPy-tutorial-metabonaut: SpectriPy-tutorial-metabonaut.html
+last_built: 2025-05-28T15:16Z
 urls:
   reference: https://rformassspectrometry.github.io/Metabonaut/reference
   article: https://rformassspectrometry.github.io/Metabonaut/articles
