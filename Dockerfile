@@ -33,6 +33,5 @@ USER root
 
 RUN find vignettes/ -name "*.html" -type f -delete && find vignettes/ -name "*_files" -type d -exec rm -r {} + && \
     rm -rf /tmp/*
-## need to puyt back the temp removal stuff if we can fix
 
 
