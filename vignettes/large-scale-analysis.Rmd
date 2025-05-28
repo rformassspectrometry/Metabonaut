@@ -26,9 +26,6 @@ knitr::knit("large-scale-analysis.Rmd.orig", output = "large-scale-analysis.Rmd"
 -->
 
 
-
-
-
 **Note**: this vignette is
 [**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/).
 See the session info for information on packages used and the date the vignette
@@ -230,7 +227,7 @@ The BPC of these 200 random samples is shown below.
 plot(bpc, col = "#00000060")
 ```
 
-![plot of chunk bpc](large-scale-bpc-1.png)
+![plot of chunk bpc](figures/large-scale-bpc-1.png)
 
 Based on the BPC above, we filter the data set to spectra measured between 20
 and 900 seconds. Such restriction of the data set also avoids to perform the
@@ -290,7 +287,7 @@ eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
 plot(eics, col = "#00000040")
 ```
 
-![plot of chunk eic-random](large-scale-eic-random-1.png)
+![plot of chunk eic-random](figures/large-scale-eic-random-1.png)
 
 Apparent retention time shifts are visible for all 3 compounds. We can next
 evaluate chromatographic peak detection settings on these example signals.
@@ -855,7 +852,7 @@ chromPeaks(met_test[1])
 plot(met_test)
 ```
 
-![plot of chunk eic-random-cp](large-scale-eic-random-cp-1.png)
+![plot of chunk eic-random-cp](figures/large-scale-eic-random-cp-1.png)
 
 Chromatographic peaks were detected in all cases, but due to the large number of
 samples investigated it is not easy to evaluate the results properly. We thus
@@ -866,7 +863,7 @@ create the same plot for only the first 5 samples.
 plot(met_test[, 1:5])
 ```
 
-![plot of chunk eic-random-cp-5](large-scale-eic-random-cp-5-1.png)
+![plot of chunk eic-random-cp-5](figures/large-scale-eic-random-cp-5-1.png)
 
 The large peak was thus correctly identified. Also the lower abundance peak
 would be detected if the `snthresh` would be reduced for the peak detection in
@@ -1133,7 +1130,7 @@ eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
 plot(eics, col = "#00000020", peakBg = NA)
 ```
 
-![plot of chunk eic-random-align](large-scale-eic-random-align-1.png)
+![plot of chunk eic-random-align](figures/large-scale-eic-random-align-1.png)
 
 The EICs are nicely aligned.
 
@@ -1195,7 +1192,7 @@ the center peaks into a separate feature.
 plotChromPeakDensity(eics[1])
 ```
 
-![plot of chunk feature-1](large-scale-feature-1-1.png)
+![plot of chunk feature-1](figures/large-scale-feature-1-1.png)
 
 Also for the second example, the chromatographic peaks were assigned to two
 separate features.
@@ -1205,7 +1202,7 @@ separate features.
 plotChromPeakDensity(eics[2])
 ```
 
-![plot of chunk feature-2](large-scale-feature-2-1.png)
+![plot of chunk feature-2](figures/large-scale-feature-2-1.png)
 
 Finally, also for the last example chromatographic peaks were correctly assigned
 to features.
@@ -1215,7 +1212,7 @@ to features.
 plotChromPeakDensity(eics[3])
 ```
 
-![plot of chunk feature-3](large-scale-feature-3-1.png)
+![plot of chunk feature-3](figures/large-scale-feature-3-1.png)
 
 Below we extract the feature abundances for all features in all samples and
 count the total number of defined features. The `featureValues()` function
@@ -1444,7 +1441,7 @@ legend("topright", col = c("#ff000080", "#0000ff80"), pch = 1,
        legend = c("Memory", "HDF5 file"))
 ```
 
-![plot of chunk performance](large-scale-performance-1.png)
+![plot of chunk performance](figures/large-scale-performance-1.png)
 
 The largest performance gain is between serial processing and parallel
 processing with two CPUs. Importantly, the performance of keeping the results in
