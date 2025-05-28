@@ -14,3 +14,5 @@ vignettes/objects/
 *.log
 vignettes/images/sitcker_draft.xcf
 /vignettes/dataset-investigation_files
+*.h5
+/vignettes/a-end-to-end-untargeted-metabolomics_files

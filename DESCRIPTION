@@ -1,9 +1,9 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.1.2
+Version: 1.2.0
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
-            email = "philippine.louail@eurac.edu",
+            email = "philippine.louail@outlook.com",
             role = c("aut", "cre"),
             comment = c(ORCID = "0009-0007-5429-6846")),
      person(given = "Anna", family = "Tagliaferri",
