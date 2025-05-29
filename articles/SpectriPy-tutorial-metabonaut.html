@@ -79,7 +79,7 @@
 
     <section class="section level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The <em>SpectriPy</em> R package enables powerful mass spectrometry (MS) data analysis workflows combining the strengths of Python and R MS libraries. General concepts and examples of the package are available in the package’s <a href="https://rformassspectrometry.github.io/SpectriPy/articles/SpectriPy.html" class="external-link"><em>main</em> vignette</a>.</p>
+<p>The <em>SpectriPy</em> R package enables powerful mass spectrometry (MS) data analysis workflows combining the strengths of Python and R MS libraries <span class="citation" data-cites="graeve_spectripy_2025">(<a href="#ref-graeve_spectripy_2025" role="doc-biblioref">Graeve et al. 2025</a>)</span>. General concepts and examples of the package are available in the package’s <a href="https://rformassspectrometry.github.io/SpectriPy/articles/SpectriPy.html" class="external-link"><em>main</em> vignette</a>.</p>
 <p>As an example for a combined R/Python workflow, we annotate the LC-MS/MS spectra from the main end-to-end vignette using Python’s <em>matchms</em> library.</p>
 <p>The MS2 processing methods which will be demonstrated on the used spectral reference library consists of the default filtering functionality from <em>matchms</em> <span class="citation" data-cites="huber_matchms_2020">(<a href="#ref-huber_matchms_2020" role="doc-biblioref">Huber et al. 2020</a>)</span> (<code>default_filters()</code>, <code>add_parent_mass()</code> and <code><a href="https://rdrr.io/pkg/SpectriPy/man/filterSpectriPy.html" class="external-link">normalize_intensities()</a></code>).</p>
 <p>The MS2 spectral similarity algorithm which is demonstrated here is the <code><a href="https://rdrr.io/pkg/SpectriPy/man/compareSpectriPy.html" class="external-link">ModifiedCosine()</a></code> from <em>matchms</em> <span class="citation" data-cites="huber_matchms_2020">(<a href="#ref-huber_matchms_2020" role="doc-biblioref">Huber et al. 2020</a>)</span>.</p>
@@ -328,8 +328,24 @@ Processing:
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>similarity_score <span class="op">=</span> ModifiedCosine(tolerance <span class="op">=</span> <span class="fl">0.1</span>)</span>
 <span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> calculate_scores(references <span class="op">=</span> clean_mgf_py,</span>
 <span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                          queries <span class="op">=</span> ms2_ctr_fts_py,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>                          similarity_function <span class="op">=</span> similarity_score)</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>scores</span></code></pre></div>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>                          similarity_function <span class="op">=</span> similarity_score)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Calculating similarities:   0%|          | 0/78 [00:00&lt;?, ?it/s]
+Calculating similarities:   1%|1         | 1/78 [00:01&lt;02:10,  1.70s/it]
+Calculating similarities:  10%|#         | 8/78 [00:01&lt;00:11,  5.95it/s]
+Calculating similarities:  19%|#9        | 15/78 [00:01&lt;00:05, 12.18it/s]
+Calculating similarities:  28%|##8       | 22/78 [00:02&lt;00:02, 19.23it/s]
+Calculating similarities:  38%|###8      | 30/78 [00:02&lt;00:01, 27.90it/s]
+Calculating similarities:  47%|####7     | 37/78 [00:02&lt;00:01, 34.71it/s]
+Calculating similarities:  56%|#####6    | 44/78 [00:02&lt;00:01, 33.71it/s]
+Calculating similarities:  64%|######4   | 50/78 [00:02&lt;00:00, 37.78it/s]
+Calculating similarities:  73%|#######3  | 57/78 [00:02&lt;00:00, 43.87it/s]
+Calculating similarities:  82%|########2 | 64/78 [00:02&lt;00:00, 49.23it/s]
+Calculating similarities:  92%|#########2| 72/78 [00:02&lt;00:00, 54.77it/s]
+Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 26.17it/s]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>scores</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;78x291x2 stacked sparse array containing scores for ('ModifiedCosine_score', 'ModifiedCosine_matches') with 12376 stored elements in COOrdinate format&gt;</code></pre>
 </div>
@@ -337,48 +353,48 @@ Processing:
 <p>We next rearrange the spectra similarity results to make a data frame containing the best matched compound name (derived from the reference library) per queried spectrum.</p>
 <p>First, we extract and transpose the scores as a python array. Each row of the array will contain the similarity scores of one spectrum from our query spectra <code>ms2_ctr_fts_py</code> against the cleaned reference library <code>clean_mgf_py</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Convert to array and transpose</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>sim_matchms <span class="op">=</span> scores.to_array()[<span class="st">"ModifiedCosine_score"</span>]</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>sim_matchms <span class="op">=</span> sim_matchms.T</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' Contains 1 row for each spectrum in query</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>sim_matchms.shape</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Convert to array and transpose</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sim_matchms <span class="op">=</span> scores.to_array()[<span class="st">"ModifiedCosine_score"</span>]</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>sim_matchms <span class="op">=</span> sim_matchms.T</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' Contains 1 row for each spectrum in query</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>sim_matchms.shape</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(291, 78)</code></pre>
 </div>
 </div>
 <p>Next, we create a data frame with per queried spectrum from our unknown variables, the compound name of the higest matching spectra from the reference library and the corresponding similarity score.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' Prepare results list</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(sim_matchms.shape[<span class="dv">0</span>]):</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#' row is the query, keep nr in the results instead of replacing by eg id</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    name_row <span class="op">=</span> ms2_ctr_fts_py[i].get(<span class="st">'feature_id'</span>)</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    row_values <span class="op">=</span> sim_matchms[i].copy()</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#' match with higest col nr from the references</span></span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    max_col <span class="op">=</span> np.argmax(row_values)  <span class="co">#' Find column index of max value</span></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    max_value <span class="op">=</span> row_values[max_col]  <span class="co">#' Get max value</span></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#' replace the nr of refererences with the name</span></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    name_max_col <span class="op">=</span> clean_mgf_py[max_col].get(<span class="st">'compound_name'</span>)</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    results.append({<span class="st">"query"</span>: i <span class="op">+</span> <span class="dv">1</span>,</span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"query_feature_id"</span>: name_row,</span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"reference"</span>: max_col,</span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"reference_compound_name"</span>: name_max_col,</span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"ModifiedCosine_score"</span>: max_value})</span>
-<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co">#' Convert to DataFrame</span></span>
-<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(results)</span>
-<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="co">#' Print the first 5 rows of the unfiltered DataFrame</span></span>
-<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' Prepare results list</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(sim_matchms.shape[<span class="dv">0</span>]):</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#' row is the query, keep nr in the results instead of replacing by eg id</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    name_row <span class="op">=</span> ms2_ctr_fts_py[i].get(<span class="st">'feature_id'</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    row_values <span class="op">=</span> sim_matchms[i].copy()</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#' match with higest col nr from the references</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    max_col <span class="op">=</span> np.argmax(row_values)  <span class="co">#' Find column index of max value</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    max_value <span class="op">=</span> row_values[max_col]  <span class="co">#' Get max value</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#' replace the nr of refererences with the name</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    name_max_col <span class="op">=</span> clean_mgf_py[max_col].get(<span class="st">'compound_name'</span>)</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    results.append({<span class="st">"query"</span>: i <span class="op">+</span> <span class="dv">1</span>,</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"query_feature_id"</span>: name_row,</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"reference"</span>: max_col,</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"reference_compound_name"</span>: name_max_col,</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"ModifiedCosine_score"</span>: max_value})</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co">#' Convert to DataFrame</span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(results)</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="co">#' Print the first 5 rows of the unfiltered DataFrame</span></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   query query_feature_id  ...  reference_compound_name ModifiedCosine_score
 0      1           FT0371  ...         Benzyl succinate             0.554071
@@ -393,12 +409,12 @@ Processing:
 <p>[!] <strong>Caution</strong>: As the higest score is taken as criteria for the annotation, a lot of caution is needed evaluation the trueness of the match. A low score is not reliable, as the similarity algorithm will calculate a score for each pair of spectra. Therefore, a match will always be found. In addition, if your unknown compound is absent in the reference library, it will match wrongly to another compound that is present in the database.</p>
 <p>Below we filter the results retaining only matches with a similarity value above 0.6. Above this value, the potential annotations need to be validated using e.g. rerunning samples in the presence of commercial standards.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Keep only rows where score &gt;= 0.6</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>df_filtered <span class="op">=</span> df[df[<span class="st">"ModifiedCosine_score"</span>] <span class="op">&gt;=</span> <span class="fl">0.6</span>]</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Keep only rows where score &gt;= 0.6</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>df_filtered <span class="op">=</span> df[df[<span class="st">"ModifiedCosine_score"</span>] <span class="op">&gt;=</span> <span class="fl">0.6</span>]</span></code></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' R session:</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rapporter.github.io/pander/" class="external-link">pander</a></span><span class="op">)</span></span>
@@ -860,7 +876,7 @@ Processing:
 </section><section class="section level2"><h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' R session:</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -889,19 +905,19 @@ attached base packages:
 [8] base
 
 other attached packages:
-[1] pander_0.6.6        Spectra_1.19.2      BiocParallel_1.43.2
-[4] S4Vectors_0.47.0    BiocGenerics_0.55.0 generics_0.1.4
-[7] SpectriPy_0.99.0    reticulate_1.42.0
+[1] pander_0.6.6        Spectra_1.18.2      BiocParallel_1.42.0
+[4] S4Vectors_0.46.0    BiocGenerics_0.54.0 generics_0.1.4
+[7] SpectriPy_0.99.2    reticulate_1.42.0
 
 loaded via a namespace (and not attached):
  [1] cli_3.6.5              knitr_1.50             rlang_1.1.6
- [4] xfun_0.52              ProtGenerics_1.41.0    png_0.1-8
+ [4] xfun_0.52              ProtGenerics_1.40.0    png_0.1-8
  [7] jsonlite_2.0.0         clue_0.3-66            htmltools_0.5.8.1
 [10] rmarkdown_2.29         grid_4.5.0             evaluate_1.0.3
 [13] MASS_7.3-65            fastmap_1.2.0          yaml_2.3.10
-[16] IRanges_2.43.0         MsCoreUtils_1.21.0     cluster_2.1.8.1
+[16] IRanges_2.42.0         MsCoreUtils_1.20.0     cluster_2.1.8.1
 [19] compiler_4.5.0         codetools_0.2-20       fs_1.6.6
-[22] Rcpp_1.0.14            MetaboCoreUtils_1.17.1 lattice_0.22-7
+[22] Rcpp_1.0.14            MetaboCoreUtils_1.16.1 lattice_0.22-7
 [25] digest_0.6.37          parallel_4.5.0         Matrix_1.7-3
 [28] tools_4.5.0           </code></pre>
 </div>
@@ -909,6 +925,9 @@ loaded via a namespace (and not attached):
 </section><section class="section level2"><h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-graeve_spectripy_2025" class="csl-entry" role="listitem">
+Graeve, Marilyn De, Wout Bittremieux, Thomas Naake, Carolin Huber, Matthias Anagho-Mattanovich, Nils Hoffmann, Pierre Marchal, et al. 2025. <span>“<span>SpectriPy</span>: <span>Enhancing</span> <span>Cross</span>-<span>Language</span> <span>Mass</span> <span>Spectrometry</span> <span>Data</span> <span>Analysis</span> with <span>R</span> and <span>Python</span>.”</span> <em>Journal of Open Source Software</em> 10 (109): 8070. <a href="https://doi.org/10.21105/joss.08070" class="external-link">https://doi.org/10.21105/joss.08070</a>.
+</div>
 <div id="ref-huber_matchms_2020" class="csl-entry" role="listitem">
 Huber, Florian, Stefan Verhoeven, Christiaan Meijer, Hanno Spreeuw, Efraín Castilla, Cunliang Geng, Justin Van Der Hooft, et al. 2020. <span>“Matchms - Processing and Similarity Evaluation of Mass Spectrometry Data.”</span> <em>Journal of Open Source Software</em> 5 (52): 2411. <a href="https://doi.org/10.21105/joss.02411" class="external-link">https://doi.org/10.21105/joss.02411</a>.
 </div>
