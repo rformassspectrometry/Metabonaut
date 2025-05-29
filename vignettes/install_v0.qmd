@@ -13,7 +13,6 @@ vignette: >
 For manual installation, an [R](https://www.r-project.org/) version \>= 4.4.0 is
 required.
 
-
 # Running workflows locally
 
 To install on your computer all the packages necessary for the workflows run
@@ -54,14 +53,14 @@ code and examples from the vignettes can be evaluated within this environment
     image](https://hub.docker.com/r/rformassspectrometry/metabonaut) of this
     tutorial e.g. from the command line with:
 
-```
+```         
 docker pull rformassspectrometry/metabonaut:latest
 ```
 
 -   Start the docker container, either through the Docker Desktop, or on the
     command line with
 
-```
+```         
 docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:latest
 ```
 

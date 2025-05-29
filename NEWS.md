@@ -5,6 +5,8 @@
 - Addition of a new vignette depicting a large scale processing using xcms.
   Due to its size, this is added as a pre-computed vignette to prevent re-knitting
   as much as possible.
+- Docker image now based on the stable version of Bioconductor (3.21) instead
+  of devel.
 
 
 # Metabonaut 1.1
