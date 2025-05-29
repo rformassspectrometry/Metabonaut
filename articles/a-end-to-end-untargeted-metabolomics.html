@@ -66,7 +66,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Complete end-to-end LC-MS/MS Metabolomic Data analysis</h1>
 
       <p class="author">Philippine Louail, Anna Tagliaferri, Vinicius Verri Hernandes, Daniel Marques de Sá e Silva, Johannes Rainer</p>
-      <p class="date">2025-05-28</p>
+      <p class="date">2025-05-29</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/a-end-to-end-untargeted-metabolomics.qmd" class="external-link"><code>vignettes/a-end-to-end-untargeted-metabolomics.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -1571,7 +1571,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class "XProcessHistory"
  type: Peak detection
- date: Wed May 28 16:32:20 2025
+ date: Thu May 29 06:12:03 2025
  info:
  fileIndex: 1,2,3,4,5,6,7,8,9,10
  Parameter class: CentWaveParam
@@ -2002,7 +2002,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span>                              mad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">res</span>, filter <span class="op">=</span> <span class="va">filter_dratio</span>, assay <span class="op">=</span> <span class="st">"norm_imputed"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>4211 features were removed</code></pre>
+<pre><code>4208 features were removed</code></pre>
 </div>
 </div>
 <p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>)of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
@@ -2013,16 +2013,16 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="co">#' Number of features after analysis</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4513</code></pre>
+<pre><code>[1] 4516</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Percentage left: end/beginning</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res_unfilt</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 51.73086</code></pre>
+<pre><code>[1] 51.76525</code></pre>
 </div>
 </div>
-<p>The dataset has been reduced from 8724 to 4513 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
+<p>The dataset has been reduced from 8724 to 4516 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_qc</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></span>
@@ -2227,10 +2227,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0732</td>
 <td style="text-align: right;">182.0749</td>
 <td style="text-align: right;">34.83789</td>
-<td style="text-align: right;">-8.457593</td>
-<td style="text-align: right;">0.0103956</td>
+<td style="text-align: right;">-8.914047</td>
+<td style="text-align: right;">0.0122935</td>
 <td style="text-align: right;">12.229286</td>
-<td style="text-align: right;">3.860688</td>
+<td style="text-align: right;">3.464917</td>
 <td style="text-align: right;">0.2116471</td>
 </tr>
 <tr class="even">
@@ -2238,59 +2238,49 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: right;">195.0877</td>
 <td style="text-align: right;">32.65668</td>
 <td style="text-align: right;">-6.330400</td>
-<td style="text-align: right;">0.0352697</td>
+<td style="text-align: right;">0.0351495</td>
 <td style="text-align: right;">16.905340</td>
 <td style="text-align: right;">10.454994</td>
 <td style="text-align: right;">0.0304712</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">FT0676</td>
-<td style="text-align: right;">176.0106</td>
-<td style="text-align: right;">147.55872</td>
-<td style="text-align: right;">-6.135275</td>
-<td style="text-align: right;">0.0493635</td>
-<td style="text-align: right;">8.788476</td>
-<td style="text-align: right;">2.565043</td>
-<td style="text-align: right;">0.7734774</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
 <td style="text-align: right;">162.13668</td>
-<td style="text-align: right;">-5.470463</td>
-<td style="text-align: right;">0.0304986</td>
+<td style="text-align: right;">-5.601698</td>
+<td style="text-align: right;">0.0297665</td>
 <td style="text-align: right;">10.287074</td>
-<td style="text-align: right;">4.605290</td>
+<td style="text-align: right;">4.469596</td>
 <td style="text-align: right;">0.0360903</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">FT1171</td>
 <td style="text-align: right;">229.1299</td>
 <td style="text-align: right;">181.08828</td>
-<td style="text-align: right;">-5.217774</td>
-<td style="text-align: right;">0.0158489</td>
+<td style="text-align: right;">-5.432889</td>
+<td style="text-align: right;">0.0280070</td>
 <td style="text-align: right;">10.721195</td>
-<td style="text-align: right;">5.655414</td>
+<td style="text-align: right;">5.483208</td>
 <td style="text-align: right;">0.0706276</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
 <td style="text-align: right;">148.39599</td>
-<td style="text-align: right;">-5.183920</td>
-<td style="text-align: right;">0.0177669</td>
+<td style="text-align: right;">-5.347665</td>
+<td style="text-align: right;">0.0280070</td>
 <td style="text-align: right;">9.914862</td>
-<td style="text-align: right;">4.419764</td>
+<td style="text-align: right;">4.204427</td>
 <td style="text-align: right;">0.5564435</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">FT5606</td>
 <td style="text-align: right;">560.3603</td>
 <td style="text-align: right;">33.54917</td>
-<td style="text-align: right;">-3.516671</td>
-<td style="text-align: right;">0.0344474</td>
+<td style="text-align: right;">-3.705199</td>
+<td style="text-align: right;">0.0315581</td>
 <td style="text-align: right;">8.885918</td>
-<td style="text-align: right;">5.177752</td>
+<td style="text-align: right;">4.966948</td>
 <td style="text-align: right;">1.2139903</td>
 </tr>
 </tbody>
@@ -2403,7 +2393,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class Matched
 Total number of matches: 43
-Number of query objects: 7 (4 matched)
+Number of query objects: 6 (4 matched)
 Number of target objects: 25685 (43 matched)</code></pre>
 </div>
 </div>
@@ -2417,7 +2407,7 @@ Number of target objects: 25685 (43 matched)</code></pre>
 <span>                                <span class="st">"target_inchikey"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">mtch_res</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>DataFrame with 46 rows and 8 columns
+<pre><code>DataFrame with 45 rows and 8 columns
         feature_id     mzmed     rtmed      adduct ppm_error target_formula
        &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt; &lt;numeric&gt;    &lt;character&gt;
 FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
@@ -2866,7 +2856,6 @@ FT5606            NA              NA</code></pre>
 <pre><code>          mzmin    mzmax     rtmin     rtmax
 FT0371 138.0544 138.0552 146.32270 152.86115
 FT0565 161.0391 161.0407 159.00234 164.30799
-FT0676 176.0105 176.0117 146.32270 148.95415
 FT0732 182.0726 182.0756  32.71242  42.28755
 FT0845 195.0799 195.0887  30.73235  35.67337
 FT1171 229.1282 229.1335 178.01450 183.35303
@@ -2883,8 +2872,8 @@ FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
 <span>                     spectraVariables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtime"</span>, <span class="st">"precursorMz"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html" class="external-link">lengths</a></span><span class="op">(</span><span class="va">ms2_ctr_fts</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>FT0371 FT0565 FT0676 FT0732 FT0845 FT1171 FT5606
-    38     36      0    135     68     38      0 </code></pre>
+<pre><code>FT0371 FT0565 FT0732 FT0845 FT1171 FT5606
+    38     36    135     68     38      0 </code></pre>
 </div>
 </div>
 <p>The result from this <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> call is a <code>list</code> of <code>Spectra</code>, each element representing the result for one feature. With the exception of the last feature, multiple MS2 spectra could be identified. We next combine the <code>list</code> of <code>Spectra</code> into a single <code>Spectra</code> object using the <code><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra()</a></code> function and add an additional spectra variable containing the respective feature identifier.</p>
@@ -3001,7 +2990,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Thus, from the 7 significant features, only one could be annotated to a compound based on the MS2-based approach. There could be many reasons for the failure to find matches for the other features. Although MS2 spectra were selected for each feature, most appear to only represent noise, as for most features, in the LC-MS/MS run, no or only very low MS1 signal was recorded, indicating that in that selected sample the original compound might not (or no longer) be present. Also, most reference databases contain predominantly fragment spectra for protonated (<em>[M+H]+</em>) ions of compounds, while some of the features might represent signal from other types of ions which would result in a different fragmentation pattern. Finally, fragment spectra of compounds of interest might also simply not be present in the used reference database.</p>
+<p>Thus, from the 6 significant features, only one could be annotated to a compound based on the MS2-based approach. There could be many reasons for the failure to find matches for the other features. Although MS2 spectra were selected for each feature, most appear to only represent noise, as for most features, in the LC-MS/MS run, no or only very low MS1 signal was recorded, indicating that in that selected sample the original compound might not (or no longer) be present. Also, most reference databases contain predominantly fragment spectra for protonated (<em>[M+H]+</em>) ions of compounds, while some of the features might represent signal from other types of ions which would result in a different fragmentation pattern. Finally, fragment spectra of compounds of interest might also simply not be present in the used reference database.</p>
 <p>Thus, combining the information from the MS1- and MS2 based annotation we can only annotate one feature with a considerable confidence. The feature with the <em>m/z</em> of 195.0879 and a retention time of 32 seconds seems to be an ion of caffeine. While the result is somewhat disappointing it also clearly shows the importance of proper experimental planning and the need to control for all potential confounding factors. For the present experiment, no disease-specific biomarker could be identified, but a life-style property of individuals suffering from this disease: coffee consumption was probably contraindicated to patients of the CVD group to reduce the risk of heart arrhythmia.</p>
 <p>We below plot the EIC for this feature highlighting the retention time at which the highest scoring MS2 spectra was recorded and create a mirror plot comparing this MS2 spectra to the reference fragment spectra for caffeine.</p>
 <div class="cell">
