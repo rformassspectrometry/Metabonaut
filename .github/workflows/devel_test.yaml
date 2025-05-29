@@ -62,10 +62,11 @@ jobs:
           Rscript -e "reticulate::install_miniconda()"
         shell: bash {0}
 
-      - name: Install github dependencies
-        run: |
-          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = c("Depends", "Imports"))
-        shell: Rscript {0}
+      ## SpectriPy should be on the docker already.
+      # - name: Install github dependencies
+      #   run: |
+      #     BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = c("Depends", "Imports"), build_vignettes = FALSE)
+      #   shell: Rscript {0}
 
       - name: Run R CMD check
         run: |
