@@ -56,11 +56,12 @@ jobs:
           key: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-
 
-      - name: Install Miniconda
-        run: |
-          Rscript -e "install.packages('reticulate')"
-          Rscript -e "reticulate::install_miniconda()"
-        shell: bash {0}
+      ## This should also be on the docker
+      # - name: Install Miniconda
+      #   run: |
+      #     Rscript -e "install.packages('reticulate')"
+      #     Rscript -e "reticulate::install_miniconda()"
+      #   shell: bash {0}
 
       ## SpectriPy should be on the docker already.
       # - name: Install github dependencies
