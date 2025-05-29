@@ -15,8 +15,9 @@ vignette: >
 # Introduction
 
 The *SpectriPy* R package enables powerful mass spectrometry (MS) data analysis
-workflows combining the strengths of Python and R MS libraries. General
-concepts and examples of the package are available in the package's [*main*
+workflows combining the strengths of Python and R MS libraries
+[@graeve_spectripy_2025]. General concepts and examples of the package are
+available in the package's [*main*
 vignette](https://rformassspectrometry.github.io/SpectriPy/articles/SpectriPy.html).
 
 As an example for a combined R/Python workflow, we annotate the LC-MS/MS
