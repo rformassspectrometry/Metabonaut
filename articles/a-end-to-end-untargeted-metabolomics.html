@@ -37,7 +37,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/install_v0.html">Installation instruction</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/install_v0.html">Installation instructions</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-workflows" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Workflows</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-workflows">
@@ -1557,7 +1557,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class "XProcessHistory"
  type: Peak detection
- date: Fri May 30 10:58:02 2025
+ date: Fri May 30 11:31:47 2025
  info:
  fileIndex: 1,2,3,4,5,6,7,8,9,10
  Parameter class: CentWaveParam
@@ -1988,7 +1988,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span>                              mad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">res</span>, filter <span class="op">=</span> <span class="va">filter_dratio</span>, assay <span class="op">=</span> <span class="st">"norm_imputed"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>4207 features were removed</code></pre>
+<pre><code>4208 features were removed</code></pre>
 </div>
 </div>
 <p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>)of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
@@ -1999,16 +1999,16 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="co">#' Number of features after analysis</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4517</code></pre>
+<pre><code>[1] 4516</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb107"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Percentage left: end/beginning</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res_unfilt</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 51.77671</code></pre>
+<pre><code>[1] 51.76525</code></pre>
 </div>
 </div>
-<p>The dataset has been reduced from 8724 to 4517 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
+<p>The dataset has been reduced from 8724 to 4516 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_qc</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></span>
@@ -2213,10 +2213,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0732</td>
 <td style="text-align: right;">182.0749</td>
 <td style="text-align: right;">34.83789</td>
-<td style="text-align: right;">-8.343188</td>
-<td style="text-align: right;">0.0068564</td>
+<td style="text-align: right;">-8.661794</td>
+<td style="text-align: right;">0.0078225</td>
 <td style="text-align: right;">12.229286</td>
-<td style="text-align: right;">3.986878</td>
+<td style="text-align: right;">3.688474</td>
 <td style="text-align: right;">0.2116471</td>
 </tr>
 <tr class="even">
@@ -2224,59 +2224,59 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: right;">195.0877</td>
 <td style="text-align: right;">32.65668</td>
 <td style="text-align: right;">-6.330400</td>
-<td style="text-align: right;">0.0353158</td>
+<td style="text-align: right;">0.0350482</td>
 <td style="text-align: right;">16.905340</td>
 <td style="text-align: right;">10.454994</td>
 <td style="text-align: right;">0.0304712</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">FT0676</td>
-<td style="text-align: right;">176.0106</td>
-<td style="text-align: right;">147.55872</td>
-<td style="text-align: right;">-6.071671</td>
-<td style="text-align: right;">0.0417776</td>
-<td style="text-align: right;">8.788476</td>
-<td style="text-align: right;">2.630737</td>
-<td style="text-align: right;">0.7734774</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
 <td style="text-align: right;">162.13668</td>
-<td style="text-align: right;">-5.660282</td>
-<td style="text-align: right;">0.0273049</td>
+<td style="text-align: right;">-5.583621</td>
+<td style="text-align: right;">0.0315423</td>
 <td style="text-align: right;">10.287074</td>
-<td style="text-align: right;">4.387171</td>
+<td style="text-align: right;">4.493251</td>
 <td style="text-align: right;">0.0360903</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">FT1171</td>
-<td style="text-align: right;">229.1299</td>
-<td style="text-align: right;">181.08828</td>
-<td style="text-align: right;">-5.452449</td>
-<td style="text-align: right;">0.0222128</td>
-<td style="text-align: right;">10.721195</td>
-<td style="text-align: right;">5.467550</td>
-<td style="text-align: right;">0.0706276</td>
-</tr>
 <tr class="even">
+<td style="text-align: left;">FT2646</td>
+<td style="text-align: right;">337.0842</td>
+<td style="text-align: right;">160.94425</td>
+<td style="text-align: right;">-5.414573</td>
+<td style="text-align: right;">0.0478878</td>
+<td style="text-align: right;">7.610080</td>
+<td style="text-align: right;">2.038578</td>
+<td style="text-align: right;">0.5484998</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
 <td style="text-align: right;">148.39599</td>
-<td style="text-align: right;">-5.186170</td>
-<td style="text-align: right;">0.0222128</td>
+<td style="text-align: right;">-5.350577</td>
+<td style="text-align: right;">0.0284834</td>
 <td style="text-align: right;">9.914862</td>
-<td style="text-align: right;">4.416805</td>
+<td style="text-align: right;">4.200597</td>
 <td style="text-align: right;">0.5564435</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FT1171</td>
+<td style="text-align: right;">229.1299</td>
+<td style="text-align: right;">181.08828</td>
+<td style="text-align: right;">-5.177661</td>
+<td style="text-align: right;">0.0165539</td>
+<td style="text-align: right;">10.721195</td>
+<td style="text-align: right;">5.687525</td>
+<td style="text-align: right;">0.0706276</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FT5606</td>
 <td style="text-align: right;">560.3603</td>
 <td style="text-align: right;">33.54917</td>
-<td style="text-align: right;">-3.664887</td>
-<td style="text-align: right;">0.0301498</td>
+<td style="text-align: right;">-3.453724</td>
+<td style="text-align: right;">0.0350482</td>
 <td style="text-align: right;">8.885918</td>
-<td style="text-align: right;">5.009679</td>
+<td style="text-align: right;">5.256645</td>
 <td style="text-align: right;">1.2139903</td>
 </tr>
 </tbody>
@@ -2408,10 +2408,10 @@ FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
 FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
 FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
 ...            ...       ...       ...         ...       ...            ...
-FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1867474      C8H10N4O2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.0614704      C8H10N4O2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
 FT1171      FT1171   229.130  181.0883     [M+Na]+ 3.0770838      C12H18N2O
+FT2646      FT2646   337.084  160.9443          NA        NA             NA
 FT5606      FT5606   560.360   33.5492          NA        NA             NA
          target_name target_inchikey
          &lt;character&gt;     &lt;character&gt;
@@ -2421,10 +2421,10 @@ FT0371 Salicylami...   SKZKKFZAGN...
 FT0371 4-Aminoben...   ALYNCZNDIQ...
 FT0371 Anthranili...   RWZYAGGXGH...
 ...              ...             ...
-FT0845      Caffeine   RYYVLZVUVI...
 FT0845      caffeine   RYYVLZVUVI...
 FT0845 1,3,7-TRIM...   RYYVLZVUVI...
 FT1171 Isoproturo...   PUIYMUZLKQ...
+FT2646            NA              NA
 FT5606            NA              NA</code></pre>
 </div>
 </div>
@@ -2848,10 +2848,10 @@ FT5606            NA              NA</code></pre>
 <pre><code>          mzmin    mzmax     rtmin     rtmax
 FT0371 138.0544 138.0552 146.32270 152.86115
 FT0565 161.0391 161.0407 159.00234 164.30799
-FT0676 176.0105 176.0117 146.32270 148.95415
 FT0732 182.0726 182.0756  32.71242  42.28755
 FT0845 195.0799 195.0887  30.73235  35.67337
 FT1171 229.1282 229.1335 178.01450 183.35303
+FT2646 337.0813 337.0858 159.85245 162.32438
 FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
 </div>
 </div>
@@ -2865,8 +2865,8 @@ FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
 <span>                     spectraVariables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtime"</span>, <span class="st">"precursorMz"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html" class="external-link">lengths</a></span><span class="op">(</span><span class="va">ms2_ctr_fts</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>FT0371 FT0565 FT0676 FT0732 FT0845 FT1171 FT5606
-    38     36      0    135     68     38      0 </code></pre>
+<pre><code>FT0371 FT0565 FT0732 FT0845 FT1171 FT2646 FT5606
+    38     36    135     68     38      0      0 </code></pre>
 </div>
 </div>
 <p>The result from this <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> call is a <code>list</code> of <code>Spectra</code>, each element representing the result for one feature. With the exception of the last feature, multiple MS2 spectra could be identified. We next combine the <code>list</code> of <code>Spectra</code> into a single <code>Spectra</code> object using the <code><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra()</a></code> function and add an additional spectra variable containing the respective feature identifier.</p>
