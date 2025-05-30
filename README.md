@@ -37,7 +37,9 @@ For a full list of all available vignettes, visit the **[Metabonaut website](htt
 
 We strive for **reproducibility**. These workflows are designed to remain stable over time, allowing you to run all vignettes together as one comprehensive **super-vignette**.  
 
-- **Major updates** will be documented here.  
+- **Major updates** will be documented here. 
+    - Metabonaut now works with a stable version of Bioconductor (3.21), with the 
+      exception of the `SpectriPy` package which will be part of Bioconductor 3.22.
 - **Minor updates** can be found in the [News section](https://rformassspectrometry.github.io/Metabonaut/news/index.html).  
 
 ---
