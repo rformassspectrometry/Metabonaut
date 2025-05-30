@@ -15,8 +15,8 @@ required.
 
 # Running workflows locally
 
-To install on your computer all the packages necessary for the workflows run
-the code as follow:
+To install on your computer all the packages necessary for the workflows run the
+code as follow:
 
 ```{r eval=FALSE}
 install.packages("BiocManager")

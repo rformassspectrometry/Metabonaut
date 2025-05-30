@@ -56,6 +56,12 @@ jobs:
           key: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-bioc-devel-r-devel-
 
+      # SpectriPy should be on the docker already.
+      - name: Install github dependencies
+        run: |
+          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = c("Depends", "Imports"), build_vignettes = FALSE)
+        shell: Rscript {0}
+
       - name: Run R CMD check
         run: |
           rcmdcheck::rcmdcheck(args = c('--no-manual', '--timings'), build_args = c('--no-manual', '--no-resave-data'), error_on = 'error', check_dir = 'check')
