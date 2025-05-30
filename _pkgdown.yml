@@ -7,7 +7,7 @@ navbar:
   bg: primary
   title: Metabonaut
   left:
-  - text: Installation instruction
+  - text: Installation instructions
     href: articles/install_v0.html
   - text: Workflows
     menu:
