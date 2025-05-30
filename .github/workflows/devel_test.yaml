@@ -58,7 +58,7 @@ jobs:
 
       - name: Install github dependencies
         run: |
-          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = c("Depends", "Imports"))
+          BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = c("Depends", "Imports"), force = TRUE)
         shell: Rscript {0}
 
       - name: Run R CMD check
