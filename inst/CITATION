@@ -1,9 +1,10 @@
 citHeader("To cite this workflow:")
 
 citEntry(entry = "Misc",
-         title  = "rformassspectrometry/Metabonaut: Metabonaut version 1.0.0",
+         title  = "rformassspectrometry/Metabonaut: v1.2.0",
          author = personList(
            person(given = "Philippine", family = "Louail"),
+           person(given = "Marilyn", family = "De Graeve"),
            person(given = "Anna", family = "Tagliaferri"),
            person(given = "Vinicius", family = "Verri Hernandes"),
            person(given = "Daniel", family = "Marques de Sá e Silva"),
@@ -11,12 +12,12 @@ citEntry(entry = "Misc",
          ),
          publisher = "Zenodo",
          year = "2025",
-         month = "march",
-         version = "v1.0.0",
-         doi = "10.5281/zenodo.15062930",
-         url = "https://zenodo.org/doi/10.5281/zenodo.15062930",
-         textVersion = paste0("Philippine Louail, Anna Tagliaferri, Vinicius Verri Hernandes, ",
-                              "Daniel Marques de Sá e Silva, & Johannes Rainer. (2025). ",
-                              "rformassspectrometry/Metabonaut: Metabonaut version 1.0.0. ",
-                              "Zenodo. https://doi.org/10.5281/zenodo.15062930")
+         month = "may",
+         version = "v1.2.0",
+         doi = "10.5281/zenodo.15554287",
+         url = "https://doi.org/10.5281/zenodo.15554287",
+         textVersion = paste0("Philippine Louail, Marilyn De Graeve, Anna Tagliaferri, ",
+                              "Vinicius Verri Hernandes, Daniel Marques de Sá e Silva, & ",
+                              "Johannes Rainer. (2025). rformassspectrometry/Metabonaut: v1.2.0. ",
+                              "Zenodo. https://doi.org/10.5281/zenodo.15554287")
 )

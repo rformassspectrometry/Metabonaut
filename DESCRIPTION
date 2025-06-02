@@ -12,7 +12,7 @@ Authors@R:
      person(given = "Anna", family = "Tagliaferri",
             email = "Anna.Tagliaferri@student.unibz.it",
             role = "ctb",
-            comment = "ORCID = 0009-0001-4044-4285"),
+            comment = c(ORCID = "0009-0001-4044-4285")),
      person(given = "Vinicius", family = "Verri Hernandes",
             email = "vinicius.verri.hernandes@univie.ac.at",
             role = "ctb",
