@@ -1,5 +1,9 @@
 # Metabonaut 1.2
 
+## Changes in 1.2.1
+
+- Addition of libary(knitr) in end-to-end workflow.
+
 ## Changes in 1.2.0
 
 - Addition of a new vignette depicting a large scale processing using xcms.
