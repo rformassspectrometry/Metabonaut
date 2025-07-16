@@ -52,6 +52,7 @@ Our workflow is therefore based on the following dependencies:
 
 ```{r packages-used, message=FALSE, warning=FALSE}
 ## Data Import and handling
+library(knitr)
 library(readxl)
 library(MsExperiment)
 library(MsIO)
