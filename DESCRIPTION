@@ -71,7 +71,10 @@ Suggests:
     pheatmap,
     knitr,
     reticulate,
-    quarto
+    quarto,
+    notame,
+    notameStats,
+    notameViz
 Remotes:
     RforMassSpectrometry/MsIO,
     RforMassSpectrometry/SpectriPy

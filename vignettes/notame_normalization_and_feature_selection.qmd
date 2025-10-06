@@ -19,17 +19,30 @@ knitr::opts_knit$set(root.dir = './')
 ```
 
 # Introduction
-Herein, we will perform normalization and feature selection using the *notame* R package, which was developed in parallel with the associated protocol article published in the "Metabolomics Data Processing and Data Analysis—Current Best Practices” special issue of the Metabolites journal [@klavus_notame_2020]. The main outcome is identifying interesting features for laborious downstream steps relating to biological context, such as annotation and pathway analysis, which fall outside the purview of *notame*. The associated protocol article presents a sequence of steps that is easily adopted by new practitioners. We will not follow the protocol article exactly and instead do an analysis which meshes with the trunk of the workflow.
+Herein, we will perform normalization and feature selection using the 
+*notame* R packages, originally developed in parallel with a protocol 
+article published in the "Metabolomics Data Processing and Data 
+Analysis—Current Best Practices” special issue of the Metabolites journal 
+[@klavus_notame_2020]. The main outcome is identifying interesting features 
+for laborious downstream steps relating to biological context, such as 
+annotation and pathway analysis, which fall outside the purview of *notame*. 
+The associated protocol article presents a sequence of steps that is easily 
+adopted by new practitioners. We will not follow the protocol article 
+exactly and instead do an analysis which meshes with the trunk of the 
+workflow.
 
 # Setup
-Let's prepare by attaching packages and loading the preprocessed data as a SummarizedExperiment object returned from MSExperiment::quantify().
+Let's prepare by attaching packages and loading the preprocessed data as a 
+SummarizedExperiment object returned from `MSExperiment::quantify()`.
 
 ```{r, message=FALSE, warning=FALSE}
 library(alabaster.se) # Portable loading and saving of SummarizedExperiment
 library(BiocParallel) # Parallelization
 library(cowplot) # Combinine plots in pane
 library(limma) # Differential expression analysis
-library(notame) # The main untargeted LC-MS metabolomics package used herein
+library(notame) # Preprocessing
+library(notameViz) # Visualization
+library(notameStats) # Feature selection
 library(SummarizedExperiment) # The SummarizedExperiment container
 
 #' Set up parallel processing using 2 cores
@@ -39,13 +52,17 @@ if (.Platform$OS.type == "unix") {
     register(SnowParam(2))
 } 
 
-dir <- system.file("extdata", "preprocessed_res", package = "metabonaut")
+dir <- system.file("extdata", "preprocessed_res", package = "Metabonaut")
 se <- readObject(dir)
 se
 ```
-The `SummarizedExperiment` container supports several assays. In notame, you 
+The `SummarizedExperiment` container supports several assays. In *notame*, you 
 need to specify the assay using the `assay.type` parameter if using multiple 
-assays. Herein, we have two assays: "raw" contains the detected peaks without gap-filling, whereas "raw_filled" contains the gap-filled peak table. For this demo to go smoothly, we prepare the SummarizedExperiment object for all the functions at once, mostly by renaming and creating columns. 
+assays. Herein, we have two assays: "raw" contains the detected peaks 
+without gap-filling, whereas "raw_filled" contains the gap-filled peak 
+table. For this demo to go smoothly, we prepare the SummarizedExperiment 
+object for all the functions at once, mostly by renaming and creating 
+columns. 
 
 ```{r, message=FALSE, warning=FALSE, results='hold'}
 # Rename columns of sample data
@@ -57,7 +74,7 @@ colnames(se) <- colData(se)$Sample_ID
 # Change name of pooled samples to "QC" in the "QC" column
 se$QC[se$QC == "pool"] <- "QC"
 # Convert phenotype column to factor
-se$phenotype %<>% as.factor()
+se$phenotype <- as.factor(se$phenotype)
 
 # In feature data, create Feature_ID column from rownames
 rowData(se) <- cbind(Feature_ID = rownames(se), rowData(se))
@@ -67,55 +84,130 @@ rowData(se)$Split <- "HILIC_pos"
 rowData(se)$Flag <- NA
 
 # Convert assay from DelayedMatrix to regular matrix
-assay(se, "raw_filled") %<>% as.matrix()
-assay(se, "raw") %<>% as.matrix()
+assay(se, "raw_filled") <- as.matrix(assay(se, "raw_filled"))
+assay(se, "raw") <- as.matrix(assay(se, "raw"))
 ```
 
 # Normalization
-Features with a low detection rate are flagged, as they are deemed too unreliable not only for statistical analysis, but also for the normalization process which relies heavily on QC samples. Flagged features are automatically excluded in *notame*, but can be included using `all_features = TRUE`. We set the detection rate threshold for QC samples at 70% [@broadhurst_guidelines_2018], plus a within-group threshold of 80%. The within-group threshold must be met in at least one study group.
+Features with a low detection rate are flagged, as they are deemed too 
+unreliable not only for statistical analysis, but also for the normalization 
+process which relies heavily on QC samples. Flagged features are 
+automatically excluded in most functions in *notame*, but can be included using 
+`all_features = TRUE`. We set the detection rate threshold for QC samples at 
+70% [@broadhurst_guidelines_2018], plus a within-group threshold of 80%. The 
+within-group threshold must be met in at least one study group.
 
 ```{r, message=FALSE, warning=FALSE, results = 'hold'}
 se <- flag_detection(se, qc_limit = 0.7, group_limit = 0.8, 
-                     group = "phenotype", assay.type = "raw")
+                     group = "phenotype", assay.type = "raw_filled")
 ```
 
-Next, we correct for drift in features using a cubic spline, relating each features' abundance in QC samples to injection order [@kirwan_characterising_2013]. Drift correction is performed in log-space since the log transformed data better follows assumptions of cubic spline regression. The value for the smoothing parameter is, by default, optimized using leave-one-out cross-validation to avoid overfitting. The abundances are corrected by adding the mean of a feature’s abundance in the QC samples and subtracting the predicted fit for each feature.
+Next, we correct for drift using a cubic spline, relating each 
+features' abundance in QC samples to injection order 
+[@kirwan_characterising_2013]. Drift correction is performed in log-space 
+since the log transformed data better follows assumptions of cubic spline 
+regression. The value for the smoothing parameter is, by default, optimized 
+using leave-one-out cross-validation to avoid overfitting. The abundances 
+are corrected by adding the mean of a feature’s abundance in the QC samples 
+and subtracting the predicted fit for each feature.
 
 ```{r, message=FALSE, warning=FALSE}
 se <- correct_drift(se, assay.type = "raw_filled", name = "drift_norm")
 ```
 
-Brief notes about drift correction are stored in the `DC_note` column of feature data. For example, it is noted if drift correction couldn't be performed because because at least four QC samples with values are needed for fitting the cubic spline.
+Brief notes about drift correction are stored in the `DC_note` column of 
+feature data. For example, it is noted if drift correction couldn't be 
+performed because because at least four QC samples with values are needed 
+for fitting the cubic spline.
 
-Next, we apply probabilistic quotient normalization (PQN) to reduce unwanted variation from differential dilution of samples [@dieterle_probabilistic_2006]. The central challenge here is to reduce unwanted variation from dilution, whether biological or experimental, while accounting for the possibility of biologically meaningful variation in total feature abundances. In probabilistic quotient normalization, the most probable dilution factor is determined for each sample as the median of quotients calculated for each feature relative to the median of each feature's abundance in reference samples. The sample abundances are then divided by the dilution factor. Below, we use QC samples as reference samples, although the literature suggests that the choice of reference samples isn't critical [@dieterle_probabilistic_2006].
+Next, we apply probabilistic quotient normalization (PQN) to reduce unwanted 
+variation from differential dilution of samples 
+[@dieterle_probabilistic_2006]. The central challenge here is to reduce 
+unwanted variation from dilution, whether biological or experimental, while 
+accounting for the possibility of biologically meaningful variation in total 
+feature abundances. In probabilistic quotient normalization, the most 
+probable dilution factor is determined for each sample as the median of 
+quotients calculated for each feature relative to the median of each 
+feature's abundance in reference samples. The sample abundances are then 
+divided by the dilution factor. Below, we use quality features in QC samples as 
+reference, although the literature suggests that the choice of reference 
+samples isn't critical [@dieterle_probabilistic_2006].
 
 ```{r, message=FALSE, warning=FALSE}
 se <- pqn_normalization(se, ref = "qc", method = "median", 
                         assay.type = "drift_norm", name = "dil_norm")
 ```
 
-Next, let's visualize the data before and after normalization for drift and dilution. Typically, the data would be assessed visually after each step of the normalization process, using the `visualizations()` wrapper to save relevant plots. Herein, the data is visualized side-by-side after normalization for both drift and dilution for conciseness. The are many parameters for customizing the visualizations, but here we stick to the basics of coloring, shaping and ordering the samples to best represent what is of interest. 
+Next, let's visualize the data before and after normalization for drift and 
+dilution using the *notameViz* package. Typically, the data would be assessed 
+visually after each step of the normalization process, using the 
+`save_QC_plots()` wrapper to save relevant plots. Herein, the data is 
+visualized side-by-side after normalization for both drift and dilution for 
+conciseness. The are many parameters for customizing the visualizations, but 
+here we stick to the basics of coloring, shaping and ordering the samples to 
+best represent what is of interest. 
 
-Typically, drift in the biological samples would be evidenced by an overabundance of low p-values in histograms relating each features' abundance to injection order. After drift correction, the distributions would be expected to be more uniform for all samples and biological samples. In the case of QC samples, an overabundance of high p-values is expected given that the QC samples are identical. 
+Typically, drift in the biological samples would be evidenced by an 
+overabundance of low p-values in histograms relating each features' 
+abundance to injection order. After drift correction, the distributions 
+would be expected to be more uniform for all samples and biological samples. 
+In the case of QC samples, an overabundance of high p-values is expected 
+given that the QC samples are identical. 
 
-The QC samples behave as expected, but it seems that the small number of samples does not allow us to fit linear models relating abundance to injection order properly for all samples and biological samples, as evidenced by the overabundance of high p-values in the top histograms. The small sample size, drift adding to the variation in biological samples and, in the case of all samples, the different source of the QC samples could explain this deviation from the uniform distribution or overabundance of low p-values. Insofar as this is the case, the more uniform distribution after normalization indicates less drift in the biological samples.
+The QC samples behave as expected, but it seems that the small number of 
+samples does not allow us to fit linear models relating abundance to 
+injection order properly for all samples and biological samples, as 
+evidenced by the overabundance of high p-values in the top histograms. The 
+small sample size, drift adding to the variation in biological samples and, 
+in the case of all samples, the different source of the QC samples could 
+explain this deviation from the uniform distribution or overabundance of low 
+p-values. Insofar as this is the case, the more uniform distribution after 
+normalization indicates less drift in the biological samples.
 
 ```{r, results = 'hide'}
-#| fig-cap: "Figure 1. P-values from linear regression models relating each feature to injection order. The dashed red lines represent the expected uniform distribution. A) Before normalization, featuring all samples, biological samples and QC samples. B) After normalization, featuring all samples, biological samples and QC samples"
+#| fig-cap: > 
+#|   Figure 1. P-values from linear regression models relating each 
+#|   feature to injection order. The dashed red lines represent the expected 
+#|   uniform distribution. A) Before normalization, featuring all samples, 
+#|   biological samples and QC samples. B) After normalization, featuring all 
+#|   samples, biological samples and QC samples
 #| fig-width: 16
 #| fig-height: 7
 #| out-width: "100%"
+#| warning: false
 plot_grid(plot_injection_lm(se, assay.type = "raw_filled"),
           plot_injection_lm(se, assay.type = "dil_norm"),
           labels = "AUTO")
 ```
 
-Sample boxplots are useful for inspecting the distributions of feature abundances. One would expect the QC samples to be more alike after normalization for drift and dilution. Depending on the instrumentation and experimental details, drift may be apparent as a global trend or the effect of drift is cancelled out.
+Sample boxplots are useful for inspecting the distributions of feature 
+abundances. One would expect the QC samples to be more alike after 
+normalization for drift and dilution. Depending on the instrumentation and 
+experimental details, drift may be apparent as a global trend or the effect of 
+drift is cancelled out.
 
-In this case, the distributions of feature abundances are somewhat shifted after normalization. The QC samples appear not to have been affected by PQN. There also doesn't seem to be a global trend with regard to injection order before or after normalization, although can't quite be assessed due to the small number of samples divided into multiple groups. The distributions of feature abundances are a bit more similar between study groups after normalization, suggesting that there could be a difference in the biological dilution of the samples between the study groups. Within study groups, the differences are accentuated a little, which may point to experimental or biological dilution-related variation within study groups. Finally, PQN decreased generally decreased the abundances of the biological samples to levels more similar to the QC samples. This comes from a dilution factor of over one for each of the biological samples, reflecting the different source and processing of QC samples.
+In this case, the distributions of feature abundances are somewhat shifted 
+after normalization. The QC samples appear not to have been affected by PQN. 
+There also doesn't seem to be a global trend with regard to injection order 
+before or after normalization, although can't quite be assessed due to the 
+small number of samples divided into multiple groups. The distributions of 
+feature abundances are a bit more similar between study groups after 
+normalization, suggesting that there could be a difference in the biological 
+dilution of the samples between the study groups. Within study groups, the 
+differences are accentuated a little, which may point to experimental or 
+biological dilution-related variation within study groups. Finally, PQN 
+decreased generally decreased the abundances of the biological samples to 
+levels more similar to the QC samples. This comes from a dilution factor of 
+over one for each of the biological samples, reflecting the different source 
+and processing of QC samples.
 
 ```{r, warning=FALSE}
-#| fig-cap: "Figure 2. Boxplots representing the distributions of feature abundances in each sample by injection order, featuring the median as a black line, the interquartile range as a box and the 1.5x the interquartile range as whiskers. A) Before normalization. B) After normalization."
+#| fig-cap: >
+#|   Figure 2. Boxplots representing the distributions of feature 
+#|   abundances in each sample by injection order, featuring the median as a 
+#|   black line, the interquartile range as a box and the 1.5x the 
+#|   interquartile range as whiskers. A) Before normalization. B) After 
+#|   normalization.
 #| fig-width: 15
 #| fig-height: 7
 #| out-width: "100%"
@@ -127,12 +219,26 @@ plot_grid(plot_sample_boxplots(se, order_by = "Injection_order",
           labels = "AUTO")
 ```
 
-For the remaining visualizations which all involve Euclidean distances, the data was autoscaled. Conservative interpretation focusing on the QC samples is enough to assess the normalization process, but intuitions about the data at large can be formed based on the biological samples.
+For the remaining visualizations which all involve Euclidean distances, the 
+data was autoscaled. Conservative interpretation focusing on the QC samples is 
+enough to assess the normalization process, but intuitions about the data at 
+large can be formed based on the biological samples.
 
-In general, one would expect a more prominent density peak for QC samples and greater separation between QC samples and biological samples after normalization. The former is also the case here, but there seems to be increased distance between some QC samples, as evidenced by the flattened density peak. The origin of this is unclear. The separation between QC samples and biological samples has not increased, although in this case it may be an artifact from the limitations affecting the kernel density estimate. Interpreting the distance between the biological samples is a bit challenging due to the scaling. There is perhaps more clearly a single peak, indicating increased similarity between biological samples.
+In general, one would expect a more prominent density peak for QC samples and 
+greater separation between QC samples and biological samples after 
+normalization. The former is also the case here, but there seems to be 
+increased distance between some QC samples, as evidenced by the flattened 
+density peak. The origin of this is unclear. The separation between QC samples 
+and biological samples has not increased, although in this case it may be an 
+artifact from the limitations affecting the kernel density estimate. 
+Interpreting the distance between the biological samples is a bit challenging 
+due to the scaling. There is perhaps more clearly a single peak, indicating 
+increased similarity between biological samples.
 
 ```{r}
-#| fig-cap: "Figure 3. Density plot of Euclidean distances between samples. A) Before normalization. B) After normalization."
+#| fig-cap: > 
+#|   Figure 3. Density plot of Euclidean distances between samples. A) Before 
+#|   normalization. B) After normalization.
 #| fig-width: 16
 #| fig-height: 7
 #| out-width: "100%"
@@ -141,12 +247,26 @@ plot_grid(plot_dist_density(se, assay.type = "raw_filled", title = NULL),
           labels = "AUTO")
 ```
 
-PCA is useful for visualizing the similarity of individual samples and groups as it represents the data along axes which, consecutively, maximally explains the variation. PCA is especially useful in an exploratory sense, allowing us to relate covariates to the grouping of samples. Typically, the QC samples will group more tightly and the overall structure is preserved. The variation explained by the first principal components can also be expected to increase as normalization should reduce the masking effect of unwanted variation. 
+PCA is useful for visualizing the similarity of individual samples and groups 
+as it represents the data along axes which, consecutively, maximally explains 
+the variation. PCA is especially useful in an exploratory sense, allowing us to 
+relate covariates to the grouping of samples. Typically, the QC samples will 
+group more tightly and the overall structure is preserved. The variation 
+explained by the first principal components can also be expected to increase as 
+normalization should reduce the masking effect of unwanted variation. 
 
-As expected, the overall structure is intact and the QC samples group more tightly, indicating that we have reduced unwanted variation. The CVD group seems to group more tightly after normalization, although the opposite can be said for the CTR group. Such local differences could be investigated further using t-SNE and coloring for injection order, hoping for tighter groups and dissipated trends. There is little difference in the variance explained by the first two components.
+As expected, the overall structure is intact and the QC samples group more 
+tightly, indicating that we have reduced unwanted variation. The CVD group 
+seems to group more tightly after normalization, although the opposite can be 
+said for the CTR group. Such local differences could be investigated further 
+using t-SNE and coloring for injection order, hoping for tighter groups and 
+dissipated trends. There is little difference in the variance explained by the 
+first two components.
 
 ```{r, results=FALSE}
-#| fig-cap: "Figure 4. PCA plots of samples, shape by study group and color by injection order. A) Before normalization. B) After normalization."
+#| fig-cap: >
+#|   Figure 4. PCA plots of samples, shape by study group and color by 
+#|   injection order. A) Before normalization. B) After normalization.
 #| fig-width: 10.5
 #| fig-height: 4
 #| out-width: "100%"
@@ -157,12 +277,24 @@ plot_grid(plot_pca(se, color = "Injection_order",
           labels = "AUTO")
 ```
 
-PCA and hierarchical clustering using Ward's criterion are complementary unsupervised methods operating in Euclidean space. While PCA focuses on explaining the variation with maximally reduced dimensionality, hierarchical clustering allows observation of relationships between samples at higher resolution by minimizing within-cluster variation in the clustering of samples. Tighter clustering of QC samples is expected. Changes in the clustering of the biological samples is best interpreted conservatively.
+PCA and hierarchical clustering using Ward's criterion are complementary 
+unsupervised methods operating in Euclidean space. While PCA focuses on 
+explaining the variation with maximally reduced dimensionality, hierarchical 
+clustering allows observation of relationships between samples at higher 
+resolution by minimizing within-cluster variation in the clustering of samples. 
+Tighter clustering of QC samples is expected. Changes in the clustering of the 
+biological samples is best interpreted conservatively.
 
-In the present case, the QC samples cluster tightly before and after normalization. After normalization, one CTR sample clusters more closely with the CVD samples, as in the PCA both before and after normalization. This is a sign of that the study groups are very similar, overall.
+In the present case, the QC samples cluster tightly before and after 
+normalization. After normalization, one CTR sample clusters more closely with 
+the CVD samples, as in the PCA both before and after normalization. This is a 
+sign of that the study groups are very similar, overall.
 
 ```{r}
-#| fig-cap: "Figure 5. Dendrograms of hierarchical sample clusters using Ward’s criterion on Euclidean distances between samples. A) Before normalization. B) After normalization."
+#| fig-cap: >
+#|   Figure 5. Dendrograms of hierarchical sample clusters using Ward’s 
+#|   criterion on Euclidean distances between samples. A) Before normalization. 
+#|   B) After normalization.
 #| fig-width: 20
 #| fig-height: 10
 #| out-width: "100%"
@@ -173,12 +305,28 @@ plot_grid(plot_dendrogram(se, color = "phenotype", assay.type = "raw_filled",
           labels = "AUTO")
 ```
 
-Heatmaps give insight into the actual distances between samples, where the distances between QC samples should be smaller after normalization. Organizing the heatmap as per hierachical sample clusters using Ward's criterion facilitates interpretation. The QC samples should appear as a darker, more uniform square. 
+Heatmaps give insight into the actual distances between samples, where the 
+distances between QC samples should be smaller after normalization. Organizing 
+the heatmap as per hierachical sample clusters using Ward's criterion 
+facilitates interpretation. The QC samples should appear as a darker, more 
+uniform square. 
 
-In unison with the density plots, we can observe less distance between QC samples, although the less uniform QC sample block suggests that all QC samples did not respond euqally to the normalization process. Moreover, the distances of biological samples relative to QC samples have increased as evidenced by the slightly lighter overall appearance. As we noted earlier, there was little evidence for drift, so this relative shift may be attributed to PQN accounting for variation of interest in the biological samples. The shift is most clear for the C sample that clustered apart from its study group, possibly substantiating that dilution explains much of the separation between the study groups. 
+In unison with the density plots, we can observe less distance between QC 
+samples, although the less uniform QC sample block suggests that all QC samples 
+did not respond euqally to the normalization process. Moreover, the distances 
+of biological samples relative to QC samples have increased as evidenced by the 
+slightly lighter overall appearance. As we noted earlier, there was little 
+evidence for drift, so this relative shift may be attributed to PQN accounting 
+for variation of interest in the biological samples. The shift is most clear 
+for the C sample that clustered apart from its study group, possibly 
+substantiating that dilution explains much of the separation between the study 
+groups. 
 
 ```{r}
-#| fig-cap: "Figure 6. Heatmaps of Euclidean distances between samples, grouped by hierarchical clusters using Ward's criterion. A) Before normalization. B) After normalization."
+#| fig-cap: > 
+#|   Figure 6. Heatmaps of Euclidean distances between samples, grouped 
+#|   by hierarchical clusters using Ward's criterion. A) Before normalization. 
+#|   B) After normalization.
 #| fig-width: 20
 #| fig-height: 10
 #| out-width: "100%"
@@ -190,12 +338,19 @@ plot_grid(plot_sample_heatmap(se, group = "phenotype",
           labels = "AUTO")
 ```
 
-We have reduced unwanted variation as evidenced by QC samples, but we may have reduced biological variation of interest as well despite the cross-validated fit of the smoothed cubic spline and the robustness of PQN. This would not be surprising considering the source of the QC samples and the small sample size.
+We have reduced unwanted variation as evidenced by QC samples, but we may have 
+reduced biological variation of interest as well despite the cross-validated 
+fit of the smoothed cubic spline and the robustness of PQN. This would not be 
+surprising considering the source of the QC samples and the small sample size.
 
 # Feature prefiltering
-Assuming that we are happy with the normalization process and have a feel for the data, we flag low-quality features, excluding them from downstream steps. 
+Assuming that we are happy with the normalization process and have a feel for 
+the data, we flag low-quality features, excluding them from downstream steps. 
 
-In addition to the D-ratio and detection rate in the trunk of the workflow, we filter features by their relative standard deviation in QC samples. The non-parametric, robust versions of the D-ratio and relative standard deviation are used[@broadhurst_guidelines_2018].
+In addition to the D-ratio and detection rate in the trunk of the workflow, we 
+filter features by their relative standard deviation in QC samples. The non-
+parametric, robust versions of the D-ratio and relative standard deviation are 
+used[@broadhurst_guidelines_2018].
 
 ```{r, message=FALSE, warning=FALSE}
 se <- flag_quality(se, assay.type = "dil_norm",
@@ -203,12 +358,21 @@ se <- flag_quality(se, assay.type = "dil_norm",
 
 ```
 
-We removed features flagged for low detection rate before the normalization process, so the remaining features were flagged for low quality:
+We removed features flagged for low detection rate before the normalization 
+process, so the remaining features were flagged for low quality:
 `r knitr::kable(flag_report(se))`
 
-Finally, we impute missing values. Using random forest imputation, we can accommodate the possibility of missing values arising not only from the limit of detection, but also because of issues in gap-filling. We drop QC samples so as not to bias the imputation. The strict thresholds for quality metrics and detection rate allow us to be more confident in our imputed values.
+Finally, we impute missing values. Using random forest imputation, we can 
+accommodate the possibility of missing values arising not only from the limit 
+of detection, but also because of issues in gap-filling. We drop QC samples so 
+as not to bias the imputation. The strict thresholds for quality metrics and 
+detection rate allow us to be more confident in our imputed values.
 
-The data is now ready for feature selection with differential abundance analysis. We save the pretreated data in a separate object and continue with a single assay for the remainder of the analysis. We also drop flagged features, although low-quality features can be needed in annotation when searching for specific ions or fragments of known molecules.
+The data is now ready for feature selection with differential abundance 
+analysis. We save the pretreated data in a separate object and continue with a 
+single assay for the remainder of the analysis. We also drop flagged features, 
+although low-quality features can be needed in annotation when searching for 
+specific ions or fragments of known molecules.
 
 
 ```{r, message=FALSE, warning=FALSE, results='hold'}
@@ -222,38 +386,65 @@ assays(base)[names(assays(base)) != "imputed"] <- NULL
 The out-of-bag error is promising. Now the data is ready for feature selection.
 
 # Differential abundance analysis
-Let's get a final look at the data with PCA, this time without QC samples and coloring by the only available clinical covariate, age.
+Let's get a final look at the data with PCA, this time without QC samples and 
+coloring by the only available clinical covariate, age.
 
 ```{r, results=FALSE}
-#| fig-cap: "Figure 7. PCA plot of biological samples, shape by study group and color by age."
+#| fig-cap: >
+#|   Figure 7. PCA plot of biological samples, shape by study group and color 
+#|   by age.
 #| fig-width: 7
 #| fig-height: 7
 #| out-width: "100%"
 plot_pca(base, color = "age", shape = "phenotype")
 ```
 
-Motivated by demonstration purposes, we are interested in also including age as an independent variable as in the trunk of the workflow. We'll use base R linear models to find interesting features, adjust for false positives from multiple testing using the false discovery rate approach and plot the results in histograms to assess validity of the tests and get a feel for the results. The formula interface is used in most univariate statistics functions in *notame* for flexibility. Here we also use `join_rowData()` for the first time to add the results to the object, where the `data.frame` to be added needs to have a `Feature_ID` column.
+Motivated by demonstration purposes, we are interested in also including age as 
+an independent variable as in the trunk of the workflow. We'll use
+linear models to find interesting features, adjust for false positives from 
+multiple testing using the false discovery rate approach and plot the results 
+in histograms to assess validity of the tests and get a feel for the results. 
+The formula interface is used in most univariate statistics functions in 
+*notameStats* for flexibility. By default, linear models are fit for each 
+feature but correction for multiple testing is only applied for quality 
+features. Here we also use `join_rowData()` for the first time 
+to add the results to the object.
 
 ```{r, message=FALSE, warning=FALSE, results = FALSE}
-#| fig-cap: "Figure 8. Linear regression p-value histograms with abundance and age as independent variables. A) p-values. B) FDR-adjusted p-values (q-values)."
+#| fig-cap: >
+#|   Figure 8. Linear regression p-value histograms with abundance and age as 
+#|   independent variables. A) p-values. B) FDR-adjusted p-values (q-values).
 #| fig-width: 15
 #| fig-height: 7
 #| out-width: "100%"
-lm_results <- perform_lm(log2(base), formula_char = "Feature ~ phenotype + age")
-base <- join_rowData(base, lm_results[, c("Feature_ID", "phenotypeCVD_P", 
-                                          "phenotypeCVD_P_FDR" )])
+assay(base, "log2") <- log2(assay(base))
+lm_results <- perform_lm(base, assay.type = "log2", 
+                         formula_char = "log2(Feature) ~ phenotype + age")
+base <- join_rowData(base, lm_results[, c("Feature_ID", "phenotypeCVD.p.value", 
+                                          "phenotypeCVD.p.value_FDR" )])
                                         
-plot_grid(plot_p_histogram(list(lm_results$phenotypeCVD_P)),
-          plot_p_histogram(list(lm_results$phenotypeCVD_P_FDR)),
+plot_grid(plot_p_histogram(list(lm_results$phenotypeCVD.p.value)),
+          plot_p_histogram(list(lm_results$phenotypeCVD.p.value_FDR)),
           labels = "AUTO")
+          
 ```
 
-The p-value histogram for looks promising; it is a relatively uniform distribution with an overabundance of low p-values. However, there are no significant features after correction for multiple testing. The FDR correction results in a single, lowest q-value shared across tens of features because they have very similar p-values (not shown). 
+The p-value histogram for looks promising; it is a relatively uniform 
+distribution with an overabundance of low p-values. However, there are no 
+significant features after correction for multiple testing. The FDR correction 
+results in a single, lowest q-value shared across tens of features because they 
+have very similar p-values (not shown). 
 
-Above, we essentially performed the initial model fitting part of limma as in the trunk of the workflow, but without the eBayes adjustment. We'll demonstrate limma below to show how eBayes shifts the results, and maybe get an interesting feature or two to plot as well.
+Above, we essentially performed the initial model fitting part of *limma* as in 
+the trunk of the workflow, but without the eBayes adjustment. We'll demonstrate 
+*limma* below to show how eBayes shifts the results, and maybe get an 
+interesting feature or two to plot as well.
 
 ```{r, message=FALSE, warning=FALSE}
-#| fig-cap: "Figure 9. Linear regression (limma) p-value histograms with abundance and age as independent variables. A) p-values. B) FDR-adjusted p-values (q-values)."
+#| fig-cap: >
+#|   Figure 9. Linear regression (limma) p-value histograms with 
+#|   abundance and age as independent variables. A) p-values. B) FDR-adjusted p-
+#|   values (q-values).
 #| fig-width: 15
 #| fig-height: 7
 #| out-width: "100%"
@@ -269,7 +460,8 @@ fit <- eBayes(fit)
 t <- fit$coef/fit$stdev.unscaled/fit$sigma
 p.value <- 2 * pt(-abs(t), df = fit$df.residual)[, "phenotypeCVD"]
 p.adjusted <- p.adjust(p.value, method = "BH")
-all.equal(p.adjusted, rowData(base)$phenotypeCVD_P_FDR, check.attributes = FALSE)
+all.equal(p.adjusted, rowData(base)$phenotypeCVD_P_FDR, 
+          check.attributes = FALSE)
 
 # Extract results
 res <- data.frame(
@@ -286,7 +478,9 @@ plot_grid(plot_p_histogram(list(rowData(base)$phenotypeCVD_P_limma)),
           labels = "AUTO")
 ```
 
-Again the p-value histogram looks reasonable, but there are no significant features. For demonstration purposes, we'll consider the feature with the lowest q-value most interesting.
+Again the p-value histogram looks reasonable, but there are no significant 
+features. For demonstration purposes, we'll consider the feature with the 
+lowest q-value most interesting.
 
 ```{r}
 fname <- rownames(base[which.min(rowData(base)$phenotypeCVD_P_FDR_limma)])
@@ -294,10 +488,19 @@ f_pvalue <- min(rowData(base)$phenotypeCVD_P_limma)
 f_qvalue <- min(rowData(base)$phenotypeCVD_P_FDR_limma)
 ```
 
-After differential abundance analysis or feature selection using supervised learning, for example, the number of significant features or a ranking cutoff often allows for manual inspection of feature-wise plots. *notame* includes a variety of feature-wise adaptable to a variety of study designs and plotting functionality for drift correction. Herein, we will visualize the lowest q-value feature `r fname` (q = `r round(f_qvalue, 3)`) feature with a beeswarm plot. The distributions are similar but the abundance of CTR samples is reduced after normalization. 
+After differential abundance analysis or feature selection using supervised 
+learning, for example, the number of significant features or a ranking cutoff 
+often allows for manual inspection of feature-wise plots. *notame* includes a 
+variety of feature-wise adaptable to a variety of study designs and plotting 
+functionality for drift correction. Herein, we will visualize the lowest q-
+value feature `r fname` (q = `r round(f_qvalue, 3)`) feature with a beeswarm 
+plot. The distributions are similar but the abundance of CTR samples is reduced 
+after normalization. 
 
 ```{r, results=FALSE, message=FALSE}
-#| fig-cap: "Figure 10. Beeswarm plots for the lowest p-value feature. A) Before normalization. B) After normalization."
+#| fig-cap: >
+#|   Figure 10. Beeswarm plots for the lowest p-value feature. A) Before 
+#|   normalization. B) After normalization.
 #| fig-width: 14
 #| fig-height: 7
 #| out-width: "100%"
@@ -306,22 +509,37 @@ plot_grid(save_beeswarm_plots(pretreated[fname, ], x = "phenotype",
                               save = FALSE, assay.type = "raw_filled")[[1]],
           save_beeswarm_plots(base[fname, ], x = "phenotype",
                               color = "phenotype", add_boxplots = TRUE, 
-                              save = FALSE)[[1]], 
+                              save = FALSE, assay.type = "imputed")[[1]],
           labels = "AUTO")
 ```
 
-The results are also visualized with a variety of comprehensive visualizations. The volcano plot below shows that feature `r fname` is distinct and also has the second-largest fold-change. The abundance of `r fname` is, on average, `r round(2^-rowData(base)["FT0845", "phenotypeCVD_coef_limma"])` times higher in the CTR group.
+The results are also visualized with a variety of comprehensive visualizations. 
+The volcano plot below shows that feature `r fname` is distinct and also has 
+the second-largest fold-change. The abundance of `r fname` is, on average, `r 
+round(2^-rowData(base)["FT0845", "phenotypeCVD_coef_limma"])` times higher in 
+the CTR group.
 
-Manhattan plots and cloud plots could also be used to inspect how interesting features relate to m/z and retention time. We often co-visualize results from differential abundance analysis with a ranking of features from supervised learning for a combined perspective.
+Manhattan plots and cloud plots could also be used to inspect how interesting 
+features relate to m/z and retention time. We often co-visualize results from 
+differential abundance analysis with a ranking of features from supervised 
+learning for a combined perspective.
 
 ```{r, message=FALSE, warning=FALSE}
-#| fig-cap: "Figure 11. Volcano plot of p-values from limma (negative log10 scale) related to fold-change (log2 scale)."
+#| fig-cap: >
+#|   Figure 11. Volcano plot of p-values from limma (negative log10 scale) 
+#|   related to fold-change (log2 scale).
 #| out-width: "100%"
 volcano_plot(base, x = "phenotypeCVD_coef_limma", 
              p = "phenotypeCVD_P_limma")
 ```
 
 # Conclusion
-In the trunk of the workflow, "FT0845" was identified as caffeine. Caffeine is a diuretic and can concentrate blood in high doses, so a difference in biological dilution between the study groups can be expected. As there was little evidence for drift, the different normalization for dilution likely explains the difference in results compared to the trunk of the workflow. Due to the different source of the QC samples, the most probable dilution factors may not have been determined accurately for the biological samples. We also filtered out more low-quality features, largely due to the additional RSD criterion. This is also true of two features found significant features in the trunk of the workflow, "FT0371" and "FT5606".
+In the trunk of the workflow, "FT0845" was identified as caffeine. Caffeine is 
+a diuretic and can concentrate blood in high doses, so a difference in 
+biological dilution between the study groups can be expected. As there was 
+little evidence for drift, the different normalization for dilution may explain 
+the difference in results compared to the trunk of the workflow. On the other 
+hand, the QC samples were from a different source so the most probable dilution 
+factors may not have been determined accurately for the biological samples.
 
 # References
