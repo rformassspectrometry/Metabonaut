@@ -13,12 +13,6 @@ vignette: >
 For manual installation, an [R](https://www.r-project.org/) version \>= 4.4.0 is
 required.
 
-[Notes]{.underline}: only a development version of `metabonaut` is available as
-of now but a stable version will come soon. Therefore, if you are having
-difficulty to run some part of the code we strongly recommend to use the Docker
-image, as it will have all the package necessary to run all the analysis
-presented in these workflows.
-
 # Running workflows locally
 
 To install on your computer all the packages necessary for the workflows run the
@@ -26,15 +20,15 @@ code as follow:
 
 ```{r eval=FALSE}
 install.packages("BiocManager")
-BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, 
+BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE,
                      dependencies = TRUE)
 
-BiocManager::install("RforMassSpectrometry/metabonaut",
+BiocManager::install("RforMassSpectrometry/Metabonaut",
                      dependencies = TRUE, ask = FALSE, update = TRUE)
 ```
 
-If you get some error message when downloading form GitHub it might be due to
-an expired token. Remove them using this code below and try to install again: 
+If you get some error message when downloading form GitHub it might be due to an
+expired token. Remove them using this code below and try to install again:
 
 ```{r eval=FALSE}
 #See if any token is there:
@@ -43,7 +37,6 @@ gitcreds::gitcreds_get()
 # Delete them:
 gitcreds::gitcreds_delete()
 ```
-
 
 # Docker image
 
@@ -61,7 +54,7 @@ code and examples from the vignettes can be evaluated within this environment
     tutorial e.g. from the command line with:
 
 ```         
-    docker pull rformassspectrometry/metabonaut:latest
+docker pull rformassspectrometry/metabonaut:latest
 ```
 
 -   Start the docker container, either through the Docker Desktop, or on the

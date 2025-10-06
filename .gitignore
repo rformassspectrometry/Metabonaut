@@ -6,9 +6,13 @@ local_data
 vignettes/.quarto/
 /_site/
 *.html
-*.RData
 *.rmarkdown
 *.js
 *.css
 vignettes/objects/
-man/figures
+/vignettes/res
+*.log
+vignettes/images/sitcker_draft.xcf
+/vignettes/dataset-investigation_files
+*.h5
+/vignettes/a-end-to-end-untargeted-metabolomics_files
