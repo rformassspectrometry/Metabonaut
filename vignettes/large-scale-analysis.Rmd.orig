@@ -1,18 +1,9 @@
 ---
-title: "Large Scale Data Preprocessing with xcms"
+title: "Large Scale Data Preprocessing with *xcms*"
+subtitle: "Supplementary Material for: *xcms in peak form: Now anchoring a complete
+metabolomics data preprocessing and analysis software ecosystem*"
 output:
-  rmarkdown::html_document
-author:
-  - name: Johannes Rainer
-    orcid: 0000-0002-6977-7147
-    affiliations:
-      - ref: ifb
-affiliations:
-  - id: ifb
-    name: Eurac Research
-    department: Institute for Biomedicine
-    city: Bolzano
-    country: Italy
+  rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{Large Scale Data Preprocessing with xcms}
   %\VignetteEngine{knitr::rmarkdown}
@@ -93,7 +84,7 @@ are provided in the original article's
 samples were analyzed in Waters MSe mode, i.e., following an MS1 scan, an
 all-ion fragmentation was performed and recorded as a MS2 scan. MS1 and MS2 data
 are for each samples are stored in two separate MS data files in CDF format. MS1
-data in files ending wiht *01.CDF* and the respective MS2 scans in a file with
+data in files ending with *01.CDF* and the respective MS2 scans in a file with
 same name, but ending in *02.CDF*. For the present analysis we focus on MS1 data
 only and thus restrict the import to the MS1-only data files. The *MsIO* R
 package and Bioconductor's `r Biocpkg("MsBackendMetaboLights")` packages are
@@ -207,19 +198,19 @@ p <- peakRAM(
 The time and maximal (peak) memory used are:
 
 ```{r, results = "asis"}
-tmp <- data.frame(
+tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "BPC extraction from 200 random samples."))
 ```
 
 The BPC of these 200 random samples is shown below.
 
-```{r bpc}
+```{r bpc, fig.cap = "Base peak chromatogram of the full data set."}
 plot(bpc, col = "#00000060")
 ```
 
@@ -260,7 +251,7 @@ pandoc.table(
 We extract and plot the ion chromatograms (EIC) for these 3 compounds from the
 200 randomly selected samples.
 
-```{r eic-random}
+```{r eic-random, fig.cap = "EIC plots for 3 compounds in 200 randomly selected samples."}
 #' Extract the ion chromatogram for the 3 compounds
 eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
                      rt = cbind(kc$rtmin, kc$rtmax), chunkSize = 8)
@@ -271,7 +262,7 @@ plot(eics, col = "#00000040")
 Apparent retention time shifts are visible for all 3 compounds. We can next
 evaluate chromatographic peak detection settings on these example signals.
 
-```{r eic-random-cp}
+```{r eic-random-cp, fig.cap = "EIC plots for 3 compounds in 200 randomly selected samples with identified chromatographic peaks highlighted (grey color)."}
 param <- CentWaveParam(ppm = 25,
                        peakwidth = c(2, 20),
                        snthresh = 0,
@@ -287,7 +278,7 @@ Chromatographic peaks were detected in all cases, but due to the large number of
 samples investigated it is not easy to evaluate the results properly. We thus
 create the same plot for only the first 5 samples.
 
-```{r eic-random-cp-5}
+```{r eic-random-cp-5, fig.cap = "EIC plots for 3 compounds in 5 samples. Detected chromatographic peaks are indicated with a grey color."}
 plot(met_test[, 1:5])
 ```
 
@@ -337,12 +328,12 @@ p <- peakRAM(
 Memory usage and time elapsed for this processing step where:
 
 ```{r, results = "asis", eval = eval_preprocess}
-tmp <- data.frame(
+tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the chromatographic peak detection step on the",
                      " full data."))
@@ -420,12 +411,12 @@ p <- peakRAM(
 Memory usage and time elapsed for this processing step where:
 
 ```{r, results = "asis", eval = eval_preprocess}
-tmp <- data.frame(
+tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [hours]` = p$Elapsed_Time_sec / 60 / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the chromatographic peak refinement."))
 ```
@@ -452,12 +443,12 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_preprocess}
-tmp <- data.frame(
+tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "a correspondence analysis."))
 ```
@@ -475,12 +466,12 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_preprocess}
-tmp <- data.frame(
+tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the retention time alignment analysis."))
 ```
@@ -497,7 +488,7 @@ set.seed(123)
 twins_rand <- twins[sample(seq_along(twins), 200), keepAdjustedRtime = TRUE]
 ```
 
-```{r eic-random-align, eval = eval_preprocess}
+```{r eic-random-align, eval = eval_preprocess, fig.cap = "Example EICs after alignment."}
 #' Extract the ion chromatogram for the 3 compounds
 eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
                      rt = cbind(kc$rtmin, kc$rtmax), chunkSize = 8)
@@ -505,7 +496,7 @@ eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
 plot(eics, col = "#00000020", peakBg = NA)
 ```
 
-The EICs are nicely aligned.
+The EICs are nicely aligned (see Figure 5).
 
 We perform now the final correspondence analysis to match aligned
 chromatographic peaks across samples and define the *LC-MS features*. We reduce
@@ -525,12 +516,12 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_preprocess}
-tmp <- data.frame(
+tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "the final correspondence analysis."))
 ```
@@ -549,21 +540,21 @@ eics <- chromatogram(twins_rand, mz = cbind(kc$mzmin, kc$mzmax),
 Correspondence was able to correctly assign the chromatographic peaks left of
 the center peaks into a separate feature.
 
-```{r feature-1, eval = eval_preprocess}
+```{r feature-1, eval = eval_preprocess, fig.cap = "Evaluation of correspondence settings on compound 1."}
 plotChromPeakDensity(eics[1])
 ```
 
 Also for the second example, the chromatographic peaks were assigned to two
 separate features.
 
-```{r feature-2, eval = eval_preprocess}
+```{r feature-2, eval = eval_preprocess, fig.cap = "Evaluation of correspondence settings on compound 2."}
 plotChromPeakDensity(eics[2])
 ```
 
 Finally, also for the last example chromatographic peaks were correctly assigned
 to features.
 
-```{r feature-3, eval = eval_preprocess}
+```{r feature-3, eval = eval_preprocess, fig.cap = "Evaluation of correspondence settings on compound 3."}
 plotChromPeakDensity(eics[3])
 ```
 
@@ -599,12 +590,12 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_preprocess}
-tmp <- data.frame(
+tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [hours]` = p$Elapsed_Time_sec / 60 / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "gap filling."))
 ```
@@ -717,14 +708,14 @@ p <- peakRAM(
 thus we evaluate memory usage only for the *serial* processing setup.
 
 ```{r, results = "asis", eval = eval_performance, echo = FALSE}
-tmp <- data.frame(
+tbl <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
     `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "chromatographic peak detection using different number ",
                      "of CPUs. Data was loaded and processed in chunks of ",
@@ -740,10 +731,10 @@ not linear. This is most likely due to the overhead in data splitting and
 distribution to the individual calculation nodes as well as the result
 collection and their merging/export.
 
-```{r performance, eval = eval_performance}
-plot(tmp[1:4, "CPUs"], tmp[1:4, "Processing time [min]"],
+```{r performance, eval = eval_performance, fig.cap = "Comparison of computation time depending on the number of CPUs employed for the 2 different xcms result storage modes."}
+plot(tbl[1:4, "CPUs"], tbl[1:4, "Processing time [min]"],
      type = "b", col = "#ff000080", xlab = "CPUs", ylab = "Time [min]")
-points(tmp[5:8, "CPUs"], tmp[5:8, "Processing time [min]"],
+points(tbl[5:8, "CPUs"], tbl[5:8, "Processing time [min]"],
        type = "b", col = "#0000ff80")
 grid()
 legend("topright", col = c("#ff000080", "#0000ff80"), pch = 1,
@@ -809,14 +800,14 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_performance, echo = FALSE}
-tmp <- data.frame(
+tbl <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
     `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "chromatographic peak refinement using different number ",
                      "of CPUs. Data was loaded and processed in chunks of ",
@@ -851,14 +842,14 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_performance, echo = FALSE}
-tmp <- data.frame(
+tbl <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5")),
     `CPUs` = c(1, 1),
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [sec]` = p$Elapsed_Time_sec,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "correspondence analysis."))
 ```
@@ -889,14 +880,14 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_performance}
-tmp <- data.frame(
+tbl <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5")),
     `CPUs` = c(1, 1),
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [sec]` = p$Elapsed_Time_sec,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "retention time alignment analysis."))
 ```
@@ -947,14 +938,14 @@ p <- peakRAM(
 ```
 
 ```{r, results = "asis", eval = eval_performance, echo = FALSE}
-tmp <- data.frame(
+tbl <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
     `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
     `Processing time [min]` = p$Elapsed_Time_sec / 60,
     check.names = FALSE)
 pandoc.table(
-    tmp, style = "rmarkdown", split.table = Inf,
+    tbl, style = "rmarkdown", split.table = Inf,
     caption = paste0("Peak RAM memory usage and processing time for ",
                      "gap filling using different number ",
                      "of CPUs. Data was loaded and processed in chunks of ",
