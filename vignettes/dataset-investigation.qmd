@@ -133,8 +133,9 @@ colnames(sampleData(lcms1)) <- c("sample_name", "derived_spectra_data_file",
                                 "sample_type", "age", "unit", "phenotype")
 
 # Add "QC" to the phenotype of the QC samples
-sampleData(lcms1)$phenotype[sampleData(lcms1)$sample_name == "POOL"] <- "QC"
-sampleData(lcms1)$sample_name[sampleData(lcms1)$sample_name == "POOL" ] <- c("POOL1", "POOL2", "POOL3", "POOL4")
+qc_idx <- sampleData(lcms1)$sample_name == "POOL"
+sampleData(lcms1)$phenotype[qc_idx] <- "QC"
+sampleData(lcms1)$sample_name[qc_idx] <- c("POOL1", "POOL2", "POOL3", "POOL4")
 
 #  Add injection index column
 sampleData(lcms1)$injection_index <- seq_len(nrow(sampleData(lcms1)))
@@ -559,34 +560,87 @@ In the example below we evaluate this data for the first sample. We thus subset
 the *xcms* preprocessing result `lcms1` to the first sample and apply the
 `filterPeaksRanges()` filter function to the `Spectra` object within that. As
 filters we use the *m/z* and retention time ranges of the chromatographic peaks
-of the first sample. Using the `keep` parameter of the `filterPeaksRanges()`
-function it is possible to define whether the mass peaks matching the specified
-filters are kept or removed. We can thus keep or remove all mass peaks of the
-identified chromatographic peaks to define the foreground or background signal,
+of the first sample. We further expand the *m/z* range by 3ppm on each side
+since the reported `"mzmin"` and `"mzmax"` values from the *centWave* peak
+detection seemed to underestimate the actual *m/z* peak width
+slightly. Increasing *m/z* peak width by such a small value is not problematic
+for centroided data but it ensures the estimated *background* signal to not
+contain any *foreground* peak signals.
+
+Using the `keep` parameter of the `filterPeaksRanges()` function it is possible
+to define whether the mass peaks matching the specified filters are kept or
+removed. We can thus keep or remove all mass peaks of the identified
+chromatographic peaks to define the foreground or background signal,
 respectively.
 
 ```{r}
 one <- lcms1[1L]
 
+#' Define the m/z-rt areas for chromatographic peaks and expand them by 3ppm
+peak_ranges <- chromPeaks(one)[, c("mzmin", "mzmax", "rtmin", "rtmax")]
+peak_ranges[, "mzmin"] <- peak_ranges[, "mzmin"] -
+    ppm(peak_ranges[, "mzmin"], 3)
+peak_ranges[, "mzmax"] <- peak_ranges[, "mzmax"] +
+    ppm(peak_ranges[, "mzmax"], 3)
+
+#' Filter spectra keeping only mass peaks within the peak areas
 one_fg <- filterSpectra(one, filterPeaksRanges,
-                        mz = chromPeaks(one)[, c("mzmin", "mzmax")],
-                        rtime = chromPeaks(one)[, c("rtmin", "rtmax")],
+                        mz = peak_ranges[, c("mzmin", "mzmax")],
+                        rtime = peak_ranges[, c("rtmin", "rtmax")],
                         keep = TRUE)
+#' Filter spectra removing mass peaks within the peak areas
 one_bg <- filterSpectra(one, filterPeaksRanges,
-                        mz = chromPeaks(one)[, c("mzmin", "mzmax")],
-                        rtime = chromPeaks(one)[, c("rtmin", "rtmax")],
+                        mz = peak_ranges[, c("mzmin", "mzmax")],
+                        rtime = peak_ranges[, c("rtmin", "rtmax")],
                         keep = FALSE)
 ```
 
 The MS data of the `one_fg` variable contains now only mass peaks that are
 **within** the chromatographic peaks of that sample, and the `one_bg` variable
-the mass peaks **outside** of the chromatographic peaks.
+the mass peaks **outside** of the chromatographic peaks. To illustrate this we
+plot below first the full MS data for a retention time and *m/z* range
+containing also the signal of a methionine ion. The lower panel of the plot
+contains the individual mass peaks in the region with their intensity
+color-coded. The area of identified chromatographic peaks is indicated with red
+rectangles. The upper panel shows the TIC signal of the data shown in the lower
+panel.
+
+```{r}
+#| fig-cap: "Figure 11. Full MS data for a retention time region rfom 145-175 seconds and an m/z range from 150-160."
+filterSpectra(one, filterRt, c(145, 175)) |>
+    filterSpectra(filterMzRange, c(150, 160)) |>
+    plot()
+```
+
+The same plot, but for the *foreground* signal defined above:
+
+```{r}
+#| fig-cap: "Figure 12. Mass peaks within chromatographic peak areas."
+filterSpectra(one_fg, filterRt, c(145, 175)) |>
+    filterSpectra(filterMzRange, c(150, 160)) |>
+    plot()
+```
+
+And the same for the *background* signal.
+
+```{r}
+#| fig-cap: "Figure 13. Mass peaks outside chromatographic peak areas."
+filterSpectra(one_bg, filterRt, c(145, 175)) |>
+    filterSpectra(filterMzRange, c(150, 160)) |>
+    plot()
+```
+
+These plots show the effect of filtering the data set performed above - the
+foreground-only data contains all mass peaks within the chromatographic peak
+areas, while the background data contains (mostly) low abundant (background)
+signal, or signal that was not defined as, or included in, chromatographic
+peaks.
 
 We can next extract the total ion chromatogram (TIC) from the full original
 data as well as from the foreground and background-only data.
 
 ```{r}
-#| fig-cap: "Figure 11. Comparison of total ion signal, total foreground signal and total background signal."
+#| fig-cap: "Figure 14. Comparison of total ion signal, total foreground signal and total background signal."
 
 #' Extract TIC
 tic <- chromatogram(one, aggregationFun = "sum", chromPeaks = "none")
