@@ -1,7 +1,7 @@
 ---
 title: "Large Scale Data Preprocessing with xcms"
 output:
-  rmarkdown::pdf_document
+  rmarkdown::html_document
 author:
   - name: Johannes Rainer
     orcid: 0000-0002-6977-7147
