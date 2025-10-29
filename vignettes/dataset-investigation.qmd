@@ -579,9 +579,9 @@ one <- lcms1[1L]
 #' Define the m/z-rt areas for chromatographic peaks and expand them by 3ppm
 peak_ranges <- chromPeaks(one)[, c("mzmin", "mzmax", "rtmin", "rtmax")]
 peak_ranges[, "mzmin"] <- peak_ranges[, "mzmin"] -
-    ppm(peak_ranges[, "mzmin"], 3)
+    MsCoreUtils::ppm(peak_ranges[, "mzmin"], 3)
 peak_ranges[, "mzmax"] <- peak_ranges[, "mzmax"] +
-    ppm(peak_ranges[, "mzmax"], 3)
+    MsCoreUtils::ppm(peak_ranges[, "mzmax"], 3)
 
 #' Filter spectra keeping only mass peaks within the peak areas
 one_fg <- filterSpectra(one, filterPeaksRanges,
