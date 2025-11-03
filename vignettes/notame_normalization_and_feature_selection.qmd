@@ -28,8 +28,14 @@ for laborious downstream steps relating to biological context, such as
 annotation and pathway analysis, which fall outside the purview of *notame*. 
 The associated protocol article presents a sequence of steps that is easily 
 adopted by new practitioners. We will not follow the protocol article 
-exactly and instead do an analysis which meshes with the trunk of the 
-workflow.
+exactly and instead do an analysis which meshes with the trunk of the end-to-
+end Metabonaut workflow.
+
+The normalization process is based on QC samples of which there are only four 
+in the present dataset. The QC samples were also pooled from another sample 
+collection. These limitations mean that some QC visualizations below are hardly 
+representative of a typical dataset, so we make an effort to explain the basic 
+things to look out for.
 
 # Setup
 Let's prepare by attaching packages and loading the preprocessed data as a 
@@ -301,7 +307,7 @@ uniform square.
 
 In unison with the density plots, we can observe less distance between QC 
 samples, although the less uniform QC sample block suggests that all QC samples 
-did not respond euqally to the normalization process. Moreover, the distances 
+did not respond equally to the normalization process. Moreover, the distances 
 of biological samples relative to QC samples have increased as evidenced by the 
 slightly lighter overall appearance. As we noted earlier, there was little 
 evidence for drift, so this relative shift may be attributed to PQN accounting 
@@ -526,7 +532,7 @@ volcano_plot(base, x = "phenotypeCVD_coef_limma",
 
 # Conclusion
 In the trunk of the workflow, "FT0845" was identified as caffeine. Caffeine is 
-a diuretic and can concentrate blood in high doses, so a difference in 
+a mild diuretic and can concentrate blood in high doses, so a difference in 
 biological dilution between the study groups can be expected. As there was 
 little evidence for drift, the different normalization for dilution may explain 
 the difference in results compared to the trunk of the workflow. On the other 
