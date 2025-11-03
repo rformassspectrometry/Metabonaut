@@ -1,13 +1,13 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.2.1
+Version: 1.2.2
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
             email = "philippine.louail@outlook.com",
             role = c("aut", "cre"),
             comment = c(ORCID = "0009-0007-5429-6846",
-            fnd = "European Union HORIZON-MSCA-2021 project 
-		    Grant No. 101073062: HUMAN – Harmonising and Unifying Blood 
+            fnd = "European Union HORIZON-MSCA-2021 project
+		    Grant No. 101073062: HUMAN – Harmonising and Unifying Blood
 		    Metabolic Analysis Networks")),
      person(given = "Anna", family = "Tagliaferri",
             email = "Anna.Tagliaferri@student.unibz.it",
@@ -20,8 +20,8 @@ Authors@R:
      person(given = "Daniel", family = "Marques de Sá e Silva",
             role = "ctb",
             comment = c(ORCID = "0000-0002-9674-042X",
-            fnd = "European Union HORIZON-MSCA-2021 project 
-		    Grant No. 101073062: HUMAN – Harmonising and Unifying Blood 
+            fnd = "European Union HORIZON-MSCA-2021 project
+		    Grant No. 101073062: HUMAN – Harmonising and Unifying Blood
 		    Metabolic Analysis Networks")),
      person(given = "Johannes", family = "Rainer",
             email = "Johannes.Rainer@eurac.edu",

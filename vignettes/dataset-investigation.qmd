@@ -464,23 +464,23 @@ the selected ion adduct we use the `calculateMass()` and `mass2mz()` functions
 from the `r Biocpkg("MetaboCoreUtils")` package.
 
 ```{r}
-#| fig-cap: "Figure 10. EIC of endogenous cystine vs spiked."
+#| fig-cap: "Figure 9. EIC of endogenous cystine vs spiked."
 #' extract endogenous cystine mass and EIC and plot.
 cysmass <- calculateMass("C6H12N2O4S2")
 cys_endo <- mass2mz(cysmass, adduct = "[M+H]+")[, 1]
 eic_cys_endo <- chromatogram(lcms1, mz = cys_endo + c(-0.005, 0.005),
                              rt = c(199, 219), aggregationFun = "max")
-eic_cys_spiked <-  chromatogram(lcms1 , mz = c(249.040276, 249.050276), 
+eic_cys_spiked <-  chromatogram(lcms1 , mz = c(249.040276, 249.050276),
                                 rt = c(199,219))
 
 #' Plot versus spiked
 par(mfrow = c(1, 2))
-plot(eic_cys_endo, col = paste0(col_sample, 80)) 
+plot(eic_cys_endo, col = paste0(col_sample, 80))
 grid()
 
 plot(eic_cys_spiked, col = paste0(col_sample, 80))
 grid()
-legend("topright", col = col_phenotype, legend = names(col_phenotype), 
+legend("topright", col = col_phenotype, legend = names(col_phenotype),
        lty = 1, bty = "n")
 ```
 
@@ -494,7 +494,7 @@ between the endogenous and non-endogenous compound.
 Below we load the `lcms1` object that we saved after preprocessing.
 
 ```{r}
-#load preprocessed xcmsExperiment
+# load preprocessed xcmsExperiment
 lcms1 <- readMsObject(XcmsExperiment(),
     AlabasterParam(system.file("extdata", "preprocessed_lcms1",
                                package = "Metabonaut")))
@@ -510,15 +510,17 @@ interesting in cases on technical evaluation. In our cases we expect very
 similar background noise in both CVD and CTR.
 
 ```{r echo=TRUE}
-# overall signal in the dataset 
-#' - for each file calculate the sum of intensities 
+#| fig-cap: "Figure 10. Evaluation of background signal."
+
+# overall signal in the dataset
+#' - for each file calculate the sum of intensities
 background  <- spectra(lcms1) |>
     split(fromFile(lcms1)) |>
     lapply(tic) |>
     lapply(sum) |>
     unlist()
 
-# Overall signal that is in the chromatographic peaks detection 
+# Overall signal that is in the chromatographic peaks detection
 detected <- apply(assay(res), 2, function(x) sum(x, na.rm = TRUE))
 
 names(background) <- names(detected) <- res$phenotype
@@ -528,8 +530,8 @@ noise <- background[!idx_qc] - detected[!idx_qc]
 f <- factor(names(noise), levels = unique(names(noise)))
 group <- split(log2(noise), f)
 
-plot(NULL, xlim = c(1, length(group)), ylim = range(unlist(group)), 
-     xaxt = "n", xlab = "Devices", ylab = "Noise", 
+plot(NULL, xlim = c(1, length(group)), ylim = range(unlist(group)),
+     xaxt = "n", xlab = "Devices", ylab = "Noise",
      main = "log2 background signal comparison between study group")
 for (i in seq_along(group)) {
   points(rep(i, length(group[[i]])), group[[i]], pch = 19)
@@ -540,3 +542,99 @@ axis(1, at = seq_along(group), labels = names(group))
 There seems to be more background noise in the CVD samples...
 
 More coming soon...
+
+
+## Evaluating MS *foreground* and *background* signal
+
+The difference between *background* and *foreground* signal of MS data files can
+also provide insights into data quality. Defining the *background* signal in an
+MS data file is however not trivial. The *foreground* signal could be defined as
+the biologically relevant or interesting signal while the noise or an
+offset/continuous signal could be defined as *background* signal. For LC-MS
+experiments *foreground* could be the signal of the measured compounds' ions,
+i.e., the identified chromatographic peaks. Background signal could then be the
+full signal *minus* this foreground signal.
+
+In the example below we evaluate this data for the first sample. We thus subset
+the *xcms* preprocessing result `lcms1` to the first sample and apply the
+`filterPeaksRanges()` filter function to the `Spectra` object within that. As
+filters we use the *m/z* and retention time ranges of the chromatographic peaks
+of the first sample. Using the `keep` parameter of the `filterPeaksRanges()`
+function it is possible to define whether the mass peaks matching the specified
+filters are kept or removed. We can thus keep or remove all mass peaks of the
+identified chromatographic peaks to define the foreground or background signal,
+respectively.
+
+```{r}
+one <- lcms1[1L]
+
+one_fg <- filterSpectra(one, filterPeaksRanges,
+                        mz = chromPeaks(one)[, c("mzmin", "mzmax")],
+                        rtime = chromPeaks(one)[, c("rtmin", "rtmax")],
+                        keep = TRUE)
+one_bg <- filterSpectra(one, filterPeaksRanges,
+                        mz = chromPeaks(one)[, c("mzmin", "mzmax")],
+                        rtime = chromPeaks(one)[, c("rtmin", "rtmax")],
+                        keep = FALSE)
+```
+
+The MS data of the `one_fg` variable contains now only mass peaks that are
+**within** the chromatographic peaks of that sample, and the `one_bg` variable
+the mass peaks **outside** of the chromatographic peaks.
+
+We can next extract the total ion chromatogram (TIC) from the full original
+data as well as from the foreground and background-only data.
+
+```{r}
+#| fig-cap: "Figure 11. Comparison of total ion signal, total foreground signal and total background signal."
+
+#' Extract TIC
+tic <- chromatogram(one, aggregationFun = "sum", chromPeaks = "none")
+tic_bg <- chromatogram(one_bg, aggregationFun = "sum", chromPeaks = "none")
+tic_fg <- chromatogram(one_fg, aggregationFun = "sum", chromPeaks = "none")
+
+par(mfrow = c(3, 1))
+yl <- c(0, max(intensity(tic[[1L]])))
+plot(tic, ylim = yl, main = "Total ion signal")
+grid()
+plot(tic_fg, ylim = yl, main = "Total foreground signal")
+grid()
+plot(tic_bg, ylim = yl, main = "Total background signal")
+grid()
+```
+
+For the present (QC) sample, the background signal is much lower than the
+foreground signal.
+
+To apply the same code on the full data set, we would need to filter in addition
+to the *m/z* and retention times also for the specific data file
+(`$dataOrigin`) of the chromatographic peak. For example, it would be possible
+to add an additional spectra variable defining the sample index and use this as
+an additional filter to the `filterPeaksRanges()` call:
+
+```{r}
+#| eval: false
+cpks <- chromPeaks(lcms1)[, c("rtmin", "rtmax", "mzmin", "mzmax", "sample")]
+spectra(lcms1)$sample_index <- spectraSampleIndex(lcms1)
+
+lcms1_bg <- filterSpectra(
+    lcms1, filterPeaksRanges,
+    mz = cpks[, c("mzmin", "mzmax")],
+    rtime = cpks[, c("rtmin", "rtmax")],
+    sample_index = cbind(cpks[, "sample"] - 0.1, cpks[, "sample"] + 0.1),
+    keep = FALSE)
+```
+
+It should however be noted that each individual filter (i.e., row in the
+matrices provided with `mz` and `rtime`) is evaluated iteratively and thus the
+performance of the filter step depends heavily on the number of rows of these
+matrices.
+
+
+# Session information
+
+The R version and versions of packages used for this analysis are listed below.
+
+```{r}
+sessionInfo()
+```
