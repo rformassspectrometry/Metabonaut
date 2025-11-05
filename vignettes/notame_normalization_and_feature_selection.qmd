@@ -31,11 +31,7 @@ adopted by new practitioners. We will not follow the protocol article
 exactly and instead do an analysis which meshes with the trunk of the end-to-
 end Metabonaut workflow.
 
-The normalization process is based on QC samples of which there are only four 
-in the present dataset. The QC samples were also pooled from another sample 
-collection. These limitations mean that some QC visualizations below are hardly 
-representative of a typical dataset, so we make an effort to explain the basic 
-things to look out for.
+The normalization process is based on QC samples so the sample size here is limiting, with only four QC samples. The QC samples were also pooled from another sample collection, whereas typically, the QC samples would be pooled from the same sample collection. These limitations will become evident below, so we make an effort to explain the basic things one would want to look out for.
 
 # Setup
 Let's prepare by attaching packages and loading the preprocessed data as a 
@@ -163,12 +159,7 @@ given that the QC samples are identical.
 The QC samples behave as expected, but it seems that the small number of 
 samples does not allow us to fit linear models relating abundance to 
 injection order properly for all samples and biological samples, as 
-evidenced by the overabundance of high p-values in the top histograms. The 
-small sample size, drift adding to the variation in biological samples and, 
-in the case of all samples, the different source of the QC samples could 
-explain this deviation from the uniform distribution or overabundance of low 
-p-values. Insofar as this is the case, the more uniform distribution after 
-normalization indicates less drift in the biological samples.
+evidenced by the overabundance of high p-values in the top histograms.
 
 ```{r, results = 'hide'}
 #| fig-cap: > 
@@ -223,11 +214,12 @@ data was autoscaled. Conservative interpretation focusing on the QC samples is
 enough to assess the normalization process, but intuitions about the data at 
 large can be formed based on the biological samples.
 
-In general, one would expect a single prominent density peak for QC samples and 
-greater separation between QC samples and biological samples after 
-normalization, which also is the case herein. The separation between QC samples 
-and biological samples has not increased, although in this case it may be an 
-artifact from the sample size affecting the kernel density estimate.
+In distance density plots, one would generally expect a single prominent 
+density peak for QC samples and greater separation between QC samples and 
+biological samples after normalization, which also is the case herein. The 
+separation between QC samples and biological samples has not increased, 
+although in this case it may be an artifact from the sample size affecting the 
+kernel density estimate.
 
 ```{r}
 #| fig-cap: > 
@@ -276,13 +268,10 @@ unsupervised methods operating in Euclidean space. While PCA focuses on
 explaining the variation with maximally reduced dimensionality, hierarchical 
 clustering allows observation of relationships between samples at higher 
 resolution by minimizing within-cluster variation in the clustering of samples. 
-Tighter clustering of QC samples is expected. Changes in the clustering of the 
-biological samples is best interpreted conservatively.
+Tighter clustering of QC samples is expected. Hierarchical clustering is generally more sensitive to noise than PCA.
 
-In the present case, the QC samples cluster tightly before and after 
-normalization. After normalization, one CTR sample clusters more closely with 
-the CVD samples, as in the PCA both before and after normalization. This is a 
-sign of that the study groups are very similar, overall.
+In the present case, the QC samples appear more dissimilar after
+normalization, so we may actually have ended up increasing unwanted variation. 
 
 ```{r}
 #| fig-cap: >
@@ -307,14 +296,7 @@ uniform square.
 
 In unison with the density plots, we can observe less distance between QC 
 samples, although the less uniform QC sample block suggests that all QC samples 
-did not respond equally to the normalization process. Moreover, the distances 
-of biological samples relative to QC samples have increased as evidenced by the 
-slightly lighter overall appearance. As we noted earlier, there was little 
-evidence for drift, so this relative shift may be attributed to PQN accounting 
-for variation of interest in the biological samples. The shift is most clear 
-for the C sample that clustered apart from its study group, possibly 
-substantiating that dilution explains much of the separation between the study 
-groups. 
+did not respond equally to the normalization process.
 
 ```{r}
 #| fig-cap: > 
@@ -332,17 +314,11 @@ plot_grid(plot_sample_heatmap(se, group = "phenotype",
           labels = "AUTO")
 ```
 
-We have reduced unwanted variation as evidenced by QC samples, but we may have 
-reduced biological variation of interest as well despite the cross-validated 
-fit of the smoothed cubic spline and the robustness of PQN. This would not be 
-surprising considering the source of the QC samples and the small sample size.
-
 # Feature prefiltering
-Assuming that we are happy with the normalization process and have a feel for 
-the data, we flag low-quality features, excluding them from downstream steps. 
 
+We flag low-quality features, excluding them from downstream steps. 
 In addition to the D-ratio and detection rate in the trunk of the workflow, we 
-filter features by their relative standard deviation in QC samples. The non-
+flag features by their relative standard deviation in QC samples. The non-
 parametric, robust versions of the D-ratio and relative standard deviation are 
 used[@broadhurst_guidelines_2018].
 
@@ -350,11 +326,8 @@ used[@broadhurst_guidelines_2018].
 se <- flag_quality(se, assay.type = "dil_norm",
                    condition = "RSD_r < 0.2 & D_ratio_r < 0.4")
 
+knitr::kable(flag_report(se))
 ```
-
-We removed features flagged for low detection rate before the normalization 
-process, so the remaining features were flagged for low quality:
-`r knitr::kable(flag_report(se))`
 
 Finally, we impute missing values. Using random forest imputation, we can 
 accommodate the possibility of missing values arising not only from the limit 
@@ -363,10 +336,10 @@ as not to bias the imputation. The strict thresholds for quality metrics and
 detection rate allow us to be more confident in our imputed values.
 
 The data is now ready for feature selection with differential abundance 
-analysis. We save the pretreated data in a separate object and continue with a 
-single assay for the remainder of the analysis. We also drop flagged features, 
-although low-quality features can be needed in annotation when searching for 
-specific ions or fragments of known molecules.
+analysis. It's handy to save pretreated data in a separate object and continue 
+with a single assay for the remainder of the analysis. We also drop flagged 
+features, although low-quality features can be needed in annotation when 
+searching for specific ions or fragments of known molecules.
 
 
 ```{r, message=FALSE, warning=FALSE, results='hold'}
@@ -393,16 +366,14 @@ coloring by the only available clinical covariate, age.
 plot_pca(base, color = "age", shape = "phenotype")
 ```
 
-Motivated by demonstration purposes, we are interested in also including age as 
-an independent variable as in the trunk of the workflow. We'll use
-linear models to find interesting features, adjust for false positives from 
-multiple testing using the false discovery rate approach and plot the results 
-in histograms to assess validity of the tests and get a feel for the results. 
-The formula interface is used in most univariate statistics functions in 
-*notameStats* for flexibility. By default, linear models are fit for each 
-feature but correction for multiple testing is only applied for quality 
-features. Here we also use `join_rowData()` for the first time 
-to add the results to the object.
+We'll use linear models to find interesting features, adjust for false 
+positives from multiple testing using the false discovery rate approach and 
+plot the results in histograms to assess validity of the tests and get a feel 
+for the results. The formula interface is used in most univariate statistics 
+functions in *notameStats* for flexibility. By default, linear models are fit 
+for each feature but correction for multiple testing is only applied for 
+quality features. Here we also use `join_rowData()` to add the results to the 
+object.
 
 ```{r, message=FALSE, warning=FALSE, results = FALSE}
 #| fig-cap: >
@@ -415,81 +386,26 @@ assay(base, "log2") <- log2(assay(base))
 lm_results <- perform_lm(base, assay.type = "log2", 
                          formula_char = "Feature ~ phenotype + age")
 base <- join_rowData(base, lm_results[, c("Feature_ID", "phenotypeCVD.p.value", 
-                                          "phenotypeCVD.p.value_FDR" )])
+                                          "phenotypeCVD.p.value_FDR", 
+                                          "phenotypeCVD.estimate")])
                                         
 plot_grid(plot_p_histogram(list(lm_results$phenotypeCVD.p.value)),
           plot_p_histogram(list(lm_results$phenotypeCVD.p.value_FDR)),
           labels = "AUTO")
-          
 ```
 
 The p-value histogram for looks promising; it is a relatively uniform 
 distribution with an overabundance of low p-values. However, there are no 
-significant features after correction for multiple testing. The FDR correction 
-results in a single, lowest q-value shared across tens of features because they 
-have very similar p-values (not shown). 
-
-Above, we essentially performed the initial model fitting part of *limma* as in 
-the trunk of the workflow, but without the eBayes adjustment. We'll demonstrate 
-*limma* below to show how eBayes shifts the results, and maybe get an 
-interesting feature or two to plot as well.
-
-```{r, message=FALSE, warning=FALSE}
-#| fig-cap: >
-#|   Figure 9. Linear regression (limma) p-value histograms with 
-#|   abundance and age as independent variables. A) p-values. B) FDR-adjusted p-
-#|   values (q-values).
-#| fig-width: 15
-#| fig-height: 7
-#| out-width: "100%"
-age <- base$age
-phenotype <- factor(base$phenotype)
-design <- model.matrix(~ phenotype + age)
-
-# Fit models and moderate t-statistics
-fit <- lmFit(log2(assay(base)), design = design)
-fit <- eBayes(fit)
-
-# Initial model-fitting step of limma is base::lm()
-t <- fit$coef/fit$stdev.unscaled/fit$sigma
-p.value <- 2 * pt(-abs(t), df = fit$df.residual)[, "phenotypeCVD"]
-p.adjusted <- p.adjust(p.value, method = "BH")
-all.equal(p.adjusted, rowData(base)$phenotypeCVD.p.value_FDR, 
-          check.attributes = FALSE)
-
-# Extract results
-res <- data.frame(
-    Feature_ID = rowData(base)$Feature_ID,
-    phenotypeCVD_P_limma = fit$p.value[, "phenotypeCVD"],
-    phenotypeCVD_P_FDR_limma = p.adjust(fit$p.value[, "phenotypeCVD"], 
-                                        method = "BH"),
-    phenotypeCVD_coef_limma = fit$coefficients[, "phenotypeCVD"])
-    
-base <- join_rowData(base, res)
-
-plot_grid(plot_p_histogram(list(rowData(base)$phenotypeCVD_P_limma)),
-          plot_p_histogram(list(rowData(base)$phenotypeCVD_P_FDR_limma)),
-          labels = "AUTO")
-```
-
-Again the p-value histogram looks reasonable, but there are no significant 
-features. For demonstration purposes, we'll consider the feature with the 
-lowest q-value most interesting.
-
-```{r}
-fname <- rownames(base[which.min(rowData(base)$phenotypeCVD_P_FDR_limma)])
-f_pvalue <- min(rowData(base)$phenotypeCVD_P_limma)
-f_qvalue <- min(rowData(base)$phenotypeCVD_P_FDR_limma)
-```
+significant features after correction for multiple testing. For demonstration 
+purposes, we'll consider the feature "FT0845", which was identified as caffeine 
+in the trunk of the workflow, most interesting.
 
 After differential abundance analysis or feature selection using supervised 
 learning, for example, the number of significant features or a ranking cutoff 
-often allows for manual inspection of feature-wise plots. *notame* includes a 
-variety of feature-wise adaptable to a variety of study designs and plotting 
-functionality for drift correction. Herein, we will visualize the lowest q-
-value feature `r fname` (q = `r round(f_qvalue, 3)`) feature with a beeswarm 
-plot. The distributions are similar but the abundance of CTR samples is reduced 
-after normalization. 
+allows for manual inspection of feature-wise plots. *notameViz* includes a 
+variety of feature-wise visualizations adaptable to a variety of study designs. 
+For feature "FT0845", the abundance of CTR samples is reduced after 
+normalization.
 
 ```{r, results=FALSE, message=FALSE}
 #| fig-cap: >
@@ -498,46 +414,42 @@ after normalization.
 #| fig-width: 14
 #| fig-height: 7
 #| out-width: "100%"
-plot_grid(save_beeswarm_plots(pretreated[fname, ], x = "phenotype", 
+plot_grid(save_beeswarm_plots(pretreated["FT0845", ], x = "phenotype", 
                               color = "phenotype", save = FALSE,
                               assay.type = "raw_filled")[[1]],
-          save_beeswarm_plots(base[fname, ], x = "phenotype",
+          save_beeswarm_plots(base["FT0845", ], x = "phenotype",
                               color = "phenotype", save = FALSE,
                               assay.type = "imputed")[[1]],
           labels = "AUTO")
 ```
 
 The results are also visualized with a variety of comprehensive visualizations. 
-The volcano plot below shows that feature `r fname` is distinct and also has 
-the second-largest fold-change. The abundance of `r fname` is, on average, `r 
-round(2^-rowData(base)["FT0845", "phenotypeCVD_coef_limma"])` times higher in 
-the CTR group.
-
-Manhattan plots and cloud plots could also be used to inspect how interesting 
-features relate to m/z and retention time. We often co-visualize results from 
-differential abundance analysis with a ranking of features from supervised 
-learning for a combined perspective.
+The volcano plot below shows that feature "FT0845" is distinct in having a low 
+p-value and the second-largest fold-change. Manhattan plots and cloud plots 
+could also be used to inspect how interesting features relate to m/z and 
+retention time. We often co-visualize results from differential abundance 
+analysis with a ranking of features from supervised learning for a combined 
+perspective.
 
 ```{r, message=FALSE, warning=FALSE}
 #| fig-cap: >
 #|   Figure 11. Volcano plot of p-values from limma (negative log10 scale) 
 #|   related to fold-change (log2 scale).
 #| out-width: "100%"
-volcano_plot(base, x = "phenotypeCVD_coef_limma", 
-             p = "phenotypeCVD_P_limma") + 
-  geom_text(data = subset(rowData(base), phenotypeCVD_P_FDR_limma == f_qvalue),
-            aes(label = fname),
-            vjust = +1)
+volcano_plot(base, x = "phenotypeCVD.estimate", 
+             p = "phenotypeCVD.p.value") + 
+  geom_text(data = rowData(base)["FT0845", ],
+            aes(label = "FT0845"),
+            vjust = -2)
 ```
 
 # Conclusion
-In the trunk of the workflow, "FT0845" was identified as caffeine. Caffeine is 
-a mild diuretic and can concentrate blood in high doses, so a difference in 
-biological dilution between the study groups can be expected. As there was 
-little evidence for drift, the different normalization for dilution may explain 
-the difference in results compared to the trunk of the workflow. On the other 
-hand, the QC samples were from a different source so the most probable dilution 
-factors may not have been determined accurately for the biological samples.
+Caffeine is a mild diuretic and can concentrate blood in high doses, so a
+difference in biological dilution between the study groups can be expected. The 
+overall structure of the data seems to be intact after normalization. On
+the other hand, the QC samples were from a different source so the most
+probable dilution factors may not have been determined accurately for the
+biological samples and drift correction likely suffered as well.
 
 # Session information
 ```{r}
