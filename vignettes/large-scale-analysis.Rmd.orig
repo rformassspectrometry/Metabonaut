@@ -59,8 +59,9 @@ version >= 3.7.1 which is currently (April 2025) available in Bioconductor's
 3.22 developmental branch. It can be installed from GitHub using
 `remotes::install_github("sneumann/xcms")`.
 
-**Information on computational setup**: this vignette was rendered on a Notebook
-with an 13th Gen Intel(R) Core(TM) i7-1370P CPU and 64GB of main memory.
+**Information on computational setup**: this vignette was rendered on a
+[Framework](https://frame.work/) notebook with an 13th Gen Intel(R) Core(TM)
+i7-1370P CPU and 64GB of main memory.
 
 
 # Introduction
@@ -277,7 +278,8 @@ param <- CentWaveParam(ppm = 25,
                        mzCenterFun = "wMean",
                        integrate = 2)
 met_test <- findChromPeaks(eics, param = param)
-chromPeaks(met_test[1])
+chromPeaks(met_test[1]) |>
+    head()
 plot(met_test)
 ```
 
@@ -714,7 +716,7 @@ p <- peakRAM(
 *peakRAM* can not correctly monitor the memory usage for multi-core processing,
 thus we evaluate memory usage only for the *serial* processing setup.
 
-```{r, results = "asis", eval = eval_performance}
+```{r, results = "asis", eval = eval_performance, echo = FALSE}
 tmp <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
     `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
@@ -806,7 +808,7 @@ p <- peakRAM(
 )
 ```
 
-```{r, results = "asis", eval = eval_performance}
+```{r, results = "asis", eval = eval_performance, echo = FALSE}
 tmp <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
     `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
@@ -848,7 +850,7 @@ p <- peakRAM(
 )
 ```
 
-```{r, results = "asis", eval = eval_performance}
+```{r, results = "asis", eval = eval_performance, echo = FALSE}
 tmp <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5")),
     `CPUs` = c(1, 1),
@@ -944,7 +946,7 @@ p <- peakRAM(
 )
 ```
 
-```{r, results = "asis", eval = eval_performance}
+```{r, results = "asis", eval = eval_performance, echo = FALSE}
 tmp <- data.frame(
     `Result object` = rep(c("XcmsExperiment", "XcmsExperimentHdf5"), each = 4),
     `CPUs` = c(1, 2, 4, 8, 1, 2, 4, 8),
