@@ -1,18 +1,18 @@
 ---
 title: "Complete end-to-end LC-MS/MS Metabolomic Data analysis"
-subtitle: "Supplementary Material for: *xcms in peak form: Now anchoring a complete
+subtitle: "Supporting Information for: *xcms in peak form: Now anchoring a complete
 metabolomics data preprocessing and analysis software ecosystem*"
-format: pdf
+format:
+  pdf:
+    keep-tex: true
 tbl-cap-location: bottom
-editor: visual
-minimal: true
 bibliography: references.bib
-date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
-vignette: >
-  %\VignetteIndexEntry{Complete end-to-end LC-MS/MS Metabolomic Data analysis}
-  %\VignetteEngine{quarto::html}
-  %\VignetteEncoding{UTF-8}
 ---
+
+```{=latex}
+\renewcommand{\thepage}{S\arabic{page}}
+\vspace{-2cm}
+```
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -25,6 +25,66 @@ knitr::opts_knit$set(root.dir = './')
 .verysmall .table{
   font-size: 8px;
 }
+```
+
+Philippine Louail^1,2^, Carl Brunius^3^, Mar Garcia-Aloy^4^, William Kumler^5^,
+Norman Storz^6^, Jan Stanstrup^7^, Hendrik Treutler^6^, Pablo
+Vangeenderhuysen^8^, Michael Witting^9,10^, Steffen Neumann^6,11,\*^, Johannes
+Rainer^1^
+
+```{=latex}
+\scriptsize
+```
+
+^1^Institute for Biomedicine, Eurac Research, 39100, Bolzano, Italy.
+\
+^2^Chair for Bioinformatics, Friedrich-Schiller-University Jena, 07743, Jena,
+Germany.
+\
+^3^Department of Life Sciences, Food and Nutrition Science, Chalmers University
+of Technology, SE-412 96 Göte-borg, Sweden.
+\
+^4^Metabolomics Unit, Research and Innovation Centre, Fondazione Edmund Mach,
+38098, San Michele all’Adige (TN), Italy.
+\
+^5^School of Oceanography, University of Washington, Seattle, WA, 98195, USA.
+\
+^6^Leibniz Institute of Plant Biochemistry, MetaCom, Weinberg 3, 06120 Halle,
+Germany.
+\
+^7^Department of Nutrition, Exercise and Sports, University of Copenhagen,
+Rolighedsvej 26, 1958 Frederiksberg C, Denmark.
+\
+^8^Laboratory of Integrative Metabolomics (LIMET), Ghent University, 9820
+Merelbeke, Belgium.
+\
+^9^Metabolomics and Proteomics Core, Helmholtz Zentrum München, Ingolstädter
+Landstraße 1, 85764 Neuherberg, Germany.
+\
+^10^Chair of Analytical Food Chemistry, TUM School of Life Sciences, Technical
+University of Munich, Maximus-von-Imhof-Forum 2, 85354 Freising-Weihenstephan,
+Germany.
+\
+^11^German Centre for Integrative Biodiversity Research (iDiv)
+Halle-Jena-Leipzig, Puschstraße 4, 04103 Leipzig, Germany.
+\
+^\*^corresponding author: sneumann@ipb-halle.de
+
+```{=latex}
+\normalsize
+```
+
+# Abstract
+
+This document describes a full *end-to-end* LC-MS/MS data analysis workflow
+including data preprocessing, quality assessment, normalization, statistical
+data analysis and annotation. It exemplifies the seamless integration of the
+*xcms* R package with other packages from the RforMassSpectrometry initiative
+and the Bioconductor project to create powerful, data set-specific, analysis
+workflows.
+
+```{=latex}
+\pagebreak
 ```
 
 # Introduction

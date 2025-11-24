@@ -1,6 +1,6 @@
 ---
 title: "Large Scale Data Preprocessing with *xcms*"
-subtitle: "Supplementary Material for: *xcms in peak form: Now anchoring a complete
+subtitle: "Supplementary Information for: *xcms in peak form: Now anchoring a complete
 metabolomics data preprocessing and analysis software ecosystem*"
 output:
   rmarkdown::pdf_document
@@ -37,6 +37,73 @@ if (is.na(packageDescription("benchmarkme")[1L]))
     install.packages("benchmarkme")
 ```
 
+```{=latex}
+\renewcommand{\thepage}{S\arabic{page}}
+```
+
+Philippine Louail^1,2^, Carl Brunius^3^, Mar Garcia-Aloy^4^, William Kumler^5^,
+Norman Storz^6^, Jan Stanstrup^7^, Hendrik Treutler^6^, Pablo
+Vangeenderhuysen^8^, Michael Witting^9,10^, Steffen Neumann^6,11,\*^, Johannes
+Rainer^1^
+
+```{=latex}
+\scriptsize
+```
+
+^1^Institute for Biomedicine, Eurac Research, 39100, Bolzano, Italy.
+\
+^2^Chair for Bioinformatics, Friedrich-Schiller-University Jena, 07743, Jena,
+Germany.
+\
+^3^Department of Life Sciences, Food and Nutrition Science, Chalmers University
+of Technology, SE-412 96 Göte-borg, Sweden.
+\
+^4^Metabolomics Unit, Research and Innovation Centre, Fondazione Edmund Mach,
+38098, San Michele all’Adige (TN), Italy.
+\
+^5^School of Oceanography, University of Washington, Seattle, WA, 98195, USA.
+\
+^6^Leibniz Institute of Plant Biochemistry, MetaCom, Weinberg 3, 06120 Halle,
+Germany.
+\
+^7^Department of Nutrition, Exercise and Sports, University of Copenhagen,
+Rolighedsvej 26, 1958 Frederiksberg C, Denmark.
+\
+^8^Laboratory of Integrative Metabolomics (LIMET), Ghent University, 9820
+Merelbeke, Belgium.
+\
+^9^Metabolomics and Proteomics Core, Helmholtz Zentrum München, Ingolstädter
+Landstraße 1, 85764 Neuherberg, Germany.
+\
+^10^Chair of Analytical Food Chemistry, TUM School of Life Sciences, Technical
+University of Munich, Maximus-von-Imhof-Forum 2, 85354 Freising-Weihenstephan,
+Germany.
+\
+^11^German Centre for Integrative Biodiversity Research (iDiv)
+Halle-Jena-Leipzig, Puschstraße 4, 04103 Leipzig, Germany.
+\
+^\*^corresponding author: sneumann@ipb-halle.de
+
+```{=latex}
+\normalsize
+```
+
+# Abstract
+
+This document describes the preprocessing of a large public untargeted
+metabolomics dataset using the `r Biocpkg("xcms")` package using its new
+memory-saving data representation mode. This data representation mode enables
+analysis of very large data sets (the present consisting of about 4,000 samples)
+also on conventional computer hardware. Performance and memory usage of
+different storage modes are subsequently evaluated on a smaller data
+subset. Finally, details on the internal data and memory handling of *xcms* are
+presented and properties of different configurations for efficient (and
+parallel) processing of large scale data discussed.
+
+```{=latex}
+\pagebreak
+```
+
 **Note**: this vignette is
 [**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/).
 See the session info for information on packages used and the date the vignette
@@ -46,9 +113,7 @@ repository and is downloaded and cached as part of this vignette. Thus, to run
 the code locally about 800GB of free disk space is required.
 
 **Note**: the memory-saving functionality used in this document requires *xcms*
-version >= 3.7.1 which is currently (April 2025) available in Bioconductor's
-3.22 developmental branch. It can be installed from GitHub using
-`remotes::install_github("sneumann/xcms")`.
+version >= 3.8 which available since Bioconductor release 3.22.
 
 **Information on computational setup**: this vignette was rendered on a
 [Framework](https://frame.work/) notebook with an 13th Gen Intel(R) Core(TM)
@@ -200,7 +265,7 @@ The time and maximal (peak) memory used are:
 ```{r, results = "asis"}
 tbl <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
-    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    `Processing time [hours]` = p$Elapsed_Time_sec / 60 / 60,
     check.names = FALSE)
 pandoc.table(
     tbl, style = "rmarkdown", split.table = Inf,
