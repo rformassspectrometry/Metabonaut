@@ -4,6 +4,7 @@
 
 - Expand the *Dataset investigation* vignette with an example to define
   background and foreground MS signal.
+- Fix CTR sample subsetting in the MS2 annotation
 
 ## Changes in 1.2.1
 
