@@ -20,9 +20,12 @@ ENV SPECTRIPY_USE_CONDA="FALSE"
 
 ## Install SpectriPy and caching files for rstudio user
 USER rstudio
-RUN Rscript -e "install.packages('reticulate')" && \
-    Rscript -e "BiocManager::install('RforMassSpectrometry/SpectriPy', dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)" && \
-    Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
+#RUN Rscript -e "install.packages('reticulate')" && \
+#    Rscript -e "BiocManager::install('RforMassSpectrometry/SpectriPy', dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)" && \
+#    Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
+
+RUN Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
+
 
 ## Install the current package with vignettes
 RUN Rscript -e "devtools::install('.', dependencies = c('Depends', 'Imports'), type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
