@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -1572,7 +1572,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class "XProcessHistory"
  type: Peak detection
- date: Tue Nov 25 14:39:41 2025
+ date: Tue Nov 25 16:11:30 2025
  info:
  fileIndex: 1,2,3,4,5,6,7,8,9,10
  Parameter class: CentWaveParam
@@ -2011,7 +2011,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span>                              mad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">res</span>, filter <span class="op">=</span> <span class="va">filter_dratio</span>, assay <span class="op">=</span> <span class="st">"norm_imputed"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>4207 features were removed</code></pre>
+<pre><code>4212 features were removed</code></pre>
 </div>
 </div>
 <p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>)of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
@@ -2022,16 +2022,16 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="co">#' Number of features after analysis</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4517</code></pre>
+<pre><code>[1] 4512</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Percentage left: end/beginning</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res_unfilt</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 51.77671</code></pre>
+<pre><code>[1] 51.71939</code></pre>
 </div>
 </div>
-<p>The dataset has been reduced from 8724 to 4517 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
+<p>The dataset has been reduced from 8724 to 4512 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_qc</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></span>
@@ -2248,10 +2248,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0732</td>
 <td style="text-align: right;">182.0749</td>
 <td style="text-align: right;">34.83789</td>
-<td style="text-align: right;">-8.574153</td>
-<td style="text-align: right;">0.0227388</td>
+<td style="text-align: right;">-8.589786</td>
+<td style="text-align: right;">0.0115508</td>
 <td style="text-align: right;">12.229286</td>
-<td style="text-align: right;">3.742339</td>
+<td style="text-align: right;">3.788263</td>
 <td style="text-align: right;">0.2116471</td>
 </tr>
 <tr class="even">
@@ -2259,7 +2259,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: right;">195.0877</td>
 <td style="text-align: right;">32.65668</td>
 <td style="text-align: right;">-6.330400</td>
-<td style="text-align: right;">0.0422029</td>
+<td style="text-align: right;">0.0419347</td>
 <td style="text-align: right;">16.905340</td>
 <td style="text-align: right;">10.454994</td>
 <td style="text-align: right;">0.0304712</td>
@@ -2268,31 +2268,41 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
 <td style="text-align: right;">162.13668</td>
-<td style="text-align: right;">-5.684277</td>
-<td style="text-align: right;">0.0280214</td>
+<td style="text-align: right;">-5.594544</td>
+<td style="text-align: right;">0.0419347</td>
 <td style="text-align: right;">10.287074</td>
-<td style="text-align: right;">4.357346</td>
+<td style="text-align: right;">4.493429</td>
 <td style="text-align: right;">0.0360903</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">FT1171</td>
-<td style="text-align: right;">229.1299</td>
-<td style="text-align: right;">181.08828</td>
-<td style="text-align: right;">-5.515140</td>
-<td style="text-align: right;">0.0280214</td>
-<td style="text-align: right;">10.721195</td>
-<td style="text-align: right;">5.417364</td>
-<td style="text-align: right;">0.0706276</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
 <td style="text-align: right;">148.39599</td>
-<td style="text-align: right;">-5.154872</td>
-<td style="text-align: right;">0.0280214</td>
+<td style="text-align: right;">-5.353156</td>
+<td style="text-align: right;">0.0290239</td>
 <td style="text-align: right;">9.914862</td>
-<td style="text-align: right;">4.457964</td>
+<td style="text-align: right;">4.197205</td>
 <td style="text-align: right;">0.5564435</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FT1171</td>
+<td style="text-align: right;">229.1299</td>
+<td style="text-align: right;">181.08828</td>
+<td style="text-align: right;">-5.282380</td>
+<td style="text-align: right;">0.0165932</td>
+<td style="text-align: right;">10.721195</td>
+<td style="text-align: right;">5.603695</td>
+<td style="text-align: right;">0.0706276</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FT5606</td>
+<td style="text-align: right;">560.3603</td>
+<td style="text-align: right;">33.54917</td>
+<td style="text-align: right;">-3.895492</td>
+<td style="text-align: right;">0.0465207</td>
+<td style="text-align: right;">8.885918</td>
+<td style="text-align: right;">4.757225</td>
+<td style="text-align: right;">1.2139903</td>
 </tr>
 </tbody>
 </table>
@@ -2404,7 +2414,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class Matched
 Total number of matches: 43
-Number of query objects: 5 (4 matched)
+Number of query objects: 6 (4 matched)
 Number of target objects: 25685 (43 matched)</code></pre>
 </div>
 </div>
@@ -2418,7 +2428,7 @@ Number of target objects: 25685 (43 matched)</code></pre>
 <span>                                <span class="st">"target_inchikey"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">mtch_res</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>DataFrame with 44 rows and 8 columns
+<pre><code>DataFrame with 45 rows and 8 columns
         feature_id     mzmed     rtmed      adduct ppm_error target_formula
        &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt; &lt;numeric&gt;    &lt;character&gt;
 FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
@@ -2427,11 +2437,11 @@ FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
 FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
 FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
 ...            ...       ...       ...         ...       ...            ...
-FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1867474      C8H10N4O2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.0614704      C8H10N4O2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
 FT1171      FT1171   229.130  181.0883     [M+Na]+ 3.0770838      C12H18N2O
+FT5606      FT5606   560.360   33.5492          NA        NA             NA
          target_name target_inchikey
          &lt;character&gt;     &lt;character&gt;
 FT0371 Benzohydro...   VDEUYMSGMP...
@@ -2440,11 +2450,11 @@ FT0371 Salicylami...   SKZKKFZAGN...
 FT0371 4-Aminoben...   ALYNCZNDIQ...
 FT0371 Anthranili...   RWZYAGGXGH...
 ...              ...             ...
-FT0845      CAFFEINE   RYYVLZVUVI...
 FT0845      Caffeine   RYYVLZVUVI...
 FT0845      caffeine   RYYVLZVUVI...
 FT0845 1,3,7-TRIM...   RYYVLZVUVI...
-FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
+FT1171 Isoproturo...   PUIYMUZLKQ...
+FT5606            NA              NA</code></pre>
 </div>
 </div>
 <p>Thus, in total 43 ions of compounds in MassBank were matched to our significant features based on the specified tolerance settings. Many compounds, while having a different structure and thus function/chemical property, have an identical chemical formula and thus mass. Matching exclusively on the <em>m/z</em> of features will hence result in many potentially false positive hits and is thus considered to provide only low confidence annotation. An additional complication is that some annotation resources, like MassBank, being community maintained, contain a large amount of redundant information. To reduce redundancy in the result table we below iterate over the hits of a feature and keep only matches to unique compounds (identified by their INCHIKEY). The INCHI or INCHIKEY combine information from compound’s chemical formula and structure, so while different compounds can share the same chemical formula, they should have a different structure and thus INCHI.</p>
@@ -2734,10 +2744,12 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 <span>                                <span class="st">"blood_sample_type"</span>,</span>
 <span>                                <span class="st">"sample_type"</span>, <span class="st">"age"</span>, <span class="st">"unit"</span>, <span class="st">"phenotype"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># filter samples to keep MSMS data from CTR samples:</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"CTR"</span>, <span class="op">]</span></span>
+<span><span class="co"># Identify MS/MS data files for control samples</span></span>
+<span><span class="va">keep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"CTR"</span> <span class="op">&amp;</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"MSMS"</span>, <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">$</span><span class="va">derived_spectra_data_file</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"MSMS"</span>, <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">$</span><span class="va">derived_spectra_data_file</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="co"># filter samples to keep MSMS data from CTR samples:</span></span>
+<span><span class="va">lcms2</span> <span class="op">&lt;-</span> <span class="va">lcms2</span><span class="op">[</span><span class="va">keep</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Add fragmentation data information (from filenames)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">$</span><span class="va">fragmentation_mode</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CE20"</span>, <span class="st">"CE30"</span>, <span class="st">"CES"</span><span class="op">)</span></span>
@@ -2792,9 +2804,9 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="va">cbind</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    1    2    3    4   5    6    7    8   9   10   11   12
-1 825  186  186  186 825  186  186  186 825  185  186  185
-2 825 3121 3118 3124 825 3123 3118 3120 825 3117 3117 3116</code></pre>
+<pre><code>     1    2    3
+1  186  186  186
+2 3123 3118 3120</code></pre>
 </div>
 </div>
 <p>Compared to the number of MS2 spectra, far less MS1 spectra were acquired. The configuration of the MS instrument was set to ensure that the ions specified in the <em>inclusion list</em> were selected for fragmentation, even if their intensity might be very low. With this setting, however, most of the recorded MS2 spectra will represent only noise. The plot below shows the location of precursor ions in the <em>m/z</em> - retention time plane for the three files.</p>
@@ -2842,7 +2854,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 <code class="sourceCode R"><span><span class="co">#' Size of the object before loading into memory</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"MB"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>5.2 Mb</code></pre>
+<pre><code>1.9 Mb</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Load the MS data subset into memory</span></span>
@@ -2852,7 +2864,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 <span><span class="co">#' Size of the object after loading into memory</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"MB"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>18.4 Mb</code></pre>
+<pre><code>6 Mb</code></pre>
 </div>
 </div>
 <p>There is thus only a moderate increase in memory demand after loading the MS data into memory (also because we filtered and cleaned the MS2 data).</p>
@@ -2869,7 +2881,8 @@ FT0371 138.0544 138.0552 146.32270 152.86115
 FT0565 161.0391 161.0407 159.00234 164.30799
 FT0732 182.0726 182.0756  32.71242  42.28755
 FT0845 195.0799 195.0887  30.73235  35.67337
-FT1171 229.1282 229.1335 178.01450 183.35303</code></pre>
+FT1171 229.1282 229.1335 178.01450 183.35303
+FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
 </div>
 </div>
 <p>We next identify the fragment spectra with their precursor <em>m/z</em> and retention times within these ranges. We use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterRanges()</a></code> function that allows to filter a <code>Spectra</code> object using multiple ranges simultaneously. We apply this function separately to each feature (row in the above matrix) to extract the MS2 spectra representing fragmentation information of the presumed feature’s ions.</p>
@@ -2882,8 +2895,8 @@ FT1171 229.1282 229.1335 178.01450 183.35303</code></pre>
 <span>                     spectraVariables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtime"</span>, <span class="st">"precursorMz"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html" class="external-link">lengths</a></span><span class="op">(</span><span class="va">ms2_ctr_fts</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>FT0371 FT0565 FT0732 FT0845 FT1171
-    38     36    135     68     38 </code></pre>
+<pre><code>FT0371 FT0565 FT0732 FT0845 FT1171 FT5606
+    11     12     46     21     12      0 </code></pre>
 </div>
 </div>
 <p>The result from this <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> call is a <code>list</code> of <code>Spectra</code>, each element representing the result for one feature. With the exception of the last feature, multiple MS2 spectra could be identified. We next combine the <code>list</code> of <code>Spectra</code> into a single <code>Spectra</code> object using the <code><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra()</a></code> function and add an additional spectra variable containing the respective feature identifier.</p>
@@ -2932,12 +2945,12 @@ FT1171 229.1282 229.1335 178.01450 183.35303</code></pre>
 <span><span class="va">ms2_mtch</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class MatchedSpectra
-Total number of matches: 176
-Number of query objects: 315 (15 matched)
+Total number of matches: 117
+Number of query objects: 102 (10 matched)
 Number of target objects: 69561 (14 matched)</code></pre>
 </div>
 </div>
-<p>Thus, from the total 315 query MS2 spectra, only 15 could be matched to (at least) one reference fragment spectrum.</p>
+<p>Thus, from the total 102 query MS2 spectra, only 10 could be matched to (at least) one reference fragment spectrum.</p>
 <p>Below we restrict the results to these matching spectra and extract all metadata of the query and target spectra as well as the similarity score (the complete list of available metadata information can be listed with the <code><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames()</a></code> function).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb165"><pre class="downlit sourceCode r">
@@ -2948,7 +2961,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 <span><span class="va">ms2_mtch_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">matchedData</a></span><span class="op">(</span><span class="va">ms2_mtch</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ms2_mtch_res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 176</code></pre>
+<pre><code>[1] 117</code></pre>
 </div>
 </div>
 <p>Now, we have query-target pairs with a spectra similarity higher than 0.7. Similar to the MS1-based annotation also this result table contains redundant information: we have multiple fragment spectra per feature and also MassBank contains several fragment spectra for each compound, measured using differing collision energies or MS instruments, by different laboratories. Below we thus iterate over the feature-compound pairs and select for each the one with the highest score. As an identifier for a compound, we use its fragment spectra’s INCHI-key, since compound names in MassBank do not have accepted consensus/controlled vocabularies.</p>
@@ -2989,7 +3002,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 <tr class="even">
 <td style="text-align: center;">FT0845</td>
 <td style="text-align: center;">Caffeine</td>
-<td style="text-align: center;">0.9205</td>
+<td style="text-align: center;">0.8926</td>
 <td style="text-align: center;">NA</td>
 </tr>
 <tr class="odd">
@@ -3000,7 +3013,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Thus, from the 5 significant features, only one could be annotated to a compound based on the MS2-based approach. There could be many reasons for the failure to find matches for the other features. Although MS2 spectra were selected for each feature, most appear to only represent noise, as for most features, in the LC-MS/MS run, no or only very low MS1 signal was recorded, indicating that in that selected sample the original compound might not (or no longer) be present. Also, most reference databases contain predominantly fragment spectra for protonated (<em>[M+H]+</em>) ions of compounds, while some of the features might represent signal from other types of ions which would result in a different fragmentation pattern. Finally, fragment spectra of compounds of interest might also simply not be present in the used reference database.</p>
+<p>Thus, from the 6 significant features, only one could be annotated to a compound based on the MS2-based approach. There could be many reasons for the failure to find matches for the other features. Although MS2 spectra were selected for each feature, most appear to only represent noise, as for most features, in the LC-MS/MS run, no or only very low MS1 signal was recorded, indicating that in that selected sample the original compound might not (or no longer) be present. Also, most reference databases contain predominantly fragment spectra for protonated (<em>[M+H]+</em>) ions of compounds, while some of the features might represent signal from other types of ions which would result in a different fragmentation pattern. Finally, fragment spectra of compounds of interest might also simply not be present in the used reference database.</p>
 <p>Thus, combining the information from the MS1- and MS2 based annotation we can only annotate one feature with a considerable confidence. The feature with the <em>m/z</em> of 195.0879 and a retention time of 32 seconds seems to be an ion of caffeine. While the result is somewhat disappointing it also clearly shows the importance of proper experimental planning and the need to control for all potential confounding factors. For the present experiment, no disease-specific biomarker could be identified, but a life-style property of individuals suffering from this disease: coffee consumption was probably contraindicated to patients of the CVD group to reduce the risk of heart arrhythmia.</p>
 <p>We below plot the EIC for this feature highlighting the retention time at which the highest scoring MS2 spectra was recorded and create a mirror plot comparing this MS2 spectra to the reference fragment spectra for caffeine.</p>
 <div class="cell">

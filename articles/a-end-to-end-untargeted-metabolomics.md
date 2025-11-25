@@ -1903,7 +1903,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Tue Nov 25 14:39:41 2025
+     date: Tue Nov 25 16:11:30 2025
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -2608,7 +2608,7 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4207 features were removed
+    4212 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
@@ -2639,7 +2639,7 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4517
+    [1] 4512
 
 ``` r
 
@@ -2647,9 +2647,9 @@ nrow(res)
 nrow(res)/nrow(res_unfilt) * 100
 ```
 
-    [1] 51.77671
+    [1] 51.71939
 
-The dataset has been reduced from 8724 to 4517 features. We did remove a
+The dataset has been reduced from 8724 to 4512 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -2951,11 +2951,12 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83789 | -8.574153 | 0.0227388 | 12.229286 |  3.742339 | 0.2116471 |
-| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0422029 | 16.905340 | 10.454994 | 0.0304712 |
-| FT0565 | 161.0400 | 162.13668 | -5.684277 | 0.0280214 | 10.287074 |  4.357346 | 0.0360903 |
-| FT1171 | 229.1299 | 181.08828 | -5.515140 | 0.0280214 | 10.721195 |  5.417364 | 0.0706276 |
-| FT0371 | 138.0547 | 148.39599 | -5.154872 | 0.0280214 |  9.914862 |  4.457964 | 0.5564435 |
+| FT0732 | 182.0749 |  34.83789 | -8.589786 | 0.0115508 | 12.229286 |  3.788263 | 0.2116471 |
+| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0419347 | 16.905340 | 10.454994 | 0.0304712 |
+| FT0565 | 161.0400 | 162.13668 | -5.594544 | 0.0419347 | 10.287074 |  4.493429 | 0.0360903 |
+| FT0371 | 138.0547 | 148.39599 | -5.353156 | 0.0290239 |  9.914862 |  4.197205 | 0.5564435 |
+| FT1171 | 229.1299 | 181.08828 | -5.282380 | 0.0165932 | 10.721195 |  5.603695 | 0.0706276 |
+| FT5606 | 560.3603 |  33.54917 | -3.895492 | 0.0465207 |  8.885918 |  4.757225 | 1.2139903 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
@@ -3138,7 +3139,7 @@ mtch
 
     Object of class Matched
     Total number of matches: 43
-    Number of query objects: 5 (4 matched)
+    Number of query objects: 6 (4 matched)
     Number of target objects: 25685 (43 matched)
 
 The resulting `Matched` object shows that 4 of our 6 significant
@@ -3155,7 +3156,7 @@ mtch_res <- matchedData(mtch, c("feature_id", "mzmed", "rtmed",
 mtch_res
 ```
 
-    DataFrame with 44 rows and 8 columns
+    DataFrame with 45 rows and 8 columns
             feature_id     mzmed     rtmed      adduct ppm_error target_formula
            <character> <numeric> <numeric> <character> <numeric>    <character>
     FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
@@ -3164,11 +3165,11 @@ mtch_res
     FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
     FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
     ...            ...       ...       ...         ...       ...            ...
-    FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1867474      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.0614704      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
     FT1171      FT1171   229.130  181.0883     [M+Na]+ 3.0770838      C12H18N2O
+    FT5606      FT5606   560.360   33.5492          NA        NA             NA
              target_name target_inchikey
              <character>     <character>
     FT0371 Benzohydro...   VDEUYMSGMP...
@@ -3177,11 +3178,11 @@ mtch_res
     FT0371 4-Aminoben...   ALYNCZNDIQ...
     FT0371 Anthranili...   RWZYAGGXGH...
     ...              ...             ...
-    FT0845      CAFFEINE   RYYVLZVUVI...
     FT0845      Caffeine   RYYVLZVUVI...
     FT0845      caffeine   RYYVLZVUVI...
     FT0845 1,3,7-TRIM...   RYYVLZVUVI...
     FT1171 Isoproturo...   PUIYMUZLKQ...
+    FT5606            NA              NA
 
 Thus, in total 43 ions of compounds in MassBank were matched to our
 significant features based on the specified tolerance settings. Many
@@ -3324,10 +3325,12 @@ colnames(sampleData(lcms2)) <- c("sample_name", "derived_spectra_data_file",
                                 "blood_sample_type",
                                 "sample_type", "age", "unit", "phenotype")
 
-# filter samples to keep MSMS data from CTR samples:
-sampleData(lcms2) <- sampleData(lcms2)[sampleData(lcms2)$phenotype == "CTR", ]
+# Identify MS/MS data files for control samples
+keep <- sampleData(lcms2)$phenotype == "CTR" &
+        grepl("MSMS", sampleData(lcms2)$derived_spectra_data_file)
 
-sampleData(lcms2) <- sampleData(lcms2)[grepl("MSMS", sampleData(lcms2)$derived_spectra_data_file), ]
+# filter samples to keep MSMS data from CTR samples:
+lcms2 <- lcms2[keep]
 
 # Add fragmentation data information (from filenames)
 sampleData(lcms2)$fragmentation_mode <- c("CE20", "CE30", "CES")
@@ -3368,9 +3371,9 @@ spectra(lcms2) |>
     do.call(what = cbind)
 ```
 
-        1    2    3    4   5    6    7    8   9   10   11   12
-    1 825  186  186  186 825  186  186  186 825  185  186  185
-    2 825 3121 3118 3124 825 3123 3118 3120 825 3117 3117 3116
+         1    2    3
+    1  186  186  186
+    2 3123 3118 3120
 
 Compared to the number of MS2 spectra, far less MS1 spectra were
 acquired. The configuration of the MS instrument was set to ensure that
@@ -3454,7 +3457,7 @@ backend.
 print(object.size(ms2_ctr), units = "MB")
 ```
 
-    5.2 Mb
+    1.9 Mb
 
 ``` r
 
@@ -3466,7 +3469,7 @@ ms2_ctr <- applyProcessing(ms2_ctr)
 print(object.size(ms2_ctr), units = "MB")
 ```
 
-    18.4 Mb
+    6 Mb
 
 There is thus only a moderate increase in memory demand after loading
 the MS data into memory (also because we filtered and cleaned the MS2
@@ -3505,6 +3508,7 @@ target
     FT0732 182.0726 182.0756  32.71242  42.28755
     FT0845 195.0799 195.0887  30.73235  35.67337
     FT1171 229.1282 229.1335 178.01450 183.35303
+    FT5606 560.3539 560.3656  32.06570  35.33456
 
 We next identify the fragment spectra with their precursor *m/z* and
 retention times within these ranges. We use the
@@ -3524,8 +3528,8 @@ ms2_ctr_fts <- apply(target[, c("rtmin", "rtmax", "mzmin", "mzmax")],
 lengths(ms2_ctr_fts)
 ```
 
-    FT0371 FT0565 FT0732 FT0845 FT1171
-        38     36    135     68     38 
+    FT0371 FT0565 FT0732 FT0845 FT1171 FT5606
+        11     12     46     21     12      0 
 
 The result from this [`apply()`](https://rdrr.io/r/base/apply.html) call
 is a `list` of `Spectra`, each element representing the result for one
@@ -3611,11 +3615,11 @@ ms2_mtch
 ```
 
     Object of class MatchedSpectra
-    Total number of matches: 176
-    Number of query objects: 315 (15 matched)
+    Total number of matches: 117
+    Number of query objects: 102 (10 matched)
     Number of target objects: 69561 (14 matched)
 
-Thus, from the total 315 query MS2 spectra, only 15 could be matched to
+Thus, from the total 102 query MS2 spectra, only 10 could be matched to
 (at least) one reference fragment spectrum.
 
 Below we restrict the results to these matching spectra and extract all
@@ -3635,7 +3639,7 @@ ms2_mtch_res <- matchedData(ms2_mtch)
 nrow(ms2_mtch_res)
 ```
 
-    [1] 176
+    [1] 117
 
 Now, we have query-target pairs with a spectra similarity higher than
 0.7. Similar to the MS1-based annotation also this result table contains
@@ -3673,12 +3677,12 @@ pandoc.table(ms2_mtch_res[, c("feature_id", "target_name", "score",
 | feature_id | target_name | score  |       target_inchikey       |
 |:----------:|:-----------:|:------:|:---------------------------:|
 |   FT0845   | Isocaffeine | 0.8048 | LPHGQDQBBGAPDZ-UHFFFAOYSA-N |
-|   FT0845   |  Caffeine   | 0.9205 |             NA              |
+|   FT0845   |  Caffeine   | 0.8926 |             NA              |
 |   FT0845   |  Caffeine   | 0.9998 | RYYVLZVUVIJVGH-UHFFFAOYSA-N |
 
 Table 9.MS2 annotation results. {.table}
 
-Thus, from the 5 significant features, only one could be annotated to a
+Thus, from the 6 significant features, only one could be annotated to a
 compound based on the MS2-based approach. There could be many reasons
 for the failure to find matches for the other features. Although MS2
 spectra were selected for each feature, most appear to only represent

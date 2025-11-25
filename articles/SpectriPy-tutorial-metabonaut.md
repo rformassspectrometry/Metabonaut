@@ -345,17 +345,17 @@ scores = calculate_scores(references = clean_mgf_py,
 
 
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:02<02:40,  2.09s/it]
-    Calculating similarities:  12%|#1        | 9/78 [00:02<00:12,  5.54it/s]
-    Calculating similarities:  22%|##1       | 17/78 [00:02<00:05, 11.65it/s]
-    Calculating similarities:  32%|###2      | 25/78 [00:02<00:02, 18.82it/s]
-    Calculating similarities:  44%|####3     | 34/78 [00:02<00:01, 27.75it/s]
-    Calculating similarities:  54%|#####3    | 42/78 [00:02<00:01, 35.74it/s]
-    Calculating similarities:  64%|######4   | 50/78 [00:02<00:00, 41.64it/s]
-    Calculating similarities:  74%|#######4  | 58/78 [00:02<00:00, 48.70it/s]
-    Calculating similarities:  85%|########4 | 66/78 [00:02<00:00, 54.60it/s]
-    Calculating similarities:  96%|#########6| 75/78 [00:03<00:00, 61.33it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:03<00:00, 25.05it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:01<02:29,  1.94s/it]
+    Calculating similarities:  12%|#1        | 9/78 [00:02<00:11,  5.92it/s]
+    Calculating similarities:  22%|##1       | 17/78 [00:02<00:04, 12.35it/s]
+    Calculating similarities:  33%|###3      | 26/78 [00:02<00:02, 20.68it/s]
+    Calculating similarities:  45%|####4     | 35/78 [00:02<00:01, 29.62it/s]
+    Calculating similarities:  55%|#####5    | 43/78 [00:02<00:00, 37.59it/s]
+    Calculating similarities:  65%|######5   | 51/78 [00:02<00:00, 43.08it/s]
+    Calculating similarities:  76%|#######5  | 59/78 [00:02<00:00, 50.12it/s]
+    Calculating similarities:  86%|########5 | 67/78 [00:02<00:00, 55.82it/s]
+    Calculating similarities:  96%|#########6| 75/78 [00:02<00:00, 61.33it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 26.24it/s]
 
 ``` python
 scores
