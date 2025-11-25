@@ -1,3 +1,9 @@
+# Metabonaut 1.3
+
+## Changes in 1.3.0
+
+-Update to Bioc3.22
+
 # Metabonaut 1.2
 
 ## Changes in 1.2.2
