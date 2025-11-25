@@ -2556,10 +2556,12 @@ colnames(sampleData(lcms2)) <- c("sample_name", "derived_spectra_data_file",
                                 "blood_sample_type",
                                 "sample_type", "age", "unit", "phenotype")
 
-# filter samples to keep MSMS data from CTR samples:
-sampleData(lcms2) <- sampleData(lcms2)[sampleData(lcms2)$phenotype == "CTR", ]
+# Identify MS/MS data files for control samples
+keep <- sampleData(lcms2)$phenotype == "CTR" &
+        grepl("MSMS", sampleData(lcms2)$derived_spectra_data_file)
 
-sampleData(lcms2) <- sampleData(lcms2)[grepl("MSMS", sampleData(lcms2)$derived_spectra_data_file), ]
+# filter samples to keep MSMS data from CTR samples:
+lcms2 <- lcms2[keep]
 
 # Add fragmentation data information (from filenames)
 sampleData(lcms2)$fragmentation_mode <- c("CE20", "CE30", "CES")
@@ -3003,3 +3005,4 @@ plot(eic_is) # show alignment effect
 ```
 
 # References
+
