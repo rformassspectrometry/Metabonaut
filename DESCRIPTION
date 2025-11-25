@@ -73,8 +73,7 @@ Suggests:
     reticulate,
     quarto
 Remotes:
-    RforMassSpectrometry/MsIO,
-    RforMassSpectrometry/SpectriPy
+    RforMassSpectrometry/MsIO
 URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
 BugReports: https://github.com/rformassspectrometry/Metabonaut/issues/new
 BiocType: Workflow
