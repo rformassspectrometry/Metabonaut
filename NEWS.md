@@ -1,15 +1,21 @@
+# Metabonaut 1.4
+
+## Changes in 1.4.0
+
+- Add Notame vignette.
+
 # Metabonaut 1.3
 
 ## Changes in 1.3.2
 
-- Add export for GNPS2 integration. 
-- Add summary plot for peakpicking results.
+- Add export for GNPS2 integration to main vignette.
+- Add summary plot for peakpicking results in main vignette.
 
 ## Changes in 1.3.1
 
 - Expand the *Dataset investigation* vignette with an example to define
   background and foreground MS signal.
-  
+
 - Fix CTR sample subsetting in the MS2 annotation part of the main vignette.
 
 ## Changes in 1.3.0
