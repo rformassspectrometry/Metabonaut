@@ -27,9 +27,13 @@ max_line_length = 80
 indent_style = space
 indent_size = 4
 
+[*.qmd]
+indent_style = space
+indent_size = 4
+
 [Makefile]
 indent_style = tab
 
 [*.yml]
 indent_style = space
-indent_size = 2
+indent_size = 4
