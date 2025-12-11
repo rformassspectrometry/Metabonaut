@@ -72,7 +72,10 @@ Suggests:
     knitr,
     reticulate,
     quarto,
-    MsBackendMgf
+    MsBackendMgf,
+    notame,
+    notameStats,
+    notameViz
 Remotes:
     RforMassSpectrometry/MsIO
 URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/

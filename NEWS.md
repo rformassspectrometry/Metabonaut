@@ -18,6 +18,11 @@
 
 # Metabonaut 1.2
 
+## Changes in 1.2.2
+
+- Expand the *Dataset investigation* vignette with an example to define
+  background and foreground MS signal.
+
 ## Changes in 1.2.1
 
 - Addition of libary(knitr) in end-to-end workflow.
