@@ -399,7 +399,7 @@ rownames(fData(eic_is)) <- intern_standard$abbreviation
 fdata <- fData(eic_is)
 
 #' Summary of IS information
-fData(eic_is)[c("cystine_13C_15N", "methionine_13C_15N"), 
+fData(eic_is)[c("cystine_13C_15N", "methionine_13C_15N"),
               c("name", "mz", "rt")] |>
     kable(format = "pipe")
 ```
@@ -452,9 +452,9 @@ entities in the samples of the experiment.
 
 The initial preprocessing step involves detecting intensity peaks along the
 retention time axis, the so called *chromatographic peaks*. To achieve this, we
-employ the `findChromPeaks()` function within *xcms*. This function supports
-various algorithms for peak detection, which can be selected and configured
-with their respective parameter objects.
+employ the `findChromPeaks()` function within *xcms* [@louail_xcms_2025]. This
+function supports various algorithms for peak detection, which can be selected
+and configured with their respective parameter objects.
 
 The preferred algorithm in this case, *CentWave*, utilizes continuous wavelet
 transformation (CWT)-based peak detection [@tautenhahn_highly_2008]. This
@@ -821,14 +821,14 @@ apply this shift also on the study samples.
 
 In *xcms*, retention time alignment can be performed using the `adjustRtime()`
 function with an alignment algorithm. For this example we use the *PeakGroups*
-method [@smith_xcms_2006] that performs the alignment by minimizing differences
+method [@louail_xcms_2025] that performs the alignment by minimizing differences
 in retention times of a set of *anchor peaks* in the different samples. This
 method requires an initial correspondence analysis to match/group
 chromatographic peaks across samples from which the algorithm then selects the
 anchor peaks for the alignment.
 
 For the initial correspondence, we use the *PeakDensity* approach
-[@smith_xcms_2006] that groups chromatographic peaks with similar *m/z* and
+[@louail_xcms_2025] that groups chromatographic peaks with similar *m/z* and
 retention time into LC-MS features. The parameters for this algorithm, that can
 be configured using the `PeakDensityParam` object, are `sampleGroups`,
 `minFraction`, `binSize`, `ppm` and `bw`.
@@ -1567,7 +1567,7 @@ ensures that our object can be easily read from other languages like Python and
 Javascript as well as loaded easily back into R.
 
 ```{r}
-#' XcmsExperiment object: 
+#' XcmsExperiment object:
 saveMsObject(lcms1,
              AlabasterParam(path = file.path("objects/preprocessed_lcms1")))
 
@@ -2105,7 +2105,7 @@ library(ggVennDiagram)
 l_logical <- apply(df_logical, MARGIN = 2,function(i) which(i))
 ggVennDiagram(l_logical, label = "count",
                             category.names = res$sample_name,
-              color = 1, lwd = 0.7) + 
+              color = 1, lwd = 0.7) +
  scale_fill_gradient(low = "lightblue", high = "#4981BF") +
  theme(legend.position = "none")
 
@@ -3005,4 +3005,3 @@ plot(eic_is) # show alignment effect
 ```
 
 # References
-
