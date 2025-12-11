@@ -2863,10 +2863,10 @@ Thus, from the total `r length(ms2_ctr_fts)` query MS2 spectra, only
 `r length(whichQuery(ms2_mtch))` could be matched to (at least) one reference
 fragment spectrum.
 
-Below we restrict the results to these matching spectra and extract all
-metadata of the query and target spectra as well as the similarity score (the
-complete list of available metadata information can be listed with the
-`colnames()` function).
+Below we restrict the results to these matching spectra and extract all metadata
+of the query and target spectra as well as the similarity score (the complete
+list of available metadata information can be listed with the `colnames()`
+function).
 
 ```{r}
 #' Keep only query spectra with matching reference spectra
