@@ -799,6 +799,8 @@ Below we create a summary fo peak-picking for each sample.
 
 ```{r}
 #| fig-cap: "Summary of chromatographic peak detection results per sample."
+#| code-fold: true
+#| code-summary: "Show the code"
 #' split the detected chrom peaks per sample
 pk_list <- split.data.frame(
   chromPeaks(lcms1, columns = c("mzmin", "mzmax", "rtmin", "rtmax")),
