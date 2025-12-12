@@ -396,7 +396,7 @@ the experiment.
 #| code-fold: true
 #| code-summary: "Show the code"
 #' Load our list of standard
-intern_standard <- read.delim("vignettes/intern_standard_list.txt")
+intern_standard <- read.delim("intern_standard_list.txt")
 
 # Extract EICs for the list
 eic_is <- chromatogram(
