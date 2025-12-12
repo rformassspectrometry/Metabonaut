@@ -14,7 +14,7 @@ navbar:
     - text: 'End-to-end workflow for untargeted metabolomics data analysis in R'
       href: articles/a-end-to-end-untargeted-metabolomics.html
     - text: 'Quality control and Feature selection with Notame'
-      href: articles/notame_normalization_feature_selection.html
+      href: articles/notame_normalization_and_feature_selection.html
     - text: 'Dataset investigation: What to do when you get your data'
       href: articles/dataset-investigation.html
     - text: 'Seamless Alignment: Merging New data with Existing Preprocessed Datasets'
