@@ -345,17 +345,17 @@ scores = calculate_scores(references = clean_mgf_py,
 
 
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:01<02:29,  1.94s/it]
-    Calculating similarities:  12%|#1        | 9/78 [00:02<00:11,  5.92it/s]
-    Calculating similarities:  22%|##1       | 17/78 [00:02<00:04, 12.35it/s]
-    Calculating similarities:  33%|###3      | 26/78 [00:02<00:02, 20.68it/s]
-    Calculating similarities:  45%|####4     | 35/78 [00:02<00:01, 29.62it/s]
-    Calculating similarities:  55%|#####5    | 43/78 [00:02<00:00, 37.59it/s]
-    Calculating similarities:  65%|######5   | 51/78 [00:02<00:00, 43.08it/s]
-    Calculating similarities:  76%|#######5  | 59/78 [00:02<00:00, 50.12it/s]
-    Calculating similarities:  86%|########5 | 67/78 [00:02<00:00, 55.82it/s]
-    Calculating similarities:  96%|#########6| 75/78 [00:02<00:00, 61.33it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 26.24it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:01<02:19,  1.81s/it]
+    Calculating similarities:  12%|#1        | 9/78 [00:01<00:10,  6.33it/s]
+    Calculating similarities:  22%|##1       | 17/78 [00:02<00:04, 13.14it/s]
+    Calculating similarities:  33%|###3      | 26/78 [00:02<00:02, 21.83it/s]
+    Calculating similarities:  42%|####2     | 33/78 [00:02<00:01, 25.23it/s]
+    Calculating similarities:  53%|#####2    | 41/78 [00:02<00:01, 33.38it/s]
+    Calculating similarities:  62%|######1   | 48/78 [00:02<00:00, 39.03it/s]
+    Calculating similarities:  72%|#######1  | 56/78 [00:02<00:00, 46.48it/s]
+    Calculating similarities:  82%|########2 | 64/78 [00:02<00:00, 53.44it/s]
+    Calculating similarities:  94%|#########3| 73/78 [00:02<00:00, 60.56it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 26.56it/s]
 
 ``` python
 scores
@@ -562,9 +562,9 @@ sessionInfo()
      [1] cli_3.6.5              knitr_1.50             rlang_1.1.6
      [4] xfun_0.54              ProtGenerics_1.42.0    png_0.1-8
      [7] jsonlite_2.0.0         clue_0.3-66            rprojroot_2.1.1
-    [10] htmltools_0.5.8.1      rmarkdown_2.30         grid_4.5.2
+    [10] htmltools_0.5.9        rmarkdown_2.30         grid_4.5.2
     [13] evaluate_1.0.5         MASS_7.3-65            fastmap_1.2.0
-    [16] yaml_2.3.10            IRanges_2.44.0         MsCoreUtils_1.21.0
+    [16] yaml_2.3.12            IRanges_2.44.0         MsCoreUtils_1.22.1
     [19] cluster_2.1.8.1        compiler_4.5.2         codetools_0.2-20
     [22] fs_1.6.6               Rcpp_1.1.0             here_1.0.2
     [25] MetaboCoreUtils_1.18.1 lattice_0.22-7         digest_0.6.39

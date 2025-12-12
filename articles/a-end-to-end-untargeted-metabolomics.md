@@ -36,6 +36,7 @@ library(MsIO)
 library(alabaster.se)
 library(MsBackendMetaboLights)
 library(SummarizedExperiment)
+library(MsBackendMgf)
 
 ## Preprocessing of LC-MS data
 library(xcms)
@@ -51,12 +52,12 @@ library(pander)
 library(RColorBrewer)
 library(pheatmap)
 library(vioplot)
-library(ggfortify)   # Plot PCA
-library(gridExtra)   # To arrange multiple ggplots into single plots
+library(ggfortify) # Plot PCA
+library(gridExtra) # To arrange multiple ggplots into single plots
 
 ## Annotation
 library(AnnotationHub) # Annotation resources
-library(CompoundDb)    # Access small compound annotation data.
+library(CompoundDb) # Access small compound annotation data.
 library(MetaboAnnotation) # Functionality for metabolite annotation.
 ```
 
@@ -373,11 +374,22 @@ Show the code
 ``` r
 
 #' Plot after filtering
-plot(bpc, col = paste0(col_sample, 80),
-     main = "BPC after filtering retention time", lwd = 1.5)
+plot(
+  bpc,
+  col = paste0(col_sample, 80),
+  main = "BPC after filtering retention time",
+  lwd = 1.5
+)
 grid()
-legend("topright", col = col_phenotype,
-       legend = names(col_phenotype), lty = 1, lwd = 2, horiz = TRUE, bty = "n")
+legend(
+  "topright",
+  col = col_phenotype,
+  legend = names(col_phenotype),
+  lty = 1,
+  lwd = 2,
+  horiz = TRUE,
+  bty = "n"
+)
 ```
 
 ![](a-end-to-end-untargeted-metabolomics_files/figure-html/bpc2-1.png)
@@ -421,8 +433,11 @@ ann <- data.frame(phenotype = sampleData(lcms1)[, "phenotype"])
 rownames(ann) <- rownames(ticmap)
 
 #' Plot heatmap
-pheatmap(ticmap, annotation_col = ann,
-         annotation_colors = list(phenotype = col_phenotype))
+pheatmap(
+  ticmap,
+  annotation_col = ann,
+  annotation_colors = list(phenotype = col_phenotype)
+)
 ```
 
 ![](a-end-to-end-untargeted-metabolomics_files/figure-html/heatmap1-1.png)
@@ -463,9 +478,10 @@ intern_standard <- read.delim("intern_standard_list.txt")
 
 # Extract EICs for the list
 eic_is <- chromatogram(
-    lcms1,
-    rt = as.matrix(intern_standard[, c("rtmin", "rtmax")]),
-    mz = as.matrix(intern_standard[, c("mzmin", "mzmax")]))
+  lcms1,
+  rt = as.matrix(intern_standard[, c("rtmin", "rtmax")]),
+  mz = as.matrix(intern_standard[, c("mzmin", "mzmax")])
+)
 
 #' Add internal standard metadata
 fData(eic_is)$mz <- intern_standard$mz
@@ -477,7 +493,7 @@ rownames(fData(eic_is)) <- intern_standard$abbreviation
 fdata <- fData(eic_is)
 
 #' Summary of IS information
-fData(eic_is)[c("cystine_13C_15N", "methionine_13C_15N"), 
+fData(eic_is)[c("cystine_13C_15N", "methionine_13C_15N"),
               c("name", "mz", "rt")] |>
     kable(format = "pipe")
 ```
@@ -502,18 +518,32 @@ eic_met <- eic_is["methionine_13C_15N"]
 
 #' plot both EIC
 par(mfrow = c(1, 2), mar = c(4, 2, 2, 0.5))
-plot(eic_cystine, main = fData(eic_cystine)$name, cex.axis = 0.8,
-     cex.main = 0.8,
-     col = paste0(col_sample, 80))
+plot(
+  eic_cystine,
+  main = fData(eic_cystine)$name,
+  cex.axis = 0.8,
+  cex.main = 0.8,
+  col = paste0(col_sample, 80)
+)
 grid()
 abline(v = fData(eic_cystine)$rt, col = "red", lty = 3)
 
-plot(eic_met, main = fData(eic_met)$name, cex.axis = 0.8, cex.main = 0.8,
-     col = paste0(col_sample, 80))
+plot(
+  eic_met,
+  main = fData(eic_met)$name,
+  cex.axis = 0.8,
+  cex.main = 0.8,
+  col = paste0(col_sample, 80)
+)
 grid()
 abline(v = fData(eic_met)$rt, col = "red", lty = 3)
-legend("topright", col = col_phenotype, legend = names(col_phenotype), lty = 1,
-       bty = "n")
+legend(
+  "topright",
+  col = col_phenotype,
+  legend = names(col_phenotype),
+  lty = 1,
+  bty = "n"
+)
 ```
 
 ![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-4-1.png)
@@ -544,9 +574,9 @@ The initial preprocessing step involves detecting intensity peaks along
 the retention time axis, the so called *chromatographic peaks*. To
 achieve this, we employ the
 [`findChromPeaks()`](https://rdrr.io/pkg/xcms/man/findChromPeaks.html)
-function within *xcms*. This function supports various algorithms for
-peak detection, which can be selected and configured with their
-respective parameter objects.
+function within *xcms* ([Louail et al. 2025](#ref-louail_xcms_2025)).
+This function supports various algorithms for peak detection, which can
+be selected and configured with their respective parameter objects.
 
 The preferred algorithm in this case, *CentWave*, utilizes continuous
 wavelet transformation (CWT)-based peak detection ([Tautenhahn,
@@ -976,6 +1006,65 @@ style="width:100%;"}
 A similar number of chromatographic peaks was identified within the
 various samples of the data set.
 
+Below we create a summary fo peak-picking for each sample.
+
+Show the code
+
+``` r
+
+#' split the detected chrom peaks per sample
+pk_list <- split.data.frame(
+  chromPeaks(lcms1, columns = c("mzmin", "mzmax", "rtmin", "rtmax")),
+  chromPeaks(lcms1, columns = "sample")[, "sample"]
+)
+#' calculate mz and rt widths
+pk_list <- lapply(pk_list, function(z) {
+  cbind(
+    z,
+    mz_width = z[, "mzmax"] - z[, "mzmin"],
+    mz_width_ppm = (z[, "mzmax"] - z[, "mzmin"]) * 1e6 / z[, "mzmax"],
+    rt_width = z[, "rtmax"] - z[, "rtmin"]
+  )
+})
+
+#' plot the information
+par(mfrow = c(3, 1), mar = c(0, 4.3, 1.5, 0.1))
+barplot(
+  unlist(lapply(pk_list, nrow)),
+  col = col_sample,
+  ylab = "peak count",
+  main = "Peak detection summary, mse",
+  xaxt = "n"
+)
+grid()
+legend(
+  "top",
+  horiz = TRUE,
+  col = col_phenotype,
+  pch = 15,
+  legend = names(col_phenotype)
+)
+par(mar = c(0, 4.3, 0, 0.1))
+vioplot(
+  lapply(pk_list, function(z) z[, "mz_width_ppm"]),
+  outline = FALSE,
+  ylab = "m/z width [ppm]",
+  xaxt = "n",
+  col = col_sample
+)
+grid()
+vioplot(
+  lapply(pk_list, function(z) z[, "rt_width"]),
+  ylab = "rt width [s]",
+  col = col_sample
+)
+grid()
+```
+
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-11-1.png)
+
+Summary of chromatographic peak detection results per sample.
+
 Additional options to evaluate the results of the chromatographic peak
 detection can be implemented using the
 [`plotChromPeaks()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
@@ -1010,7 +1099,7 @@ lcms1[QC_samples] |>
 
     Extracting chromatographic data
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-11-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-12-1.png)
 
 Figure 10. BPC of QC samples.
 
@@ -1041,7 +1130,7 @@ samples, we apply this shift also on the study samples.
 In *xcms*, retention time alignment can be performed using the
 [`adjustRtime()`](https://rdrr.io/pkg/xcms/man/adjustRtime.html)
 function with an alignment algorithm. For this example we use the
-*PeakGroups* method ([Smith et al. 2006](#ref-smith_xcms_2006)) that
+*PeakGroups* method ([Louail et al. 2025](#ref-louail_xcms_2025)) that
 performs the alignment by minimizing differences in retention times of a
 set of *anchor peaks* in the different samples. This method requires an
 initial correspondence analysis to match/group chromatographic peaks
@@ -1049,11 +1138,11 @@ across samples from which the algorithm then selects the anchor peaks
 for the alignment.
 
 For the initial correspondence, we use the *PeakDensity* approach
-([Smith et al. 2006](#ref-smith_xcms_2006)) that groups chromatographic
-peaks with similar *m/z* and retention time into LC-MS features. The
-parameters for this algorithm, that can be configured using the
-`PeakDensityParam` object, are `sampleGroups`, `minFraction`, `binSize`,
-`ppm` and `bw`.
+([Louail et al. 2025](#ref-louail_xcms_2025)) that groups
+chromatographic peaks with similar *m/z* and retention time into LC-MS
+features. The parameters for this algorithm, that can be configured
+using the `PeakDensityParam` object, are `sampleGroups`, `minFraction`,
+`binSize`, `ppm` and `bw`.
 
 `binSize`, `ppm` and `bw` allow to specify how similar the
 chromatographic peaks’ *m/z* and retention time values need to be to
@@ -1099,21 +1188,26 @@ either into a study, or QC group.
 ``` r
 
 # Initial correspondence analysis
-param <- PeakDensityParam(sampleGroups = sampleData(lcms1)$phenotype == "QC",
-                          minFraction = 0.9,
-                          binSize = 0.01, ppm = 10,
-                          bw = 2)
+param <- PeakDensityParam(
+  sampleGroups = sampleData(lcms1)$phenotype == "QC",
+  minFraction = 0.9,
+  binSize = 0.01,
+  ppm = 10,
+  bw = 2
+)
 lcms1 <- groupChromPeaks(lcms1, param = param)
 
 plotChromPeakDensity(
-    eic_cystine, param = param,
-    col = paste0(col_sample, "80"),
-    peakCol = col_sample[chromPeaks(eic_cystine)[, "sample"]],
-    peakBg = paste0(col_sample[chromPeaks(eic_cystine)[, "sample"]], 20),
-    peakPch = 16)
+  eic_cystine,
+  param = param,
+  col = paste0(col_sample, "80"),
+  peakCol = col_sample[chromPeaks(eic_cystine)[, "sample"]],
+  peakBg = paste0(col_sample[chromPeaks(eic_cystine)[, "sample"]], 20),
+  peakPch = 16
+)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-12-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-13-1.png)
 
 Figure 11. Initial correspondence analysis.
 
@@ -1184,7 +1278,7 @@ legend("topright", col = col_phenotype,
        legend = names(col_phenotype), lty = 1, bty = "n")
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-14-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-15-1.png)
 
 Figure 12. Retention time alignment results.
 
@@ -1230,8 +1324,7 @@ legend("topright", col = col_phenotype,
        legend = names(col_phenotype), lty = 1, bty = "n", horiz = TRUE)
 
 chromatogram(lcms1, aggregationFun = "max", chromPeaks = "none") |>
-    plot(main = "BPC after alignment",
-         col = paste0(col_sample, 80))
+  plot(main = "BPC after alignment", col = paste0(col_sample, 80))
 ```
 
     Extracting chromatographic data
@@ -1344,8 +1437,11 @@ chrom_peaks$peak_id <- rownames(chrom_peaks)
 
 #' Define the parameters for the matching and filtering of the matches
 p_1 <- MzRtParam(ppm = 50, toleranceRt = 10)
-p_2 <- SingleMatchParam(duplicates = "top_ranked", column = "target_maxo",
-                        decreasing = TRUE)
+p_2 <- SingleMatchParam(
+  duplicates = "top_ranked",
+  column = "target_maxo",
+  decreasing = TRUE
+)
 
 #' Iterate over samples and identify for each the chromatographic peaks
 #' with similar m/z and retention time than the onse from the internal
@@ -1395,7 +1491,7 @@ list(all_raw = rowSds(rt_raw, na.rm = TRUE),
 grid()
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-19-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-20-1.png)
 
 Figure 15. Retention time variation of internal standards before and
 after alignment.
@@ -1449,7 +1545,7 @@ plotChromPeakDensity(
     peakPch = 16)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-21-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-22-1.png)
 
 Figure 16. Initial correspondence analysis, Cystine.
 
@@ -1464,7 +1560,7 @@ plotChromPeakDensity(eic_met, param = param,
     peakPch = 16)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-22-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-23-1.png)
 
 Figure 17. Initial correspondence analysis, Methionine.
 
@@ -1491,7 +1587,7 @@ plotChromPeakDensity(
     peakPch = 16)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-23-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-24-1.png)
 
 Figure 18. Correspondence analysis with optimized parameters, Cystine.
 
@@ -1506,7 +1602,7 @@ plotChromPeakDensity(eic_met, param = param,
     peakPch = 16)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-24-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-25-1.png)
 
 Figure 19. Correspondence analysis with optimized parameters,
 Methionine.
@@ -1560,14 +1656,16 @@ chr_test <- chromatogram(lcms1,
                          rt = c(145, 200),
                          aggregationFun = "max")
 plotChromPeakDensity(
-    chr_test, simulate = FALSE,
-    col = paste0(col_sample, "80"),
-    peakCol = col_sample[chromPeaks(chr_test)[, "sample"]],
-    peakBg = paste0(col_sample[chromPeaks(chr_test)[, "sample"]], 20),
-    peakPch = 16)
+  chr_test,
+  simulate = FALSE,
+  col = paste0(col_sample, "80"),
+  peakCol = col_sample[chromPeaks(chr_test)[, "sample"]],
+  peakBg = paste0(col_sample[chromPeaks(chr_test)[, "sample"]], 20),
+  peakPch = 16
+)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-26-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-27-1.png)
 
 Figure 20. Correspondence analysis results, Methionine.
 
@@ -1706,7 +1804,7 @@ chromatogram(lcms1[c(2, 3)],
     plot(col = c("red", "blue"), lwd = 2)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-31-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-32-1.png)
 
 Figure 21. Examples of chromatographic peaks with missing values.
 
@@ -1745,7 +1843,7 @@ noise would be integrated, which is expected to be much lower than
 actual chromatographic peak signal. Let’s look at our previously missing
 values again:
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-33-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-34-1.png)
 
 Figure 22. Examples of chromatographic peaks with missing values after
 gap-filling.
@@ -1903,7 +2001,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Tue Nov 25 16:11:30 2025
+     date: Fri Dec 12 13:00:37 2025
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -1985,8 +2083,7 @@ gap-filled feature abundances as an additional assay to the
 
 ``` r
 
-assays(res)$raw_filled <- featureValues(lcms1, method = "sum",
-                                        filled = TRUE )
+assays(res)$raw_filled <- featureValues(lcms1, method = "sum", filled = TRUE)
 
 #' Different assay in the SummarizedExperiment object
 assayNames(res)
@@ -2060,7 +2157,7 @@ Javascript as well as loaded easily back into R.
 
 ``` r
 
-#' XcmsExperiment object: 
+#' XcmsExperiment object:
 saveMsObject(lcms1,
              AlabasterParam(path = file.path("objects/preprocessed_lcms1")))
 
@@ -2351,8 +2448,7 @@ features and ensures a consistent average abundance across samples.
 ``` r
 
 #' Compute median and generate normalization factor
-mdns <- apply(assay(res, "raw_filled"), MARGIN = 2,
-              median, na.rm = TRUE )
+mdns <- apply(assay(res, "raw_filled"), MARGIN = 2, median, na.rm = TRUE)
 nf_mdn <- mdns / median(mdns)
 
 #' divide dataset by median of median and create a new assay.
@@ -2383,9 +2479,8 @@ Show the code
 
 #' Data before normalization
 vals_st <- cbind(vals, phenotype = res$phenotype)
-pca_raw <- autoplot(pca_res, data = vals_st,
-                    colour = 'phenotype', scale = 0) +
-    scale_color_manual(values = col_phenotype)
+pca_raw <- autoplot(pca_res, data = vals_st, colour = 'phenotype', scale = 0) +
+  scale_color_manual(values = col_phenotype)
 
 #' Data after normalization
 vals_norm <- apply(assay(res, "norm"), MARGIN = 1, na_unidis) |>
@@ -2401,7 +2496,7 @@ pca_adj <- autoplot(pca_res_norm, data = vals_st_norm,
 grid.arrange(pca_raw, pca_adj, ncol = 1)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-43-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-44-1.png)
 
 Figure 27. PC1 and PC2 of the data before and after normalization.
 
@@ -2423,7 +2518,7 @@ pca_adj <- autoplot(pca_res_norm, data = vals_st_norm,
 grid.arrange(pca_raw, pca_adj, ncol = 1)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-44-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-45-1.png)
 
 Figure 28. PC3 and PC4 of the data before and after normalization.
 
@@ -2608,7 +2703,7 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4212 features were removed
+    4206 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
@@ -2639,17 +2734,17 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4512
+    [1] 4518
 
 ``` r
 
 #' Percentage left: end/beginning
-nrow(res)/nrow(res_unfilt) * 100
+nrow(res) / nrow(res_unfilt) * 100
 ```
 
-    [1] 51.71939
+    [1] 51.78817
 
-The dataset has been reduced from 8724 to 4512 features. We did remove a
+The dataset has been reduced from 8724 to 4518 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -2671,7 +2766,7 @@ of our result object. These could be used later to prioritize identified
 
 #' Calculate the QC's CV and add as feature variable to the data set
 rowData(res)$qc_cv <- assay(res_qc, "norm") |>
-               rowRsd()
+  rowRsd()
 ```
 
 Now that our data set has been preprocessed, normalized and filtered, we
@@ -2697,12 +2792,12 @@ library(ggVennDiagram)
 l_logical <- apply(df_logical, MARGIN = 2,function(i) which(i))
 ggVennDiagram(l_logical, label = "count",
                             category.names = res$sample_name,
-              color = 1, lwd = 0.7) + 
+              color = 1, lwd = 0.7) +
  scale_fill_gradient(low = "lightblue", high = "#4981BF") +
  theme(legend.position = "none")
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-52-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-53-1.png)
 
 In case of a large number of groups a Venn diagram can be replace by an
 Upset plot which can handle a larger number of groups, while being still
@@ -2726,7 +2821,7 @@ upset(as.data.frame(binary_data), nset = 6, sets = colnames(df_logical), keep.or
     ℹ The deprecated feature was likely used in the UpSetR package.
       Please report the issue to the authors.
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-53-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-54-1.png)
 
 Other quality analysis of the data could be, evaluating the number of
 feature detected per group, the overall abundance, the noise, … This all
@@ -2767,7 +2862,7 @@ autoplot(pca_res, data = vals_st , colour = 'phenotype', scale = 0) +
     scale_color_manual(values = col_phenotype)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-54-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-55-1.png)
 
 Figure 30. PCA of the data after normalization and quality control.
 
@@ -2783,10 +2878,10 @@ Show the code
 
 #' Add age to the PCA plot
 vals_st <- cbind(vals, age = res$age)
-autoplot(pca_res, data = vals_st , colour = 'age', scale = 0)
+autoplot(pca_res, data = vals_st, colour = 'age', scale = 0)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-55-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-56-1.png)
 
 Figure 31. PCA colored by age of the data after normalization and
 quality control.
@@ -2824,8 +2919,8 @@ examples and details on the linear model procedure.
 ``` r
 
 #' Define the linear model to be applied to the data
-p.cut <- 0.05     # cut-off for significance.
-m.cut <- 0.5      # cut-off for log2 fold change
+p.cut <- 0.05 # cut-off for significance.
+m.cut <- 0.5 # cut-off for log2 fold change
 
 age <- res$age
 phenotype <- factor(res$phenotype)
@@ -2951,12 +3046,12 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83789 | -8.589786 | 0.0115508 | 12.229286 |  3.788263 | 0.2116471 |
-| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0419347 | 16.905340 | 10.454994 | 0.0304712 |
-| FT0565 | 161.0400 | 162.13668 | -5.594544 | 0.0419347 | 10.287074 |  4.493429 | 0.0360903 |
-| FT0371 | 138.0547 | 148.39599 | -5.353156 | 0.0290239 |  9.914862 |  4.197205 | 0.5564435 |
-| FT1171 | 229.1299 | 181.08828 | -5.282380 | 0.0165932 | 10.721195 |  5.603695 | 0.0706276 |
-| FT5606 | 560.3603 |  33.54917 | -3.895492 | 0.0465207 |  8.885918 |  4.757225 | 1.2139903 |
+| FT0732 | 182.0749 |  34.83789 | -8.788576 | 0.0081786 | 12.229286 |  3.583925 | 0.2116471 |
+| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0362466 | 16.905340 | 10.454994 | 0.0304712 |
+| FT1171 | 229.1299 | 181.08828 | -5.557016 | 0.0303541 | 10.721195 |  5.383841 | 0.0706276 |
+| FT0565 | 161.0400 | 162.13668 | -5.552540 | 0.0303541 | 10.287074 |  4.524335 | 0.0360903 |
+| FT0371 | 138.0547 | 148.39599 | -5.283082 | 0.0280790 |  9.914862 |  4.289358 | 0.5564435 |
+| FT5606 | 560.3603 |  33.54917 | -3.542549 | 0.0362466 |  8.885918 |  5.136983 | 1.2139903 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
@@ -2989,7 +3084,7 @@ plot(eic_sign, col = col_sample,
 legend("topright", col = col_phenotype, legend = names(col_phenotype), lty = 1)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-58-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-59-1.png)
 
 Figure 34. Extracted ion chromatograms of the significant features.
 
@@ -3090,8 +3185,7 @@ function to extract small compound annotations from the database.
 ``` r
 
 #' Extract compound annotations
-cmps <- compounds(mb, columns = c("name", "formula",
-                                  "exactmass", "inchikey"))
+cmps <- compounds(mb, columns = c("name", "formula", "exactmass", "inchikey"))
 head(cmps)
 ```
 
@@ -3388,7 +3482,7 @@ noise. The plot below shows the location of precursor ions in the
 plotPrecursorIons(lcms2)
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-67-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-68-1.png)
 
 Figure 35. Precursor ions in the LC-MS/MS data set.
 
@@ -3547,7 +3641,6 @@ l <- lengths(ms2_ctr_fts)
 ms2_ctr_fts <- concatenateSpectra(ms2_ctr_fts)
 #' Assign the feature identifier to each MS2 spectrum
 ms2_ctr_fts$feature_id <- rep(rownames(res_sig), l)
-
 ## Save for reuse in other vignettes
 save(ms2_ctr_fts, file = "objects/spectra_significant_fts.RData")
 ```
@@ -3557,7 +3650,7 @@ features from our differential expression analysis.
 
 This object can be used for annotation using various tools, see the
 vignette presenting how to process and annotate it using python tools
-\[here\](add later).
+[here](https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html).
 
 We next build our reference data which we need to process the same way
 as our *query* spectra. We extract all fragment spectra from the
@@ -3739,7 +3832,7 @@ idx <- which.max(ms2_mtch_res$score)
 abline(v = ms2_mtch_res$rtime[idx])
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-78-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-79-1.png)
 
 Figure 36. Extracted ion chromatograms and MS2 spectra for the annotated
 feature.
@@ -3763,7 +3856,7 @@ legend("topleft",
        legend = paste0("precursor m/z: ", format(precursorMz(query_ms2), 3)))
 ```
 
-![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-79-1.png)
+![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-80-1.png)
 
 Figure 37. MS2 spectra for the annotated feature.
 
@@ -3789,9 +3882,17 @@ fragmented.
 
 ``` r
 
-spectraData(target_ms2, c("collisionEnergy_text", "fragmentation_mode",
-                          "instrument_type", "instrument", "adduct")) |>
-    as.data.frame()
+spectraData(
+  target_ms2,
+  c(
+    "collisionEnergy_text",
+    "fragmentation_mode",
+    "instrument_type",
+    "instrument",
+    "adduct"
+  )
+) |>
+  as.data.frame()
 ```
 
       collisionEnergy_text fragmentation_mode instrument_type
@@ -3799,31 +3900,145 @@ spectraData(target_ms2, c("collisionEnergy_text", "fragmentation_mode",
                              instrument adduct
     1 LTQ Orbitrap XL Thermo Scientific [M+H]+
 
-### External tools or alternative annotation approaches
+## External tools or alternative annotation approaches
 
 The present workflow highlights how annotation could be performed within
 R using packages from the Bioconductor project, but there are also other
-excellent external softwares that could be used as an alternative, such
-as SIRIUS ([Dührkop et al. 2019](#ref-duhrkop_sirius_2019)), mummichog
-([Li et al. 2013](#ref-li_predicting_2013)) or GNPS ([Nothias et al.
-2020](#ref-nothias_feature-based_2020)) among others. To use these, the
-data would need to be exported in a format supported by these. For MS2
-spectra, the data could easily be exported in the required MGF file
-format using the
+excellent external software tools that could be used as an alternative,
+such as SIRIUS ([Dührkop et al. 2019](#ref-duhrkop_sirius_2019)),
+mummichog ([Li et al. 2013](#ref-li_predicting_2013)), or GNPS ([Nothias
+et al. 2020](#ref-nothias_feature-based_2020)), among others. To use
+these, the data must be exported in a supported format. For MS2 spectra,
+the data can easily be exported in the required MGF file format using
+the
 *[MsBackendMgf](https://bioconductor.org/packages/3.22/MsBackendMgf)*
-Bioconductor package. Integration of *xcms* into feature-based molecular
-networking with GNPS is described in the [GNPS
+Bioconductor package.
+
+Alternatively, or in addition, evidence for the potential matching
+chemical formula of a feature could be derived by evaluating the isotope
+pattern of the full MS1 scan. This provides information on the isotope
+composition. Various functions can be used for this task, such as
+[`isotopologues()`](https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html)
+from the
+*[MetaboCoreUtils](https://bioconductor.org/packages/3.22/MetaboCoreUtils)*
+package or the functionality of the **enviPat** R package ([Loos et al.
+2015](#ref-loos_accelerated_2015)).
+
+### Exporting xcms results for GNPS2 Feature Based Molecular Networking
+
+Integration of **xcms** into feature-based molecular networking with
+GNPS is described in the [GNPS
 documentation](https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-xcms3/).
 
-In alternative, or in addition, evidence for the potential matching
-chemical formula of a feature could be derived by evaluating the isotope
-pattern of its full MS1 scan. This could provide information on the
-isotope composition. Also for this, various functions such as the
-[`isotopologues()`](https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html)
-from the or
-*[MetaboCoreUtils](https://bioconductor.org/packages/3.22/MetaboCoreUtils)*
-package or the functionality of the *envipat* R package ([Loos et al.
-2015](#ref-loos_accelerated_2015)) could be used.
+#### Extracting MS2 Spectra for Features
+
+The first step is to identify which MS2 spectra belong to the defined
+chromatographic features. We define the retention time and m/z ranges
+for all features and then extract the corresponding MS2 scans.
+
+``` r
+
+# Define ranges for all features based on the LC-MS analysis
+target_all <- featureArea(lcms1)
+
+# Find MS2 spectra that fall within the rt/mz ranges of the features
+# Note: 'ms2_ctr' must be an OnDiskMSnExp object containing the raw MS2 data
+ms2_all <- apply(
+  target_all[, c("rtmin", "rtmax", "mzmin", "mzmax")],
+  MARGIN = 1,
+  FUN = filterRanges,
+  object = ms2_ctr,
+  spectraVariables = c("rtime", "precursorMz")
+)
+
+# Remove empty entries (features where no MS2 scan was triggered)
+ms2_all <- ms2_all[lengths(ms2_all) > 0]
+l <- lengths(ms2_all)
+
+# Diagnostic: Check coverage
+message("Total spectra matched: ", sum(l))
+```
+
+    Total spectra matched: 355
+
+``` r
+
+message("Number of features with at least one MS2 spectrum: ", length(l))
+```
+
+    Number of features with at least one MS2 spectrum: 20
+
+``` r
+
+# Combine the individual Spectra objects into one list
+ms2_all <- concatenateSpectra(ms2_all)
+
+# Assign the feature identifier to each MS2 spectrum so we can track them
+ms2_all$feature_id <- rep(names(l), l)
+```
+
+#### Combining Spectra into Consensus Spectra
+
+Often, a single feature will trigger multiple MS2 scans. To obtain a
+high-quality spectrum for annotation, we merge these multiple scans into
+a single “consensus” spectrum per feature. In this step, we keep only
+those peaks that are present in at least 75% of the scans for a given
+feature to reduce noise.
+
+``` r
+
+# 2. Combine into Consensus Spectra
+# Keep peaks present in at least 75% of spectra for that feature
+ms2_all <- combineSpectra(
+    ms2_all,
+    f = ms2_all$feature_id,
+    peaks = "intersect",
+    minProp = 0.75,
+    ppm = 10
+)
+```
+
+#### Exporting Data for GNPS
+
+Finally, we export the data in the specific formats required by GNPS.
+This involves creating a feature quantification table (.txt) and a
+spectral data file (.mgf). Note that we filter the feature table to
+ensure it strictly matches the features present in the MGF file.
+
+``` r
+
+# Export Feature Table (Quantification)
+fvals <- featureValues(lcms1, method = "sum")
+colnames(fvals) <- sampleData(lcms1)$sample_desc
+
+# Get feature metadata (m/z, RT)
+fdef <- featureDefinitions(lcms1)[, c("mzmed", "rtmed")]
+fvals_export <- cbind(Row.names = rownames(fdef), fdef, fvals)
+
+# Filter to only features that actually have MS2 spectra
+fvals_export <- fvals_export[ms2_all$feature_id, ]
+
+write.table(
+    fvals_export,
+    "xcms_ms2_features.txt",
+    sep = "\t",
+    quote = FALSE,
+    row.names = FALSE
+)
+
+# Export MGF File (Spectra)
+# Helper function to format for GNPS
+source(
+  "https://raw.githubusercontent.com/jorainer/xcms-gnps-tools/master/customFunctions.R"
+)
+ms2_all_gnps <- formatSpectraForGNPS(ms2_all)
+
+export(ms2_all_gnps, backend = MsBackendMgf(), file = "xcms_ms2_spectra.mgf")
+```
+
+The 2 exported files `xcms_ms2_features.txt` and `xcms_ms2_spectra.mgf`
+can then be uploaded to GNPS2 for feature-based molecular networking
+analysis.
 
 ## Summary
 
@@ -3891,79 +4106,80 @@ sessionInfo()
     [15] pheatmap_1.0.13             RColorBrewer_1.1-3
     [17] pander_0.6.6                limma_3.66.0
     [19] MetaboCoreUtils_1.18.1      xcms_4.8.0
-    [21] MsBackendMetaboLights_1.5.1 Spectra_1.20.0
-    [23] BiocParallel_1.44.0         alabaster.se_1.10.0
-    [25] alabaster.base_1.10.0       SummarizedExperiment_1.40.0
-    [27] Biobase_2.70.0              GenomicRanges_1.62.0
-    [29] Seqinfo_1.0.0               IRanges_2.44.0
-    [31] S4Vectors_0.48.0            BiocGenerics_0.56.0
-    [33] generics_0.1.4              MatrixGenerics_1.22.0
-    [35] matrixStats_1.5.0           MsIO_0.0.11
-    [37] MsExperiment_1.12.0         ProtGenerics_1.42.0
-    [39] readxl_1.4.5                BiocStyle_2.38.0
-    [41] quarto_1.5.1.9002           knitr_1.50
+    [21] MsBackendMgf_1.18.0         MsBackendMetaboLights_1.5.1
+    [23] Spectra_1.20.0              BiocParallel_1.44.0
+    [25] alabaster.se_1.10.0         alabaster.base_1.10.0
+    [27] SummarizedExperiment_1.40.0 Biobase_2.70.0
+    [29] GenomicRanges_1.62.1        Seqinfo_1.0.0
+    [31] IRanges_2.44.0              S4Vectors_0.48.0
+    [33] BiocGenerics_0.56.0         generics_0.1.4
+    [35] MatrixGenerics_1.22.0       matrixStats_1.5.0
+    [37] MsIO_0.0.12                 MsExperiment_1.12.0
+    [39] ProtGenerics_1.42.0         readxl_1.4.5
+    [41] BiocStyle_2.38.0            quarto_1.5.1.9002
+    [43] knitr_1.50
 
     loaded via a namespace (and not attached):
       [1] later_1.4.4                 bitops_1.0-9
       [3] filelock_1.0.3              tibble_3.3.0
       [5] cellranger_1.1.0            preprocessCore_1.72.0
       [7] XML_3.99-0.20               lifecycle_1.0.4
-      [9] httr2_1.2.1                 doParallel_1.0.17
+      [9] httr2_1.2.2                 doParallel_1.0.17
      [11] processx_3.8.6              lattice_0.22-7
      [13] MASS_7.3-65                 MultiAssayExperiment_1.36.1
      [15] magrittr_2.0.4              rmarkdown_2.30
-     [17] yaml_2.3.10                 MsCoreUtils_1.21.0
-     [19] DBI_1.2.3                   abind_1.4-8
-     [21] purrr_1.2.0                 RCurl_1.98-1.17
-     [23] rappdirs_0.3.3              MSnbase_2.36.0
-     [25] ncdf4_1.24                  codetools_0.2-20
-     [27] DelayedArray_0.36.0         DT_0.34.0
-     [29] xml2_1.5.0                  tidyselect_1.2.1
-     [31] farver_2.1.2                base64enc_0.1-3
-     [33] jsonlite_2.0.0              iterators_1.0.14
-     [35] foreach_1.5.2               tools_4.5.2
-     [37] progress_1.2.3              Rcpp_1.1.0
-     [39] glue_1.8.0                  SparseArray_1.10.2
-     [41] BiocBaseUtils_1.12.0        xfun_0.54
-     [43] dplyr_1.1.4                 HDF5Array_1.38.0
-     [45] withr_3.0.2                 BiocManager_1.30.27
-     [47] fastmap_1.2.0               rhdf5filters_1.22.0
-     [49] digest_0.6.39               R6_2.6.1
-     [51] rsvg_2.7.0                  RSQLite_2.4.4
-     [53] h5mread_1.2.0               tidyr_1.3.1
-     [55] data.table_1.17.8           prettyunits_1.2.0
-     [57] PSMatch_1.14.0              httr_1.4.7
-     [59] htmlwidgets_1.6.4           S4Arrays_1.10.0
-     [61] pkgconfig_2.0.3             gtable_0.3.6
-     [63] blob_1.2.4                  S7_0.2.1
-     [65] impute_1.84.0               MassSpecWavelet_1.76.0
-     [67] XVector_0.50.0              htmltools_0.5.8.1
-     [69] MALDIquant_1.22.3           clue_0.3-66
-     [71] scales_1.4.0                alabaster.matrix_1.10.0
-     [73] png_0.1-8                   rstudioapi_0.17.1
-     [75] reshape2_1.4.5              rjson_0.2.23
-     [77] curl_7.0.0                  cachem_1.1.0
-     [79] rhdf5_2.54.0                stringr_1.6.0
-     [81] BiocVersion_3.22.0          parallel_4.5.2
-     [83] AnnotationDbi_1.72.0        mzID_1.48.0
-     [85] vsn_3.78.0                  pillar_1.11.1
-     [87] grid_4.5.2                  alabaster.schemas_1.10.0
-     [89] vctrs_0.6.5                 MsFeatures_1.18.0
-     [91] pcaMethods_2.2.0            cluster_2.1.8.1
-     [93] evaluate_1.0.5              cli_3.6.5
-     [95] compiler_4.5.2              rlang_1.1.6
-     [97] crayon_1.5.3                labeling_0.4.3
-     [99] QFeatures_1.20.0            ChemmineR_3.62.0
-    [101] ps_1.9.1                    affy_1.88.0
-    [103] plyr_1.8.9                  fs_1.6.6
-    [105] stringi_1.8.7               Biostrings_2.78.0
-    [107] lazyeval_0.2.2              Matrix_1.7-4
-    [109] hms_1.1.4                   bit64_4.6.0-1
-    [111] Rhdf5lib_1.32.0             KEGGREST_1.50.0
-    [113] statmod_1.5.1               alabaster.ranges_1.10.0
-    [115] mzR_2.44.0                  igraph_2.2.1
-    [117] memoise_2.0.1               affyio_1.80.0
-    [119] bit_4.6.0                  
+     [17] yaml_2.3.12                 otel_0.2.0
+     [19] MsCoreUtils_1.22.1          DBI_1.2.3
+     [21] abind_1.4-8                 purrr_1.2.0
+     [23] RCurl_1.98-1.17             rappdirs_0.3.3
+     [25] MSnbase_2.36.0              ncdf4_1.24
+     [27] codetools_0.2-20            DelayedArray_0.36.0
+     [29] DT_0.34.0                   xml2_1.5.1
+     [31] tidyselect_1.2.1            farver_2.1.2
+     [33] base64enc_0.1-3             jsonlite_2.0.0
+     [35] iterators_1.0.14            foreach_1.5.2
+     [37] tools_4.5.2                 progress_1.2.3
+     [39] Rcpp_1.1.0                  glue_1.8.0
+     [41] SparseArray_1.10.6          BiocBaseUtils_1.12.0
+     [43] xfun_0.54                   dplyr_1.1.4
+     [45] HDF5Array_1.38.0            withr_3.0.2
+     [47] BiocManager_1.30.27         fastmap_1.2.0
+     [49] rhdf5filters_1.22.0         digest_0.6.39
+     [51] R6_2.6.1                    rsvg_2.7.0
+     [53] RSQLite_2.4.5               h5mread_1.2.1
+     [55] tidyr_1.3.1                 data.table_1.17.8
+     [57] prettyunits_1.2.0           PSMatch_1.14.0
+     [59] httr_1.4.7                  htmlwidgets_1.6.4
+     [61] S4Arrays_1.10.1             pkgconfig_2.0.3
+     [63] gtable_0.3.6                blob_1.2.4
+     [65] S7_0.2.1                    impute_1.84.0
+     [67] MassSpecWavelet_1.76.0      XVector_0.50.0
+     [69] htmltools_0.5.9             MALDIquant_1.22.3
+     [71] clue_0.3-66                 scales_1.4.0
+     [73] alabaster.matrix_1.10.0     png_0.1-8
+     [75] rstudioapi_0.17.1           reshape2_1.4.5
+     [77] rjson_0.2.23                curl_7.0.0
+     [79] cachem_1.1.0                rhdf5_2.54.1
+     [81] stringr_1.6.0               BiocVersion_3.22.0
+     [83] parallel_4.5.2              AnnotationDbi_1.72.0
+     [85] mzID_1.48.0                 vsn_3.78.0
+     [87] pillar_1.11.1               grid_4.5.2
+     [89] alabaster.schemas_1.10.0    vctrs_0.6.5
+     [91] MsFeatures_1.18.0           pcaMethods_2.2.0
+     [93] cluster_2.1.8.1             evaluate_1.0.5
+     [95] cli_3.6.5                   compiler_4.5.2
+     [97] rlang_1.1.6                 crayon_1.5.3
+     [99] labeling_0.4.3              QFeatures_1.20.0
+    [101] ChemmineR_3.62.0            ps_1.9.1
+    [103] affy_1.88.0                 plyr_1.8.9
+    [105] fs_1.6.6                    stringi_1.8.7
+    [107] Biostrings_2.78.0           lazyeval_0.2.2
+    [109] Matrix_1.7-4                hms_1.1.4
+    [111] bit64_4.6.0-1               Rhdf5lib_1.32.0
+    [113] KEGGREST_1.50.0             statmod_1.5.1
+    [115] alabaster.ranges_1.10.0     mzR_2.44.0
+    [117] igraph_2.2.1                memoise_2.0.1
+    [119] affyio_1.80.0               bit_4.6.0                  
 
 ## Aknowledgment
 
@@ -4015,6 +4231,12 @@ Heinz Singer. 2015. “Accelerated Isotope Fine Structure Calculation
 Using Pruned Transition Trees.” *Analytical Chemistry* 87 (11): 5738–44.
 <https://doi.org/10.1021/acs.analchem.5b00941>.
 
+Louail, Philippine, Carl Brunius, Mar Garcia-Aloy, William Kumler,
+Norman Storz, Jan Stanstrup, Hendrik Treutler, et al. 2025. “Xcms in
+Peak Form: Now Anchoring a Complete Metabolomics Data Preprocessing and
+Analysis Software Ecosystem.” *Analytical Chemistry*, December.
+<https://doi.org/10.1021/acs.analchem.5c04338>.
+
 Nothias, Louis-Félix, Daniel Petras, Robin Schmid, Kai Dührkop, Johannes
 Rainer, Abinesh Sarvepalli, Ivan Protsyuk, et al. 2020. “Feature-Based
 Molecular Networking in the GNPS Analysis Environment.” *Nature Methods*
@@ -4030,12 +4252,6 @@ Ruff, Heinz P. Singer, and Juliane Hollender. 2014. “Identifying Small
 Molecules via High Resolution Mass Spectrometry: Communicating
 Confidence.” *Environmental Science & Technology* 48 (4): 2097–98.
 <https://doi.org/10.1021/es5002105>.
-
-Smith, Colin A., Elizabeth J. Want, Grace O&apos;Maille, Ruben Abagyan,
-and Gary Siuzdak. 2006. “XCMS: Processing Mass Spectrometry Data for
-Metabolite Profiling Using Nonlinear Peak Alignment, Matching, and
-Identification.” *Analytical Chemistry* 78 (3): 779–87.
-<https://doi.org/10.1021/ac051437y>.
 
 Smyth, Gordon K. 2004. “Linear Models and Empirical Bayes Methods for
 Assessing Differential Expression in Microarray Experiments.”

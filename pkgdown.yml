@@ -7,8 +7,9 @@ articles:
   dataset-investigation: dataset-investigation.html
   install_v0: install_v0.html
   large-scale-analysis: large-scale-analysis.html
+  notame_normalization_and_feature_selection: notame_normalization_and_feature_selection.html
   SpectriPy-tutorial-metabonaut: SpectriPy-tutorial-metabonaut.html
-last_built: 2025-11-25T16:05Z
+last_built: 2025-12-12T12:54Z
 urls:
   reference: https://rformassspectrometry.github.io/Metabonaut/reference
   article: https://rformassspectrometry.github.io/Metabonaut/articles

@@ -11,5 +11,7 @@
 - [Install](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.md):
 - [Large Scale Data Preprocessing with
   xcms](https://rformassspectrometry.github.io/Metabonaut/articles/large-scale-analysis.md):
+- [Normalization and feature selection with the notame
+  package](https://rformassspectrometry.github.io/Metabonaut/articles/notame_normalization_and_feature_selection.md):
 - [LC-MS/MS Data Annotation using R and
   Python](https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy-tutorial-metabonaut.md):

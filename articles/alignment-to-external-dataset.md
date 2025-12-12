@@ -14,7 +14,8 @@ As described in the [data
 description](https://rformassspectrometry.github.io/metabonaut/articles/dataset-investigation.html)
 vignette, some of our samples were run twice: once in LC-MS mode and
 again in LC-MS/MS mode. This tutorial will show how to align the
-LC-MS/MS run to the preprocessed LC-MS dataset.
+LC-MS/MS run to the preprocessed LC-MS dataset using the *xcms* package
+\[@louail_xcms_2025\].
 
 The following packages are needed:
 

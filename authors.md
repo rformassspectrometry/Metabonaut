@@ -18,10 +18,13 @@
   European Union HORIZON-MSCA-2021 project Grant No. 101073062: HUMAN –
   Harmonising and Unifying Blood Metabolic Analysis Networks
 
-- **Johannes Rainer**. Author. [](https://orcid.org/0000-0002-6977-7147)
-
 - **Marilyn De Graeve**. Contributor.
   [](https://orcid.org/0000-0001-6916-401X)
+
+- **Vilhelm Suksi**. Contributor.
+  [](https://orcid.org/0009-0005-1108-518X)
+
+- **Johannes Rainer**. Author. [](https://orcid.org/0000-0002-6977-7147)
 
 ## Citation
 
