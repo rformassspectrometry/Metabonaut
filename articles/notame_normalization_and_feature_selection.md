@@ -112,7 +112,7 @@ se <- flag_detection(se, qc_limit = 0.7, group_limit = 0.8,
                      group = "phenotype", assay.type = "raw_filled")
 ```
 
-    INFO [2025-12-12 13:16:36]
+    INFO [2025-12-12 14:34:51]
     11% of features flagged for low detection rate
 
 Next, we correct for drift using a cubic spline, relating each features’
@@ -130,12 +130,12 @@ for each feature.
 se <- correct_drift(se, assay.type = "raw_filled", name = "drift_norm")
 ```
 
-    INFO [2025-12-12 13:16:36] Starting drift correction
-    INFO [2025-12-12 13:16:44] Recomputing quality metrics for drift corrected data
-    INFO [2025-12-12 13:16:46] Drift correction performed
-    INFO [2025-12-12 13:16:46] Inspecting drift correction results
-    INFO [2025-12-12 13:16:46] Original quality metrics missing, recomputing
-    INFO [2025-12-12 13:16:48] Drift correction results inspected: Drift_corrected: 94%,  Missing_QCS: 6%
+    INFO [2025-12-12 14:34:51] Starting drift correction
+    INFO [2025-12-12 14:34:59] Recomputing quality metrics for drift corrected data
+    INFO [2025-12-12 14:35:01] Drift correction performed
+    INFO [2025-12-12 14:35:01] Inspecting drift correction results
+    INFO [2025-12-12 14:35:01] Original quality metrics missing, recomputing
+    INFO [2025-12-12 14:35:03] Drift correction results inspected: Drift_corrected: 94%,  Missing_QCS: 6%
 
 Brief notes about drift correction are stored in the `DC_note` column of
 feature data. For example, it is noted if drift correction couldn’t be
@@ -162,8 +162,8 @@ se <- pqn_normalization(se, ref = "qc", method = "median",
                         assay.type = "drift_norm", name = "dil_norm")
 ```
 
-    INFO [2025-12-12 13:16:48] Starting PQN normalization
-    INFO [2025-12-12 13:16:48] Using median of qc samples as reference spectrum
+    INFO [2025-12-12 14:35:03] Starting PQN normalization
+    INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum
 
 Next, let’s visualize the data before and after normalization for drift
 and dilution using the *notameViz* package. Typically, the data would be
@@ -358,7 +358,7 @@ se <- flag_quality(se, assay.type = "dil_norm",
                    condition = "RSD_r < 0.2 & D_ratio_r < 0.4")
 ```
 
-    INFO [2025-12-12 13:23:48]
+    INFO [2025-12-12 14:42:15]
     39% of features flagged for low quality
 
 ``` r
@@ -393,10 +393,10 @@ base <- drop_flagged(pretreated)
 assays(base)[names(assays(base)) != "imputed"] <- NULL
 ```
 
-    INFO [2025-12-12 13:23:48]
-    Starting random forest imputation at 2025-12-12 13:23:48.177866
-    INFO [2025-12-12 13:23:50] Out-of-bag error in random forest imputation: 0.006
-    INFO [2025-12-12 13:23:50] Random forest imputation finished at 2025-12-12 13:23:50.272116 
+    INFO [2025-12-12 14:42:15]
+    Starting random forest imputation at 2025-12-12 14:42:15.433606
+    INFO [2025-12-12 14:42:17] Out-of-bag error in random forest imputation: 0.006
+    INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42:17.609735 
 
 The out-of-bag error is promising. Now the data is ready for feature
 selection.

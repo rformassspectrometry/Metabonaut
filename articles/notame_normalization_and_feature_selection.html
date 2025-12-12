@@ -38,11 +38,11 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../articles/install_v0.html">Installation instructions</a></li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-workflows" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Workflows</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-workflows">
 <li><a class="dropdown-item" href="../articles/a-end-to-end-untargeted-metabolomics.html">End-to-end workflow for untargeted metabolomics data analysis in R</a></li>
-    <li><a class="dropdown-item" href="../articles/notame_normalization_feature_selection.html">Quality control and Feature selection with Notame</a></li>
+    <li><a class="dropdown-item" href="../articles/notame_normalization_and_feature_selection.html">Quality control and Feature selection with Notame</a></li>
     <li><a class="dropdown-item" href="../articles/dataset-investigation.html">Dataset investigation: What to do when you get your data</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
     <li><a class="dropdown-item" href="../articles/SpectriPy-tutorial-metabonaut.html">LC-MS/MS Data Annotation using R and Python</a></li>
@@ -152,7 +152,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/flag_detection.html" class="external-link">flag_detection</a></span><span class="op">(</span><span class="va">se</span>, qc_limit <span class="op">=</span> <span class="fl">0.7</span>, group_limit <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>                     group <span class="op">=</span> <span class="st">"phenotype"</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 13:16:36]
+<pre><code>INFO [2025-12-12 14:34:51]
 11% of features flagged for low detection rate</code></pre>
 </div>
 </div>
@@ -161,12 +161,12 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/correct_drift.html" class="external-link">correct_drift</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span>, name <span class="op">=</span> <span class="st">"drift_norm"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 13:16:36] Starting drift correction
-INFO [2025-12-12 13:16:44] Recomputing quality metrics for drift corrected data
-INFO [2025-12-12 13:16:46] Drift correction performed
-INFO [2025-12-12 13:16:46] Inspecting drift correction results
-INFO [2025-12-12 13:16:46] Original quality metrics missing, recomputing
-INFO [2025-12-12 13:16:48] Drift correction results inspected: Drift_corrected: 94%,  Missing_QCS: 6%</code></pre>
+<pre><code>INFO [2025-12-12 14:34:51] Starting drift correction
+INFO [2025-12-12 14:34:59] Recomputing quality metrics for drift corrected data
+INFO [2025-12-12 14:35:01] Drift correction performed
+INFO [2025-12-12 14:35:01] Inspecting drift correction results
+INFO [2025-12-12 14:35:01] Original quality metrics missing, recomputing
+INFO [2025-12-12 14:35:03] Drift correction results inspected: Drift_corrected: 94%,  Missing_QCS: 6%</code></pre>
 </div>
 </div>
 <p>Brief notes about drift correction are stored in the <code>DC_note</code> column of feature data. For example, it is noted if drift correction couldn’t be performed because because at least four QC samples with values are needed for fitting the cubic spline.</p>
@@ -176,8 +176,8 @@ INFO [2025-12-12 13:16:48] Drift correction results inspected: Drift_corrected: 
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/pqn_normalization.html" class="external-link">pqn_normalization</a></span><span class="op">(</span><span class="va">se</span>, ref <span class="op">=</span> <span class="st">"qc"</span>, method <span class="op">=</span> <span class="st">"median"</span>,</span>
 <span>                        assay.type <span class="op">=</span> <span class="st">"drift_norm"</span>, name <span class="op">=</span> <span class="st">"dil_norm"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 13:16:48] Starting PQN normalization
-INFO [2025-12-12 13:16:48] Using median of qc samples as reference spectrum</code></pre>
+<pre><code>INFO [2025-12-12 14:35:03] Starting PQN normalization
+INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</code></pre>
 </div>
 </div>
 <p>Next, let’s visualize the data before and after normalization for drift and dilution using the <em>notameViz</em> package. Typically, the data would be assessed visually after each step of the normalization process, using the <code><a href="https://rdrr.io/pkg/notameViz/man/save_QC_plots.html" class="external-link">save_QC_plots()</a></code> wrapper to save relevant plots. Herein, the data is visualized side-by-side after normalization for both drift and dilution for conciseness. The are many parameters for customizing the visualizations, but here we stick to the basics of coloring, shaping and ordering the samples to best represent what is of interest.</p>
@@ -283,7 +283,7 @@ INFO [2025-12-12 13:16:48] Using median of qc samples as reference spectrum</cod
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/flag_quality.html" class="external-link">flag_quality</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"dil_norm"</span>,</span>
 <span>                   condition <span class="op">=</span> <span class="st">"RSD_r &lt; 0.2 &amp; D_ratio_r &lt; 0.4"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 13:23:48]
+<pre><code>INFO [2025-12-12 14:42:15]
 39% of features flagged for low quality</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
@@ -330,10 +330,10 @@ INFO [2025-12-12 13:16:48] Using median of qc samples as reference spectrum</cod
 <span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/drop_flagged.html" class="external-link">drop_flagged</a></span><span class="op">(</span><span class="va">pretreated</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">base</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">base</span><span class="op">)</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"imputed"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 13:23:48]
-Starting random forest imputation at 2025-12-12 13:23:48.177866
-INFO [2025-12-12 13:23:50] Out-of-bag error in random forest imputation: 0.006
-INFO [2025-12-12 13:23:50] Random forest imputation finished at 2025-12-12 13:23:50.272116 </code></pre>
+<pre><code>INFO [2025-12-12 14:42:15]
+Starting random forest imputation at 2025-12-12 14:42:15.433606
+INFO [2025-12-12 14:42:17] Out-of-bag error in random forest imputation: 0.006
+INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42:17.609735 </code></pre>
 </div>
 </div>
 <p>The out-of-bag error is promising. Now the data is ready for feature selection.</p>
