@@ -47,6 +47,7 @@ Depends:
     BiocParallel (>= 1.8.0)
 Suggests:
     alabaster.se,
+    missForest,
     MsCoreUtils,
     xcms (>= 4.3.4),
     Spectra (>= 1.11.10),
