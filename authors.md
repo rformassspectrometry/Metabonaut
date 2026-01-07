@@ -23,6 +23,9 @@
 
 - **Vilhelm Suksi**. Author. [](https://orcid.org/0009-0005-1108-518X)
 
+- **Kozo Nishida**. Contributor.
+  [](https://orcid.org/0000-0001-8501-7319)
+
 - **Johannes Rainer**. Author. [](https://orcid.org/0000-0002-6977-7147)
 
 ## Citation
@@ -30,18 +33,18 @@
 Source:
 [`inst/CITATION`](https://github.com/rformassspectrometry/Metabonaut/blob/devel/inst/CITATION)
 
-Philippine Louail, Marilyn De Graeve, Anna Tagliaferri, Vinicius Verri
-Hernandes, Daniel Marques de Sá e Silva, & Johannes Rainer. (2025).
-rformassspectrometry/Metabonaut: v1.2.0. Zenodo.
-https://doi.org/10.5281/zenodo.15554287
+Philippine Louail, Marilyn De Graeve, Anna Tagliaferri, Daniel Marques
+de Sá e Silva, Vinicius Verri Hernandes, Kozo Nishida, Vilhelm Suksi, &
+Johannes Rainer. (2026). rformassspectrometry/Metabonaut: v1.4.0.
+Zenodo. https://doi.org/10.5281/zenodo.18172608
 
     @Misc{,
-      title = {rformassspectrometry/Metabonaut: v1.2.0},
-      author = {Philippine Louail and Marilyn {De Graeve} and Anna Tagliaferri and Vinicius {Verri Hernandes} and Daniel {Marques de Sá e Silva} and Johannes Rainer},
+      title = {rformassspectrometry/Metabonaut: v1.4.0},
+      author = {Philippine Louail and Marilyn {De Graeve} and Anna Tagliaferri and Daniel {Marques de Sá e Silva} and Vinicius {Verri Hernandes} and Kozo Nishida and Vilhelm Suksi and Johannes Rainer},
       publisher = {Zenodo},
-      year = {2025},
-      month = {may},
-      version = {v1.2.0},
-      doi = {10.5281/zenodo.15554287},
-      url = {https://doi.org/10.5281/zenodo.15554287},
+      year = {2026},
+      month = {January},
+      version = {v1.4.0},
+      doi = {10.5281/zenodo.18172608},
+      url = {https://doi.org/10.5281/zenodo.18172608},
     }

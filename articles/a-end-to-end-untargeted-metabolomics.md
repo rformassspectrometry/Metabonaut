@@ -2017,7 +2017,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Wed Jan  7 11:39:44 2026
+     date: Wed Jan  7 12:55:23 2026
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -2719,7 +2719,7 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4207 features were removed
+    4205 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
@@ -2750,7 +2750,7 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4517
+    [1] 4519
 
 ``` r
 
@@ -2758,9 +2758,9 @@ nrow(res)
 nrow(res) / nrow(res_unfilt) * 100
 ```
 
-    [1] 51.77671
+    [1] 51.79963
 
-The dataset has been reduced from 8724 to 4517 features. We did remove a
+The dataset has been reduced from 8724 to 4519 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -3062,12 +3062,12 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83789 | -8.673700 | 0.0182157 | 12.229286 |  3.721868 | 0.2116471 |
-| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0422080 | 16.905340 | 10.454994 | 0.0304712 |
-| FT0565 | 161.0400 | 162.13668 | -5.493780 | 0.0299963 | 10.287074 |  4.586490 | 0.0360903 |
-| FT1171 | 229.1299 | 181.08828 | -5.326896 | 0.0183239 | 10.721195 |  5.568058 | 0.0706276 |
-| FT0371 | 138.0547 | 148.39599 | -5.278744 | 0.0183239 |  9.914862 |  4.295063 | 0.5564435 |
-| FT5606 | 560.3603 |  33.54917 | -3.870303 | 0.0438518 |  8.885918 |  4.786870 | 1.2139903 |
+| FT0732 | 182.0749 |  34.83789 | -8.653937 | 0.0067431 | 12.229286 |  3.713729 | 0.2116471 |
+| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0412425 | 16.905340 | 10.454994 | 0.0304712 |
+| FT0565 | 161.0400 | 162.13668 | -5.559288 | 0.0412425 | 10.287074 |  4.531319 | 0.0360903 |
+| FT1171 | 229.1299 | 181.08828 | -5.276264 | 0.0165207 | 10.721195 |  5.608591 | 0.0706276 |
+| FT0371 | 138.0547 | 148.39599 | -5.265300 | 0.0174744 |  9.914862 |  4.312743 | 0.5564435 |
+| FT5606 | 560.3603 |  33.54917 | -3.816681 | 0.0412425 |  8.885918 |  4.851743 | 1.2139903 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
