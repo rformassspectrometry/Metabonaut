@@ -67,7 +67,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Normalization and feature selection with the notame package</h1>
 
 
-      <p class="date">2025-12-12</p>
+      <p class="date">2026-01-07</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/notame_normalization_and_feature_selection.qmd" class="external-link"><code>vignettes/notame_normalization_and_feature_selection.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -151,40 +151,24 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/flag_detection.html" class="external-link">flag_detection</a></span><span class="op">(</span><span class="va">se</span>, qc_limit <span class="op">=</span> <span class="fl">0.7</span>, group_limit <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>                     group <span class="op">=</span> <span class="st">"phenotype"</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 14:34:51]
-11% of features flagged for low detection rate</code></pre>
-</div>
 </div>
 <p>Next, we correct for drift using a cubic spline, relating each features’ abundance in QC samples to injection order <span class="citation" data-cites="kirwan_characterising_2013">(<a href="#ref-kirwan_characterising_2013" role="doc-biblioref">Kirwan et al. 2013</a>)</span>. Drift correction is performed in log-space since the log transformed data better follows assumptions of cubic spline regression. The value for the smoothing parameter is, by default, optimized using leave-one-out cross-validation to avoid overfitting. The abundances are corrected by adding the mean of a feature’s abundance in the QC samples and subtracting the predicted fit for each feature.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/correct_drift.html" class="external-link">correct_drift</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span>, name <span class="op">=</span> <span class="st">"drift_norm"</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 14:34:51] Starting drift correction
-INFO [2025-12-12 14:34:59] Recomputing quality metrics for drift corrected data
-INFO [2025-12-12 14:35:01] Drift correction performed
-INFO [2025-12-12 14:35:01] Inspecting drift correction results
-INFO [2025-12-12 14:35:01] Original quality metrics missing, recomputing
-INFO [2025-12-12 14:35:03] Drift correction results inspected: Drift_corrected: 94%,  Missing_QCS: 6%</code></pre>
-</div>
 </div>
 <p>Brief notes about drift correction are stored in the <code>DC_note</code> column of feature data. For example, it is noted if drift correction couldn’t be performed because because at least four QC samples with values are needed for fitting the cubic spline.</p>
 <p>Next, we apply probabilistic quotient normalization (PQN) to reduce unwanted variation from differential dilution of samples <span class="citation" data-cites="dieterle_probabilistic_2006">(<a href="#ref-dieterle_probabilistic_2006" role="doc-biblioref">Dieterle et al. 2006</a>)</span>. The central challenge here is to reduce unwanted variation from dilution, whether biological or experimental, while accounting for the possibility of biologically meaningful variation in total feature abundances. In probabilistic quotient normalization, the most probable dilution factor is determined for each sample as the median of quotients calculated for each feature relative to the median of each feature’s abundance in reference samples. The sample abundances are then divided by the dilution factor. Below, we use quality features in QC samples as reference, although the literature suggests that the choice of reference samples isn’t critical <span class="citation" data-cites="dieterle_probabilistic_2006">(<a href="#ref-dieterle_probabilistic_2006" role="doc-biblioref">Dieterle et al. 2006</a>)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/pqn_normalization.html" class="external-link">pqn_normalization</a></span><span class="op">(</span><span class="va">se</span>, ref <span class="op">=</span> <span class="st">"qc"</span>, method <span class="op">=</span> <span class="st">"median"</span>,</span>
 <span>                        assay.type <span class="op">=</span> <span class="st">"drift_norm"</span>, name <span class="op">=</span> <span class="st">"dil_norm"</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 14:35:03] Starting PQN normalization
-INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</code></pre>
-</div>
 </div>
 <p>Next, let’s visualize the data before and after normalization for drift and dilution using the <em>notameViz</em> package. Typically, the data would be assessed visually after each step of the normalization process, using the <code><a href="https://rdrr.io/pkg/notameViz/man/save_QC_plots.html" class="external-link">save_QC_plots()</a></code> wrapper to save relevant plots. Herein, the data is visualized side-by-side after normalization for both drift and dilution for conciseness. The are many parameters for customizing the visualizations, but here we stick to the basics of coloring, shaping and ordering the samples to best represent what is of interest.</p>
 <p>Typically, drift in the biological samples would be evidenced by an overabundance of low p-values in histograms relating each features’ abundance to injection order. After drift correction, the distributions would be expected to be more uniform for all samples and biological samples. In the case of QC samples, an overabundance of high p-values is expected given that the QC samples are identical.</p>
 <p>The QC samples behave as expected, but it seems that the small number of samples does not allow us to fit linear models relating abundance to injection order properly for all samples and biological samples, as evidenced by the overabundance of high p-values in the top histograms.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_injection_lm.html" class="external-link">plot_injection_lm</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span><span class="op">)</span>,</span>
 <span>          <span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_injection_lm.html" class="external-link">plot_injection_lm</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"dil_norm"</span><span class="op">)</span>,</span>
 <span>          labels <span class="op">=</span> <span class="st">"AUTO"</span><span class="op">)</span></span></code></pre></div>
@@ -198,7 +182,7 @@ INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</cod
 <p>Sample boxplots are useful for inspecting the distributions of feature abundances. One would expect the QC samples to be more alike after normalization for drift and dilution. Depending on the instrumentation and experimental details, drift may be apparent as a global trend or the effect of drift is cancelled out.</p>
 <p>In this case, the distributions of feature abundances are only slightly shifted after normalization. The QC samples appear not to have been affected by PQN. No obvious differences can be seen within study groups or between study groups either. PQN generally decreased the abundances of the biological samples to levels more similar to the QC samples. This comes from a dilution factor of over one for each of the biological samples, reflecting the different source and processing of QC samples.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_sample_boxplots.html" class="external-link">plot_sample_boxplots</a></span><span class="op">(</span><span class="va">se</span>, order_by <span class="op">=</span> <span class="st">"Injection_order"</span>,</span>
 <span>                               fill_by <span class="op">=</span> <span class="st">"phenotype"</span>,</span>
 <span>                               assay.type <span class="op">=</span> <span class="st">"raw_filled"</span><span class="op">)</span>,</span>
@@ -215,7 +199,7 @@ INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</cod
 <p>For the remaining visualizations which all involve Euclidean distances, the data was autoscaled. Conservative interpretation focusing on the QC samples is enough to assess the normalization process, but intuitions about the data at large can be formed based on the biological samples.</p>
 <p>In distance density plots, one would generally expect a single prominent density peak for QC samples and greater separation between QC samples and biological samples after normalization, which also is the case herein. The separation between QC samples and biological samples has not increased, although in this case it may be an artifact from the sample size affecting the kernel density estimate.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_dist_density.html" class="external-link">plot_dist_density</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span>, title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
 <span>          <span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_dist_density.html" class="external-link">plot_dist_density</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"dil_norm"</span>, title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
 <span>          labels <span class="op">=</span> <span class="st">"AUTO"</span><span class="op">)</span></span></code></pre></div>
@@ -229,7 +213,7 @@ INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</cod
 <p>PCA is useful for visualizing the similarity of individual samples and groups as it represents the data along axes which, consecutively, maximally explains the variation. PCA is especially useful in an exploratory sense, allowing us to relate covariates to the grouping of samples. Typically, the QC samples will group more tightly after normalization and the overall structure is preserved. The variation explained by the first principal components can also be expected to increase as normalization should reduce the masking effect of unwanted variation.</p>
 <p>As expected, the overall structure is intact and the QC samples group more tightly, indicating that we have reduced unwanted variation. The CVD group seems to group more tightly after normalization; the opposite can be said for the CTR group. Such local differences could be investigated further using t-SNE and coloring for injection order. There is little difference in the variance explained by the first two components.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_pca.html" class="external-link">plot_pca</a></span><span class="op">(</span><span class="va">se</span>, color <span class="op">=</span> <span class="st">"Injection_order"</span>,</span>
 <span>                   shape <span class="op">=</span> <span class="st">"phenotype"</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span><span class="op">)</span>,</span>
 <span>          <span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_pca.html" class="external-link">plot_pca</a></span><span class="op">(</span><span class="va">se</span>, color <span class="op">=</span> <span class="st">"Injection_order"</span>,</span>
@@ -245,7 +229,7 @@ INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</cod
 <p>PCA and hierarchical clustering using Ward’s criterion are complementary unsupervised methods operating in Euclidean space. While PCA focuses on explaining the variation with maximally reduced dimensionality, hierarchical clustering allows observation of relationships between samples at higher resolution by minimizing within-cluster variation in the clustering of samples. Tighter clustering of QC samples is expected. Hierarchical clustering is generally more sensitive to noise than PCA.</p>
 <p>In the present case, the QC samples appear more dissimilar after normalization, so we may actually have ended up increasing unwanted variation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_dendrogram.html" class="external-link">plot_dendrogram</a></span><span class="op">(</span><span class="va">se</span>, color <span class="op">=</span> <span class="st">"phenotype"</span>, assay.type <span class="op">=</span> <span class="st">"raw_filled"</span>,</span>
 <span>                          title <span class="op">=</span> <span class="cn">NULL</span>, subtitle <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
 <span>          <span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_dendrogram.html" class="external-link">plot_dendrogram</a></span><span class="op">(</span><span class="va">se</span>, color <span class="op">=</span> <span class="st">"phenotype"</span>, assay.type <span class="op">=</span> <span class="st">"dil_norm"</span>,</span>
@@ -261,7 +245,7 @@ INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</cod
 <p>Heatmaps give insight into the actual distances between samples, where the distances between QC samples should be smaller after normalization. Organizing the heatmap as per hierachical sample clusters using Ward’s criterion facilitates interpretation. The QC samples should appear as a darker, more uniform square.</p>
 <p>In unison with the density plots, we can observe less distance between QC samples, although the less uniform QC sample block suggests that all QC samples did not respond equally to the normalization process.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_sample_heatmap.html" class="external-link">plot_sample_heatmap</a></span><span class="op">(</span><span class="va">se</span>, group <span class="op">=</span> <span class="st">"phenotype"</span>,</span>
 <span>                              assay.type <span class="op">=</span> <span class="st">"raw_filled"</span>,</span>
 <span>                              title <span class="op">=</span> <span class="cn">NULL</span>, subtitle <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
@@ -279,15 +263,11 @@ INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</cod
 </h2>
 <p>We flag low-quality features, excluding them from downstream steps. In addition to the D-ratio and detection rate in the trunk of the workflow, we flag features by their relative standard deviation in QC samples. The non- parametric, robust versions of the D-ratio and relative standard deviation are used<span class="citation" data-cites="broadhurst_guidelines_2018">(<a href="#ref-broadhurst_guidelines_2018" role="doc-biblioref">Broadhurst et al. 2018</a>)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/flag_quality.html" class="external-link">flag_quality</a></span><span class="op">(</span><span class="va">se</span>, assay.type <span class="op">=</span> <span class="st">"dil_norm"</span>,</span>
-<span>                   condition <span class="op">=</span> <span class="st">"RSD_r &lt; 0.2 &amp; D_ratio_r &lt; 0.4"</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 14:42:15]
-39% of features flagged for low quality</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/flag_report.html" class="external-link">flag_report</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                   condition <span class="op">=</span> <span class="st">"RSD_r &lt; 0.2 &amp; D_ratio_r &lt; 0.4"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/flag_report.html" class="external-link">flag_report</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <table style="width:100%;" class="table">
 <colgroup>
@@ -323,25 +303,19 @@ INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum</cod
 <p>Finally, we impute missing values. Using random forest imputation, we can accommodate the possibility of missing values arising not only from the limit of detection, but also because of issues in gap-filling. We drop QC samples so as not to bias the imputation. The strict thresholds for quality metrics and detection rate allow us to be more confident in our imputed values.</p>
 <p>The data is now ready for feature selection with differential abundance analysis. It’s handy to save pretreated data in a separate object and continue with a single assay for the remainder of the analysis. We also drop flagged features, although low-quality features can be needed in annotation when searching for specific ions or fragments of known molecules.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="va">pretreated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/impute_rf.html" class="external-link">impute_rf</a></span><span class="op">(</span><span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/drop_qcs.html" class="external-link">drop_qcs</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>, assay.type <span class="op">=</span> <span class="st">"dil_norm"</span>,</span>
 <span>                        name <span class="op">=</span> <span class="st">"imputed"</span><span class="op">)</span></span>
 <span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hanhineva-lab.github.io/notame/reference/drop_flagged.html" class="external-link">drop_flagged</a></span><span class="op">(</span><span class="va">pretreated</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">base</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">base</span><span class="op">)</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"imputed"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>INFO [2025-12-12 14:42:15]
-Starting random forest imputation at 2025-12-12 14:42:15.433606
-INFO [2025-12-12 14:42:17] Out-of-bag error in random forest imputation: 0.006
-INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42:17.609735 </code></pre>
-</div>
 </div>
 <p>The out-of-bag error is promising. Now the data is ready for feature selection.</p>
 </section><section class="section level2"><h2 id="differential-abundance-analysis">Differential abundance analysis<a class="anchor" aria-label="anchor" href="#differential-abundance-analysis"></a>
 </h2>
 <p>Let’s get a final look at the data with PCA, this time without QC samples and coloring by the only available clinical covariate, age.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/plot_pca.html" class="external-link">plot_pca</a></span><span class="op">(</span><span class="va">base</span>, color <span class="op">=</span> <span class="st">"age"</span>, shape <span class="op">=</span> <span class="st">"phenotype"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -352,7 +326,7 @@ INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42
 </div>
 <p>We’ll use linear models to find interesting features, adjust for false positives from multiple testing using the false discovery rate approach and plot the results in histograms to assess validity of the tests and get a feel for the results. The formula interface is used in most univariate statistics functions in <em>notameStats</em> for flexibility. By default, linear models are fit for each feature but correction for multiple testing is only applied for quality features. Here we also use <code><a href="https://hanhineva-lab.github.io/notame/reference/join_rowData.html" class="external-link">join_rowData()</a></code> to add the results to the object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">base</span>, <span class="st">"log2"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">base</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">lm_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/notameStats/man/perform_lm.html" class="external-link">perform_lm</a></span><span class="op">(</span><span class="va">base</span>, assay.type <span class="op">=</span> <span class="st">"log2"</span>,</span>
 <span>                         formula_char <span class="op">=</span> <span class="st">"Feature ~ phenotype + age"</span><span class="op">)</span></span>
@@ -373,7 +347,7 @@ INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42
 <p>The p-value histogram for looks promising; it is a relatively uniform distribution with an overabundance of low p-values. However, there are no significant features after correction for multiple testing. For demonstration purposes, we’ll consider the feature “FT0845”, which was identified as caffeine in the trunk of the workflow, most interesting.</p>
 <p>After differential abundance analysis or feature selection using supervised learning, for example, the number of significant features or a ranking cutoff allows for manual inspection of feature-wise plots. <em>notameViz</em> includes a variety of feature-wise visualizations adaptable to a variety of study designs. For feature “FT0845”, the abundance of CTR samples is reduced after normalization.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/save_beeswarm_plots.html" class="external-link">save_beeswarm_plots</a></span><span class="op">(</span><span class="va">pretreated</span><span class="op">[</span><span class="st">"FT0845"</span>, <span class="op">]</span>, x <span class="op">=</span> <span class="st">"phenotype"</span>,</span>
 <span>                              color <span class="op">=</span> <span class="st">"phenotype"</span>, save <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                              assay.type <span class="op">=</span> <span class="st">"raw_filled"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span>
@@ -390,7 +364,7 @@ INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42
 </div>
 <p>The results are also visualized with a variety of comprehensive visualizations. The volcano plot below shows that feature “FT0845” is distinct in having a low p-value and the second-largest fold-change. Manhattan plots and cloud plots could also be used to inspect how interesting features relate to m/z and retention time. We often co-visualize results from differential abundance analysis with a ranking of features from supervised learning for a combined perspective.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/notameViz/man/volcano_plot.html" class="external-link">volcano_plot</a></span><span class="op">(</span><span class="va">base</span>, x <span class="op">=</span> <span class="st">"phenotypeCVD.estimate"</span>,</span>
 <span>             p <span class="op">=</span> <span class="st">"phenotypeCVD.p.value"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">base</span><span class="op">)</span><span class="op">[</span><span class="st">"FT0845"</span>, <span class="op">]</span>,</span>
@@ -409,7 +383,7 @@ INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42
 </section><section class="section level2"><h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.5.2 (2025-10-31)
@@ -437,7 +411,7 @@ attached base packages:
 
 other attached packages:
  [1] notameStats_1.0.0           notameViz_1.0.0
- [3] notame_1.0.0                ggplot2_4.0.1
+ [3] notame_1.0.1                ggplot2_4.0.1
  [5] limma_3.66.0                cowplot_1.2.0
  [7] BiocParallel_1.44.0         alabaster.se_1.10.0
  [9] alabaster.base_1.10.0       SummarizedExperiment_1.40.0
@@ -446,7 +420,7 @@ other attached packages:
 [15] S4Vectors_0.48.0            BiocGenerics_0.56.0
 [17] generics_0.1.4              MatrixGenerics_1.22.0
 [19] matrixStats_1.5.0           quarto_1.5.1.9002
-[21] knitr_1.50
+[21] knitr_1.51
 
 loaded via a namespace (and not attached):
  [1] tidyselect_1.2.1         viridisLite_0.4.2        vipor_0.4.7
@@ -461,20 +435,21 @@ loaded via a namespace (and not attached):
 [28] purrr_1.2.0              itertools_0.1-3          grid_4.5.2
 [31] Rhdf5lib_1.32.0          iterators_1.0.14         scales_1.4.0
 [34] MASS_7.3-65              cli_3.6.5                rmarkdown_2.30
-[37] rstudioapi_0.17.1        ggbeeswarm_0.7.3         rhdf5_2.54.1
-[40] stringr_1.6.0            parallel_4.5.2           formatR_1.14
-[43] XVector_0.50.0           alabaster.schemas_1.10.0 vctrs_0.6.5
-[46] Matrix_1.7-4             jsonlite_2.0.0           beeswarm_0.4.0
-[49] alabaster.ranges_1.10.0  h5mread_1.2.1            foreach_1.5.2
-[52] tidyr_1.3.1              ggdendro_0.2.0           missForest_1.6.1
-[55] glue_1.8.0               codetools_0.2-20         ps_1.9.1
-[58] stringi_1.8.7            gtable_0.3.6             futile.logger_1.4.3
-[61] later_1.4.4              tibble_3.3.0             pillar_1.11.1
-[64] pcaMethods_2.2.0         htmltools_0.5.9          rhdf5filters_1.22.0
-[67] randomForest_4.7-1.2     R6_2.6.1                 Rdpack_2.6.4
-[70] evaluate_1.0.5           lattice_0.22-7           rbibutils_2.4
-[73] futile.options_1.0.1     Rcpp_1.1.0               SparseArray_1.10.6
-[76] ranger_0.17.0            xfun_0.54                pkgconfig_2.0.3         </code></pre>
+[37] otel_0.2.0               rstudioapi_0.17.1        ggbeeswarm_0.7.3
+[40] rhdf5_2.54.1             stringr_1.6.0            parallel_4.5.2
+[43] formatR_1.14             XVector_0.50.0           alabaster.schemas_1.10.0
+[46] vctrs_0.6.5              Matrix_1.7-4             jsonlite_2.0.0
+[49] beeswarm_0.4.0           alabaster.ranges_1.10.0  foreach_1.5.2
+[52] h5mread_1.2.1            tidyr_1.3.2              ggdendro_0.2.0
+[55] missForest_1.6.1         glue_1.8.0               codetools_0.2-20
+[58] ps_1.9.1                 stringi_1.8.7            gtable_0.3.6
+[61] futile.logger_1.4.9      later_1.4.4              tibble_3.3.0
+[64] pillar_1.11.1            pcaMethods_2.2.0         htmltools_0.5.9
+[67] rhdf5filters_1.22.0      randomForest_4.7-1.2     R6_2.6.1
+[70] Rdpack_2.6.4             evaluate_1.0.5           lattice_0.22-7
+[73] rbibutils_2.4            futile.options_1.0.1     Rcpp_1.1.0
+[76] SparseArray_1.10.8       ranger_0.17.0            xfun_0.55
+[79] pkgconfig_2.0.3         </code></pre>
 </div>
 </div>
 </section><section class="section level2"><h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -581,7 +556,7 @@ Klåvus, Anton, Marietta Kokla, Stefania Noerman, Ville M Koistinen, Marjo Tuoma
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Philippine Louail, Johannes Rainer.</p>
+  <p>Developed by Philippine Louail, Marilyn De Graeve, Vilhelm Suksi, Johannes Rainer.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -20,7 +20,7 @@ This primary workflow guides you through each step of the analysis, from
 **preprocessing raw data** to **statistical analysis** and **metabolite
 annotation**.  
 📄 [View Full R Code
-(Quarto)](https://rformassspectrometry.github.io/Metabonaut/vignettes/a-end-to-end-untargeted-metabolomics.qmd)
+(Quarto)](https://github.com/rformassspectrometry/Metabonaut/blob/main/vignettes/a-end-to-end-untargeted-metabolomics.qmd)
 
 ### 2. [Dataset Investigation](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html)
 

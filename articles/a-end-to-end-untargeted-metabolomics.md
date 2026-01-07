@@ -648,10 +648,12 @@ main parameters that can be easily adjusted to suit the user’s dataset:
   parts-per-million) in consecutive scans to consider them representing
   signal from the same ion.
 
-- `integrate`: This parameter defines the integration method. Here, we
-  primarily use `integrate = 2` because it integrates also signal of a
-  chromatographic peak’s tail and is considered more accurate by the
-  developers.
+- `integrate`: This parameter defines the algorithm used to determine
+  the peak boundaries. The default `integrate = 1` assumes a symmetric,
+  near gaussian peak shape while `integrate = 2` determines the peak
+  boundaries based on the observed intensities. We use `integrate = 2`
+  as it more accurately models non-symmetric chromatographic peaks with
+  a longer right tail which are frequently observed in LC-MS data.
 
 To determine `peakwidth`, we recommend that users refer to previous EICs
 and estimate the range of peak widths they observe in their dataset.
@@ -860,6 +862,20 @@ Figure 7. Chromatographic peak detection on EICs after processing.
 Peaks seem to have been detected properly in all samples for both ions.
 This indicates that the peak detection process over the entire dataset
 was successful.
+
+If peak detection performed on the full data set did not identify
+chromatographic peaks which were found on EIC data, e.g. because of
+noisy or scarce data points, CentWave’s `firstBaselineCheck` parameter
+should be set to `FALSE`. With the default `firstBaselineCheck = TRUE`,
+CentWave only performs the wavelet-based peak detection if a minimum
+number of mass peaks have an intensity higher than the estimated local
+noise. This minimum number of mass peaks is half of the expected number
+of peaks (or spectra) which were acquired in the present data set in a
+retention time window defined by the lower `peakwidth` value. For
+example, with a scan interval of 0.5 seconds and a lower `peakwidth`
+value of 4, 8 spectra, respectively mass peaks, are expected to be
+measured in that interval. The minimum number of mass peaks would thus
+be 4.
 
 #### Refine identified chromatographic peaks
 
@@ -2001,7 +2017,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Fri Dec 12 14:20:00 2025
+     date: Wed Jan  7 11:01:51 2026
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -2703,7 +2719,7 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4204 features were removed
+    4202 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
@@ -2734,7 +2750,7 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4520
+    [1] 4522
 
 ``` r
 
@@ -2742,9 +2758,9 @@ nrow(res)
 nrow(res) / nrow(res_unfilt) * 100
 ```
 
-    [1] 51.8111
+    [1] 51.83402
 
-The dataset has been reduced from 8724 to 4520 features. We did remove a
+The dataset has been reduced from 8724 to 4522 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -3046,11 +3062,11 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83789 | -8.505244 | 0.0069938 | 12.229286 |  3.828343 | 0.2116471 |
-| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0421971 | 16.905340 | 10.454994 | 0.0304712 |
-| FT0565 | 161.0400 | 162.13668 | -5.471700 | 0.0303263 | 10.287074 |  4.605332 | 0.0360903 |
-| FT1171 | 229.1299 | 181.08828 | -5.211307 | 0.0159861 | 10.721195 |  5.660591 | 0.0706276 |
-| FT0371 | 138.0547 | 148.39599 | -5.190555 | 0.0174217 |  9.914862 |  4.411039 | 0.5564435 |
+| FT0732 | 182.0749 |  34.83789 | -8.544994 | 0.0134418 | 12.229286 |  3.777893 | 0.2116471 |
+| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0425405 | 16.905340 | 10.454994 | 0.0304712 |
+| FT0565 | 161.0400 | 162.13668 | -5.638088 | 0.0271278 | 10.287074 |  4.414032 | 0.0360903 |
+| FT0371 | 138.0547 | 148.39599 | -5.269802 | 0.0178272 |  9.914862 |  4.306823 | 0.5564435 |
+| FT1171 | 229.1299 | 181.08828 | -5.168536 | 0.0170831 | 10.721195 |  5.694830 | 0.0706276 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
@@ -4100,12 +4116,12 @@ sessionInfo()
      [7] BiocFileCache_3.0.0         dbplyr_2.5.1
      [9] gridExtra_2.3               ggfortify_0.4.19
     [11] ggplot2_4.0.1               vioplot_0.5.1
-    [13] zoo_1.8-14                  sm_2.2-6.0
+    [13] zoo_1.8-15                  sm_2.2-6.0
     [15] pheatmap_1.0.13             RColorBrewer_1.1-3
     [17] pander_0.6.6                limma_3.66.0
     [19] MetaboCoreUtils_1.18.1      xcms_4.8.0
     [21] MsBackendMgf_1.18.0         MsBackendMetaboLights_1.5.1
-    [23] Spectra_1.20.0              BiocParallel_1.44.0
+    [23] Spectra_1.20.1              BiocParallel_1.44.0
     [25] alabaster.se_1.10.0         alabaster.base_1.10.0
     [27] SummarizedExperiment_1.40.0 Biobase_2.70.0
     [29] GenomicRanges_1.62.1        Seqinfo_1.0.0
@@ -4115,7 +4131,7 @@ sessionInfo()
     [37] MsIO_0.0.12                 MsExperiment_1.12.0
     [39] ProtGenerics_1.42.0         readxl_1.4.5
     [41] BiocStyle_2.38.0            quarto_1.5.1.9002
-    [43] knitr_1.50
+    [43] knitr_1.51
 
     loaded via a namespace (and not attached):
       [1] later_1.4.4                 bitops_1.0-9
@@ -4138,14 +4154,14 @@ sessionInfo()
      [35] iterators_1.0.14            foreach_1.5.2
      [37] tools_4.5.2                 progress_1.2.3
      [39] Rcpp_1.1.0                  glue_1.8.0
-     [41] SparseArray_1.10.6          BiocBaseUtils_1.12.0
-     [43] xfun_0.54                   dplyr_1.1.4
+     [41] SparseArray_1.10.8          BiocBaseUtils_1.12.0
+     [43] xfun_0.55                   dplyr_1.1.4
      [45] HDF5Array_1.38.0            withr_3.0.2
      [47] BiocManager_1.30.27         fastmap_1.2.0
      [49] rhdf5filters_1.22.0         digest_0.6.39
      [51] R6_2.6.1                    rsvg_2.7.0
      [53] RSQLite_2.4.5               h5mread_1.2.1
-     [55] tidyr_1.3.1                 data.table_1.17.8
+     [55] tidyr_1.3.2                 data.table_1.18.0
      [57] prettyunits_1.2.0           PSMatch_1.14.0
      [59] httr_1.4.7                  htmlwidgets_1.6.4
      [61] S4Arrays_1.10.1             pkgconfig_2.0.3

@@ -112,9 +112,6 @@ se <- flag_detection(se, qc_limit = 0.7, group_limit = 0.8,
                      group = "phenotype", assay.type = "raw_filled")
 ```
 
-    INFO [2025-12-12 14:34:51]
-    11% of features flagged for low detection rate
-
 Next, we correct for drift using a cubic spline, relating each features’
 abundance in QC samples to injection order ([Kirwan et al.
 2013](#ref-kirwan_characterising_2013)). Drift correction is performed
@@ -129,13 +126,6 @@ for each feature.
 
 se <- correct_drift(se, assay.type = "raw_filled", name = "drift_norm")
 ```
-
-    INFO [2025-12-12 14:34:51] Starting drift correction
-    INFO [2025-12-12 14:34:59] Recomputing quality metrics for drift corrected data
-    INFO [2025-12-12 14:35:01] Drift correction performed
-    INFO [2025-12-12 14:35:01] Inspecting drift correction results
-    INFO [2025-12-12 14:35:01] Original quality metrics missing, recomputing
-    INFO [2025-12-12 14:35:03] Drift correction results inspected: Drift_corrected: 94%,  Missing_QCS: 6%
 
 Brief notes about drift correction are stored in the `DC_note` column of
 feature data. For example, it is noted if drift correction couldn’t be
@@ -161,9 +151,6 @@ et al. 2006](#ref-dieterle_probabilistic_2006)).
 se <- pqn_normalization(se, ref = "qc", method = "median",
                         assay.type = "drift_norm", name = "dil_norm")
 ```
-
-    INFO [2025-12-12 14:35:03] Starting PQN normalization
-    INFO [2025-12-12 14:35:03] Using median of qc samples as reference spectrum
 
 Next, let’s visualize the data before and after normalization for drift
 and dilution using the *notameViz* package. Typically, the data would be
@@ -356,12 +343,6 @@ deviation are used([Broadhurst et al.
 
 se <- flag_quality(se, assay.type = "dil_norm",
                    condition = "RSD_r < 0.2 & D_ratio_r < 0.4")
-```
-
-    INFO [2025-12-12 14:42:15]
-    39% of features flagged for low quality
-
-``` r
 
 knitr::kable(flag_report(se))
 ```
@@ -392,11 +373,6 @@ pretreated <- impute_rf(drop_qcs(se), assay.type = "dil_norm",
 base <- drop_flagged(pretreated)
 assays(base)[names(assays(base)) != "imputed"] <- NULL
 ```
-
-    INFO [2025-12-12 14:42:15]
-    Starting random forest imputation at 2025-12-12 14:42:15.433606
-    INFO [2025-12-12 14:42:17] Out-of-bag error in random forest imputation: 0.006
-    INFO [2025-12-12 14:42:17] Random forest imputation finished at 2025-12-12 14:42:17.609735 
 
 The out-of-bag error is promising. Now the data is ready for feature
 selection.
@@ -538,7 +514,7 @@ sessionInfo()
 
     other attached packages:
      [1] notameStats_1.0.0           notameViz_1.0.0
-     [3] notame_1.0.0                ggplot2_4.0.1
+     [3] notame_1.0.1                ggplot2_4.0.1
      [5] limma_3.66.0                cowplot_1.2.0
      [7] BiocParallel_1.44.0         alabaster.se_1.10.0
      [9] alabaster.base_1.10.0       SummarizedExperiment_1.40.0
@@ -547,7 +523,7 @@ sessionInfo()
     [15] S4Vectors_0.48.0            BiocGenerics_0.56.0
     [17] generics_0.1.4              MatrixGenerics_1.22.0
     [19] matrixStats_1.5.0           quarto_1.5.1.9002
-    [21] knitr_1.50
+    [21] knitr_1.51
 
     loaded via a namespace (and not attached):
      [1] tidyselect_1.2.1         viridisLite_0.4.2        vipor_0.4.7
@@ -562,20 +538,21 @@ sessionInfo()
     [28] purrr_1.2.0              itertools_0.1-3          grid_4.5.2
     [31] Rhdf5lib_1.32.0          iterators_1.0.14         scales_1.4.0
     [34] MASS_7.3-65              cli_3.6.5                rmarkdown_2.30
-    [37] rstudioapi_0.17.1        ggbeeswarm_0.7.3         rhdf5_2.54.1
-    [40] stringr_1.6.0            parallel_4.5.2           formatR_1.14
-    [43] XVector_0.50.0           alabaster.schemas_1.10.0 vctrs_0.6.5
-    [46] Matrix_1.7-4             jsonlite_2.0.0           beeswarm_0.4.0
-    [49] alabaster.ranges_1.10.0  h5mread_1.2.1            foreach_1.5.2
-    [52] tidyr_1.3.1              ggdendro_0.2.0           missForest_1.6.1
-    [55] glue_1.8.0               codetools_0.2-20         ps_1.9.1
-    [58] stringi_1.8.7            gtable_0.3.6             futile.logger_1.4.3
-    [61] later_1.4.4              tibble_3.3.0             pillar_1.11.1
-    [64] pcaMethods_2.2.0         htmltools_0.5.9          rhdf5filters_1.22.0
-    [67] randomForest_4.7-1.2     R6_2.6.1                 Rdpack_2.6.4
-    [70] evaluate_1.0.5           lattice_0.22-7           rbibutils_2.4
-    [73] futile.options_1.0.1     Rcpp_1.1.0               SparseArray_1.10.6
-    [76] ranger_0.17.0            xfun_0.54                pkgconfig_2.0.3         
+    [37] otel_0.2.0               rstudioapi_0.17.1        ggbeeswarm_0.7.3
+    [40] rhdf5_2.54.1             stringr_1.6.0            parallel_4.5.2
+    [43] formatR_1.14             XVector_0.50.0           alabaster.schemas_1.10.0
+    [46] vctrs_0.6.5              Matrix_1.7-4             jsonlite_2.0.0
+    [49] beeswarm_0.4.0           alabaster.ranges_1.10.0  foreach_1.5.2
+    [52] h5mread_1.2.1            tidyr_1.3.2              ggdendro_0.2.0
+    [55] missForest_1.6.1         glue_1.8.0               codetools_0.2-20
+    [58] ps_1.9.1                 stringi_1.8.7            gtable_0.3.6
+    [61] futile.logger_1.4.9      later_1.4.4              tibble_3.3.0
+    [64] pillar_1.11.1            pcaMethods_2.2.0         htmltools_0.5.9
+    [67] rhdf5filters_1.22.0      randomForest_4.7-1.2     R6_2.6.1
+    [70] Rdpack_2.6.4             evaluate_1.0.5           lattice_0.22-7
+    [73] rbibutils_2.4            futile.options_1.0.1     Rcpp_1.1.0
+    [76] SparseArray_1.10.8       ranger_0.17.0            xfun_0.55
+    [79] pkgconfig_2.0.3         
 
 ## References
 

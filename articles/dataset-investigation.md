@@ -887,12 +887,12 @@ sessionInfo()
      [7] Biobase_2.70.0              GenomicRanges_1.62.1
      [9] Seqinfo_1.0.0               IRanges_2.44.0
     [11] MatrixGenerics_1.22.0       matrixStats_1.5.0
-    [13] MsBackendMetaboLights_1.5.1 Spectra_1.20.0
+    [13] MsBackendMetaboLights_1.5.1 Spectra_1.20.1
     [15] BiocParallel_1.44.0         S4Vectors_0.48.0
     [17] BiocGenerics_0.56.0         generics_0.1.4
     [19] MsIO_0.0.12                 MsExperiment_1.12.0
     [21] ProtGenerics_1.42.0         BiocStyle_2.38.0
-    [23] quarto_1.5.1.9002           knitr_1.50
+    [23] quarto_1.5.1.9002           knitr_1.51
 
     loaded via a namespace (and not attached):
       [1] rstudioapi_0.17.1           jsonlite_2.0.0
@@ -903,7 +903,7 @@ sessionInfo()
      [11] htmltools_0.5.9             S4Arrays_1.10.1
      [13] BiocBaseUtils_1.12.0        progress_1.2.3
      [15] curl_7.0.0                  Rhdf5lib_1.32.0
-     [17] SparseArray_1.10.6          rhdf5_2.54.1
+     [17] SparseArray_1.10.8          rhdf5_2.54.1
      [19] mzID_1.48.0                 alabaster.base_1.10.0
      [21] plyr_1.8.9                  httr2_1.2.2
      [23] impute_1.84.0               cachem_1.1.0
@@ -926,14 +926,14 @@ sessionInfo()
      [57] QFeatures_1.20.0            rhdf5filters_1.22.0
      [59] grid_4.5.2                  cluster_2.1.8.1
      [61] reshape2_1.4.5              gtable_0.3.6
-     [63] preprocessCore_1.72.0       tidyr_1.3.1
-     [65] data.table_1.17.8           hms_1.1.4
+     [63] preprocessCore_1.72.0       tidyr_1.3.2
+     [65] data.table_1.18.0           hms_1.1.4
      [67] XVector_0.50.0              foreach_1.5.2
      [69] pillar_1.11.1               stringr_1.6.0
      [71] limma_3.66.0                later_1.4.4
      [73] dplyr_1.1.4                 BiocFileCache_3.0.0
      [75] lattice_0.22-7              bit_4.6.0
-     [77] tidyselect_1.2.1            xfun_0.54
+     [77] tidyselect_1.2.1            xfun_0.55
      [79] statmod_1.5.1               MSnbase_2.36.0
      [81] stringi_1.8.7               lazyeval_0.2.2
      [83] yaml_2.3.12                 evaluate_1.0.5
