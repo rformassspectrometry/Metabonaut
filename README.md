@@ -10,7 +10,7 @@ Metabonaut presents a series of workflows based on a small LC-MS/MS dataset, uti
 
 ### 1. [Complete End-to-End LC-MS/MS Metabolomic Data Analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.html)
 This primary workflow guides you through each step of the analysis, from **preprocessing raw data** to **statistical analysis** and **metabolite annotation**.  
-📄 [View Full R Code (Quarto)](https://github.com/rformassspectrometry/Metabonaut/vignettes/a-end-to-end-untargeted-metabolomics.qmd)
+📄 [View Full R Code (Quarto)](https://github.com/rformassspectrometry/Metabonaut/blob/main/vignettes/a-end-to-end-untargeted-metabolomics.qmd)
 
 ### 2. [Dataset Investigation](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html)
 Before diving into the analysis, learn about **key aspects to examine in your dataset** to ensure smooth processing and prevent troubleshooting issues later in the pipeline.
