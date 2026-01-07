@@ -1,23 +1,26 @@
 citHeader("To cite this workflow:")
 
 citEntry(entry = "Misc",
-         title  = "rformassspectrometry/Metabonaut: v1.2.0",
+         title  = "rformassspectrometry/Metabonaut: v1.4.0",
          author = personList(
            person(given = "Philippine", family = "Louail"),
            person(given = "Marilyn", family = "De Graeve"),
            person(given = "Anna", family = "Tagliaferri"),
-           person(given = "Vinicius", family = "Verri Hernandes"),
            person(given = "Daniel", family = "Marques de Sá e Silva"),
+           person(given = "Vinicius", family = "Verri Hernandes"),
+           person(given = "Kozo", family = "Nishida"),
+           person(given = "Vilhelm", family = "Suksi"),
            person(given = "Johannes", family = "Rainer")
          ),
          publisher = "Zenodo",
-         year = "2025",
-         month = "may",
-         version = "v1.2.0",
-         doi = "10.5281/zenodo.15554287",
-         url = "https://doi.org/10.5281/zenodo.15554287",
+         year = "2026",
+         month = "January",
+         version = "v1.4.0",
+         doi = "10.5281/zenodo.18172608",
+         url = "https://doi.org/10.5281/zenodo.18172608",
          textVersion = paste0("Philippine Louail, Marilyn De Graeve, Anna Tagliaferri, ",
-                              "Vinicius Verri Hernandes, Daniel Marques de Sá e Silva, & ",
-                              "Johannes Rainer. (2025). rformassspectrometry/Metabonaut: v1.2.0. ",
-                              "Zenodo. https://doi.org/10.5281/zenodo.15554287")
+                              "Daniel Marques de Sá e Silva, Vinicius Verri Hernandes, ",
+                              "Kozo Nishida, Vilhelm Suksi, & Johannes Rainer. (2026). ",
+                              "rformassspectrometry/Metabonaut: v1.4.0. ",
+                              "Zenodo. https://doi.org/10.5281/zenodo.18172608")
 )
