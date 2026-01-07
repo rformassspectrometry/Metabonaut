@@ -526,10 +526,12 @@ to suit the user's dataset:
     parts-per-million) in consecutive scans to consider them representing
     signal from the same ion.
 
--   `integrate`: This parameter defines the integration method. Here, we
-    primarily use `integrate = 2` because it integrates also signal of a
-    chromatographic peak's tail and is considered more accurate by the
-    developers.
+-   `integrate`: This parameter defines the algorithm used to determine the peak
+    boundaries. The default `integrate = 1` assumes a symmetric, near gaussian
+    peak shape while `integrate = 2` determines the peak boundaries based on the
+    observed intensities. We use `integrate = 2` as it more accurately models
+    non-symmetric chromatographic peaks with a longer right tail which are
+    frequently observed in LC-MS data.
 
 To determine `peakwidth`, we recommend that users refer to previous EICs and
 estimate the range of peak widths they observe in their dataset. Ideally,
@@ -682,6 +684,18 @@ legend("topright", col = col_phenotype, legend = names(col_phenotype), lty = 1)
 Peaks seem to have been detected properly in all samples for both ions. This
 indicates that the peak detection process over the entire dataset was
 successful.
+
+If peak detection performed on the full data set did not identify
+chromatographic peaks which were found on EIC data, e.g. because of noisy or
+scarce data points, CentWave's `firstBaselineCheck` parameter should be set to
+`FALSE`. With the default `firstBaselineCheck = TRUE`, CentWave only performs
+the wavelet-based peak detection if a minimum number of mass peaks have an
+intensity higher than the estimated local noise. This minimum number of mass
+peaks is half of the expected number of peaks (or spectra) which were acquired
+in the present data set in a retention time window defined by the lower
+`peakwidth` value. For example, with a scan interval of 0.5 seconds and a lower
+`peakwidth` value of 4, 8 spectra, respectively mass peaks, are expected to be
+measured in that interval. The minimum number of mass peaks would thus be 4.
 
 ### Refine identified chromatographic peaks
 
