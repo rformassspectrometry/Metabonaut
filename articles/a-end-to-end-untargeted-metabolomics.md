@@ -2017,7 +2017,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Wed Jan  7 12:55:23 2026
+     date: Wed Jan  7 13:24:59 2026
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -2719,7 +2719,7 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4205 features were removed
+    4202 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
@@ -2750,7 +2750,7 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4519
+    [1] 4522
 
 ``` r
 
@@ -2758,9 +2758,9 @@ nrow(res)
 nrow(res) / nrow(res_unfilt) * 100
 ```
 
-    [1] 51.79963
+    [1] 51.83402
 
-The dataset has been reduced from 8724 to 4519 features. We did remove a
+The dataset has been reduced from 8724 to 4522 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -3062,12 +3062,15 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83789 | -8.653937 | 0.0067431 | 12.229286 |  3.713729 | 0.2116471 |
-| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0412425 | 16.905340 | 10.454994 | 0.0304712 |
-| FT0565 | 161.0400 | 162.13668 | -5.559288 | 0.0412425 | 10.287074 |  4.531319 | 0.0360903 |
-| FT1171 | 229.1299 | 181.08828 | -5.276264 | 0.0165207 | 10.721195 |  5.608591 | 0.0706276 |
-| FT0371 | 138.0547 | 148.39599 | -5.265300 | 0.0174744 |  9.914862 |  4.312743 | 0.5564435 |
-| FT5606 | 560.3603 |  33.54917 | -3.816681 | 0.0412425 |  8.885918 |  4.851743 | 1.2139903 |
+| FT0732 | 182.0749 |  34.83789 | -8.873538 | 0.0108132 | 12.229286 |  3.502505 | 0.2116471 |
+| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0422427 | 16.905340 | 10.454994 | 0.0304712 |
+| FT0676 | 176.0106 | 147.55872 | -6.227737 | 0.0499947 |  8.788476 |  2.477160 | 0.7734774 |
+| FT0565 | 161.0400 | 162.13668 | -5.621420 | 0.0365616 | 10.287074 |  4.413850 | 0.0360903 |
+| FT2646 | 337.0842 | 160.94425 | -5.556854 | 0.0499947 |  7.610080 |  1.908714 | 0.5484998 |
+| FT1171 | 229.1299 | 181.08828 | -5.325706 | 0.0186795 | 10.721195 |  5.569011 | 0.0706276 |
+| FT0371 | 138.0547 | 148.39599 | -5.152379 | 0.0207524 |  9.914862 |  4.461243 | 0.5564435 |
+| FT5606 | 560.3603 |  33.54917 | -3.652168 | 0.0499947 |  8.885918 |  5.054913 | 1.2139903 |
+| FT2067 | 300.2126 |  32.14669 | -3.224149 | 0.0499947 | 10.794237 |  7.451664 | 0.5987373 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
@@ -3249,7 +3252,7 @@ mtch
 
     Object of class Matched
     Total number of matches: 43
-    Number of query objects: 6 (4 matched)
+    Number of query objects: 9 (4 matched)
     Number of target objects: 25685 (43 matched)
 
 The resulting `Matched` object shows that 4 of our 6 significant
@@ -3266,7 +3269,7 @@ mtch_res <- matchedData(mtch, c("feature_id", "mzmed", "rtmed",
 mtch_res
 ```
 
-    DataFrame with 45 rows and 8 columns
+    DataFrame with 48 rows and 8 columns
             feature_id     mzmed     rtmed      adduct ppm_error target_formula
            <character> <numeric> <numeric> <character> <numeric>    <character>
     FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
@@ -3275,10 +3278,10 @@ mtch_res
     FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
     FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
     ...            ...       ...       ...         ...       ...            ...
-    FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1867474      C8H10N4O2
-    FT0845      FT0845   195.088   32.6567      [M+H]+ 0.0614704      C8H10N4O2
-    FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
-    FT1171      FT1171   229.130  181.0883     [M+Na]+ 3.0770838      C12H18N2O
+    FT0845      FT0845   195.088   32.6567      [M+H]+  0.163988      C8H10N4O2
+    FT1171      FT1171   229.130  181.0883     [M+Na]+  3.077084      C12H18N2O
+    FT2067      FT2067   300.213   32.1467          NA        NA             NA
+    FT2646      FT2646   337.084  160.9443          NA        NA             NA
     FT5606      FT5606   560.360   33.5492          NA        NA             NA
              target_name target_inchikey
              <character>     <character>
@@ -3288,10 +3291,10 @@ mtch_res
     FT0371 4-Aminoben...   ALYNCZNDIQ...
     FT0371 Anthranili...   RWZYAGGXGH...
     ...              ...             ...
-    FT0845      Caffeine   RYYVLZVUVI...
-    FT0845      caffeine   RYYVLZVUVI...
     FT0845 1,3,7-TRIM...   RYYVLZVUVI...
     FT1171 Isoproturo...   PUIYMUZLKQ...
+    FT2067            NA              NA
+    FT2646            NA              NA
     FT5606            NA              NA
 
 Thus, in total 43 ions of compounds in MassBank were matched to our
@@ -3615,9 +3618,12 @@ target
               mzmin    mzmax     rtmin     rtmax
     FT0371 138.0544 138.0552 146.32270 152.86115
     FT0565 161.0391 161.0407 159.00234 164.30799
+    FT0676 176.0105 176.0117 146.32270 148.95415
     FT0732 182.0726 182.0756  32.71242  42.28755
     FT0845 195.0799 195.0887  30.73235  35.67337
     FT1171 229.1282 229.1335 178.01450 183.35303
+    FT2067 300.2094 300.2143  31.22976  33.25501
+    FT2646 337.0813 337.0858 159.85245 162.32438
     FT5606 560.3539 560.3656  32.06570  35.33456
 
 We next identify the fragment spectra with their precursor *m/z* and
@@ -3638,8 +3644,8 @@ ms2_ctr_fts <- apply(target[, c("rtmin", "rtmax", "mzmin", "mzmax")],
 lengths(ms2_ctr_fts)
 ```
 
-    FT0371 FT0565 FT0732 FT0845 FT1171 FT5606
-        11     12     46     21     12      0 
+    FT0371 FT0565 FT0676 FT0732 FT0845 FT1171 FT2067 FT2646 FT5606
+        11     12      0     46     21     12      0      0      0 
 
 The result from this [`apply()`](https://rdrr.io/r/base/apply.html) call
 is a `list` of `Spectra`, each element representing the result for one
@@ -3791,7 +3797,7 @@ pandoc.table(ms2_mtch_res[, c("feature_id", "target_name", "score",
 
 Table 9.MS2 annotation results. {.table}
 
-Thus, from the 6 significant features, only one could be annotated to a
+Thus, from the 9 significant features, only one could be annotated to a
 compound based on the MS2-based approach. There could be many reasons
 for the failure to find matches for the other features. Although MS2
 spectra were selected for each feature, most appear to only represent
