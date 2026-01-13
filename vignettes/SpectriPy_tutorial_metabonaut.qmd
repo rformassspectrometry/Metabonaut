@@ -1,6 +1,6 @@
 ---
 title: "SpectriPy tutorial for Metabonaut: Annotation of LC-MS/MS spectra"
-bibliography: SpectriPy_tutorial.bib
+bibliography: SpectriPy_tutorial_metabonaut.bib
 vignette: >
   %\VignetteIndexEntry{SpectriPy tutorial: Annotation of LC-MS/MS spectra}
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative}
@@ -25,7 +25,8 @@ a reference library.
 
 The MS2 processing method which will be demonstrated on the spectral reference
 library is the default filtering (`default_filters()`,
-`normalize_intensities()`) from *matchms* [@huber_matchms_2020].
+`normalize_intensities()`, `add_parent_mass()`) from *matchms*
+[@huber_matchms_2020].
 
 The MS2 spectral similarity algorithms which is demonstrated here is the
 `ModifiedCosine()` from *matchms* [@huber_matchms_2020].
@@ -79,8 +80,9 @@ annotation](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-en
 library(Spectra)
 
 #' Load the MS2 spectra of significant features
-load(system.file("extdata", "spectra_significant_fts.RData",
-                 package = "Metabonaut"))
+#load(system.file("extdata", "spectra_significant_fts.RData",
+#                 package = "Metabonaut"))
+load('/home/mdegraeve/Documents/Files/Work_Eurac/Projects/SpectriPy/spectra_significant_fts.RData') #object is ms2_ctr_fts FINDME3l
 ms2_ctr_fts
 
 #' Print the available metadata, stored in the Spectra object
