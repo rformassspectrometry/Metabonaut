@@ -1,5 +1,5 @@
 FROM bioconductor/bioconductor_docker:devel
-## update to 3.21 in april to have stable versioning. 
+## update to 3.21 in april to have stable versioning.
 
 LABEL name="rformassspectrometry/Metabonaut" \
       url="https://github.com/rformassspectrometry/Metabonaut" \
@@ -11,13 +11,20 @@ WORKDIR /home/rstudio
 
 COPY --chown=rstudio:rstudio . /home/rstudio/
 
-## Install the required packages
-RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsBackendMetaboLights', ask = FALSE, dependencies = TRUE)"
-RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, dependencies = TRUE)"
+## Global installation of required packages
+RUN Rscript -e "BiocManager::install('RforMassSpectrometry/MsBackendMetaboLights', ask = FALSE, dependencies = TRUE)" && \
+    Rscript -e "BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE, dependencies = TRUE)"
 
-## Create the BiocFileCache and cache the data files to avoid repeated downloads
+## Use SpectriPy with virtual env to avoid need to install miniconda
+ENV SPECTRIPY_USE_CONDA="FALSE"
+
+## Install SpectriPy and caching files for rstudio user
 USER rstudio
-RUN Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
+RUN Rscript -e "install.packages('reticulate')" && \
+    Rscript -e "BiocManager::install('RforMassSpectrometry/SpectriPy')" && \
+    Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
+
+## root user needed for rstudio server properly working
 USER root
 
 ## Install the current package with vignettes

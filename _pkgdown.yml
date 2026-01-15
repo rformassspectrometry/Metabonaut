@@ -1,4 +1,4 @@
-url: https://rformassspectrometry.github.io/metabonaut/
+url: https://rformassspectrometry.github.io/Metabonaut/
 template:
   bootstrap: 5
   bslib:
@@ -17,10 +17,11 @@ navbar:
       href: articles/dataset-investigation.html
     - text: 'Seamless Alignment: Merging New data with Existing Preprocessed Datasets'
       href: articles/alignment-to-external-dataset.html
-  - text: News 
+    - text: 'LC-MS/MS Data Annotation using R and Python'
+      href: articles/SpectriPy_tutorial_metabonaut.html
+  - text: News
     href: news/index.html
 structure:
   right:
   - search
   - github
-
