@@ -19,3 +19,5 @@ vignettes/images/sitcker_draft.xcf
 /objects/preprocessed_res
 /objects
 *.r
+
+**/*.quarto_ipynb
