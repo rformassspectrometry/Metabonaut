@@ -1,3 +1,9 @@
+# Metabonaut 1.5
+
+## Changes in 1.5.0
+
+- Add vignette for use and import of public mass spectral library data.
+
 # Metabonaut 1.4
 
 ## Changes in 1.4.0
