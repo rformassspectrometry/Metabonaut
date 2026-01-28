@@ -30,7 +30,7 @@ Authors@R:
      person(given = "Vilhelm", family = "Suksi",
             email = "vksuks@utu.fi", role = "aut",
             comment = c(ORCID = "0009-0005-1108-518X")),
-     person(given = "Kozo", family= "Nishida", role = "ctb", 
+     person(given = "Kozo", family= "Nishida", role = "ctb",
             comment = c(ORCID = "0000-0001-8501-7319")),
      person(given = "Johannes", family = "Rainer",
             email = "Johannes.Rainer@eurac.edu",
@@ -84,7 +84,7 @@ Suggests:
     notameViz,
     stringr,
     RSQLite,
-    MsBackendMassbank,
+    MsBackendMassbank (>= 1.18.1),
     zen4R
 Remotes:
     RforMassSpectrometry/MsIO

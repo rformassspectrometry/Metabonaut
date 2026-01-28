@@ -13,7 +13,7 @@ COPY --chown=rstudio:rstudio . /home/rstudio/
 ## Global installation of required packages
 ## Need MsBackendMetaboLights to pre-download the dataset.
 ## Need MsIO because not on any repository
-RUN Rscript -e "BiocManager::install(c('RforMassSpectrometry/MsIO', 'MsBackendMetaboLights', 'mzR', 'RforMassSpectrometry/MsBackendMassbank') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
+RUN Rscript -e "BiocManager::install(c('RforMassSpectrometry/MsIO', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
 
 ## Install keyring package from github using pak
 RUN Rscript -e "install.packages('pak');pak::pak('r-lib/keyring', ask = FALSE)"

@@ -88,13 +88,13 @@ mgf_fl <- file.path(pth, "GNPS_Drug_Library_Spectra_Drugs_and_Metabolites.mgf")
 readLines(mgf_fl, n = 25)
 ```
 
-The MGF format allows having additional fields to provide spectra
-metadata on top of mandatory fields such as *PEPMASS* (for precursor *m/z*) or
-*CHARGE* (for the precursor's charge). MGF files can be imported into a
-`Spectra` object using the `r Biocpkg("MsBackendMgf")`, which supports import
-of all metadata fields, renaming and mapping them to specific spectra variables. Below
-we define such a variable name mapping to map e.g. *MSLEVEL* to the spectra
-variable `msLevel` and *NAME* to *spectrum_name*.
+The MGF format allows having additional fields to provide spectra metadata on
+top of mandatory fields such as *PEPMASS* (for precursor *m/z*) or *CHARGE* (for
+the precursor's charge). MGF files can be imported into a `Spectra` object using
+the `r Biocpkg("MsBackendMgf")`, which supports import of all metadata fields,
+renaming and mapping them to specific spectra variables. Below we define such a
+variable name mapping to map e.g. *MSLEVEL* to the spectra variable `msLevel`
+and *NAME* to *spectrum_name*.
 
 ```{r}
 library(MsBackendMgf)
@@ -126,8 +126,9 @@ drug_ms2$polarity[which(drug_ms2$IONMODE == "Positive")] <- 1L
 drug_ms2$polarity[which(drug_ms2$IONMODE == "Negative")] <- 0L
 ```
 
-Compound annotations are sparse. Spectrum names hold the compound, adduct, and
-sometimes collision energy, but formatting is inconsistent:
+Compound annotations are sparse in the imported library. Spectrum names hold the
+compound, adduct, and sometimes collision energy, but formatting is
+inconsistent:
 
 ```{r}
 drug_ms2$spectrum_name |>
@@ -150,9 +151,10 @@ provided. We first plot the first 4 reference spectra from the library.
 plotSpectra(drug_ms2[1:4])
 ```
 
-Two things stand out: intensities are *absolute*, and low-abundance peaks likely
-reflect instrument noise. We remove peaks below 1% of the maximum and scale
-intensities to sum to 1. This is one possible cleaning choice, not a standard.
+Two things stand out: intensities are *absolute*, and a large number of
+low-abundance peaks are present likely reflecting instrument noise. We remove
+peaks below 1% of the maximum and scale intensities to sum to 1. This is one
+possible cleaning choice, not a standard.
 
 ```{r}
 drug_ms2 <- drug_ms2 |>
@@ -186,7 +188,7 @@ ms2_ctr_fts
 ```
 
 This `Spectra` object contains MS/MS spectra for features with significant
-abundance differences. We match them against the GNPS2 drug library with 
+abundance differences. We match them against the GNPS2 drug library with
 `r Biocpkg("MetaboAnnotation")`.
 
 ```{r}
@@ -214,8 +216,8 @@ workflows.
 ### Importing and cleaning GNPS MGF files using Python's *matchms* library
 
 Alternatively, it is possible to import and clean the GNPS MGF file in Python
-with *matchms* and access it in R through `MsBackendPy` (`r Biocpkg("SpectriPy")`)
-[@graeve_spectripy_2025].
+with *matchms* and access it in R through `MsBackendPy` from the `r
+Biocpkg("SpectriPy")` package [@graeve_spectripy_2025].
 
 ```{r}
 #' load the required SpectriPy package; this will also install
@@ -365,10 +367,10 @@ list of available spectra metadata is:
 spectraVariables(s_mb)
 ```
 
-The `metaBlocks` parameter can import extra metadata. MassBank metadata are
-*generally* more standardized and include more compound information 
-(e.g., formula, exact mass). We now match the end-to-end vignette spectra 
-against MassBank 2025.10 with `matchSpectra()`.
+The `metaBlocks` parameter can be used to enable import of extra
+metadata. MassBank metadata are *generally* more standardized and include more
+compound information (e.g., formula, exact mass). We now match the end-to-end
+vignette spectra against MassBank 2025.10 with `matchSpectra()`.
 
 ```{r}
 #' match the experimental spectra against the GNPS2 drug library
@@ -403,10 +405,11 @@ unlink(dir(pth, full.names = TRUE), recursive = TRUE)
 # Creating or expanding annotation resources
 
 Public MGF/MSP libraries can be imported into `Spectra` and exported again.
-Alternatively, store annotations in SQLite via `r Biocpkg("CompoundDb")`, which
-provides a simple schema for small compounds and MS data. Here we build a
-database from the GNPS2 drug library; see the vignette
-[*Creating CompoundDb annotation resources*](https://rformassspectrometry.github.io/CompoundDb/articles/create-compounddb.html)
+Alternatively, annotations can be stored in SQL databases *via* the `r
+Biocpkg("CompoundDb")` package, which defines a simple database schema for small
+compounds and MS data. Here we build a database from the GNPS2 drug library; see
+the vignette [*Creating CompoundDb annotation
+resources*](https://rformassspectrometry.github.io/CompoundDb/articles/create-compounddb.html)
 for more examples.
 
 ::: {.callout-note appearance="minimal"}
@@ -549,8 +552,8 @@ cmps$synonyms <- NA_character_
 
 Next we define spectra metadata. Suggested columns include `polarity`
 (`0/1/NA`), `collision_energy`, `instrument`, `instrument_type`, and
-`precursor_mz`. `CompoundDb` accepts additional columns. We extract these from
-the GNPS2 `Spectra` object into a `data.frame`.
+`precursor_mz` with *CompoundDb* accepting also optional additional columns. We
+extract these from the GNPS2 `Spectra` object into a `data.frame`.
 
 ```{r}
 #' extract the spectra information and data
@@ -597,7 +600,8 @@ colnames(spctra) <- sub("SPECTRUMID", "original_spectrum_id", colnames(spctra))
 colnames(spctra) <- tolower(colnames(spctra))
 ```
 
-We link spectra to compounds by adding unique IDs for each table.
+To allow linking spectra to compounds (i.e., rows in the `cmps` with rows in
+the `spctra` data frames) we add unique IDs for each table.
 
 ```{r}
 #' add compound and spectra IDs to the respective tables
@@ -615,7 +619,7 @@ compound row corresponds to one spectrum, so we add `compound_id` directly to
 spctra$compound_id <- cmps$compound_id
 ```
 
-inally we define database metadata (origin, version, DOI) for reproducibility.
+Finally we define database metadata (origin, version, DOI) for reproducibility.
 
 ```{r metadata, message = FALSE}
 #' define metadata for the annotation resource
@@ -659,7 +663,7 @@ dbGetQuery(con, "select * from msms_spectrum_peak limit 10")
 dbDisconnect(con)
 ```
 
-For direct use, load the database as a `CompDb` annotation resource:
+For direct use, we load the database as a `CompDb` annotation resource:
 
 ```{r}
 cdb <- CompDb(db_file)
@@ -704,7 +708,8 @@ file is
 print(object.size(drug_ms2), unit = "MB")
 ```
 
-This file is manageable; the full GNPS library is not.
+This file is manageable; the full GNPS library might exceed the available memory
+of a standard computer.
 
 In contrast, the memory size for the `Spectra` object of the *CompDb* annotation
 database created from the GNPS2 drug library is only:
@@ -727,7 +732,7 @@ However, creating a *CompDb* requires an upfront cleanup and conversion to store
 data in SQLite. Once built, the resource is self-contained and shareable.
 
 The *CompDb* format also supports adding new compounds or spectra, enabling
-extension of in-house libraries (see the *CompoundDb* vignette mentionned above).
+extension of in-house libraries (see the *CompoundDb* vignette mentioned above).
 
 Currently the format is only supported directly in R, though any SQLite client
 can read the database.
