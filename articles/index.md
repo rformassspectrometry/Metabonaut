@@ -6,6 +6,8 @@
   analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.md):
 - [Seamless Alignment: Merging New Data with and Existing Preprocessed
   Dataset](https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.md):
+- [Using and Creating Metabolomics Data Annotation
+  Resources](https://rformassspectrometry.github.io/Metabonaut/articles/creating-using-annotation-resources.md):
 - [Dataset investigation: What to do when you get your
   data](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.md):
 - [Install](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.md):

@@ -345,17 +345,17 @@ scores = calculate_scores(references = clean_mgf_py,
 
 
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:01<02:22,  1.85s/it]
-    Calculating similarities:  12%|#1        | 9/78 [00:01<00:11,  6.19it/s]
-    Calculating similarities:  22%|##1       | 17/78 [00:02<00:04, 12.86it/s]
-    Calculating similarities:  32%|###2      | 25/78 [00:02<00:02, 20.59it/s]
-    Calculating similarities:  41%|####1     | 32/78 [00:02<00:01, 24.32it/s]
-    Calculating similarities:  51%|#####1    | 40/78 [00:02<00:01, 32.38it/s]
-    Calculating similarities:  60%|######    | 47/78 [00:02<00:00, 38.42it/s]
-    Calculating similarities:  71%|#######   | 55/78 [00:02<00:00, 45.57it/s]
-    Calculating similarities:  81%|########  | 63/78 [00:02<00:00, 52.56it/s]
-    Calculating similarities:  92%|#########2| 72/78 [00:02<00:00, 59.95it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 26.10it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:01<02:24,  1.88s/it]
+    Calculating similarities:  12%|#1        | 9/78 [00:01<00:11,  6.11it/s]
+    Calculating similarities:  22%|##1       | 17/78 [00:02<00:04, 12.72it/s]
+    Calculating similarities:  33%|###3      | 26/78 [00:02<00:02, 21.24it/s]
+    Calculating similarities:  45%|####4     | 35/78 [00:02<00:01, 30.32it/s]
+    Calculating similarities:  55%|#####5    | 43/78 [00:02<00:00, 38.41it/s]
+    Calculating similarities:  65%|######5   | 51/78 [00:02<00:00, 43.99it/s]
+    Calculating similarities:  76%|#######5  | 59/78 [00:02<00:00, 49.98it/s]
+    Calculating similarities:  86%|########5 | 67/78 [00:02<00:00, 55.66it/s]
+    Calculating similarities:  96%|#########6| 75/78 [00:02<00:00, 61.34it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 26.80it/s]
 
 ``` python
 scores
@@ -559,14 +559,14 @@ sessionInfo()
     [7] SpectriPy_1.0.0     reticulate_1.44.1
 
     loaded via a namespace (and not attached):
-     [1] cli_3.6.5              knitr_1.51             rlang_1.1.6
-     [4] xfun_0.55              ProtGenerics_1.42.0    otel_0.2.0
+     [1] cli_3.6.5              knitr_1.51             rlang_1.1.7
+     [4] xfun_0.56              ProtGenerics_1.42.0    otel_0.2.0
      [7] png_0.1-8              jsonlite_2.0.0         clue_0.3-66
     [10] rprojroot_2.1.1        htmltools_0.5.9        rmarkdown_2.30
     [13] grid_4.5.2             evaluate_1.0.5         MASS_7.3-65
     [16] fastmap_1.2.0          yaml_2.3.12            IRanges_2.44.0
     [19] MsCoreUtils_1.22.1     cluster_2.1.8.1        compiler_4.5.2
-    [22] codetools_0.2-20       fs_1.6.6               Rcpp_1.1.0
+    [22] codetools_0.2-20       fs_1.6.6               Rcpp_1.1.1
     [25] here_1.0.2             MetaboCoreUtils_1.18.1 lattice_0.22-7
     [28] digest_0.6.39          parallel_4.5.2         Matrix_1.7-4
     [31] withr_3.0.2            tools_4.5.2           

@@ -4,12 +4,13 @@ pkgdown_sha: c07d935583c90125586821e3b39ed52f16593e42
 articles:
   a-end-to-end-untargeted-metabolomics: a-end-to-end-untargeted-metabolomics.html
   alignment-to-external-dataset: alignment-to-external-dataset.html
+  creating-using-annotation-resources: creating-using-annotation-resources.html
   dataset-investigation: dataset-investigation.html
   install_v0: install_v0.html
   large-scale-analysis: large-scale-analysis.html
   notame_normalization_and_feature_selection: notame_normalization_and_feature_selection.html
   SpectriPy-tutorial-metabonaut: SpectriPy-tutorial-metabonaut.html
-last_built: 2026-01-07T13:19Z
+last_built: 2026-02-03T17:05Z
 urls:
   reference: https://rformassspectrometry.github.io/Metabonaut/reference
   article: https://rformassspectrometry.github.io/Metabonaut/articles

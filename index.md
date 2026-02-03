@@ -18,8 +18,7 @@ processing.
 
 This primary workflow guides you through each step of the analysis, from
 **preprocessing raw data** to **statistical analysis** and **metabolite
-annotation**.  
-📄 [View Full R Code
+annotation**. 📄 [View Full R Code
 (Quarto)](https://github.com/rformassspectrometry/Metabonaut/blob/main/vignettes/a-end-to-end-untargeted-metabolomics.qmd)
 
 ### 2. [Dataset Investigation](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html)
@@ -52,6 +51,13 @@ While *xcms* is known for its scalability, this guide shows you how to
 practically handle **large-scale dataset processing (\>4,000 files)** on
 standard hardware.
 
+### 7. [Using and Creating Metabolomics Data Annotation Resources](https://rformassspectrometry.github.io/Metabonaut/articles/creating-using-annotation-resources.html)
+
+Learn how to **create and utilize custom metabolomics data annotation
+resources** in R. This vignette guides you through building your own
+annotation databases and integrating them into your analysis workflow.
+We demonstrate by downloading data from GNPS and MassBank libraries.
+
 ------------------------------------------------------------------------
 
 For a full list of all available vignettes, visit the [**Metabonaut
@@ -79,12 +85,12 @@ you’re new to these, we recommend starting with a short tutorial before
 running the vignettes.
 
 - **Learn Quarto (used for vignettes)**: [Quarto
-  Guide](https://quarto.org/docs/guide/)  
+  Guide](https://quarto.org/docs/guide/)
 - **Learn RMarkdown**: [RMarkdown
-  Book](https://bookdown.org/yihui/rmarkdown/)  
-- **Intro to R**: [Learn-R.org](https://learn-r.org/)  
+  Book](https://bookdown.org/yihui/rmarkdown/)
+- **Intro to R**: [Learn-R.org](https://learn-r.org/)
 - **Interactive R course**:
-  [Swirl](https://swirlstats.com/students.html)  
+  [Swirl](https://swirlstats.com/students.html)
 - **Best Practices Cheatsheet**: [GitHub
   Repository](https://github.com/wurli/r-best-practice)
 
@@ -95,8 +101,8 @@ running the vignettes.
 This is just the beginning of our **Metabonaut journey**, and we’re
 actively refining the website. If you’re experiencing any issues:
 
-✅ Ensure you have the latest versions of all required packages.  
-🐛 If the issue persists, report it with a **reproducible example** on
+✅ Ensure you have the latest versions of all required packages. 🐛 If
+the issue persists, report it with a **reproducible example** on
 [**GitHub
 Issues**](https://github.com/rformassspectrometry/Metabonaut/issues).
 
