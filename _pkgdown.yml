@@ -23,7 +23,7 @@ navbar:
       href: articles/SpectriPy-tutorial-metabonaut.html
     - text: 'Large Scale Data Preprocessing with xcms'
       href: articles/large-scale-analysis.html
-    - text: 'Using and Creating Metabolomics Data Annotation Resources'
+    - text: 'Creating and Using Metabolomics Data Annotation Resources'
       href: articles/creating-using-annotation-resources.html
   - text: News
     href: news/index.html
