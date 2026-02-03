@@ -1,6 +1,6 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.4.0
+Version: 1.5.0
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
             email = "philippine.louail@outlook.com",
@@ -30,7 +30,7 @@ Authors@R:
      person(given = "Vilhelm", family = "Suksi",
             email = "vksuks@utu.fi", role = "aut",
             comment = c(ORCID = "0009-0005-1108-518X")),
-     person(given = "Kozo", family= "Nishida", role = "ctb", 
+     person(given = "Kozo", family= "Nishida", role = "ctb",
             comment = c(ORCID = "0000-0001-8501-7319")),
      person(given = "Johannes", family = "Rainer",
             email = "Johannes.Rainer@eurac.edu",
@@ -81,7 +81,11 @@ Suggests:
     MsBackendMgf,
     notame,
     notameStats,
-    notameViz
+    notameViz,
+    stringr,
+    RSQLite,
+    MsBackendMassbank (>= 1.18.1),
+    zen4R
 Remotes:
     RforMassSpectrometry/MsIO
 URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
