@@ -21,3 +21,4 @@ vignettes/images/sitcker_draft.xcf
 *.r
 
 **/*.quarto_ipynb
+vignettes/metabonaut_significant_features.sirius
