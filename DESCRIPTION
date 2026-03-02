@@ -85,14 +85,16 @@ Suggests:
     stringr,
     RSQLite,
     MsBackendMassbank (>= 1.18.1),
+    RuSirius,
     zen4R
 Remotes:
-    RforMassSpectrometry/MsIO
+    RforMassSpectrometry/MsIO,
+    RforMassSpectrometry/RuSirius
 URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
 BugReports: https://github.com/rformassspectrometry/Metabonaut/issues/new
 BiocType: Workflow
 RoxygenNote: 7.3.3
-VignetteBuilder: quarto
+VignetteBuilder: quarto, knitr
 SystemRequirements:
     pandoc,
     python (>= 3.10),

@@ -1,0 +1,292 @@
+---
+title: "Advanced Feature Annotation using RuSirius"
+output:
+  rmarkdown::html_document
+bibliography: advanced-feature-annotation-references.bib
+author:
+  - name: Metabonaut Developers
+vignette: >
+  %\VignetteIndexEntry{Advanced Feature Annotation using RuSirius}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{RuSirius,Spectra}
+---
+
+<!--
+# Pre-render with (in the vignettes folder)
+knitr::knit("advanced_feature_annotation_with_RuSirius.Rmd.orig", output = "advanced_feature_annotation_with_RuSirius.Rmd")
+-->
+
+```{r vignette-setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  fig.path = "figures/rusirius-"
+)
+```
+
+**Note**: this vignette is
+[**pre-computed**](https://ropensci.org/blog/2019/12/08/precompute-vignettes/).
+See the session info for information on packages used and the date the vignette
+was rendered. The vignette requires a running
+[Sirius](https://bio.informatik.uni-jena.de/software/sirius/) instance and
+a Sirius account for structure database searches. To reproduce this analysis,
+you will need to log in to your own Sirius account (see the
+[Prerequisites](#prerequisites) section below). This vignette was pre-rendered
+using the authors' Sirius account; users must provide their own credentials.
+
+# Introduction
+
+In the main end-to-end LC-MS/MS untargeted metabolomics workflow, we
+successfully preprocessed our data, performed statistical analysis, and
+identified features with significant differences in abundance. However, matching
+the MS1 and MS2 spectra directly against the MassBank database only confidently
+annotated a single feature (caffeine).
+
+As noted previously, this low proportion of annotated signals is common, and
+external software tools such as SIRIUS can be excellent alternatives for
+structure elucidation. SIRIUS uses sophisticated algorithms to predict molecular
+formulas and structures *de novo* from isotope patterns and fragmentation trees.
+
+This vignette will demonstrate how to seamlessly continue your `metabonaut`
+analysis by passing your unannotated significant features into Sirius using the
+`RuSirius` R package.
+
+# Prerequisites
+
+To run this workflow interactively, you must have:
+
+1. **Sirius 6.3** installed and running on your system.
+2. The `RuSirius` package installed and loaded.
+3. A **Sirius account** (free registration at
+   [bright-giant.com](https://bright-giant.com/)) — required for structure
+   database searches.
+
+```{r packages-used, message = FALSE, warning = FALSE}
+library(RuSirius)
+library(Spectra)
+```
+
+# Loading Previous Data
+
+In the end-to-end workflow, we isolated the MS2 spectra for all significant
+features, concatenated them into a single `Spectra` object, and saved them to
+disk. We will load this exact object to begin our advanced annotation.
+
+```{r load-data}
+#' Load the Spectra object containing MS2 scans of significant features
+load(system.file("extdata", "spectra_significant_fts.RData",
+                 package = "Metabonaut"))
+
+#' Verify the loaded object
+ms2_ctr_fts
+```
+
+Each spectrum in this object already contains a `feature_id` variable that links
+it back to our main `XcmsExperiment` results.
+
+# Connecting to Sirius and Importing Data
+
+We start by establishing a connection to the Sirius application using the
+`Sirius()` function. We will create a new project dedicated to annotating these
+specific features.
+
+```{r start-sirius}
+#' Initialize the Sirius connection and create a new project
+srs <- Sirius(projectId = "metabonaut_significant_features", path = getwd())
+
+#' Check connection status
+checkConnection(srs)
+```
+
+If you have not already logged in during the `Sirius()` call (by passing
+`username` and `password` arguments), you must log in before running any
+structure database searches:
+
+```{r login}
+#' Log in to your Sirius account
+srs <- logIn(srs,
+             username = "your_email@example.com",
+             password = "your_password")
+```
+
+Next, we import our `Spectra` object into the Sirius project. We map the
+`ms_column_name` parameter to `"feature_id"` so that Sirius uses our existing
+feature names.
+
+```{r data-import}
+#' Import the MS2 spectra into Sirius
+srs <- import(
+    sirius = srs,
+    spectra = ms2_ctr_fts,
+    ms_column_name = "feature_id",
+    deleteExistingFeatures = TRUE
+)
+
+#' View summary of imported features
+head(featuresInfo(srs))
+```
+
+# Running Sirius Computations
+
+With the data imported, we can submit a job to Sirius. We will ask Sirius to:
+
+1. Identify candidate molecular formulas (`formulaIdParams`).
+2. Predict the compound class (`predictParams`).
+3. Search structure databases for candidate structures
+   (`structureDbSearchParams`).
+
+Because our samples are human serum/plasma analyzed in positive polarity, we
+expect protonated ions (`[M+H]+`), sodium adducts (`[M+Na]+`), and ammonium
+adducts (`[M+H-NH3]+`). We supply these as our fallback adducts.
+
+```{r run-job}
+#' Submit the annotation job
+job_id <- run(
+    srs,
+    fallbackAdducts = c("[M+H]+", "[M+Na]+", "[M+H-NH3]+"),
+    formulaIdParams = formulaIdParam(
+        numberOfCandidates = 5,
+        instrument = "QTOF",
+        massAccuracyMS2ppm = 10
+    ),
+    predictParams = predictParam(),
+    structureDbSearchParams = structureDbSearchParam(
+        structureSearchDbs = c("BIO")
+    ),
+    recompute = TRUE,
+    wait = TRUE
+)
+
+#' Optional: Print job info if you want to verify successful completion
+jobInfo(srs, job_id)
+```
+
+*Tip: If you want to explore the data visually while or after it processes, you
+can use `openGUI(srs)` to launch the Sirius graphical interface!*
+
+# Retrieving and Interpreting Results
+
+Once the computation is complete, we can extract the structural and formula
+predictions back into R for downstream analysis.
+
+### High-Level Summary
+
+The `summary()` function provides a quick overview of the top formulas,
+structures, and compound classes predicted for each feature. Pay close attention
+to the confidence scores.
+
+```{r get-summary}
+summary_results <- summary(sirius = srs, result.type = "structure")
+head(summary_results)
+```
+
+### Detailed Structure Database Search Results
+
+To dive deeper into the top structural candidates for a specific formula, we use
+the `results()` function. We will extract the top 2 structures for the top 3
+formulas per feature as a data frame.
+
+```{r get-detailed-struct}
+structure_hits <- results(
+    srs,
+    return.type = "data.frame",
+    result.type = "structureDb",
+    topFormula = 3,
+    topStructure = 2
+)
+
+head(structure_hits)
+```
+
+You can seamlessly merge these results back into your `rowData(res)` from the
+main workflow using the `feature_id` to complement your differential abundance
+statistics with high-confidence structural predictions.
+
+### Compound Class Predictions
+
+Sometimes Sirius cannot confidently predict an exact structure, but it can
+accurately determine the broader compound class (e.g., "Amino acids and
+derivatives" or "Lipids").
+
+```{r get-classes}
+class_predictions <- results(
+    srs,
+    return.type = "data.frame",
+    result.type = "compoundClass",
+    topFormula = 1
+)
+
+head(class_predictions)
+```
+
+# Clean Up
+
+Once you have saved your results to your R environment, it is good practice to
+cleanly shut down the Sirius connection.
+
+```{r shutdown}
+#' Close the project and shut down the Sirius connection
+shutdown(srs)
+```
+
+# Summary
+
+By integrating `RuSirius` into the `metabonaut` workflow, we easily transitioned
+from unresolved MS2 spectra to powerful structural predictions. This bridges the
+gap between raw statistical feature discovery and biological interpretation,
+allowing you to annotate features that simple spectral library matching might
+miss.
+
+
+# References and Acknowledgements
+
+This vignette relies on the
+[SIRIUS](https://bio.informatik.uni-jena.de/software/sirius/) software suite
+developed by the [Böcker Lab](https://bio.informatik.uni-jena.de/) at
+Friedrich-Schiller-Universität Jena and [Bright Giant
+GmbH](https://bright-giant.com/). SIRIUS integrates several algorithms for
+metabolite annotation from high-resolution mass spectrometry data. When using
+SIRIUS and the tools accessed through this workflow, please cite the following
+references:
+
+- **SIRIUS** — fragmentation tree computation and molecular formula
+  identification [@duhrkop_sirius_2019].
+
+- **CSI:FingerID** — molecular structure database search
+  [@duhrkop_csifingerid_2015].
+
+- **COSMIC** — confidence scoring for structural annotations
+  [@hoffmann_cosmic_2022].
+
+- **CANOPUS** — compound class prediction from fragmentation spectra
+  [@duhrkop_canopus_2021].
+
+- **ZODIAC** — molecular formula re-ranking using Gibbs sampling
+  [@ludwig_zodiac_2020].
+
+- **MSNovelist** — *de novo* structure generation from mass spectra
+  [@stravs_msnovelist_2022].
+
+The R interface to SIRIUS is provided by the
+[RuSirius](https://github.com/RforMassSpectrometry/RuSirius) package (Louail
+*et al.*), which is built upon the
+[RSirius](https://github.com/sirius-ms/sirius-client-openAPI/tree/master/client-api_r)
+REST API library. Special thanks to Markus Fleischauer for his work on the
+Sirius SDKs, Jonas Emmert for making the R API usable, and Marcus Ludwig for
+support in implementing RuSirius.
+
+# Session information
+
+The R code was run on:
+
+```{r}
+date()
+```
+
+Information on the R session:
+
+```{r}
+sessionInfo()
+```
