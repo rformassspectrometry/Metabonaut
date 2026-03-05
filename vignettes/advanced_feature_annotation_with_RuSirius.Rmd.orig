@@ -89,12 +89,17 @@ it back to our main `XcmsExperiment` results.
 # Connecting to Sirius and Importing Data
 
 We start by establishing a connection to the Sirius application using the
-`Sirius()` function. We will create a new project dedicated to annotating these
-specific features.
+`Sirius()` function. This function will either connect to a running *Sirius*
+instance, or start a new one and connect to that. Parameter `port` used below
+allows to configure to *Sirius* application to use a particular port, but
+generally the function can be used without specifying a port.
+
+We will create a new project dedicated to annotating these specific features.
 
 ```{r start-sirius}
 #' Initialize the Sirius connection and create a new project
-srs <- Sirius(projectId = "metabonaut_significant_features", path = getwd())
+srs <- Sirius(projectId = "metabonaut_significant_features",
+              path = getwd(), port = 9999)
 
 #' Check connection status
 checkConnection(srs)
