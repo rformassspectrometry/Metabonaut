@@ -8,7 +8,7 @@ LABEL name="rformassspectrometry/Metabonaut" \
 
 WORKDIR /home/rstudio
 
-COPY --chown=rstudio:rstudio . /home/rstudio/
+COPY --chown=rstudio:rstudio --exclude=./scripts/* . /home/rstudio/
 
 ## Global installation of required packages
 ## Need MsBackendMetaboLights to pre-download the dataset.
@@ -29,6 +29,9 @@ USER rstudio
 
 RUN Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
 
+## Temporarily install SpectriPy from github
+RUN Rscript -e "BiocManager::install('RforMassSpectrometry/SpectriPy', ref = 'RELEASE_3_22', ask = FALSE, force = FALSE)"
+
 ## Install the current package with vignettes
 RUN Rscript -e "devtools::install('.', dependencies = c('Depends', 'Imports'), type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
 
@@ -46,6 +49,9 @@ RUN wget -nv https://github.com/sirius-ms/sirius/releases/download/v6.3.3/sirius
     chown -R rstudio:rstudio sirius && \
     ln -s /home/rstudio/sirius/bin/sirius /usr/local/bin/sirius && \
     echo "export PATH=/home/rstudio/sirius/bin:$PATH" >> /home/rstudio/.bashrc
+
+COPY ./scripts/sirius-init.sh /etc/cont-init.d/03_sirius
+RUN chmod a+x /etc/cont-init.d/03_sirius
 
 ## Install RuSirius (R interface to Sirius) for interactive use
 RUN Rscript -e "BiocManager::install('RforMassSpectrometry/RuSirius', ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"

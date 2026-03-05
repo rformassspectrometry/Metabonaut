@@ -81,13 +81,7 @@ ms2_ctr_fts
 #>     <integer> <numeric> <integer>
 #> 1           2   147.357      2043
 #> 2           2   148.587      2061
-#> 3           2   149.817      2079
-#> 4           2   152.297      2115
-#> 5           2   147.376      2041
 #> ...       ...       ...       ...
-#> 311         2   178.082      2481
-#> 312         2   179.322      2499
-#> 313         2   180.572      2517
 #> 314         2   181.822      2535
 #> 315         2   183.072      2553
 #>  ... 39 more variables/columns.
@@ -104,13 +98,18 @@ it back to our main `XcmsExperiment` results.
 # Connecting to Sirius and Importing Data
 
 We start by establishing a connection to the Sirius application using the
-`Sirius()` function. We will create a new project dedicated to annotating these
-specific features.
+`Sirius()` function. This function will either connect to a running *Sirius*
+instance, or start a new one and connect to that. Parameter `port` used below
+allows to configure to *Sirius* application to use a particular port, but
+generally the function can be used without specifying a port.
+
+We will create a new project dedicated to annotating these specific features.
 
 
 ``` r
 #' Initialize the Sirius connection and create a new project
-srs <- Sirius(projectId = "metabonaut_significant_features", path = getwd())
+srs <- Sirius(projectId = "metabonaut_significant_features",
+              path = getwd(), port = 9999)
 #> Found SIRIUS in PATH! Using this information to start the application.
 #> SIRIUS was started without specifying --port (-p), trying to find the sirius.port file.
 
@@ -122,6 +121,7 @@ checkConnection(srs)
 If you have not already logged in during the `Sirius()` call (by passing
 `username` and `password` arguments), you must log in before running any
 structure database searches:
+
 
 ``` r
 #' Log in to your Sirius account
@@ -146,18 +146,18 @@ srs <- import(
 
 #' View summary of imported features
 head(featuresInfo(srs))
-#>      alignedFeatureId     compoundId           externalFeatureId ionMass  charge
-#> [1,] "814508514505544989" "814508514476184856" "FT0371"          138.0548 1
-#> [2,] "814508514547488030" "814508514476184857" "FT0565"          161.0401 1
-#> [3,] "814508514589431071" "814508514476184858" "FT0732"          182.0748 1
-#> [4,] "814508514614596896" "814508514476184859" "FT0845"          195.0877 1
-#> [5,] "814508514627179809" "814508514476184860" "FT1171"          229.1299 1
-#>      detectedAdducts hasMs1 hasMsMs computing
-#> [1,] list,1          FALSE  TRUE    FALSE
-#> [2,] list,1          FALSE  TRUE    FALSE
-#> [3,] list,1          FALSE  TRUE    FALSE
-#> [4,] list,1          FALSE  TRUE    FALSE
-#> [5,] list,1          FALSE  TRUE    FALSE
+#>      alignedFeatureId     compoundId           externalFeatureId ionMass
+#> [1,] "817374840184846592" "817374840172263675" "FT0371"          138.0548
+#> [2,] "817374840205818113" "817374840172263676" "FT0565"          161.0401
+#> [3,] "817374840218401026" "817374840172263677" "FT0732"          182.0748
+#> [4,] "817374840239372547" "817374840172263678" "FT0845"          195.0877
+#> [5,] "817374840251955460" "817374840172263679" "FT1171"          229.1299
+#>      charge detectedAdducts hasMs1 hasMsMs computing
+#> [1,] 1      list,1          FALSE  TRUE    FALSE
+#> [2,] 1      list,1          FALSE  TRUE    FALSE
+#> [3,] 1      list,1          FALSE  TRUE    FALSE
+#> [4,] 1      list,1          FALSE  TRUE    FALSE
+#> [5,] 1      list,1          FALSE  TRUE    FALSE
 ```
 
 # Running Sirius Computations
@@ -194,7 +194,7 @@ job_id <- run(
 
 #' Optional: Print job info if you want to verify successful completion
 jobInfo(srs, job_id)
-#> [1] "Job ID: 1\n\nCommand: \n--IsotopeSettings.filter=true\n--InjectSpectralLibraryMatchFormulas.minPeakMatchesToInject=6\n--FormulaSettings.enforced=HCNOP\n--InjectSpectralLibraryMatchFormulas.injectFormulas=true\n--TagStructuresByElGordo=true\n--AdductSettings.detectable=[M+H3N+H]+,[M-H4O2+H]+,[M-H2O-H]-,[M-H3N-H]-,[M+Cl]-,[2M+K]+,[M+K]+,[2M+Cl]-,[M+C2H4O2-H]-,[M+H]+,[2M+H]+,[M-CH3-H]-,[M-H]-,[M+Na]+,[M-H2O+H]+\n--RecomputeResults=true\n--UseHeuristic.useHeuristicAboveMz=300\n--IsotopeMs2Settings=IGNORE\n--MS2MassDeviation.allowedMassDeviation=10.0ppm\n--FormulaSearchSettings.applyFormulaConstraintsToDatabaseCandidates=false\n--EnforceElGordoFormula=true\n--NumberOfCandidatesPerIonization=1\n--AdductSettings.fallback=[M+H]+,[M+Na]+,[M+H-NH3]+\n--FormulaSearchSettings.performBottomUpAboveMz=0.0\n--FormulaSettings.fallback=S\n--FormulaSearchSettings.applyFormulaConstraintsToBottomUp=false\n--UseHeuristic.useOnlyHeuristicAboveMz=650\n--ExpansiveSearchConfidenceMode.confidenceScoreSimilarityMode=APPROXIMATE\n--InjectSpectralLibraryMatchFormulas.minScoreToInject=0.7\n--FormulaSearchDB=\n--FormulaResultThreshold=true\n--InjectSpectralLibraryMatchFormulas.alwaysPredict=false\n--FormulaSettings.detectable=B,S,Cl,Se,Br\n--NumberOfCandidates=5\nformulas\nfingerprints\nclasses\nstructures\n\nProgress:\n   State: DONE\n   Current Progress: 2650\n   Max Progress: 2650\n\nAffected Compound IDs:\n   814508514476184860, 814508514476184859, 814508514476184858, 814508514476184857, 814508514476184856\n\nAffected Aligned Feature IDs:\n814508514627179809\n814508514614596896\n814508514589431071\n814508514547488030\n814508514505544989\n"
+#> [1] "Job ID: 1\n\nCommand: \n--IsotopeSettings.filter=true\n--InjectSpectralLibraryMatchFormulas.minPeakMatchesToInject=6\n--FormulaSettings.enforced=HCNOP\n--InjectSpectralLibraryMatchFormulas.injectFormulas=true\n--TagStructuresByElGordo=true\n--AdductSettings.detectable=[M+H3N+H]+,[M-H4O2+H]+,[M-H2O-H]-,[M-H3N-H]-,[M+Cl]-,[2M+K]+,[M+K]+,[2M+Cl]-,[M+C2H4O2-H]-,[M+H]+,[2M+H]+,[M-CH3-H]-,[M-H]-,[M+Na]+,[M-H2O+H]+\n--RecomputeResults=true\n--UseHeuristic.useHeuristicAboveMz=300\n--IsotopeMs2Settings=IGNORE\n--MS2MassDeviation.allowedMassDeviation=10.0ppm\n--FormulaSearchSettings.applyFormulaConstraintsToDatabaseCandidates=false\n--EnforceElGordoFormula=true\n--NumberOfCandidatesPerIonization=1\n--AdductSettings.fallback=[M+H]+,[M+Na]+,[M+H-NH3]+\n--FormulaSearchSettings.performBottomUpAboveMz=0.0\n--FormulaSettings.fallback=S\n--FormulaSearchSettings.applyFormulaConstraintsToBottomUp=false\n--UseHeuristic.useOnlyHeuristicAboveMz=650\n--ExpansiveSearchConfidenceMode.confidenceScoreSimilarityMode=APPROXIMATE\n--InjectSpectralLibraryMatchFormulas.minScoreToInject=0.7\n--FormulaSearchDB=\n--FormulaResultThreshold=true\n--InjectSpectralLibraryMatchFormulas.alwaysPredict=false\n--FormulaSettings.detectable=B,S,Cl,Se,Br\n--NumberOfCandidates=5\nformulas\nfingerprints\nclasses\nstructures\n\nProgress:\n   State: DONE\n   Current Progress: 2650\n   Max Progress: 2650\n\nAffected Compound IDs:\n   817374840172263679, 817374840172263678, 817374840172263677, 817374840172263676, 817374840172263675\n\nAffected Aligned Feature IDs:\n817374840251955460\n817374840239372547\n817374840218401026\n817374840205818113\n817374840184846592\n"
 ```
 
 *Tip: If you want to explore the data visually while or after it processes, you
@@ -215,66 +215,78 @@ to the confidence scores.
 ``` r
 summary_results <- summary(sirius = srs, result.type = "structure")
 head(summary_results)
-#>     alignedFeatureId         compoundId externalFeatureId  ionMass charge hasMs1 hasMsMs
-#> 1 814508514505544989 814508514476184856            FT0371 138.0548      1  FALSE    TRUE
-#> 2 814508514547488030 814508514476184857            FT0565 161.0401      1  FALSE    TRUE
-#> 3 814508514589431071 814508514476184858            FT0732 182.0748      1  FALSE    TRUE
-#> 4 814508514614596896 814508514476184859            FT0845 195.0877      1  FALSE    TRUE
-#> 5 814508514627179809 814508514476184860            FT1171 229.1299      1  FALSE    TRUE
-#>            formulaId molecularFormula    adduct rank siriusScoreNormalized siriusScore
-#> 1 814508534659175721          C7H7NO2  [M + H]+    3            0.04957077    20.13407
-#> 2 814508534675952943        C4H5BFNO4  [M + H]+    1            0.50000000    69.24605
-#> 3 814508534717896007       C5H9F2N3O2  [M + H]+    1            0.49968135   112.21981
-#> 4 814508534684341560        C8H10N4O2  [M + H]+    1            0.48622197    68.84529
-#> 5 814508534709507394        C12H18N2O [M + Na]+    2            0.08134845     5.47353
-#>   isotopeScore treeScore       inchiKey                           smiles
-#> 1            0  20.13407 VOCKNCWQVHJMAE               COC1=NC=CC(=C1)C=O
-#> 2            0  69.24605           <NA>                             <NA>
-#> 3            0 112.21981 GWRLHZIGYXCDKL             C(CF)NC(=O)N(CCF)N=O
-#> 4            0  68.84529 RYYVLZVUVIJVGH     CN1C=NC2=C1C(=O)N(C(=O)N2C)C
-#> 5            0   5.47353 HBIDZSUDZACENV CC(=CCCC(=CCC(=O)C=[N+]=[N-])C)C
+#>     alignedFeatureId         compoundId externalFeatureId  ionMass charge
+#> 1 817374840184846592 817374840172263675            FT0371 138.0548      1
+#> 2 817374840205818113 817374840172263676            FT0565 161.0401      1
+#> 3 817374840218401026 817374840172263677            FT0732 182.0748      1
+#> 4 817374840239372547 817374840172263678            FT0845 195.0877      1
+#> 5 817374840251955460 817374840172263679            FT1171 229.1299      1
+#>   hasMs1 hasMsMs          formulaId molecularFormula    adduct rank
+#> 1  FALSE    TRUE 817374847399049490          C7H7NO2  [M + H]+    3
+#> 2  FALSE    TRUE 817374847843645729        C4H5BFNO4  [M + H]+    1
+#> 3  FALSE    TRUE 817374849072576810       C5H9F2N3O2  [M + H]+    1
+#> 4  FALSE    TRUE 817374847713622296        C8H10N4O2  [M + H]+    1
+#> 5  FALSE    TRUE 817374847281608971        C12H18N2O [M + Na]+    2
+#>   siriusScoreNormalized siriusScore isotopeScore treeScore       inchiKey
+#> 1            0.04957077    20.13407            0  20.13407 VOCKNCWQVHJMAE
+#> 2            0.50000000    69.24605            0  69.24605           <NA>
+#> 3            0.49968135   112.21981            0 112.21981 GWRLHZIGYXCDKL
+#> 4            0.48622197    68.84529            0  68.84529 RYYVLZVUVIJVGH
+#> 5            0.08134845     5.47353            0   5.47353 HBIDZSUDZACENV
+#>                             smiles
+#> 1               COC1=NC=CC(=C1)C=O
+#> 2                             <NA>
+#> 3             C(CF)NC(=O)N(CCF)N=O
+#> 4     CN1C=NC2=C1C(=O)N(C(=O)N2C)C
+#> 5 CC(=CCCC(=CCC(=O)C=[N+]=[N-])C)C
 #>                                   structureName      xlogP rank.1   csiScore
 #> 1                   2-Methoxyisonicotinaldehyde  0.9654924      1  -75.15435
 #> 2                                          <NA>         NA     NA         NA
 #> 3                   Bis(fluoroethyl)nitrosourea  0.8681960      1 -152.63122
 #> 4                                         Thein -0.1085821      1  -12.05606
 #> 5 (4E)-1-Diazo-5,9-dimethyl-4,8-decadiene-2-one  3.4000000      1 -125.16005
-#>   tanimotoSimilarity mcesDistToTopHit type   level levelIndex                     name
-#> 1          0.2592593                0  NPC PATHWAY          0                Alkaloids
-#> 2                 NA               NA  NPC PATHWAY          0 Amino acids and Peptides
-#> 3          0.3125000                0  NPC PATHWAY          0                Alkaloids
-#> 4          0.9743590                0  NPC PATHWAY          0                Alkaloids
-#> 5          0.3018868                0  NPC PATHWAY          0               Terpenoids
-#>                         description id probability index type.1    level.1 levelIndex.1
-#> 1                Pathway: Alkaloids  0   0.5230578     0    NPC SUPERCLASS            1
-#> 2 Pathway: Amino acids and Peptides  1   0.8786789     1    NPC SUPERCLASS            1
-#> 3                Pathway: Alkaloids  0   0.1652622     0    NPC SUPERCLASS            1
-#> 4                Pathway: Alkaloids  0   0.9989780     0    NPC SUPERCLASS            1
-#> 5               Pathway: Terpenoids  6   0.5267499     6    NPC SUPERCLASS            1
-#>                             name.1                                description.1 id.1
-#> 1         Nicotinic acid alkaloids         Superclass: Nicotinic acid alkaloids   44
-#> 2                   Small peptides                   Superclass: Small peptides   63
-#> 3                   Small peptides                   Superclass: Small peptides   63
-#> 4 Pseudoalkaloids (transamidation) Superclass: Pseudoalkaloids (transamidation)   59
-#> 5                 Sesquiterpenoids                 Superclass: Sesquiterpenoids   61
-#>   probability.1 index.1 type.2 level.2 levelIndex.2              name.2
-#> 1     0.6076760      44    NPC   CLASS            2  Pyridine alkaloids
-#> 2     0.8957072      63    NPC   CLASS            2          Aminoacids
-#> 3     0.1016899      63    NPC   CLASS            2 Imidazole alkaloids
-#> 4     0.9999007      59    NPC   CLASS            2    Purine alkaloids
-#> 5     0.1907384      61    NPC   CLASS            2 Terpenoid alkaloids
-#>                description.2 id.2 probability.2 index.2 confidenceExactMatch
-#> 1  Class: Pyridine alkaloids  602    0.60770983     602           0.06000814
-#> 2          Class: Aminoacids  109    0.93744338     109                   NA
-#> 3 Class: Imidazole alkaloids  399    0.08924162     399           0.02842510
-#> 4    Class: Purine alkaloids  597    0.99996340     597           0.67976562
-#> 5 Class: Terpenoid alkaloids  682    0.15184069     682           0.03929589
-#>   confidenceApproxMatch expansiveSearchState computing
-#> 1            0.06000814                  OFF     FALSE
-#> 2                    NA                 <NA>     FALSE
-#> 3            0.02842510                  OFF     FALSE
-#> 4            0.89135261                  OFF     FALSE
-#> 5            0.03929589          APPROXIMATE     FALSE
+#>   tanimotoSimilarity mcesDistToTopHit type   level levelIndex
+#> 1          0.2592593                0  NPC PATHWAY          0
+#> 2                 NA               NA  NPC PATHWAY          0
+#> 3          0.3125000                0  NPC PATHWAY          0
+#> 4          0.9743590                0  NPC PATHWAY          0
+#> 5          0.3018868                0  NPC PATHWAY          0
+#>                       name                       description id probability
+#> 1                Alkaloids                Pathway: Alkaloids  0   0.5230578
+#> 2 Amino acids and Peptides Pathway: Amino acids and Peptides  1   0.8786789
+#> 3                Alkaloids                Pathway: Alkaloids  0   0.1652622
+#> 4                Alkaloids                Pathway: Alkaloids  0   0.9989780
+#> 5               Terpenoids               Pathway: Terpenoids  6   0.5267499
+#>   index type.1    level.1 levelIndex.1                           name.1
+#> 1     0    NPC SUPERCLASS            1         Nicotinic acid alkaloids
+#> 2     1    NPC SUPERCLASS            1                   Small peptides
+#> 3     0    NPC SUPERCLASS            1                   Small peptides
+#> 4     0    NPC SUPERCLASS            1 Pseudoalkaloids (transamidation)
+#> 5     6    NPC SUPERCLASS            1                 Sesquiterpenoids
+#>                                  description.1 id.1 probability.1 index.1
+#> 1         Superclass: Nicotinic acid alkaloids   44     0.6076760      44
+#> 2                   Superclass: Small peptides   63     0.8957072      63
+#> 3                   Superclass: Small peptides   63     0.1016899      63
+#> 4 Superclass: Pseudoalkaloids (transamidation)   59     0.9999007      59
+#> 5                 Superclass: Sesquiterpenoids   61     0.1907384      61
+#>   type.2 level.2 levelIndex.2              name.2              description.2
+#> 1    NPC   CLASS            2  Pyridine alkaloids  Class: Pyridine alkaloids
+#> 2    NPC   CLASS            2          Aminoacids          Class: Aminoacids
+#> 3    NPC   CLASS            2 Imidazole alkaloids Class: Imidazole alkaloids
+#> 4    NPC   CLASS            2    Purine alkaloids    Class: Purine alkaloids
+#> 5    NPC   CLASS            2 Terpenoid alkaloids Class: Terpenoid alkaloids
+#>   id.2 probability.2 index.2 confidenceExactMatch confidenceApproxMatch
+#> 1  602    0.60770983     602           0.06000814            0.06000814
+#> 2  109    0.93744338     109                   NA                    NA
+#> 3  399    0.08924162     399           0.02842510            0.02842510
+#> 4  597    0.99996340     597           0.67976562            0.89135261
+#> 5  682    0.15184069     682           0.03929589            0.03929589
+#>   expansiveSearchState computing
+#> 1                  OFF     FALSE
+#> 2                 <NA>     FALSE
+#> 3                  OFF     FALSE
+#> 4                  OFF     FALSE
+#> 5          APPROXIMATE     FALSE
 ```
 
 ### Detailed Structure Database Search Results
@@ -294,34 +306,41 @@ structure_hits <- results(
 )
 
 head(structure_hits)
-#>            formulaId molecularFormula         adduct rank.x siriusScoreNormalized siriusScore
-#> 1 814508534659175719       C4H10ClN2O       [M + H]+      1            0.42161537    22.27476
-#> 2 814508534659175720       C4H13ClN3O [M - H3N + H]+      2            0.42161537    22.27476
-#> 3 814508534659175721          C7H7NO2       [M + H]+      3            0.04957077    20.13407
-#> 4 814508534659175721          C7H7NO2       [M + H]+      3            0.04957077    20.13407
-#> 5 814508534675952943        C4H5BFNO4       [M + H]+     NA            0.50000000    69.24605
-#> 6 814508534675952944       C4H8BFN2O4 [M - H3N + H]+     NA            0.50000000    69.24605
-#>   isotopeScore treeScore xcms_fts       inchiKey               smiles
-#> 1            0  22.27476   FT0371           <NA>                 <NA>
-#> 2            0  22.27476   FT0371           <NA>                 <NA>
-#> 3            0  20.13407   FT0371 VOCKNCWQVHJMAE   COC1=NC=CC(=C1)C=O
-#> 4            0  20.13407   FT0371 REYSBWKWFPSDDR CC(=O)C1=C(C=NC=C1)O
-#> 5            0  69.24605   FT0565           <NA>                 <NA>
-#> 6            0  69.24605   FT0565           <NA>                 <NA>
-#>                       structureName     xlogP rank.y  csiScore tanimotoSimilarity
-#> 1                              <NA>        NA     NA        NA                 NA
-#> 2                              <NA>        NA     NA        NA                 NA
-#> 3       2-Methoxyisonicotinaldehyde 0.9654924      1 -75.15435          0.2592593
-#> 4 1-(3-Hydroxypyridin-4-yl)ethanone 0.7000000      2 -84.18843          0.3157895
-#> 5                              <NA>        NA     NA        NA                 NA
-#> 6                              <NA>        NA     NA        NA                 NA
-#>   mcesDistToTopHit         sirius_fts rank
-#> 1               NA 814508514505544989   NA
-#> 2               NA 814508514505544989   NA
-#> 3                0 814508514505544989   NA
-#> 4              Inf 814508514505544989   NA
-#> 5               NA 814508514547488030    1
-#> 6               NA 814508514547488030    2
+#>            formulaId molecularFormula         adduct rank.x
+#> 1 817374847399049488       C4H10ClN2O       [M + H]+      1
+#> 2 817374847399049489       C4H13ClN3O [M - H3N + H]+      2
+#> 3 817374847399049490          C7H7NO2       [M + H]+      3
+#> 4 817374847399049490          C7H7NO2       [M + H]+      3
+#> 5 817374847843645729        C4H5BFNO4       [M + H]+     NA
+#> 6 817374847843645730       C4H8BFN2O4 [M - H3N + H]+     NA
+#>   siriusScoreNormalized siriusScore isotopeScore treeScore xcms_fts
+#> 1            0.42161537    22.27476            0  22.27476   FT0371
+#> 2            0.42161537    22.27476            0  22.27476   FT0371
+#> 3            0.04957077    20.13407            0  20.13407   FT0371
+#> 4            0.04957077    20.13407            0  20.13407   FT0371
+#> 5            0.50000000    69.24605            0  69.24605   FT0565
+#> 6            0.50000000    69.24605            0  69.24605   FT0565
+#>         inchiKey               smiles                     structureName
+#> 1           <NA>                 <NA>                              <NA>
+#> 2           <NA>                 <NA>                              <NA>
+#> 3 VOCKNCWQVHJMAE   COC1=NC=CC(=C1)C=O       2-Methoxyisonicotinaldehyde
+#> 4 REYSBWKWFPSDDR CC(=O)C1=C(C=NC=C1)O 1-(3-Hydroxypyridin-4-yl)ethanone
+#> 5           <NA>                 <NA>                              <NA>
+#> 6           <NA>                 <NA>                              <NA>
+#>       xlogP rank.y  csiScore tanimotoSimilarity mcesDistToTopHit
+#> 1        NA     NA        NA                 NA               NA
+#> 2        NA     NA        NA                 NA               NA
+#> 3 0.9654924      1 -75.15435          0.2592593                0
+#> 4 0.7000000      2 -84.18843          0.3157895              Inf
+#> 5        NA     NA        NA                 NA               NA
+#> 6        NA     NA        NA                 NA               NA
+#>           sirius_fts rank
+#> 1 817374840184846592   NA
+#> 2 817374840184846592   NA
+#> 3 817374840184846592   NA
+#> 4 817374840184846592   NA
+#> 5 817374840205818113    1
+#> 6 817374840205818113    2
 ```
 
 You can seamlessly merge these results back into your `rowData(res)` from the
@@ -344,27 +363,27 @@ class_predictions <- results(
 )
 
 head(class_predictions)
-#>            formulaId molecularFormula   adduct rank siriusScoreNormalized siriusScore
-#> 1 814508534659175719       C4H10ClN2O [M + H]+    1             0.4216154    22.27476
-#> 2 814508534659175719       C4H10ClN2O [M + H]+    1             0.4216154    22.27476
-#> 3 814508534659175719       C4H10ClN2O [M + H]+    1             0.4216154    22.27476
-#> 4 814508534659175719       C4H10ClN2O [M + H]+    1             0.4216154    22.27476
-#> 5 814508534659175719       C4H10ClN2O [M + H]+    1             0.4216154    22.27476
-#> 6 814508534659175719       C4H10ClN2O [M + H]+    1             0.4216154    22.27476
-#>   isotopeScore treeScore xcms_fts           section       type      level levelIndex
-#> 1            0  22.27476   FT0371        npcPathway        NPC    PATHWAY          0
-#> 2            0  22.27476   FT0371     npcSuperclass        NPC SUPERCLASS          1
-#> 3            0  22.27476   FT0371          npcClass        NPC      CLASS          2
-#> 4            0  22.27476   FT0371 classyFireLineage ClassyFire    Kingdom          1
-#> 5            0  22.27476   FT0371 classyFireLineage ClassyFire Superclass          2
-#> 6            0  22.27476   FT0371 classyFireLineage ClassyFire      Class          3
-#>                         name
-#> 1                  Alkaloids
-#> 2        Ornithine alkaloids
-#> 3    Halogenated fatty acids
-#> 4          Organic compounds
-#> 5 Organic nitrogen compounds
-#> 6   Organonitrogen compounds
+#>            formulaId molecularFormula   adduct rank siriusScoreNormalized
+#> 1 817374847399049488       C4H10ClN2O [M + H]+    1             0.4216154
+#> 2 817374847399049488       C4H10ClN2O [M + H]+    1             0.4216154
+#> 3 817374847399049488       C4H10ClN2O [M + H]+    1             0.4216154
+#> 4 817374847399049488       C4H10ClN2O [M + H]+    1             0.4216154
+#> 5 817374847399049488       C4H10ClN2O [M + H]+    1             0.4216154
+#> 6 817374847399049488       C4H10ClN2O [M + H]+    1             0.4216154
+#>   siriusScore isotopeScore treeScore xcms_fts           section       type
+#> 1    22.27476            0  22.27476   FT0371        npcPathway        NPC
+#> 2    22.27476            0  22.27476   FT0371     npcSuperclass        NPC
+#> 3    22.27476            0  22.27476   FT0371          npcClass        NPC
+#> 4    22.27476            0  22.27476   FT0371 classyFireLineage ClassyFire
+#> 5    22.27476            0  22.27476   FT0371 classyFireLineage ClassyFire
+#> 6    22.27476            0  22.27476   FT0371 classyFireLineage ClassyFire
+#>        level levelIndex                       name
+#> 1    PATHWAY          0                  Alkaloids
+#> 2 SUPERCLASS          1        Ornithine alkaloids
+#> 3      CLASS          2    Halogenated fatty acids
+#> 4    Kingdom          1          Organic compounds
+#> 5 Superclass          2 Organic nitrogen compounds
+#> 6      Class          3   Organonitrogen compounds
 #>                                                                                                                                                                                                                                                                            description
 #> 1                                                                                                                                                                                                                                                                   Pathway: Alkaloids
 #> 2                                                                                                                                                                                                                                                      Superclass: Ornithine alkaloids
@@ -373,12 +392,12 @@ head(class_predictions)
 #> 5                                                                                                                                                                                                                                        Organic compounds containing a nitrogen atom.
 #> 6                                                                                                                                                                                                                                        Organic compounds containing a nitrogen atom.
 #>     id probability index parentId                 parentName         sirius_fts
-#> 1    0  0.54134756     0       NA                       <NA> 814508514505544989
-#> 2   48  0.10274610    48       NA                       <NA> 814508514505544989
-#> 3  376  0.07766195   376       NA                       <NA> 814508514505544989
-#> 4    0  0.99994910     0  9999999          Chemical entities 814508514505544989
-#> 5 4707  0.99845815  4699        0          Organic compounds 814508514505544989
-#> 6  278  0.99627054   278     4707 Organic nitrogen compounds 814508514505544989
+#> 1    0  0.54134756     0       NA                       <NA> 817374840184846592
+#> 2   48  0.10274610    48       NA                       <NA> 817374840184846592
+#> 3  376  0.07766195   376       NA                       <NA> 817374840184846592
+#> 4    0  0.99994910     0  9999999          Chemical entities 817374840184846592
+#> 5 4707  0.99845815  4699        0          Organic compounds 817374840184846592
+#> 6  278  0.99627054   278     4707 Organic nitrogen compounds 817374840184846592
 ```
 
 # Clean Up
@@ -446,7 +465,7 @@ The R code was run on:
 
 ``` r
 date()
-#> [1] "Wed Feb 25 15:46:59 2026"
+#> [1] "Thu Mar  5 13:36:23 2026"
 ```
 
 Information on the R session:
@@ -454,62 +473,86 @@ Information on the R session:
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31 ucrt)
-#> Platform: x86_64-w64-mingw32/x64
-#> Running under: Windows 11 x64 (build 26200)
+#> R version 4.5.2 (2025-10-31)
+#> Platform: x86_64-pc-linux-gnu
+#> Running under: Arch Linux
 #>
 #> Matrix products: default
-#>   LAPACK version 3.12.1
+#> BLAS:   /home/jo/R/R-4.5.2/lib64/R/lib/libRblas.so
+#> LAPACK: /usr/lib/liblapack.so.3.12.0  LAPACK version 3.12.0
 #>
 #> locale:
-#> [1] LC_COLLATE=English_United Kingdom.utf8  LC_CTYPE=English_United Kingdom.utf8
-#> [3] LC_MONETARY=English_United Kingdom.utf8 LC_NUMERIC=C
-#> [5] LC_TIME=English_United Kingdom.utf8
+#>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C
+#>  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8
+#>  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8
+#>  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C
+#>  [9] LC_ADDRESS=C               LC_TELEPHONE=C
+#> [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C
 #>
-#> time zone: Europe/Paris
-#> tzcode source: internal
+#> time zone: Europe/Rome
+#> tzcode source: system (glibc)
 #>
 #> attached base packages:
-#> [1] stats4    stats     graphics  grDevices utils     datasets  methods   base
+#> [1] stats4    stats     graphics  grDevices utils     datasets  methods
+#> [8] base
 #>
 #> other attached packages:
-#> [1] RuSirius_0.2.3      jsonlite_2.0.0      Spectra_1.20.1      BiocParallel_1.44.0
-#> [5] S4Vectors_0.48.0    BiocGenerics_0.56.0 generics_0.1.4      RSirius_6.3.3
-#> [9] ProtGenerics_1.42.0
+#> [1] RuSirius_0.2.4      jsonlite_2.0.0      Spectra_1.20.1
+#> [4] BiocParallel_1.44.0 S4Vectors_0.48.0    BiocGenerics_0.56.0
+#> [7] generics_0.1.4      RSirius_6.3.3       ProtGenerics_1.42.0
 #>
 #> loaded via a namespace (and not attached):
-#>   [1] tidyselect_1.2.1            dplyr_1.2.0                 farver_2.1.2
-#>   [4] blob_1.3.0                  Biostrings_2.78.0           filelock_1.0.3
-#>   [7] S7_0.2.1                    bitops_1.0-9                fastmap_1.2.0
-#>  [10] lazyeval_0.2.2              RCurl_1.98-1.17             BiocFileCache_3.0.0
-#>  [13] digest_0.6.39               lifecycle_1.0.5             cluster_2.1.8.1
-#>  [16] rsvg_2.7.0                  processx_3.8.6              KEGGREST_1.50.0
-#>  [19] RSQLite_2.4.6               magrittr_2.0.4              compiler_4.5.2
-#>  [22] rlang_1.1.7                 tools_4.5.2                 yaml_2.3.12
-#>  [25] igraph_2.2.2                knitr_1.51                  S4Arrays_1.10.1
-#>  [28] htmlwidgets_1.6.4           curl_7.0.0                  bit_4.6.0
-#>  [31] DelayedArray_0.36.0         plyr_1.8.9                  xml2_1.5.2
-#>  [34] RColorBrewer_1.1-3          abind_1.4-8                 purrr_1.2.1
-#>  [37] grid_4.5.2                  ggplot2_4.0.2               scales_1.4.0
-#>  [40] MASS_7.3-65                 MultiAssayExperiment_1.36.1 SummarizedExperiment_1.40.0
-#>  [43] cli_3.6.5                   crayon_1.5.3                otel_0.2.0
-#>  [46] httr_1.4.8                  reshape2_1.4.5              rjson_0.2.23
-#>  [49] BiocBaseUtils_1.12.0        DBI_1.2.3                   cachem_1.1.0
-#>  [52] stringr_1.6.0               parallel_4.5.2              AnnotationDbi_1.72.0
-#>  [55] BiocManager_1.30.27         XVector_0.50.0              AnnotationFilter_1.34.0
-#>  [58] matrixStats_1.5.0           base64enc_0.1-6             vctrs_0.7.1
-#>  [61] Matrix_1.7-4                IRanges_2.44.0              bit64_4.6.0-1
-#>  [64] clue_0.3-67                 tidyr_1.3.2                 glue_1.8.0
-#>  [67] ps_1.9.1                    codetools_0.2-20            QFeatures_1.20.0
-#>  [70] DT_0.34.0                   stringi_1.8.7               gtable_0.3.6
-#>  [73] BiocVersion_3.22.0          GenomicRanges_1.62.1        tibble_3.3.1
-#>  [76] MetaboAnnotation_1.14.0     pillar_1.11.1               rappdirs_0.3.4
-#>  [79] htmltools_0.5.9             Seqinfo_1.0.0               R6_2.6.1
-#>  [82] dbplyr_2.5.2                httr2_1.2.2                 evaluate_1.0.5
-#>  [85] Biobase_2.70.0              lattice_0.22-7              AnnotationHub_4.0.0
-#>  [88] png_0.1-8                   memoise_2.0.1               MetaboCoreUtils_1.19.2
-#>  [91] Rcpp_1.1.1                  gridExtra_2.3               SparseArray_1.10.8
-#>  [94] CompoundDb_1.14.2           ChemmineR_3.62.0            xfun_0.56
-#>  [97] MsCoreUtils_1.22.1          fs_1.6.6                    MatrixGenerics_1.22.0
-#> [100] pkgconfig_2.0.3
+#>   [1] DBI_1.3.0                   bitops_1.0-9
+#>   [3] MetaboAnnotation_1.14.0     gridExtra_2.3
+#>   [5] httr2_1.2.2                 remotes_2.5.0
+#>   [7] rlang_1.1.7                 magrittr_2.0.4
+#>   [9] clue_0.3-67                 otel_0.2.0
+#>  [11] matrixStats_1.5.0           compiler_4.5.2
+#>  [13] RSQLite_2.4.6               png_0.1-8
+#>  [15] callr_3.7.6                 vctrs_0.7.1
+#>  [17] reshape2_1.4.5              stringr_1.6.0
+#>  [19] crayon_1.5.3                pkgconfig_2.0.3
+#>  [21] MetaboCoreUtils_1.18.1      fastmap_1.2.0
+#>  [23] dbplyr_2.5.2                XVector_0.50.0
+#>  [25] ps_1.9.1                    purrr_1.2.1
+#>  [27] bit_4.6.0                   xfun_0.56
+#>  [29] MultiAssayExperiment_1.36.1 cachem_1.1.0
+#>  [31] ChemmineR_3.62.0            blob_1.3.0
+#>  [33] DelayedArray_0.36.0         parallel_4.5.2
+#>  [35] cluster_2.1.8.2             R6_2.6.1
+#>  [37] stringi_1.8.7               RColorBrewer_1.1-3
+#>  [39] GenomicRanges_1.62.1        Rcpp_1.1.1
+#>  [41] Seqinfo_1.0.0               SummarizedExperiment_1.40.0
+#>  [43] knitr_1.51                  base64enc_0.1-6
+#>  [45] IRanges_2.44.0              BiocBaseUtils_1.12.0
+#>  [47] Matrix_1.7-4                igraph_2.2.2
+#>  [49] tidyselect_1.2.1            dichromat_2.0-0.1
+#>  [51] abind_1.4-8                 yaml_2.3.12
+#>  [53] codetools_0.2-20            curl_7.0.0
+#>  [55] processx_3.8.6              pkgbuild_1.4.8
+#>  [57] lattice_0.22-9              tibble_3.3.1
+#>  [59] plyr_1.8.9                  KEGGREST_1.50.0
+#>  [61] Biobase_2.70.0              S7_0.2.1
+#>  [63] evaluate_1.0.5              desc_1.4.3
+#>  [65] BiocFileCache_3.0.0         xml2_1.5.2
+#>  [67] Biostrings_2.78.0           pillar_1.11.1
+#>  [69] BiocManager_1.30.27         filelock_1.0.3
+#>  [71] MatrixGenerics_1.22.0       DT_0.34.0
+#>  [73] RCurl_1.98-1.17             BiocVersion_3.22.0
+#>  [75] ggplot2_4.0.2               scales_1.4.0
+#>  [77] glue_1.8.0                  lazyeval_0.2.2
+#>  [79] tools_4.5.2                 AnnotationHub_4.0.0
+#>  [81] data.table_1.18.2.1         QFeatures_1.20.0
+#>  [83] fs_1.6.6                    grid_4.5.2
+#>  [85] tidyr_1.3.2                 MsCoreUtils_1.22.1
+#>  [87] AnnotationDbi_1.72.0        cli_3.6.5
+#>  [89] rappdirs_0.3.4              rsvg_2.7.0
+#>  [91] S4Arrays_1.10.1             dplyr_1.2.0
+#>  [93] AnnotationFilter_1.34.0     gtable_0.3.6
+#>  [95] digest_0.6.39               SparseArray_1.10.8
+#>  [97] rjson_0.2.23                htmlwidgets_1.6.4
+#>  [99] farver_2.1.2                memoise_2.0.1
+#> [101] htmltools_0.5.9             lifecycle_1.0.5
+#> [103] httr_1.4.8                  CompoundDb_1.15.3
+#> [105] bit64_4.6.0-1               MASS_7.3-65
 ```
