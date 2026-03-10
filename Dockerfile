@@ -8,7 +8,8 @@ LABEL name="rformassspectrometry/Metabonaut" \
 
 WORKDIR /home/rstudio
 
-COPY --chown=rstudio:rstudio --exclude=./scripts/* --exclude=./vignettes/.quarto . /home/rstudio/
+COPY --chown=rstudio:rstudio . /home/rstudio/
+RUN rm -rf /home/rstudio/scripts /home/rstudio/vignettes/.quarto
 
 ## Global installation of required packages
 ## Need MsBackendMetaboLights to pre-download the dataset.
