@@ -84,7 +84,9 @@ ms2_ctr_fts
 ```
 
 Each spectrum in this object already contains a `feature_id` variable that links
-it back to our main `XcmsExperiment` results.
+it back to our main `XcmsExperiment` results. Note that multiple MS2 spectra can
+be available per feature — we deliberately send all of them to SIRIUS, which
+will merge and use them to improve annotation quality.
 
 # Connecting to Sirius and Importing Data
 
@@ -109,7 +111,7 @@ If you have not already logged in during the `Sirius()` call (by passing
 `username` and `password` arguments), you must log in before running any
 structure database searches:
 
-```{r login}
+```{r login, eval = FALSE}
 #' Log in to your Sirius account
 srs <- logIn(srs,
              username = "your_email@example.com",
@@ -176,54 +178,71 @@ can use `openGUI(srs)` to launch the Sirius graphical interface!*
 Once the computation is complete, we can extract the structural and formula
 predictions back into R for downstream analysis.
 
-### High-Level Summary
+## High-Level Summary
 
-The `summary()` function provides a quick overview of the top formulas,
-structures, and compound classes predicted for each feature. Pay close attention
-to the confidence scores.
+The `summary()` function provides a compact overview of the top formulas,
+structures, and compound classes predicted for each feature. This includes
+confidence scores that indicate how reliable each annotation is.
 
 ```{r get-summary}
 summary_results <- summary(sirius = srs, result.type = "structure")
-head(summary_results)
+summary_results
 ```
 
-### Detailed Structure Database Search Results
-
-To dive deeper into the top structural candidates for a specific formula, we use
-the `results()` function. We will extract the top 2 structures for the top 3
-formulas per feature as a data frame.
-
-```{r get-detailed-struct}
-structure_hits <- results(
-    srs,
-    return.type = "data.frame",
-    result.type = "structureDb",
-    topFormula = 3,
-    topStructure = 2
-)
-
-head(structure_hits)
-```
+The `summary()` output contains the top-ranked molecular formula, predicted
+structure (with SMILES, InChIKey, and CSI:FingerID score), compound class
+predictions (NPC pathway, superclass, class), and — critically — the confidence
+scores (`confidenceExactMatch` and `confidenceApproxMatch`). These confidence
+scores are the most important indicator for evaluating the reliability of the
+prediction.
 
 You can seamlessly merge these results back into your `rowData(res)` from the
-main workflow using the `feature_id` to complement your differential abundance
-statistics with high-confidence structural predictions.
+main workflow using the feature identifiers to complement your differential
+abundance statistics with structural predictions.
 
-### Compound Class Predictions
+For more detailed results (e.g., multiple structure candidates per formula,
+compound class predictions, fragmentation trees), see the `results()` function
+documented in `?results`.
 
-Sometimes Sirius cannot confidently predict an exact structure, but it can
-accurately determine the broader compound class (e.g., "Amino acids and
-derivatives" or "Lipids").
+## De Novo Structure Annotation for Low-Confidence Features
 
-```{r get-classes}
-class_predictions <- results(
+*De novo* structure annotation using *MSNovelist* is particularly useful for
+features where the database search did not yield high-confidence results.
+*MSNovelist* generates molecular structures directly from MS/MS data without
+relying on any database, making it valuable for novel or poorly characterized
+compounds.
+
+We identify features with low confidence (below 0.5) or no structure match
+and run *de novo* annotation on those.
+
+```{r denovo-select}
+#' Identify features with low confidence or no structure match
+fts_denovo <- summary_results$alignedFeatureId[which(
+    is.na(summary_results$confidenceApproxMatch) |
+        summary_results$confidenceApproxMatch < 0.5)]
+fts_denovo
+```
+
+We submit a *de novo* annotation job for these features. It is recommended to
+also use ZODIAC re-ranking when running *MSNovelist*.
+
+```{r denovo-run}
+#' Run de novo structure annotation for low-confidence features
+job_id_denovo <- run(
     srs,
-    return.type = "data.frame",
-    result.type = "compoundClass",
-    topFormula = 1
+    msNovelistParams = deNovoStructureParam(numberOfCandidateToPredict = 5),
+    alignedFeaturesIds = fts_denovo,
+    recompute = FALSE,
+    wait = TRUE
 )
+```
 
-head(class_predictions)
+We can now retrieve the *de novo* results:
+
+```{r denovo-summary}
+#' Get de novo summary
+summary_denovo <- summary(srs, result.type = "deNovo")
+summary_denovo
 ```
 
 # Clean Up
@@ -238,11 +257,15 @@ shutdown(srs)
 
 # Summary
 
-By integrating `RuSirius` into the `metabonaut` workflow, we easily transitioned
-from unresolved MS2 spectra to powerful structural predictions. This bridges the
-gap between raw statistical feature discovery and biological interpretation,
-allowing you to annotate features that simple spectral library matching might
-miss.
+By integrating `RuSirius` into the `metabonaut` workflow, we transitioned from
+unresolved MS2 spectra to structural predictions using SIRIUS's formula
+identification, CSI:FingerID structure database search, and MSNovelist *de novo*
+structure generation. Importantly, we pass all available MS2 spectra per feature
+to SIRIUS (not just a single consensus spectrum), allowing it to leverage
+multiple fragmentation patterns for improved annotation. For features where
+database searches yield low-confidence results, *de novo* structure generation
+provides an alternative path to structural elucidation. This bridges the gap
+between raw statistical feature discovery and biological interpretation.
 
 
 # References and Acknowledgements

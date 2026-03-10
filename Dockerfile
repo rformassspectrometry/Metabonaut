@@ -8,7 +8,7 @@ LABEL name="rformassspectrometry/Metabonaut" \
 
 WORKDIR /home/rstudio
 
-COPY --chown=rstudio:rstudio --exclude=./scripts/* . /home/rstudio/
+COPY --chown=rstudio:rstudio --exclude=./scripts/* --exclude=./vignettes/.quarto . /home/rstudio/
 
 ## Global installation of required packages
 ## Need MsBackendMetaboLights to pre-download the dataset.
@@ -55,3 +55,4 @@ RUN chmod a+x /etc/cont-init.d/03_sirius
 
 ## Install RuSirius (R interface to Sirius) for interactive use
 RUN Rscript -e "BiocManager::install('RforMassSpectrometry/RuSirius', ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
+

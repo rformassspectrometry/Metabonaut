@@ -16,4 +16,4 @@ vignettes/objects/
 .config
 .local
 .profile
-.quarto
+**/.quarto
