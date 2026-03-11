@@ -66,13 +66,7 @@ Zenodo or Figshare with their own DOIs.
 Here we download the GNPS2 drug library from
 [Zenodo](https://doi.org/10.5281/zenodo.13892288), a centralized collection of
 drug spectra with pharmacologic metadata [@zhao_resource_2025]. We fetch all v4
-resources (DOI: 10.5281/zenodo.17232042) to a local cache folder.
-
-::: {.callout-note}
-This vignette downloads spectral libraries from Zenodo and MassBank, which can
-take several minutes depending on your internet connection. Downloaded files are
-cached in a local directory to avoid repeated downloads across renders.
-:::
+resources (DOI: 10.5281/zenodo.17232042) to a temporary folder.
 
 ```{r, message = FALSE}
 library(Spectra)
@@ -80,22 +74,9 @@ library(zen4R)
 
 doi <- "10.5281/zenodo.17232042" # v4
 
-#' Use a persistent cache directory to avoid re-downloading
-pth <- file.path("objects", "annotation_cache")
-dir.create(pth, showWarnings = FALSE, recursive = TRUE)
-
-mgf_fl <- file.path(pth,
-                    "GNPS_Drug_Library_Spectra_Drugs_and_Metabolites.mgf")
-if (!file.exists(mgf_fl)) {
-    for (.attempt in seq_len(3)) {
-        ok <- tryCatch({
-            download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
-            TRUE
-        }, error = function(e) FALSE)
-        if (ok) break
-        Sys.sleep(10)
-    }
-}
+#' download all data related to the DOI
+pth <- tempdir()
+download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
 dir(pth)
 ```
 
@@ -103,6 +84,7 @@ The spectral libraries are available in MGF file format. Below we read the first
 25 lines of the MGF file to inspect the available spectrum metadata fields.
 
 ```{r}
+mgf_fl <- file.path(pth, "GNPS_Drug_Library_Spectra_Drugs_and_Metabolites.mgf")
 readLines(mgf_fl, n = 25)
 ```
 
@@ -292,8 +274,8 @@ The `s_py` `Spectra` object is ready for R workflows. Data stay in Python and is
 translated on demand; switch to `MsBackendMemory` to copy it to R if needed.
 
 ```{r, echo = FALSE, message = FALSE}
-#' clean up Python objects
-rm(s_py)
+#' clean up temp dir
+unlink(dir(pth, full.names = TRUE), recursive = TRUE)
 ```
 
 ## Using MassBank data
@@ -346,36 +328,21 @@ library(zen4R)
 
 doi <- "10.5281/zenodo.17432277"
 
-#' Use a persistent cache directory
-pth_mb <- file.path("objects", "massbank_cache")
-dir.create(pth_mb, showWarnings = FALSE, recursive = TRUE)
-
-#' Only download if not already cached; retry up to 3 times
-if (length(dir(pth_mb)) == 0L) {
-    for (.attempt in seq_len(3)) {
-        ok <- tryCatch({
-            download_zenodo(doi, path = pth_mb, quiet = TRUE, timeout = 600)
-            TRUE
-        }, error = function(e) FALSE)
-        if (ok) break
-        Sys.sleep(10)
-    }
-}
-has_mb <- length(dir(pth_mb, pattern = "\\.(zip|txt)$")) > 0L
-dir(pth_mb)
+pth <- tempdir()
+download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
+dir(pth)
 ```
 
 The archive contains several thousands of *.txt* files in MassBank format, one
-for each spectrum. We next unzip the archive to the same cache folder and
+for each spectrum. We next unzip the archive to the same temporary folder and
 get the listing of all data files.
 
 ```{r}
-#| eval: !expr has_mb
 #' unzip the archive
-unzip(file.path(pth_mb, dir(pth_mb, pattern = "\\.zip$")[1L]), exdir = pth_mb)
+unzip(file.path(pth, dir(pth)[1L]), exdir = pth)
 
 #' get the file listing
-dr <- dir(pth_mb, pattern = "MassBank-MassBank", full.names = TRUE)
+dr <- dir(pth, pattern = "MassBank-MassBank", full.names = TRUE)
 fls <- dir(dr, recursive = TRUE, pattern = "txt$", full.names = TRUE)
 length(fls)
 ```
@@ -385,7 +352,6 @@ MassBank format. We import the full release with `MsBackendMassbank()` into a
 `Spectra` object.
 
 ```{r, message = FALSE}
-#| eval: !expr has_mb
 library(MsBackendMassbank)
 #' import the full MassBank data as a Spectra object
 s_mb <- Spectra(fls, source = MsBackendMassbank())
@@ -397,7 +363,6 @@ variables, such as `"name"`, `"smiles"`, `"formula"`, `"inchi"` etc. The full
 list of available spectra metadata is:
 
 ```{r}
-#| eval: !expr has_mb
 #' available spectra variables/metadata
 spectraVariables(s_mb)
 ```
@@ -408,7 +373,6 @@ compound information (e.g., formula, exact mass). We now match the end-to-end
 vignette spectra against MassBank 2025.10 with `matchSpectra()`.
 
 ```{r}
-#| eval: !expr has_mb
 #' match the experimental spectra against the GNPS2 drug library
 res <- matchSpectra(ms2_ctr_fts, s_mb,
                     CompareSpectraParam(tolerance = 0.1))
@@ -421,7 +385,6 @@ The experimental spectra match against spectra of compounds with the following
 unique InChI:
 
 ```{r}
-#| eval: !expr has_mb
 res$target_inchi |>
     unique()
 ```
@@ -429,16 +392,14 @@ res$target_inchi |>
 The names (including aliases) of the compounds are:
 
 ```{r}
-#| eval: !expr has_mb
 res$target_name |>
     unlist() |>
     unique()
 ```
 
 ```{r, echo = FALSE, message = FALSE}
-#| eval: !expr has_mb
-#' clean up
-rm(s_mb, res)
+#' clean the temporary directory
+unlink(dir(pth, full.names = TRUE), recursive = TRUE)
 ```
 
 # Creating or expanding annotation resources
