@@ -4,6 +4,8 @@
 
 - [Complete end-to-end LC-MS/MS Metabolomic Data
   analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.md):
+- [Advanced Feature Annotation using
+  RuSirius](https://rformassspectrometry.github.io/Metabonaut/articles/advanced_feature_annotation_with_RuSirius.md):
 - [Seamless Alignment: Merging New Data with and Existing Preprocessed
   Dataset](https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.md):
 - [Using and Creating Metabolomics Data Annotation

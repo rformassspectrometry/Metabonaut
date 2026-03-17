@@ -2017,7 +2017,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Tue Feb  3 17:13:35 2026
+     date: Tue Mar 17 15:54:43 2026
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -2719,7 +2719,7 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4210 features were removed
+    4206 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
@@ -2750,7 +2750,7 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4514
+    [1] 4518
 
 ``` r
 
@@ -2758,9 +2758,9 @@ nrow(res)
 nrow(res) / nrow(res_unfilt) * 100
 ```
 
-    [1] 51.74232
+    [1] 51.78817
 
-The dataset has been reduced from 8724 to 4514 features. We did remove a
+The dataset has been reduced from 8724 to 4518 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -3062,11 +3062,12 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83789 | -8.874177 | 0.0096139 | 12.229286 |  3.512914 | 0.2116471 |
-| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0422780 | 16.905340 | 10.454994 | 0.0304712 |
-| FT0565 | 161.0400 | 162.13668 | -5.576992 | 0.0327595 | 10.287074 |  4.502129 | 0.0360903 |
-| FT1171 | 229.1299 | 181.08828 | -5.297711 | 0.0173481 | 10.721195 |  5.591422 | 0.0706276 |
-| FT0371 | 138.0547 | 148.39599 | -5.277824 | 0.0183316 |  9.914862 |  4.296273 | 0.5564435 |
+| FT0732 | 182.0749 |  34.83789 | -8.540232 | 0.0064152 | 12.229286 |  3.816143 | 0.2116471 |
+| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0421988 | 16.905340 | 10.454994 | 0.0304712 |
+| FT0565 | 161.0400 | 162.13668 | -5.824858 | 0.0346003 | 10.287074 |  4.191575 | 0.0360903 |
+| FT1171 | 229.1299 | 181.08828 | -5.195353 | 0.0162403 | 10.721195 |  5.673362 | 0.0706276 |
+| FT0371 | 138.0547 | 148.39599 | -5.162133 | 0.0196731 |  9.914862 |  4.448416 | 0.5564435 |
+| FT5606 | 560.3603 |  33.54917 | -3.855919 | 0.0435719 |  8.885918 |  4.804876 | 1.2139903 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
@@ -3248,7 +3249,7 @@ mtch
 
     Object of class Matched
     Total number of matches: 43
-    Number of query objects: 5 (4 matched)
+    Number of query objects: 6 (4 matched)
     Number of target objects: 25685 (43 matched)
 
 The resulting `Matched` object shows that 4 of our 6 significant
@@ -3265,7 +3266,7 @@ mtch_res <- matchedData(mtch, c("feature_id", "mzmed", "rtmed",
 mtch_res
 ```
 
-    DataFrame with 44 rows and 8 columns
+    DataFrame with 45 rows and 8 columns
             feature_id     mzmed     rtmed      adduct ppm_error target_formula
            <character> <numeric> <numeric> <character> <numeric>    <character>
     FT0371      FT0371   138.055   148.396      [M+H]+   2.08055        C7H7NO2
@@ -3274,11 +3275,11 @@ mtch_res
     FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
     FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
     ...            ...       ...       ...         ...       ...            ...
-    FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1867474      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.0614704      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
     FT1171      FT1171   229.130  181.0883     [M+Na]+ 3.0770838      C12H18N2O
+    FT5606      FT5606   560.360   33.5492          NA        NA             NA
              target_name target_inchikey
              <character>     <character>
     FT0371 Benzohydro...   VDEUYMSGMP...
@@ -3287,11 +3288,11 @@ mtch_res
     FT0371 4-Aminoben...   ALYNCZNDIQ...
     FT0371 Anthranili...   RWZYAGGXGH...
     ...              ...             ...
-    FT0845      CAFFEINE   RYYVLZVUVI...
     FT0845      Caffeine   RYYVLZVUVI...
     FT0845      caffeine   RYYVLZVUVI...
     FT0845 1,3,7-TRIM...   RYYVLZVUVI...
     FT1171 Isoproturo...   PUIYMUZLKQ...
+    FT5606            NA              NA
 
 Thus, in total 43 ions of compounds in MassBank were matched to our
 significant features based on the specified tolerance settings. Many
@@ -3617,6 +3618,7 @@ target
     FT0732 182.0726 182.0756  32.71242  42.28755
     FT0845 195.0799 195.0887  30.73235  35.67337
     FT1171 229.1282 229.1335 178.01450 183.35303
+    FT5606 560.3539 560.3656  32.06570  35.33456
 
 We next identify the fragment spectra with their precursor *m/z* and
 retention times within these ranges. We use the
@@ -3636,8 +3638,8 @@ ms2_ctr_fts <- apply(target[, c("rtmin", "rtmax", "mzmin", "mzmax")],
 lengths(ms2_ctr_fts)
 ```
 
-    FT0371 FT0565 FT0732 FT0845 FT1171
-        11     12     46     21     12 
+    FT0371 FT0565 FT0732 FT0845 FT1171 FT5606
+        11     12     46     21     12      0 
 
 The result from this [`apply()`](https://rdrr.io/r/base/apply.html) call
 is a `list` of `Spectra`, each element representing the result for one
@@ -3789,7 +3791,7 @@ pandoc.table(ms2_mtch_res[, c("feature_id", "target_name", "score",
 
 Table 9.MS2 annotation results. {.table}
 
-Thus, from the 5 significant features, only one could be annotated to a
+Thus, from the 6 significant features, only one could be annotated to a
 compound based on the MS2-based approach. There could be many reasons
 for the failure to find matches for the other features. Although MS2
 spectra were selected for each feature, most appear to only represent
@@ -4113,9 +4115,9 @@ sessionInfo()
      [1] UpSetR_1.4.0                ggVennDiagram_1.5.7
      [3] MetaboAnnotation_1.14.0     CompoundDb_1.14.2
      [5] AnnotationFilter_1.34.0     AnnotationHub_4.0.0
-     [7] BiocFileCache_3.0.0         dbplyr_2.5.1
+     [7] BiocFileCache_3.0.0         dbplyr_2.5.2
      [9] gridExtra_2.3               ggfortify_0.4.19
-    [11] ggplot2_4.0.1               vioplot_0.5.1
+    [11] ggplot2_4.0.2               vioplot_0.5.1
     [13] zoo_1.8-15                  sm_2.2-6.0
     [15] pheatmap_1.0.13             RColorBrewer_1.1-3
     [17] pander_0.6.6                limma_3.66.0
@@ -4134,16 +4136,16 @@ sessionInfo()
     [43] knitr_1.51
 
     loaded via a namespace (and not attached):
-      [1] later_1.4.5                 bitops_1.0-9
+      [1] later_1.4.8                 bitops_1.0-9
       [3] filelock_1.0.3              tibble_3.3.1
       [5] cellranger_1.1.0            preprocessCore_1.72.0
-      [7] XML_3.99-0.20               lifecycle_1.0.5
+      [7] XML_3.99-0.22               lifecycle_1.0.5
       [9] httr2_1.2.2                 doParallel_1.0.17
-     [11] processx_3.8.6              lattice_0.22-7
+     [11] processx_3.8.6              lattice_0.22-9
      [13] MASS_7.3-65                 MultiAssayExperiment_1.36.1
      [15] magrittr_2.0.4              rmarkdown_2.30
      [17] yaml_2.3.12                 otel_0.2.0
-     [19] MsCoreUtils_1.22.1          DBI_1.2.3
+     [19] MsCoreUtils_1.22.1          DBI_1.3.0
      [21] abind_1.4-8                 purrr_1.2.1
      [23] RCurl_1.98-1.17             rappdirs_0.3.4
      [25] MSnbase_2.36.0              ncdf4_1.24
@@ -4154,23 +4156,23 @@ sessionInfo()
      [35] iterators_1.0.14            foreach_1.5.2
      [37] tools_4.5.2                 progress_1.2.3
      [39] Rcpp_1.1.1                  glue_1.8.0
-     [41] SparseArray_1.10.8          BiocBaseUtils_1.12.0
-     [43] xfun_0.56                   dplyr_1.1.4
+     [41] SparseArray_1.10.9          BiocBaseUtils_1.12.0
+     [43] xfun_0.56                   dplyr_1.2.0
      [45] HDF5Array_1.38.0            withr_3.0.2
      [47] BiocManager_1.30.27         fastmap_1.2.0
      [49] rhdf5filters_1.22.0         digest_0.6.39
      [51] R6_2.6.1                    rsvg_2.7.0
-     [53] RSQLite_2.4.5               h5mread_1.2.1
+     [53] RSQLite_2.4.6               h5mread_1.2.1
      [55] tidyr_1.3.2                 data.table_1.18.2.1
      [57] prettyunits_1.2.0           PSMatch_1.14.0
-     [59] httr_1.4.7                  htmlwidgets_1.6.4
+     [59] httr_1.4.8                  htmlwidgets_1.6.4
      [61] S4Arrays_1.10.1             pkgconfig_2.0.3
      [63] gtable_0.3.6                blob_1.3.0
      [65] S7_0.2.1                    impute_1.84.0
      [67] MassSpecWavelet_1.76.0      XVector_0.50.0
      [69] htmltools_0.5.9             MALDIquant_1.22.3
-     [71] clue_0.3-66                 scales_1.4.0
-     [73] alabaster.matrix_1.10.0     png_0.1-8
+     [71] clue_0.3-67                 scales_1.4.0
+     [73] alabaster.matrix_1.10.0     png_0.1-9
      [75] rstudioapi_0.18.0           reshape2_1.4.5
      [77] rjson_0.2.23                curl_7.0.0
      [79] cachem_1.1.0                rhdf5_2.54.1
@@ -4180,19 +4182,19 @@ sessionInfo()
      [87] pillar_1.11.1               grid_4.5.2
      [89] alabaster.schemas_1.10.0    vctrs_0.7.1
      [91] MsFeatures_1.18.0           pcaMethods_2.2.0
-     [93] cluster_2.1.8.1             evaluate_1.0.5
+     [93] cluster_2.1.8.2             evaluate_1.0.5
      [95] cli_3.6.5                   compiler_4.5.2
      [97] rlang_1.1.7                 crayon_1.5.3
      [99] labeling_0.4.3              QFeatures_1.20.0
     [101] ChemmineR_3.62.0            ps_1.9.1
     [103] affy_1.88.0                 plyr_1.8.9
-    [105] fs_1.6.6                    stringi_1.8.7
+    [105] fs_1.6.7                    stringi_1.8.7
     [107] Biostrings_2.78.0           lazyeval_0.2.2
     [109] Matrix_1.7-4                hms_1.1.4
     [111] bit64_4.6.0-1               Rhdf5lib_1.32.0
     [113] KEGGREST_1.50.0             statmod_1.5.1
     [115] alabaster.ranges_1.10.0     mzR_2.44.0
-    [117] igraph_2.2.1                memoise_2.0.1
+    [117] igraph_2.2.2                memoise_2.0.1
     [119] affyio_1.80.0               bit_4.6.0                  
 
 ## Aknowledgment

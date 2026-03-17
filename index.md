@@ -14,49 +14,64 @@ processing.
 
 ## Available Vignettes
 
-### 1. [Complete End-to-End LC-MS/MS Metabolomic Data Analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.html)
+### End-to-End Workflow
+
+#### 1. [Complete End-to-End LC-MS/MS Metabolomic Data Analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.html)
 
 This primary workflow guides you through each step of the analysis, from
 **preprocessing raw data** to **statistical analysis** and **metabolite
 annotation**. 📄 [View Full R Code
 (Quarto)](https://github.com/rformassspectrometry/Metabonaut/blob/main/vignettes/a-end-to-end-untargeted-metabolomics.qmd)
 
-### 2. [Dataset Investigation](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html)
+### Data Preprocessing
+
+#### 2. [Dataset Investigation](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html)
 
 Before diving into the analysis, learn about **key aspects to examine in
 your dataset** to ensure smooth processing and prevent troubleshooting
 issues later in the pipeline.
 
-### 3. [Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset](https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.html)
-
-Discover how to use a **flexible alignment algorithm** to integrate new
-datasets with previously processed ones based on features of interest.
-
-### 4. [Quality Control and Feature Selection Using *notame*](https://rformassspectrometry.github.io/Metabonaut/articles/notame_normalization_and_feature_selection.html)
+#### 3. [Quality Control and Feature Selection Using *notame*](https://rformassspectrometry.github.io/Metabonaut/articles/notame_normalization_and_feature_selection.html)
 
 Explore **notame** as a robust alternative for normalization and feature
 selection. This vignette covers essential steps for **quality control,
 normalization, and feature selection** to ensure your data is clean and
 ready for analysis.
 
-### 5. [LC-MS/MS Data Annotation Using R and Python](https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html)
-
-Explore the **SpectriPy** package for **LC-MS/MS data annotation**. This
-tutorial demonstrates how to combine the strengths of Python and R MS
-libraries for comprehensive annotation.
-
-### 6. [Large Scale Processing Using *xcms*](https://rformassspectrometry.github.io/Metabonaut/articles/large-scale-analysis.html)
+#### 4. [Large Scale Processing Using *xcms*](https://rformassspectrometry.github.io/Metabonaut/articles/large-scale-analysis.html)
 
 While *xcms* is known for its scalability, this guide shows you how to
 practically handle **large-scale dataset processing (\>4,000 files)** on
 standard hardware.
 
-### 7. [Using and Creating Metabolomics Data Annotation Resources](https://rformassspectrometry.github.io/Metabonaut/articles/creating-using-annotation-resources.html)
+### Annotation
+
+#### 5. [Using and Creating Metabolomics Data Annotation Resources](https://rformassspectrometry.github.io/Metabonaut/articles/creating-using-annotation-resources.html)
 
 Learn how to **create and utilize custom metabolomics data annotation
 resources** in R. This vignette guides you through building your own
 annotation databases and integrating them into your analysis workflow.
 We demonstrate by downloading data from GNPS and MassBank libraries.
+
+#### 6. [LC-MS/MS Data Annotation Using R and Python](https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html)
+
+Explore the **SpectriPy** package for **LC-MS/MS data annotation**. This
+tutorial demonstrates how to combine the strengths of Python and R MS
+libraries for comprehensive annotation.
+
+#### 7. [Advanced Feature Annotation using RuSirius](https://rformassspectrometry.github.io/Metabonaut/articles/advanced_feature_annotation_with_RuSirius.html)
+
+Use the **RuSirius** package to annotate features with **SIRIUS**,
+including formula identification, structure database search, and *de
+novo* structure generation using MSNovelist for features with
+low-confidence database matches.
+
+### Other
+
+#### 8. [Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset](https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.html)
+
+Discover how to use a **flexible alignment algorithm** to integrate new
+datasets with previously processed ones based on features of interest.
 
 ------------------------------------------------------------------------
 
@@ -80,14 +95,15 @@ one comprehensive **super-vignette**.
 
 ## 🎓 For R Beginners
 
-The tutorials assume basic knowledge of **R** and **RMarkdown**. If
-you’re new to these, we recommend starting with a short tutorial before
-running the vignettes.
+The tutorials assume basic knowledge of **R** and **RMarkdown** /
+**Quarto**. If you’re new to these, we recommend starting with a short
+tutorial before running the vignettes.
 
 - **Learn Quarto (used for vignettes)**: [Quarto
   Guide](https://quarto.org/docs/guide/)
 - **Learn RMarkdown**: [RMarkdown
   Book](https://bookdown.org/yihui/rmarkdown/)
+- **Learn Quarto**: [Quarto Guide](https://quarto.org/docs/guide/)
 - **Intro to R**: [Learn-R.org](https://learn-r.org/)
 - **Interactive R course**:
   [Swirl](https://swirlstats.com/students.html)

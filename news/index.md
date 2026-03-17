@@ -5,6 +5,8 @@
 ### Changes in 1.5.0
 
 - Add vignette for use and import of public mass spectral library data.
+- Add pre-computed vignette for advanced feature annotation using
+  RuSirius and SIRIUS.
 
 ## Metabonaut 1.4
 

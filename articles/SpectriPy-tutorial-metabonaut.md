@@ -345,17 +345,16 @@ scores = calculate_scores(references = clean_mgf_py,
 
 
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:01<02:28,  1.93s/it]
-    Calculating similarities:  12%|#1        | 9/78 [00:02<00:11,  5.94it/s]
-    Calculating similarities:  21%|##        | 16/78 [00:02<00:05, 11.63it/s]
-    Calculating similarities:  31%|###       | 24/78 [00:02<00:02, 19.22it/s]
-    Calculating similarities:  41%|####1     | 32/78 [00:02<00:01, 27.57it/s]
-    Calculating similarities:  51%|#####1    | 40/78 [00:02<00:01, 35.62it/s]
-    Calculating similarities:  62%|######1   | 48/78 [00:02<00:00, 41.76it/s]
-    Calculating similarities:  71%|#######   | 55/78 [00:02<00:00, 47.40it/s]
-    Calculating similarities:  81%|########  | 63/78 [00:02<00:00, 53.68it/s]
-    Calculating similarities:  91%|#########1| 71/78 [00:02<00:00, 59.69it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 26.06it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:01<02:18,  1.80s/it]
+    Calculating similarities:  13%|#2        | 10/78 [00:01<00:09,  7.12it/s]
+    Calculating similarities:  26%|##5       | 20/78 [00:02<00:03, 15.77it/s]
+    Calculating similarities:  38%|###8      | 30/78 [00:02<00:01, 25.66it/s]
+    Calculating similarities:  50%|#####     | 39/78 [00:02<00:01, 34.86it/s]
+    Calculating similarities:  62%|######1   | 48/78 [00:02<00:00, 43.27it/s]
+    Calculating similarities:  73%|#######3  | 57/78 [00:02<00:00, 52.19it/s]
+    Calculating similarities:  85%|########4 | 66/78 [00:02<00:00, 60.08it/s]
+    Calculating similarities:  97%|#########7| 76/78 [00:02<00:00, 68.55it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 29.31it/s]
 
 ``` python
 scores
@@ -556,18 +555,18 @@ sessionInfo()
     other attached packages:
     [1] pander_0.6.6        Spectra_1.20.1      BiocParallel_1.44.0
     [4] S4Vectors_0.48.0    BiocGenerics_0.56.0 generics_0.1.4
-    [7] SpectriPy_1.0.0     reticulate_1.44.1
+    [7] SpectriPy_1.0.1     reticulate_1.45.0
 
     loaded via a namespace (and not attached):
      [1] cli_3.6.5              knitr_1.51             rlang_1.1.7
      [4] xfun_0.56              ProtGenerics_1.42.0    otel_0.2.0
-     [7] png_0.1-8              jsonlite_2.0.0         clue_0.3-66
+     [7] png_0.1-9              jsonlite_2.0.0         clue_0.3-67
     [10] rprojroot_2.1.1        htmltools_0.5.9        rmarkdown_2.30
     [13] grid_4.5.2             evaluate_1.0.5         MASS_7.3-65
     [16] fastmap_1.2.0          yaml_2.3.12            IRanges_2.44.0
-    [19] MsCoreUtils_1.22.1     cluster_2.1.8.1        compiler_4.5.2
-    [22] codetools_0.2-20       fs_1.6.6               Rcpp_1.1.1
-    [25] here_1.0.2             MetaboCoreUtils_1.18.1 lattice_0.22-7
+    [19] MsCoreUtils_1.22.1     cluster_2.1.8.2        compiler_4.5.2
+    [22] codetools_0.2-20       fs_1.6.7               Rcpp_1.1.1
+    [25] here_1.0.2             MetaboCoreUtils_1.18.1 lattice_0.22-9
     [28] digest_0.6.39          parallel_4.5.2         Matrix_1.7-4
     [31] withr_3.0.2            tools_4.5.2           
 

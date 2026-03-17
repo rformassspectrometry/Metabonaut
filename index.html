@@ -41,13 +41,18 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-workflows" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Workflows</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-workflows">
-<li><a class="dropdown-item" href="articles/a-end-to-end-untargeted-metabolomics.html">End-to-end workflow for untargeted metabolomics data analysis in R</a></li>
-    <li><a class="dropdown-item" href="articles/notame_normalization_and_feature_selection.html">Quality control and Feature selection with Notame</a></li>
+<li><h6 class="dropdown-header" data-toc-skip>--- End-to-End Workflow ---</h6></li>
+    <li><a class="dropdown-item" href="articles/a-end-to-end-untargeted-metabolomics.html">End-to-end workflow for untargeted metabolomics data analysis in R</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>--- Data Preprocessing ---</h6></li>
     <li><a class="dropdown-item" href="articles/dataset-investigation.html">Dataset investigation: What to do when you get your data</a></li>
-    <li><a class="dropdown-item" href="articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
-    <li><a class="dropdown-item" href="articles/SpectriPy-tutorial-metabonaut.html">LC-MS/MS Data Annotation using R and Python</a></li>
+    <li><a class="dropdown-item" href="articles/notame_normalization_and_feature_selection.html">Quality control and Feature selection with Notame</a></li>
     <li><a class="dropdown-item" href="articles/large-scale-analysis.html">Large Scale Data Preprocessing with xcms</a></li>
-    <li><a class="dropdown-item" href="articles/creating-using-annotation-resources.html">Using and Creating Metabolomics Data Annotation Resources</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>--- Annotation ---</h6></li>
+    <li><a class="dropdown-item" href="articles/creating-using-annotation-resources.html">Creating and Using Metabolomics Data Annotation Resources</a></li>
+    <li><a class="dropdown-item" href="articles/SpectriPy-tutorial-metabonaut.html">LC-MS/MS Data Annotation using R and Python</a></li>
+    <li><a class="dropdown-item" href="articles/advanced_feature_annotation_with_RuSirius.html">Advanced Feature Annotation using RuSirius</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>--- Other ---</h6></li>
+    <li><a class="dropdown-item" href="articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">News</a></li>
@@ -79,49 +84,71 @@
 <h2 id="available-vignettes">Available Vignettes<a class="anchor" aria-label="anchor" href="#available-vignettes"></a>
 </h2>
 <div class="section level3">
-<h3 id="id_1-complete-end-to-end-lc-msms-metabolomic-data-analysis">1. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.html">Complete End-to-End LC-MS/MS Metabolomic Data Analysis</a>
-<a class="anchor" aria-label="anchor" href="#id_1-complete-end-to-end-lc-msms-metabolomic-data-analysis"></a>
+<h3 id="end-to-end-workflow">End-to-End Workflow<a class="anchor" aria-label="anchor" href="#end-to-end-workflow"></a>
 </h3>
+<div class="section level4">
+<h4 id="id_1-complete-end-to-end-lc-msms-metabolomic-data-analysis">1. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.html">Complete End-to-End LC-MS/MS Metabolomic Data Analysis</a>
+<a class="anchor" aria-label="anchor" href="#id_1-complete-end-to-end-lc-msms-metabolomic-data-analysis"></a>
+</h4>
 <p>This primary workflow guides you through each step of the analysis, from <strong>preprocessing raw data</strong> to <strong>statistical analysis</strong> and <strong>metabolite annotation</strong>. 📄 <a href="https://github.com/rformassspectrometry/Metabonaut/blob/main/vignettes/a-end-to-end-untargeted-metabolomics.qmd" class="external-link">View Full R Code (Quarto)</a></p>
 </div>
+</div>
 <div class="section level3">
-<h3 id="id_2-dataset-investigation">2. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html">Dataset Investigation</a>
-<a class="anchor" aria-label="anchor" href="#id_2-dataset-investigation"></a>
+<h3 id="data-preprocessing">Data Preprocessing<a class="anchor" aria-label="anchor" href="#data-preprocessing"></a>
 </h3>
+<div class="section level4">
+<h4 id="id_2-dataset-investigation">2. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html">Dataset Investigation</a>
+<a class="anchor" aria-label="anchor" href="#id_2-dataset-investigation"></a>
+</h4>
 <p>Before diving into the analysis, learn about <strong>key aspects to examine in your dataset</strong> to ensure smooth processing and prevent troubleshooting issues later in the pipeline.</p>
 </div>
-<div class="section level3">
-<h3 id="id_3-seamless-alignment-merging-new-data-with-an-existing-preprocessed-dataset">3. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset</a>
-<a class="anchor" aria-label="anchor" href="#id_3-seamless-alignment-merging-new-data-with-an-existing-preprocessed-dataset"></a>
-</h3>
-<p>Discover how to use a <strong>flexible alignment algorithm</strong> to integrate new datasets with previously processed ones based on features of interest.</p>
-</div>
-<div class="section level3">
-<h3 id="id_4-quality-control-and-feature-selection-using-notame">4. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/notame_normalization_and_feature_selection.html">Quality Control and Feature Selection Using <em>notame</em></a>
-<a class="anchor" aria-label="anchor" href="#id_4-quality-control-and-feature-selection-using-notame"></a>
-</h3>
+<div class="section level4">
+<h4 id="id_3-quality-control-and-feature-selection-using-notame">3. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/notame_normalization_and_feature_selection.html">Quality Control and Feature Selection Using <em>notame</em></a>
+<a class="anchor" aria-label="anchor" href="#id_3-quality-control-and-feature-selection-using-notame"></a>
+</h4>
 <p>Explore <strong>notame</strong> as a robust alternative for normalization and feature selection. This vignette covers essential steps for <strong>quality control, normalization, and feature selection</strong> to ensure your data is clean and ready for analysis.</p>
 </div>
-<div class="section level3">
-<h3 id="id_5-lc-msms-data-annotation-using-r-and-python">5. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html">LC-MS/MS Data Annotation Using R and Python</a>
-<a class="anchor" aria-label="anchor" href="#id_5-lc-msms-data-annotation-using-r-and-python"></a>
-</h3>
-<p>Explore the <strong>SpectriPy</strong> package for <strong>LC-MS/MS data annotation</strong>. This tutorial demonstrates how to combine the strengths of Python and R MS libraries for comprehensive annotation.</p>
-</div>
-<div class="section level3">
-<h3 id="id_6-large-scale-processing-using-xcms">6. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/large-scale-analysis.html">Large Scale Processing Using <em>xcms</em></a>
-<a class="anchor" aria-label="anchor" href="#id_6-large-scale-processing-using-xcms"></a>
-</h3>
+<div class="section level4">
+<h4 id="id_4-large-scale-processing-using-xcms">4. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/large-scale-analysis.html">Large Scale Processing Using <em>xcms</em></a>
+<a class="anchor" aria-label="anchor" href="#id_4-large-scale-processing-using-xcms"></a>
+</h4>
 <p>While <em>xcms</em> is known for its scalability, this guide shows you how to practically handle <strong>large-scale dataset processing (&gt;4,000 files)</strong> on standard hardware.</p>
 </div>
+</div>
 <div class="section level3">
-<h3 id="id_7-using-and-creating-metabolomics-data-annotation-resources">7. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/creating-using-annotation-resources.html">Using and Creating Metabolomics Data Annotation Resources</a>
-<a class="anchor" aria-label="anchor" href="#id_7-using-and-creating-metabolomics-data-annotation-resources"></a>
+<h3 id="annotation">Annotation<a class="anchor" aria-label="anchor" href="#annotation"></a>
 </h3>
+<div class="section level4">
+<h4 id="id_5-using-and-creating-metabolomics-data-annotation-resources">5. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/creating-using-annotation-resources.html">Using and Creating Metabolomics Data Annotation Resources</a>
+<a class="anchor" aria-label="anchor" href="#id_5-using-and-creating-metabolomics-data-annotation-resources"></a>
+</h4>
 <p>Learn how to <strong>create and utilize custom metabolomics data annotation resources</strong> in R. This vignette guides you through building your own annotation databases and integrating them into your analysis workflow. We demonstrate by downloading data from GNPS and MassBank libraries.</p>
+</div>
+<div class="section level4">
+<h4 id="id_6-lc-msms-data-annotation-using-r-and-python">6. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html">LC-MS/MS Data Annotation Using R and Python</a>
+<a class="anchor" aria-label="anchor" href="#id_6-lc-msms-data-annotation-using-r-and-python"></a>
+</h4>
+<p>Explore the <strong>SpectriPy</strong> package for <strong>LC-MS/MS data annotation</strong>. This tutorial demonstrates how to combine the strengths of Python and R MS libraries for comprehensive annotation.</p>
+</div>
+<div class="section level4">
+<h4 id="id_7-advanced-feature-annotation-using-rusirius">7. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/advanced_feature_annotation_with_RuSirius.html">Advanced Feature Annotation using RuSirius</a>
+<a class="anchor" aria-label="anchor" href="#id_7-advanced-feature-annotation-using-rusirius"></a>
+</h4>
+<p>Use the <strong>RuSirius</strong> package to annotate features with <strong>SIRIUS</strong>, including formula identification, structure database search, and <em>de novo</em> structure generation using MSNovelist for features with low-confidence database matches.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="other">Other<a class="anchor" aria-label="anchor" href="#other"></a>
+</h3>
+<div class="section level4">
+<h4 id="id_8-seamless-alignment-merging-new-data-with-an-existing-preprocessed-dataset">8. <a href="https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset</a>
+<a class="anchor" aria-label="anchor" href="#id_8-seamless-alignment-merging-new-data-with-an-existing-preprocessed-dataset"></a>
+</h4>
+<p>Discover how to use a <strong>flexible alignment algorithm</strong> to integrate new datasets with previously processed ones based on features of interest.</p>
 <hr>
 <p>For a full list of all available vignettes, visit the <a href="https://rformassspectrometry.github.io/Metabonaut/"><strong>Metabonaut website</strong></a>.</p>
 <hr>
+</div>
 </div>
 </div>
 <div class="section level2">
@@ -143,13 +170,16 @@
 <div class="section level2">
 <h2 id="mortar_board-for-r-beginners">🎓 For R Beginners<a class="anchor" aria-label="anchor" href="#mortar_board-for-r-beginners"></a>
 </h2>
-<p>The tutorials assume basic knowledge of <strong>R</strong> and <strong>RMarkdown</strong>. If you’re new to these, we recommend starting with a short tutorial before running the vignettes.</p>
+<p>The tutorials assume basic knowledge of <strong>R</strong> and <strong>RMarkdown</strong> / <strong>Quarto</strong>. If you’re new to these, we recommend starting with a short tutorial before running the vignettes.</p>
 <ul>
 <li>
 <strong>Learn Quarto (used for vignettes)</strong>: <a href="https://quarto.org/docs/guide/" class="external-link">Quarto Guide</a>
 </li>
 <li>
 <strong>Learn RMarkdown</strong>: <a href="https://bookdown.org/yihui/rmarkdown/" class="external-link">RMarkdown Book</a>
+</li>
+<li>
+<strong>Learn Quarto</strong>: <a href="https://quarto.org/docs/guide/" class="external-link">Quarto Guide</a>
 </li>
 <li>
 <strong>Intro to R</strong>: <a href="https://learn-r.org/" class="external-link">Learn-R.org</a>

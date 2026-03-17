@@ -898,25 +898,25 @@ sessionInfo()
       [1] rstudioapi_0.18.0           jsonlite_2.0.0
       [3] MultiAssayExperiment_1.36.1 magrittr_2.0.4
       [5] farver_2.1.2                MALDIquant_1.22.3
-      [7] rmarkdown_2.30              fs_1.6.6
+      [7] rmarkdown_2.30              fs_1.6.7
       [9] vctrs_0.7.1                 memoise_2.0.1
      [11] htmltools_0.5.9             S4Arrays_1.10.1
      [13] BiocBaseUtils_1.12.0        progress_1.2.3
      [15] curl_7.0.0                  Rhdf5lib_1.32.0
-     [17] SparseArray_1.10.8          rhdf5_2.54.1
+     [17] SparseArray_1.10.9          rhdf5_2.54.1
      [19] mzID_1.48.0                 alabaster.base_1.10.0
      [21] plyr_1.8.9                  httr2_1.2.2
      [23] impute_1.84.0               cachem_1.1.0
-     [25] igraph_2.2.1                lifecycle_1.0.5
+     [25] igraph_2.2.2                lifecycle_1.0.5
      [27] iterators_1.0.14            pkgconfig_2.0.3
      [29] Matrix_1.7-4                R6_2.6.1
-     [31] fastmap_1.2.0               clue_0.3-66
+     [31] fastmap_1.2.0               clue_0.3-67
      [33] digest_0.6.39               pcaMethods_2.2.0
-     [35] ps_1.9.1                    RSQLite_2.4.5
+     [35] ps_1.9.1                    RSQLite_2.4.6
      [37] filelock_1.0.3              abind_1.4-8
      [39] compiler_4.5.2              withr_3.0.2
      [41] bit64_4.6.0-1               doParallel_1.0.17
-     [43] S7_0.2.1                    DBI_1.2.3
+     [43] S7_0.2.1                    DBI_1.3.0
      [45] alabaster.ranges_1.10.0     HDF5Array_1.38.0
      [47] alabaster.schemas_1.10.0    MASS_7.3-65
      [49] rappdirs_0.3.4              DelayedArray_0.36.0
@@ -924,15 +924,15 @@ sessionInfo()
      [53] PSMatch_1.14.0              otel_0.2.0
      [55] glue_1.8.0                  h5mread_1.2.1
      [57] QFeatures_1.20.0            rhdf5filters_1.22.0
-     [59] grid_4.5.2                  cluster_2.1.8.1
+     [59] grid_4.5.2                  cluster_2.1.8.2
      [61] reshape2_1.4.5              gtable_0.3.6
      [63] preprocessCore_1.72.0       tidyr_1.3.2
      [65] data.table_1.18.2.1         hms_1.1.4
      [67] XVector_0.50.0              foreach_1.5.2
      [69] pillar_1.11.1               stringr_1.6.0
-     [71] limma_3.66.0                later_1.4.5
-     [73] dplyr_1.1.4                 BiocFileCache_3.0.0
-     [75] lattice_0.22-7              bit_4.6.0
+     [71] limma_3.66.0                later_1.4.8
+     [73] dplyr_1.2.0                 BiocFileCache_3.0.0
+     [75] lattice_0.22-9              bit_4.6.0
      [77] tidyselect_1.2.1            xfun_0.56
      [79] statmod_1.5.1               MSnbase_2.36.0
      [81] stringi_1.8.7               lazyeval_0.2.2
@@ -942,8 +942,8 @@ sessionInfo()
      [89] BiocManager_1.30.27         cli_3.6.5
      [91] affyio_1.80.0               processx_3.8.6
      [93] Rcpp_1.1.1                  MassSpecWavelet_1.76.0
-     [95] dbplyr_2.5.1                XML_3.99-0.20
-     [97] parallel_4.5.2              ggplot2_4.0.1
+     [95] dbplyr_2.5.2                XML_3.99-0.22
+     [97] parallel_4.5.2              ggplot2_4.0.2
      [99] blob_1.3.0                  prettyunits_1.2.0
     [101] AnnotationFilter_1.34.0     alabaster.se_1.10.0
     [103] MsFeatures_1.18.0           scales_1.4.0

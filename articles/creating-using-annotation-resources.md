@@ -404,7 +404,7 @@ table(s_py$adduct)
               [2M+FA-H]-              [2M+H]+           [2M+K-2H]-
                        1                  253                    1
                  [2M+K]+          [2M+Na-2H]-             [2M+Na]+
-                      10                    1                  129
+                      10                    1                  120
                [2M+NH4]+              [3M-H]-              [3M+H]+
                        4                    2                    1
                 [3M+Na]+            [3M+NH4]+        [M-2(H2O)+H]+
@@ -412,13 +412,13 @@ table(s_py$adduct)
                  [M-2H]-             [M-2H]2-          [M-2H2O+H]+
                        1                   41                   84
              [M-3H2O+H]+               [M-e]-               [M-H]-
-                       2                   12                12803
+                       2                   12                12731
               [M-H+H2O]-         [M-H+HCOOH]-            [M-H+Na]+
                        1                    2                    6
               [M-H2O-H]-             [M-H2O]+           [M-H2O+H]+
                        1                    1                  531
                     [M]+             [M+2H]2+           [M+2Na-H]+
-                      88                  274                   55
+                      88                  275                   55
                [M+2Na]2+             [M+3H]3+           [M+ACN+H]+
                        2                    1                    3
                   [M+C]-             [M+Ca]2+          [M+CH3COO]-
@@ -430,11 +430,11 @@ table(s_py$adduct)
              [M+H-C4H6]+       [M+H-C5H12N2]+       [M+H-C5H9NO4]+
                        1                    5                    1
               [M+H-H20]+           [M+H-NH3]+               [M+H]+
-                       1                    4                68362
+                       1                    4                68444
                [M+HCOO]-               [M+K]+              [M+Li]+
                       88                  465                    2
               [M+Na-2H]-              [M+Na]+             [M+NH4]+
-                       2                13949                  551 
+                       2                13947                  551 
 
 The `s_py` `Spectra` object is ready for R workflows. Data stay in
 Python and is translated on demand; switch to `MsBackendMemory` to copy
@@ -1035,7 +1035,7 @@ metadata(cdb)
     3     source_version                                      v4
     4        source_date                              2025-09-30
     5           organism                                    <NA>
-    6   db_creation_date                Tue Feb  3 17:42:13 2026
+    6   db_creation_date                Tue Mar 17 16:21:08 2026
     7 supporting_package                              CompoundDb
     8  supporting_object                                  CompDb
 
@@ -1124,7 +1124,7 @@ metadata(cdb)
     3     source_version                                      v4
     4        source_date                              2025-09-30
     5           organism                                    <NA>
-    6   db_creation_date                Tue Feb  3 17:42:13 2026
+    6   db_creation_date                Tue Mar 17 16:21:08 2026
     7 supporting_package                              CompoundDb
     8  supporting_object                                  CompDb
 
@@ -1185,21 +1185,21 @@ sessionInfo()
     [8] base
 
     other attached packages:
-     [1] RSQLite_2.4.5            stringr_1.6.0            MsBackendMassbank_1.18.2
+     [1] RSQLite_2.4.6            stringr_1.6.0            MsBackendMassbank_1.18.2
      [4] CompoundDb_1.14.2        AnnotationFilter_1.34.0  AnnotationHub_4.0.0
-     [7] BiocFileCache_3.0.0      dbplyr_2.5.1             SpectriPy_1.0.0
-    [10] reticulate_1.44.1        MetaboAnnotation_1.14.0  MsBackendMgf_1.18.0
+     [7] BiocFileCache_3.0.0      dbplyr_2.5.2             SpectriPy_1.0.1
+    [10] reticulate_1.45.0        MetaboAnnotation_1.14.0  MsBackendMgf_1.18.0
     [13] zen4R_0.10.4             Spectra_1.20.1           BiocParallel_1.44.0
     [16] S4Vectors_0.48.0         BiocGenerics_0.56.0      generics_0.1.4
     [19] BiocStyle_2.38.0         quarto_1.5.1.9002        knitr_1.51
 
     loaded via a namespace (and not attached):
-      [1] DBI_1.2.3                   bitops_1.0-9
+      [1] DBI_1.3.0                   bitops_1.0-9
       [3] httr2_1.2.2                 gridExtra_2.3
       [5] rlang_1.1.7                 magrittr_2.0.4
-      [7] clue_0.3-66                 otel_0.2.0
+      [7] clue_0.3-67                 otel_0.2.0
       [9] matrixStats_1.5.0           compiler_4.5.2
-     [11] png_0.1-8                   vctrs_0.7.1
+     [11] png_0.1-9                   vctrs_0.7.1
      [13] reshape2_1.4.5              ProtGenerics_1.42.0
      [15] crayon_1.5.3                pkgconfig_2.0.3
      [17] MetaboCoreUtils_1.18.1      fastmap_1.2.0
@@ -1209,18 +1209,18 @@ sessionInfo()
      [25] xfun_0.56                   MultiAssayExperiment_1.36.1
      [27] cachem_1.1.0                ChemmineR_3.62.0
      [29] jsonlite_2.0.0              blob_1.3.0
-     [31] later_1.4.5                 DelayedArray_0.36.0
-     [33] parallel_4.5.2              cluster_2.1.8.1
+     [31] later_1.4.8                 DelayedArray_0.36.0
+     [33] parallel_4.5.2              cluster_2.1.8.2
      [35] R6_2.6.1                    stringi_1.8.7
      [37] RColorBrewer_1.1-3          GenomicRanges_1.62.1
      [39] Rcpp_1.1.1                  Seqinfo_1.0.0
      [41] SummarizedExperiment_1.40.0 base64enc_0.1-6
      [43] IRanges_2.44.0              BiocBaseUtils_1.12.0
-     [45] Matrix_1.7-4                igraph_2.2.1
+     [45] Matrix_1.7-4                igraph_2.2.2
      [47] tidyselect_1.2.1            rstudioapi_0.18.0
      [49] abind_1.4-8                 yaml_2.3.12
      [51] codetools_0.2-20            curl_7.0.0
-     [53] processx_3.8.6              lattice_0.22-7
+     [53] processx_3.8.6              lattice_0.22-9
      [55] tibble_3.3.1                plyr_1.8.9
      [57] withr_3.0.2                 KEGGREST_1.50.0
      [59] Biobase_2.70.0              S7_0.2.1
@@ -1229,22 +1229,22 @@ sessionInfo()
      [65] pillar_1.11.1               BiocManager_1.30.27
      [67] MatrixGenerics_1.22.0       DT_0.34.0
      [69] rprojroot_2.1.1             RCurl_1.98-1.17
-     [71] BiocVersion_3.22.0          ggplot2_4.0.1
+     [71] BiocVersion_3.22.0          ggplot2_4.0.2
      [73] scales_1.4.0                glue_1.8.0
      [75] lazyeval_0.2.2              tools_4.5.2
      [77] data.table_1.18.2.1         QFeatures_1.20.0
-     [79] fs_1.6.6                    XML_3.99-0.20
+     [79] fs_1.6.7                    XML_3.99-0.22
      [81] grid_4.5.2                  tidyr_1.3.2
      [83] AnnotationDbi_1.72.0        MsCoreUtils_1.22.1
      [85] cli_3.6.5                   rappdirs_0.3.4
      [87] rsvg_2.7.0                  S4Arrays_1.10.1
-     [89] keyring_1.4.1.9000          dplyr_1.1.4
+     [89] keyring_1.4.1.9000          dplyr_1.2.0
      [91] gtable_0.3.6                digest_0.6.39
-     [93] SparseArray_1.10.8          rjson_0.2.23
+     [93] SparseArray_1.10.9          rjson_0.2.23
      [95] htmlwidgets_1.6.4           farver_2.1.2
      [97] memoise_2.0.1               htmltools_0.5.9
      [99] lifecycle_1.0.5             here_1.0.2
-    [101] httr_1.4.7                  bit64_4.6.0-1
+    [101] httr_1.4.8                  bit64_4.6.0-1
     [103] MASS_7.3-65                
 
 ## References
