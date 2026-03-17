@@ -29,7 +29,7 @@ RUN Rscript -e "install.packages('reticulate')" && \
     Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
 
 ## Install the current package with vignettes
-RUN Rscript -e "devtools::install('.', dependencies = c('Depends', 'Imports'), build_vignettes = TRUE)"
+RUN Rscript -e "remotes::install_local('.', dependencies = c('Depends', 'Imports'), type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
 
 ## root user needed for rstudio server properly working
 USER root
