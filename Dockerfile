@@ -28,6 +28,9 @@ RUN Rscript -e "install.packages('reticulate')" && \
     Rscript -e "BiocManager::install('SpectriPy', ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)" && \
     Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
 
+## Install vignette builder packages (needed for build_vignettes = TRUE), needed for the new docker image.
+RUN Rscript -e "install.packages(c('quarto', 'knitr'))"
+
 ## Install the current package with vignettes
 RUN Rscript -e "remotes::install_local('.', dependencies = c('Depends', 'Imports'), type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
 
