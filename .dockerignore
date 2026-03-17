@@ -6,7 +6,6 @@
 .travis.yml
 playground
 revdep
-scripts
 Dockerfile
 docs
 .RData
@@ -17,4 +16,4 @@ vignettes/objects/
 .config
 .local
 .profile
-.quarto
+**/.quarto
