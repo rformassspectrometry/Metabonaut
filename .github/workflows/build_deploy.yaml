@@ -62,7 +62,7 @@ jobs:
         run: |
           install.packages("unixtools", repos = "http://www.rforge.net/")
           unixtools::set.tempdir("/__w/Rtmp")
-          pkgdown::build_site_github_pages(new_process = FALSE, install = TRUE)
+          pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
