@@ -28,13 +28,15 @@ jobs:
       -
         name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           ref: ${{ github.event.client_payload.sha }}
           push: true
           tag_with_ref: true
           tag_with_sha: true
-          tags: rformassspectrometry/metabonaut:latest
+          tags: |
+            rformassspectrometry/metabonaut:latest
+            rformassspectrometry/metabonaut:RELEASE_3_23
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
