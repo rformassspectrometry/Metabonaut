@@ -3,8 +3,8 @@ FROM bioconductor/bioconductor_docker:RELEASE_3_23
 LABEL name="rformassspectrometry/Metabonaut" \
       url="https://github.com/rformassspectrometry/Metabonaut" \
       maintainer="philippine.louail@outlook.com" \
-      description="Docker container to run the different tutorials hosted on metabonaut. Includes Sirius 6.3 and RuSirius for the advanced feature annotation vignette. This version bases on the Bioconductor devel docker image." \
-      license="Artistic-2.0"
+      description="Docker container to run the different tutorials hosted on metabonaut. Includes Sirius 6.3 and RuSirius for the advanced feature annotation vignette. This version is based on the Bioconductor release 3.23 docker image." \
+      license="CC-BY-SA-4.0"
 
 WORKDIR /home/rstudio
 
@@ -14,7 +14,7 @@ RUN rm -rf /home/rstudio/scripts /home/rstudio/vignettes/.quarto
 ## Global installation of required packages
 ## Need MsBackendMetaboLights to pre-download the dataset.
 ## Need MsIO because not on any repository
-RUN Rscript -e "BiocManager::install(c('RforMassSpectrometry/MsIO', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
+RUN Rscript -e "install.packages('remotes'); BiocManager::install(c('RforMassSpectrometry/MsIO', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
 
 ## Install keyring package from github using pak
 RUN Rscript -e "install.packages('pak');pak::pak('r-lib/keyring', ask = FALSE)"

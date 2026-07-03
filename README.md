@@ -1,6 +1,6 @@
 # Let's Explore and Learn to Analyze Untargeted Metabolomics Data
 
-[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![DOI](https://zenodo.org/badge/849331979.svg)](https://doi.org/10.5281/zenodo.15062929)
 
 ## Welcome to **Metabonaut**! 🚀
@@ -86,7 +86,7 @@ one comprehensive **super-vignette**.
 
 -   **Major updates** will be documented here.
     -   Metabonaut now works with a stable version of Bioconductor
-        (3.22)
+        (3.23)
 -   **Minor updates** can be found in the
     [News section](https://rformassspectrometry.github.io/Metabonaut/news/index.html).
 
