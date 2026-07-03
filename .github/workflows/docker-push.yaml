@@ -14,34 +14,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
       -
         name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
       -
         name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
-          ref: ${{ github.event.client_payload.sha }}
+          context: .
           push: true
-          tag_with_ref: true
-          tag_with_sha: true
-          tags: rformassspectrometry/metabonaut:latest
+          tags: |
+            rformassspectrometry/metabonaut:latest
+            rformassspectrometry/metabonaut:RELEASE_3_23
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
       - name: Trigger next workflow
         if: success()
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.REPO_GHA_PAT }}
           repository: ${{ github.repository }}
