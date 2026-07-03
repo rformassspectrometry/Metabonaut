@@ -29,7 +29,10 @@ RUN Rscript -e "install.packages('reticulate')" && \
     Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
 
 ## Install the current package with vignettes
-RUN Rscript -e "devtools::install('.', dependencies = c('Depends', 'Imports'), type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
+## Step 1: install all dependencies (including Suggests) without building vignettes
+RUN Rscript -e "remotes::install_local('.', dependencies = TRUE, type = 'source', build_vignettes = FALSE, repos = BiocManager::repositories())"
+## Step 2: reinstall Metabonaut itself with vignettes (all deps already available)
+RUN Rscript -e "remotes::install_local('.', dependencies = FALSE, type = 'source', build_vignettes = TRUE, repos = BiocManager::repositories())"
 
 ## root user needed for rstudio server properly working
 USER root
