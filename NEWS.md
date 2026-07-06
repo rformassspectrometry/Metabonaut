@@ -1,5 +1,9 @@
 # Metabonaut 1.5
 
+## Changes in 1.5.1
+
+- Add vignette to export and import MzTab-M files.
+
 ## Changes in 1.5.0
 
 - Add vignette for use and import of public mass spectral library data.
