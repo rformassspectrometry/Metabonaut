@@ -1,5 +1,11 @@
 # Metabonaut 1.5
 
+## Changes in 1.5.1
+
+- Update the *SpectriPy* tutorial vignette to the current *matchms* API: the
+  `ModifiedCosine` similarity was renamed to `ModifiedCosineGreedy` (tested with
+  *matchms* 0.33.1).
+
 ## Changes in 1.5.0
 
 - Add vignette for use and import of public mass spectral library data.
