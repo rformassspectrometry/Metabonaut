@@ -106,10 +106,17 @@ MzTabM object should then be completed adding any missing data.
 ### Define missing data set's metadata (MTD)
 
 Comprehensive data set descriptions and metadata are important to enable re-use
-of the data and follow FAIR principles. The mzTab-M has stringent requirement
-in mandatory fields and their format. Refer to the official documentation for
-additional information. We need to add/adapt some columns of the
-`SummarizedExperiment`'s `colData()` to complete or match the expected format:
+of the data and follow FAIR principles. The mzTab-M format has stringent
+requirement for mandatory fields and their format. Most of the fields are CV
+parameters and the **PSI Mass Spectrometry Controlled Vocabulary (PSI-MS)** is
+the primary CV used to annotate mass spectrometry-specific fields in mzTab-M.
+It was built collaboratively by MS software vendors and academic groups working
+in mass spectrometry and MS informatics. The CV is community-maintained: new
+terms can be requested through the PSI-MS mailing list. For more details see
+the [mzTab-M specification, section 4.2 "The PSI Mass Spectrometry Controlled
+Vocabulary (CV)"](https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/specification.html#the-psi-mass-spectrometry-controlled-vocabulary-cv).
+We need to add/adapt some columns of the `SummarizedExperiment`'s `colData()`
+to complete or match the expected format:
 
 - use a CV param for species: `"[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]"`
 - use a CV param for blood plasma: `"[BTO, BTO:0000131, blood plasma, ]"`
