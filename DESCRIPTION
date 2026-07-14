@@ -34,7 +34,7 @@ Authors@R:
             comment = c(ORCID = "0000-0001-8501-7319")),
      person(given = "Gabriele", family = "Tomè",
             email = "gabriele.tome@eurac.edu",
-            role = c("ctb"),
+            role = "ctb",
             comment = c(ORCID = "0000-0002-3976-6068",
             fnd = "MetaRbolomics4Galaxy project (CUP: D53C25001030003) co-funded by the Autonomous Province of Bolzano under the Joint Projects South Tyrol–Germany 2025 program.")),
      person(given = "Johannes", family = "Rainer",
