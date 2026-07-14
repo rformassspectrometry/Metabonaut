@@ -1,8 +1,10 @@
-# Metabonaut 1.5
+# Metabonaut 1.6
 
-## Changes in 1.5.1
+## Changes in 1.6.0
 
 - Add vignette to export and import MzTab-M files.
+
+# Metabonaut 1.5
 
 ## Changes in 1.5.0
 

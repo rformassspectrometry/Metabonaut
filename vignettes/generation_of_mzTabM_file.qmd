@@ -65,6 +65,9 @@ contains information on the annotation process (and reliability) of the
 molecules reported in the SML section. The SML is supposed to be a subset of
 the SMF table. The structure and relationship between rows in these different
 tables is defined by the mzTab-M standard and follows strict rules.
+All mzTab-M files are validated using either the [online](https://apps.lifs-tools.org/mztabvalidator/)
+or local Java validator to ensure compliance. In RmzTabM, this validation is
+executed locally via the offline Java tool.
 
 # Package
 
@@ -81,12 +84,11 @@ library(SummarizedExperiment)
 ## Data import
 
 In this document we export the preprocessed data set used in the *Metabonaut*
-end-to-end metabolomics data workflow in mzTab-M format, based on the
-Metabolights data set *MTBLS8735*. The original *xcms*
-preprocessing result object is available in Metabonaut and is included also
-within the *RmzTabM* package. After collecting all necessary experimental
-metadata, we export this result object as a mzTab-M file with only the metadata
-and the small feature abundances (MTD+SMF).
+[end-to-end metabolomics data workflow](https://rformassspectrometry.github.io/metabonaut/articles/end-to-end-untargeted-metabolomics.html)
+in mzTab-M format, based on the Metabolights data set *MTBLS8735*. After
+collecting all necessary experimental metadata, we export this result object
+as a mzTab-M file with only the metadata and the small feature abundances
+(MTD+SMF).
 
 ```{r import}
 ## load preprocessed dataset
@@ -222,10 +224,10 @@ the `SummarizedExperiment`s `rowData()`:
 rowData(se) |> head() |> kable(format = "pipe")
 ```
 
-For our example we use column `"mzmed"` which defines the features' *m/z* value
-which can be mapped to the SMF field *exp_mass_to_charge* and `"rtmed"` that
-reports the median retention time of the feature which can be used for the SMF
-field *retention_time_in_seconds*. We will in addition add an optional field
+For our example we use column `"mzmed"` which defines the features median *m/z*
+value which can be mapped to the SMF field *exp_mass_to_charge* and `"rtmed"`
+that reports the median retention time of the feature which can be used for the
+SMF field *retention_time_in_seconds*. We will in addition add an optional field
 *feature_id* to report and add the IDs of the individual features from the
 `SummarizedExperiment`, which we add as a column `"feature_id"` to the
 `rowData()`:
@@ -386,6 +388,34 @@ The reconstructed `SummarizedExperiment` contains the same measurement data.
 Differences in `rowData` and `colData` reflect that only fields present in the
 SMF and MTD sections are loaded and that column names follow the mzTab-M
 specification.
+
+# Outlook
+
+Exporting analysis results to mzTab-M plugs a given workflow into a broader
+ecosystem of standardized, interoperable metabolomics data. A few reasons why
+this matters:
+
+- *Interoperability*: mzTab-M is a community-endorsed standard developed under
+  the HUPO Proteomics Standards Initiative (PSI). Results exported in this
+  format can be read, compared, and re-analyzed by any tool that supports the
+  standard, eliminating the need to write custom parsers for every combination
+  of software.
+
+- *Reproducibility and Reuse*: A self-contained, well-documented results file
+  makes it much easier for others to understand exactly how a set of features,
+  identifications, and quantification values were derived.
+
+- *FAIR Data*: Exporting directly to this format lowers the barrier to sharing
+  data following the FAIR principles, which in turn supports meta-analyses and
+  the reuse of published datasets. It also simplifies the submission process
+  for new datasets to online repositories.
+
+At present, this package supports the import and export of mzTab-M files as
+`SummarizedExperiment` objects. The next step is to support exporting mzTab-M
+directly from `xcms` result objects, without an intermediate manual conversion
+step. This would make it straightforward to go from raw data processing in
+`xcms` to a deposition- or exchange-ready mzTab-M file in a single,
+reproducible pipeline.
 
 # Session information
 
