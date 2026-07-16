@@ -16,7 +16,9 @@
 
 - Update the *SpectriPy* tutorial vignette to the current *matchms* API: the
   `ModifiedCosine` similarity was renamed to `ModifiedCosineGreedy` (tested with
-  *matchms* 0.33.1).
+  *matchms* 0.33.1). This is a pure renaming, the implementation was already
+  greedy; the vignette now also mentions the exact `ModifiedCosineHungarian`
+  alternative.
 
 ## Changes in 1.5.0
 

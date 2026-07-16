@@ -232,12 +232,22 @@ len(clean_mgf_py)
 We calculate the pairwise spectral similarity between the query spectra and the
 reference library spectra using Python's *matchms* library.
 
-Here, we use the spectral similarity algorithm ModifiedCosine from *matchms*,
+Here, we use the modified cosine spectral similarity algorithm from *matchms*,
 from source
 [matchms](https://github.com/matchms/matchms/blob/master/README.rst). This
 algorithm can easily be exchanged for another spectral similarity calculation
 from *matchms* (see
 [here](https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html)).
+
+Since *matchms* version 0.32, this algorithm is called `ModifiedCosineGreedy`
+(it was named `ModifiedCosine` before). The implementation solves the peak
+assignment between two spectra in a *greedy* way, i.e. it repeatedly takes the
+highest scoring peak pair, which is fast but only an approximation of the
+optimal assignment. *matchms* also provides `ModifiedCosineHungarian`, which
+computes the exact assignment at the cost of longer run times. For a typical
+annotation workflow such as this one the greedy variant is the pragmatic
+choice, but the exact variant can be preferable e.g. for benchmarking or method
+development.
 
 ```{python}
 #' Python session:
