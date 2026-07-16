@@ -71,6 +71,11 @@ generation using MSNovelist for features with low-confidence database matches.
 Discover how to use a **flexible alignment algorithm** to integrate new
 datasets with previously processed ones based on features of interest.
 
+#### 9. [mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment](https://rformassspectrometry.github.io/Metabonaut/articles/generation_of_mzTabM_file.html)
+
+Use **RmzTabM** to import and export Summarized Experiment object to mzTab-M 2.1
+files.
+
 ---
 
 For a full list of all available vignettes, visit the
