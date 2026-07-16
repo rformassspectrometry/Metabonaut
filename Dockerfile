@@ -13,8 +13,8 @@ RUN rm -rf /home/rstudio/scripts /home/rstudio/vignettes/.quarto
 
 ## Global installation of required packages
 ## Need MsBackendMetaboLights to pre-download the dataset.
-## Need MsIO because not on any repository
-RUN Rscript -e "install.packages('remotes'); BiocManager::install(c('RforMassSpectrometry/MsIO', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
+## Need MsIO and RmzTabM because not on any repository
+RUN Rscript -e "install.packages('remotes'); BiocManager::install(c('RforMassSpectrometry/MsIO', 'RforMassSpectrometry/RmzTabM', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
 
 ## Use SpectriPy with virtual env to avoid need to install miniconda
 ENV SPECTRIPY_USE_CONDA="FALSE"

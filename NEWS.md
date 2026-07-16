@@ -1,5 +1,11 @@
 # Metabonaut 1.6
 
+## Changes in 1.6.1
+
+- Install *RmzTabM* in the docker image for the mzTab-M vignette.
+- Document that Metabonaut can be run in the browser on the Bioconductor
+  Workshop platform (workshop.bioconductor.org).
+
 ## Changes in 1.6.0
 
 - Add vignette to export and import MzTab-M files.
