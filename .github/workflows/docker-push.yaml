@@ -35,6 +35,9 @@ jobs:
         with:
           context: .
           push: true
+          ## Avoids the anonymous GitHub API rate limit during the build.
+          secrets: |
+            github_pat=${{ secrets.GITHUB_TOKEN }}
           tags: |
             rformassspectrometry/metabonaut:latest
             rformassspectrometry/metabonaut:RELEASE_3_23
