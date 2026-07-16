@@ -98,7 +98,7 @@ We next configure the parallel processing setup. Most functions from the
 the performance of the analysis, especially for large data sets. *xcms*
 and all packages from the *RforMassSpectrometry* package ecosystem use
 the parallel processing setup configured through the
-*[BiocParallel](https://bioconductor.org/packages/3.22/BiocParallel)*
+*[BiocParallel](https://bioconductor.org/packages/3.23/BiocParallel)*
 Bioconductor package. With the code below we use a *fork-based* parallel
 processing on unix system, and a *socket-based* parallel processing on
 the Windows operating system.
@@ -117,7 +117,7 @@ if (.Platform$OS.type == "unix") {
 
 The experimental data is now represented by a `MsExperiment` object from
 the
-*[MsExperiment](https://bioconductor.org/packages/3.22/MsExperiment)*
+*[MsExperiment](https://bioconductor.org/packages/3.23/MsExperiment)*
 package. The `MsExperiment` object is a container for metadata and
 spectral data that provides and manages also the linkage between samples
 and spectra.
@@ -240,7 +240,7 @@ col_sample <- col_phenotype[sampleData(lcms1)$phenotype]
 ```
 
 The MS data of this experiment is stored as a `Spectra` object (from the
-*[Spectra](https://bioconductor.org/packages/3.22/Spectra)* Bioconductor
+*[Spectra](https://bioconductor.org/packages/3.23/Spectra)* Bioconductor
 package) within the `MsExperiment` object and can be accessed using
 [`spectra()`](https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html)
 function. Each element in this object is a spectrum - they are organised
@@ -579,11 +579,11 @@ This function supports various algorithms for peak detection, which can
 be selected and configured with their respective parameter objects.
 
 The preferred algorithm in this case, *CentWave*, utilizes continuous
-wavelet transformation (CWT)-based peak detection ([Tautenhahn,
-Böttcher, and Neumann 2008](#ref-tautenhahn_highly_2008)). This method
-is known for its effectiveness in handling non-Gaussian shaped
-chromatographic peaks or peaks with varying retention time widths, which
-are commonly encountered in HILIC separations.
+wavelet transformation (CWT)-based peak detection ([Tautenhahn et al.
+2008](#ref-tautenhahn_highly_2008)). This method is known for its
+effectiveness in handling non-Gaussian shaped chromatographic peaks or
+peaks with varying retention time widths, which are commonly encountered
+in HILIC separations.
 
 Below we apply the CentWave algorithm with its default settings on the
 EICs of cystine and methionine ions and evaluate the results.
@@ -963,7 +963,7 @@ chromatographic peaks.
 lcms1 <- refineChromPeaks(lcms1, param = param, chunkSize = 5)
 ```
 
-    Reduced from 106714 to 89182 chromatographic peaks.
+    Reduced from 106714 to 89185 chromatographic peaks.
 
 ``` r
 
@@ -971,9 +971,8 @@ chromPeakData(lcms1)$merged |>
                       table()
 ```
 
-
     FALSE  TRUE
-    79908  9274 
+    79943  9242 
 
 Before proceeding with the next preprocessing step it is generally
 suggested to evaluate the results of the chromatographic peak detection
@@ -1014,7 +1013,7 @@ data.frame(sample_name = sampleData(lcms1)$sample_name,
 |             |       |      |      |       |      |      |       |      |      |       |
 |:------------|:------|:-----|:-----|:------|:-----|:-----|:------|:-----|:-----|:------|
 | sample_name | POOL1 | A    | B    | POOL2 | C    | D    | POOL3 | E    | F    | POOL4 |
-| peak_count  | 9287  | 8986 | 8738 | 9193  | 8351 | 8778 | 9211  | 8787 | 8515 | 9336  |
+| peak_count  | 9288  | 8987 | 8738 | 9194  | 8351 | 8778 | 9211  | 8787 | 8515 | 9336  |
 
 Table 4. Samples and number of identified chromatographic peaks. {.table
 style="width:100%;"}
@@ -1138,7 +1137,7 @@ instead are mostly instrument-dependent. Note that it would also be
 possible to manually specify anchor peaks, respectively their retention
 times or to align a data set against an external, reference, data set.
 More information is provided in the vignettes of the
-*[xcms](https://bioconductor.org/packages/3.22/xcms)* package.
+*[xcms](https://bioconductor.org/packages/3.23/xcms)* package.
 
 After calculating how much to adjust the retention time in these
 samples, we apply this shift also on the study samples.
@@ -1430,7 +1429,7 @@ retention time close to the expected values for each internal standard.
 For this we use the
 [`matchValues()`](https://rdrr.io/pkg/MetaboAnnotation/man/matchValues.html)
 function from the
-*[MetaboAnnotation](https://bioconductor.org/packages/3.22/MetaboAnnotation)*
+*[MetaboAnnotation](https://bioconductor.org/packages/3.23/MetaboAnnotation)*
 package ([Rainer et al. 2022](#ref-rainer_modular_2022)) using the
 `MzRtParam` method to identify all chromatographic peaks with similar
 *m/z* (+/- 50 ppm) and retention time (+/- 10 seconds) to the internal
@@ -1548,6 +1547,7 @@ param
      - binSize: [1] 0.25
      - maxFeatures: [1] 50
      - ppm: [1] 0
+     - rtCenterFun: [1] "median"
 
 Show the code
 
@@ -1724,19 +1724,19 @@ featureDefinitions(lcms1) |>
 ```
 
               mzmed    mzmin    mzmax    rtmed    rtmin    rtmax npeaks CTR CVD QC
-    FT0001 50.98979 50.98949 50.99038 203.6001 203.1181 204.2331      8   1   3  4
-    FT0002 51.05904 51.05880 51.05941 191.1675 190.8787 191.5050      9   2   3  4
-    FT0003 51.98657 51.98631 51.98699 203.1467 202.6406 203.6710      7   0   3  4
-    FT0004 53.02036 53.02009 53.02043 203.2343 202.5652 204.0901     10   3   3  4
-    FT0005 53.52080 53.52051 53.52102 203.1936 202.8490 204.0901     10   3   3  4
-    FT0006 54.01007 54.00988 54.01015 159.2816 158.8499 159.4484      6   1   3  2
+    FT0001 50.98979 50.98949 50.99038 203.5975 203.1200 204.2317      8   1   3  4
+    FT0002 51.05904 51.05880 51.05941 191.1672 190.8783 191.5046      9   2   3  4
+    FT0003 51.98657 51.98631 51.98699 203.1455 202.6389 203.6731      7   0   3  4
+    FT0004 53.02036 53.02009 53.02043 203.2318 202.5668 204.0906     10   3   3  4
+    FT0005 53.52080 53.52051 53.52102 203.1915 202.8478 204.0906     10   3   3  4
+    FT0006 54.01007 54.00988 54.01015 159.2817 158.8499 159.4483      6   1   3  2
                 peakidx ms_level
-    FT0001 7702, 16....        1
-    FT0002 7176, 16....        1
-    FT0003 7680, 17....        1
-    FT0004 7763, 17....        1
-    FT0005 8353, 17....        1
-    FT0006 5800, 15....        1
+    FT0001 7705, 16....        1
+    FT0002 7179, 16....        1
+    FT0003 7683, 17....        1
+    FT0004 7766, 17....        1
+    FT0005 8357, 17....        1
+    FT0006 5803, 15....        1
 
 This data frame provides the average *m/z* and retention time (in
 columns `"mzmed"` and `"rtmed"`) that characterize a LC-MS feature.
@@ -1799,7 +1799,7 @@ sum(is.na(featureValues(lcms1))) /
     length(featureValues(lcms1)) * 100
 ```
 
-    [1] 26.41597
+    [1] 26.41045
 
 We can observe a substantial number of missing values values in our
 dataset. Let’s therefore delve into the process of *gap-filling*. We
@@ -1849,7 +1849,7 @@ sum(is.na(featureValues(lcms1))) /
     length(featureValues(lcms1)) * 100
 ```
 
-    [1] 5.155492
+    [1] 5.161006
 
 With
 [`fillChromPeaks()`](https://rdrr.io/pkg/xcms/man/fillChromPeaks.html)
@@ -1933,28 +1933,27 @@ l <- lm(log2(avg_filled) ~ log2(avg_detect))
 summary(l)
 ```
 
-
     Call:
     lm(formula = log2(avg_filled) ~ log2(avg_detect))
 
     Residuals:
         Min      1Q  Median      3Q     Max
-    -6.8176 -0.3807  0.1725  0.5492  6.7504
+    -6.8194 -0.3816  0.1698  0.5497  6.7473
 
     Coefficients:
                      Estimate Std. Error t value Pr(>|t|)
-    (Intercept)      -1.62359    0.11545  -14.06   <2e-16 ***
-    log2(avg_detect)  1.11763    0.01259   88.75   <2e-16 ***
+    (Intercept)       -1.6267     0.1155  -14.08   <2e-16 ***
+    log2(avg_detect)   1.1181     0.0126   88.72   <2e-16 ***
     ---
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-    Residual standard error: 0.9366 on 2846 degrees of freedom
-      (846 observations deleted due to missingness)
+    Residual standard error: 0.9365 on 2844 degrees of freedom
+      (847 observations deleted due to missingness)
     Multiple R-squared:  0.7346,    Adjusted R-squared:  0.7345
-    F-statistic:  7877 on 1 and 2846 DF,  p-value: < 2.2e-16
+    F-statistic:  7871 on 1 and 2844 DF,  p-value: < 2.2e-16
 
 The linear regression line has a slope of 1.12 and an intercept of
--1.62. This indicates that the filled-in signal is on average 1.12 times
+-1.63. This indicates that the filled-in signal is on average 1.12 times
 higher than the detected signal.
 
 ### Filtering Features: Missing values
@@ -1966,7 +1965,7 @@ later on the study samples are being performed on *reliable* signal.
 Also, with this filter we remove features that were mostly detected in
 QC samples, but not the study samples. Such filter can be performed with
 [`filterFeatures()`](https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html)
-function from the *[xcms](https://bioconductor.org/packages/3.22/xcms)*
+function from the *[xcms](https://bioconductor.org/packages/3.23/xcms)*
 package with the `PercentMissingFilter` setting. The parameters of this
 filer:
 
@@ -1994,7 +1993,7 @@ f <- as.factor(f)
 lcms1 <- filterFeatures(lcms1, PercentMissingFilter(f = f, threshold = 40))
 ```
 
-    344 features were removed
+    346 features were removed
 
 ### Preprocessing results
 
@@ -2017,7 +2016,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Tue Mar 17 15:54:43 2026
+     date: Thu Jul 16 15:25:09 2026
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -2068,10 +2067,10 @@ res
 ```
 
     class: SummarizedExperiment
-    dim: 8724 10
+    dim: 8722 10
     metadata(7): '' '' ... '' ''
     assays(1): raw
-    rownames(8724): FT0001 FT0002 ... FT9067 FT9068
+    rownames(8722): FT0001 FT0002 ... FT9067 FT9068
     rowData names(11): mzmed mzmin ... QC ms_level
     colnames(10): MS_QC_POOL_1_POS.mzML MS_A_POS.mzML ... MS_F_POS.mzML
       MS_QC_POOL_4_POS.mzML
@@ -2118,26 +2117,26 @@ assay(res, "raw_filled") |> head()
 ```
 
            MS_QC_POOL_1_POS.mzML MS_A_POS.mzML MS_B_POS.mzML MS_QC_POOL_2_POS.mzML
-    FT0001              421.6162      689.2422      411.3295              481.7436
-    FT0002              710.8078      875.9192      457.5920              693.6997
-    FT0003              445.5711      613.4410      277.5022              497.8866
+    FT0001              421.6162      689.2422      411.1881              481.7436
+    FT0002              710.8078      875.9192      457.6754              693.6997
+    FT0003              445.5711      613.4410      283.9975              497.8866
     FT0004            16994.5260    24605.7340    19766.7069            17808.0933
     FT0005             3284.2664     4526.0531     3521.8221             3379.8909
-    FT0006            10681.7476    10009.6602     9599.9701            10800.5449
+    FT0006            10681.7476    10009.6602     9600.0959            10800.5449
            MS_C_POS.mzML MS_D_POS.mzML MS_QC_POOL_3_POS.mzML MS_E_POS.mzML
-    FT0001      314.7567      635.2732              439.6086      570.5849
+    FT0001      331.2090      635.2732              439.6086      570.5849
     FT0002      781.2416      648.4344              700.9716     1054.0207
-    FT0003      425.3774      634.9370              449.0933      556.2544
+    FT0003      425.5903      634.9370              449.0933      556.5328
     FT0004    22780.6683    22873.1061            16965.7762    23432.1252
     FT0005     4396.0762     4317.7734             3270.5290     4533.8667
-    FT0006     4792.2390     7296.4262             2382.1788     9236.9799
+    FT0006     4792.3018     7296.4262             2382.2100     9236.9799
            MS_F_POS.mzML MS_QC_POOL_4_POS.mzML
     FT0001      579.9360              437.0340
     FT0002      534.4577              711.0361
     FT0003      461.0465              232.1075
     FT0004    22198.4607            16796.4497
     FT0005     4161.0132             3142.2268
-    FT0006     6817.8785             6911.5439
+    FT0006     6817.8785             6911.6344
 
 An advantage, in addition to being a container for the full
 preprocessing results is also the possibility of an easy and intuitive
@@ -2189,7 +2188,7 @@ applied to remove any technical variances from the data. While simple
 approaches like median scaling can be implemented with a few lines of R
 code, more advanced normalization algorithms are available in packages
 such as Bioconductor’s
-*[preprocessCore](https://bioconductor.org/packages/3.22/preprocessCore)*.
+*[preprocessCore](https://bioconductor.org/packages/3.23/preprocessCore)*.
 The comprehensive workflow “Notame” also propose a very interesting
 normalization approach adaptable and scalable to the user dataset
 ([Klåvus et al. 2020](#ref-klavus_notame_2020)).
@@ -2217,7 +2216,7 @@ groups([Broadhurst et al. 2018](#ref-broadhurst_guidelines_2018)):
   example be performed using the
   [`adjust_lm()`](https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html)
   function from the
-  *[MetaboCoreUtils](https://bioconductor.org/packages/3.22/MetaboCoreUtils)*
+  *[MetaboCoreUtils](https://bioconductor.org/packages/3.23/MetaboCoreUtils)*
   package.
 
 - Batch-related biases. These comprise any noise that is specific to a
@@ -2402,7 +2401,7 @@ between groups. Generally, between-sample differences can be easily
 spotted using RLA plots. Below we calculate and visualize within group
 RLA values using the [`rowRla()`](https://rdrr.io/pkg/xcms/man/rla.html)
 function from the
-*[MsCoreUtils](https://bioconductor.org/packages/3.22/MsCoreUtils)*
+*[MsCoreUtils](https://bioconductor.org/packages/3.23/MsCoreUtils)*
 package defining with parameter `f` the sample groups.
 
 Show the code
@@ -2592,7 +2591,7 @@ samples, while only slightly reducing the CV in study samples. The CV is
 calculated below using the
 [`rowRsd()`](https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html)
 function from the
-*[MetaboCoreUtils](https://bioconductor.org/packages/3.22/MetaboCoreUtils)*
+*[MetaboCoreUtils](https://bioconductor.org/packages/3.23/MetaboCoreUtils)*
 package. By setting `mad = TRUE` we use a more robust calculation using
 the median absolute deviation instead of the standard deviation.
 
@@ -2628,11 +2627,11 @@ kable(res_df, format = "pipe")
 
 |      |    QC_raw |   QC_norm | Study_raw | Study_norm |
 |:-----|----------:|----------:|----------:|-----------:|
-| 0%   | 0.0000000 | 0.0000000 | 0.0008024 |  0.0027477 |
-| 25%  | 0.0450743 | 0.0446309 | 0.1423902 |  0.1430977 |
-| 50%  | 0.0972048 | 0.0970785 | 0.2668930 |  0.2658062 |
-| 75%  | 0.2003657 | 0.1985980 | 0.4867303 |  0.4825679 |
-| 100% | 1.4635996 | 1.4637193 | 1.4825882 |  1.4825893 |
+| 0%   | 0.0000000 | 0.0000000 | 0.0008024 |  0.0027344 |
+| 25%  | 0.0450467 | 0.0447356 | 0.1425283 |  0.1431397 |
+| 50%  | 0.0970285 | 0.0965952 | 0.2671896 |  0.2661021 |
+| 75%  | 0.1997631 | 0.1981580 | 0.4867299 |  0.4827306 |
+| 100% | 1.4635999 | 1.4637534 | 1.4825882 |  1.4825893 |
 
 Table 6. Distribution of CV values across samples for the raw and
 normalized data. {.table}
@@ -2661,7 +2660,7 @@ One possible option would be to use a linear-model based approach such
 as can for example be applied with the
 [`adjust_lm()`](https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html)
 function from the
-*[MetaboCoreUtils](https://bioconductor.org/packages/3.22/MetaboCoreUtils)*
+*[MetaboCoreUtils](https://bioconductor.org/packages/3.23/MetaboCoreUtils)*
 package.
 
 ## Quality control: Feature prefiltering
@@ -2679,7 +2678,7 @@ data for later comparisons.
 nrow(res)
 ```
 
-    [1] 8724
+    [1] 8722
 
 ``` r
 
@@ -2719,7 +2718,7 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4206 features were removed
+    4208 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
@@ -2736,7 +2735,7 @@ Note that the
 and
 [`rowRsd()`](https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html)
 functions from the
-*[MetaboCoreUtils](https://bioconductor.org/packages/3.22/MetaboCoreUtils)*
+*[MetaboCoreUtils](https://bioconductor.org/packages/3.23/MetaboCoreUtils)*
 package could be used to calculate the actual numeric values for the
 estimates used for filtering, to e.g. to evaluate their distribution in
 the whole data set or identify data set-dependent threshold values.
@@ -2750,7 +2749,7 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4518
+    [1] 4514
 
 ``` r
 
@@ -2758,9 +2757,9 @@ nrow(res)
 nrow(res) / nrow(res_unfilt) * 100
 ```
 
-    [1] 51.78817
+    [1] 51.75418
 
-The dataset has been reduced from 8724 to 4518 features. We did remove a
+The dataset has been reduced from 8722 to 4514 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -2830,12 +2829,12 @@ upset(as.data.frame(binary_data), nset = 6, sets = colnames(df_logical), keep.or
     Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
     ℹ Please use `linewidth` instead.
     ℹ The deprecated feature was likely used in the UpSetR package.
-      Please report the issue to the authors.
+      Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
 
     Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
     ℹ Please use the `linewidth` argument instead.
     ℹ The deprecated feature was likely used in the UpSetR package.
-      Please report the issue to the authors.
+      Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
 
 ![](a-end-to-end-untargeted-metabolomics_files/figure-html/unnamed-chunk-54-1.png)
 
@@ -2929,7 +2928,7 @@ function. P-values for significance of association are then calculated
 using the [`eBayes()`](https://rdrr.io/pkg/limma/man/ebayes.html)
 function, that also performs the empirical Bayes-based robust estimation
 of the standard errors. See also the excellent vignette/user guide of
-the *[limma](https://bioconductor.org/packages/3.22/limma)* package for
+the *[limma](https://bioconductor.org/packages/3.23/limma)* package for
 examples and details on the linear model procedure.
 
 ``` r
@@ -3062,12 +3061,12 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83789 | -8.540232 | 0.0064152 | 12.229286 |  3.816143 | 0.2116471 |
-| FT0845 | 195.0877 |  32.65668 | -6.330400 | 0.0421988 | 16.905340 | 10.454994 | 0.0304712 |
-| FT0565 | 161.0400 | 162.13668 | -5.824858 | 0.0346003 | 10.287074 |  4.191575 | 0.0360903 |
-| FT1171 | 229.1299 | 181.08828 | -5.195353 | 0.0162403 | 10.721195 |  5.673362 | 0.0706276 |
-| FT0371 | 138.0547 | 148.39599 | -5.162133 | 0.0196731 |  9.914862 |  4.448416 | 0.5564435 |
-| FT5606 | 560.3603 |  33.54917 | -3.855919 | 0.0435719 |  8.885918 |  4.804876 | 1.2139903 |
+| FT0732 | 182.0749 |  34.83800 | -8.368575 | 0.0069217 | 12.228210 |  3.952499 | 0.2129312 |
+| FT0845 | 195.0877 |  32.65666 | -6.330037 | 0.0347543 | 16.904263 | 10.454779 | 0.0308570 |
+| FT0565 | 161.0400 | 162.13666 | -5.609085 | 0.0294508 | 10.285998 |  4.460656 | 0.0353295 |
+| FT1171 | 229.1299 | 181.08851 | -5.305011 | 0.0175049 | 10.720119 |  5.585054 | 0.0710135 |
+| FT0371 | 138.0547 | 148.39593 | -5.153581 | 0.0204212 |  9.913786 |  4.458967 | 0.5575909 |
+| FT5606 | 560.3603 |  33.54912 | -3.539932 | 0.0347543 |  8.884841 |  5.141959 | 1.2135934 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
@@ -3146,7 +3145,7 @@ we use the features’ *m/z* values and match them against reference
 values, i.e., exact masses of chemical compounds that are provided by a
 reference database, in our case the MassBank database. The full MassBank
 data is re-distributed through Bioconductor’s
-*[AnnotationHub](https://bioconductor.org/packages/3.22/AnnotationHub)*
+*[AnnotationHub](https://bioconductor.org/packages/3.23/AnnotationHub)*
 resource, which simplifies their integration into reproducible R-based
 analysis workflows.
 
@@ -3166,7 +3165,7 @@ query(ah, "MassBank")
 ```
 
     AnnotationHub with 8 records
-    # snapshotDate(): 2025-10-29
+    # snapshotDate(): 2026-04-23
     # $dataprovider: MassBank
     # $species: NA
     # $rdataclass: CompDb
@@ -3193,7 +3192,7 @@ mb <- ah[["AH116166"]]
 
 The MassBank data is provided as a self-contained SQLite database and
 data can be queried and accessed through the
-*[CompoundDb](https://bioconductor.org/packages/3.22/CompoundDb)*
+*[CompoundDb](https://bioconductor.org/packages/3.23/CompoundDb)*
 Bioconductor package. Below we use the
 [`compounds()`](https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html)
 function to extract small compound annotations from the database.
@@ -3278,8 +3277,8 @@ mtch_res
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1867474      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.0614704      C8H10N4O2
     FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
-    FT1171      FT1171   229.130  181.0883     [M+Na]+ 3.0770838      C12H18N2O
-    FT5606      FT5606   560.360   33.5492          NA        NA             NA
+    FT1171      FT1171   229.130  181.0885     [M+Na]+ 3.0770838      C12H18N2O
+    FT5606      FT5606   560.360   33.5491          NA        NA             NA
              target_name target_inchikey
              <character>     <character>
     FT0371 Benzohydro...   VDEUYMSGMP...
@@ -3329,27 +3328,27 @@ kable(mtch_res, format = "pipe")
 
 | feature_id | mzmed | rtmed | adduct | ppm_error | target_formula | target_name | target_inchikey |
 |:---|---:|---:|:---|---:|:---|:---|:---|
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-Aminobenzoic acid | ALYNCZNDIQEVRV-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 2-PYRIDINECARBOXYLIC ACID METHYL ESTER | NMMIHXMBOZYNET-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-PYRIDINECARBOXYLIC ACID METHYL ESTER | OLXYLDUSSBULGU-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | SALICYLALDOXIME | ORIHZIZPTZTNCU-VMPITWQZSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | ORTHO NITROTOLUENE | PLAZTCDQAHEYBI-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-PYRIDYL ACETATE | PTZQTYADHHANGW-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9246374 | C7H7NO2 | Salicylaldehyde oxime | PUNVNOQWQQPNES-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | META NITROTOLUENE | QZYHIOPPLUPUJF-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | Anthranilic acid | RWZYAGGXGHYGMB-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 2-HYDROXYBENZAMIDE | SKZKKFZAGNVIMN-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9246374 | C7H7NO2 | N-Hydroxybenzamide | VDEUYMSGMPQMIK-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 3-Pyridylacetic acid | WGNUNYPERJMVRM-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | Trigonelline | WWNNZCOKKKDOPX-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | META-AMINOBENZOIC ACID | XFDUHJPVQKIXHO-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 3-PYRIDINECARBOXYLIC ACID METHYL ESTER | YNBADRVTZLEFNH-UHFFFAOYSA-N |
-| FT0371 | 138.0547 | 148.39599 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-NITROTOLUENE | ZPTVNYMJQHSSEA-UHFFFAOYSA-N |
-| FT0565 | 161.0400 | 162.13668 | \[M+Na\]+ | 3.1247452 | C8H10S | BENZYL METHYL SULFIDE | OFQPKKGMNWASPN-UHFFFAOYSA-N |
-| FT0845 | 195.0877 | 32.65668 | \[M+H\]+ | 0.0614704 | C8H10N4O2 | Isocaffeine | LPHGQDQBBGAPDZ-UHFFFAOYSA-N |
-| FT0845 | 195.0877 | 32.65668 | \[M+H\]+ | 0.0614704 | C8H10N4O2 | Caffeine | RYYVLZVUVIJVGH-UHFFFAOYSA-N |
-| FT0845 | 195.0877 | 32.65668 | \[M+H\]+ | 0.1865772 | C8H10N4O2 | 1,3-Benzenedicarboxylic acid, dihydrazide | UTTHLMXOSUFZCQ-UHFFFAOYSA-N |
-| FT1171 | 229.1299 | 181.08828 | \[M+Na\]+ | 3.0770838 | C12H18N2O | Isoproturon | PUIYMUZLKQOUOZ-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-Aminobenzoic acid | ALYNCZNDIQEVRV-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 2-PYRIDINECARBOXYLIC ACID METHYL ESTER | NMMIHXMBOZYNET-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-PYRIDINECARBOXYLIC ACID METHYL ESTER | OLXYLDUSSBULGU-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | SALICYLALDOXIME | ORIHZIZPTZTNCU-VMPITWQZSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | ORTHO NITROTOLUENE | PLAZTCDQAHEYBI-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-PYRIDYL ACETATE | PTZQTYADHHANGW-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9246374 | C7H7NO2 | Salicylaldehyde oxime | PUNVNOQWQQPNES-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | META NITROTOLUENE | QZYHIOPPLUPUJF-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | Anthranilic acid | RWZYAGGXGHYGMB-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 2-HYDROXYBENZAMIDE | SKZKKFZAGNVIMN-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9246374 | C7H7NO2 | N-Hydroxybenzamide | VDEUYMSGMPQMIK-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 3-Pyridylacetic acid | WGNUNYPERJMVRM-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | Trigonelline | WWNNZCOKKKDOPX-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | META-AMINOBENZOIC ACID | XFDUHJPVQKIXHO-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 3-PYRIDINECARBOXYLIC ACID METHYL ESTER | YNBADRVTZLEFNH-UHFFFAOYSA-N |
+| FT0371 | 138.0547 | 148.39593 | \[M+H\]+ | 1.9356815 | C7H7NO2 | 4-NITROTOLUENE | ZPTVNYMJQHSSEA-UHFFFAOYSA-N |
+| FT0565 | 161.0400 | 162.13666 | \[M+Na\]+ | 3.1247452 | C8H10S | BENZYL METHYL SULFIDE | OFQPKKGMNWASPN-UHFFFAOYSA-N |
+| FT0845 | 195.0877 | 32.65666 | \[M+H\]+ | 0.0614704 | C8H10N4O2 | Isocaffeine | LPHGQDQBBGAPDZ-UHFFFAOYSA-N |
+| FT0845 | 195.0877 | 32.65666 | \[M+H\]+ | 0.0614704 | C8H10N4O2 | Caffeine | RYYVLZVUVIJVGH-UHFFFAOYSA-N |
+| FT0845 | 195.0877 | 32.65666 | \[M+H\]+ | 0.1865772 | C8H10N4O2 | 1,3-Benzenedicarboxylic acid, dihydrazide | UTTHLMXOSUFZCQ-UHFFFAOYSA-N |
+| FT1171 | 229.1299 | 181.08851 | \[M+Na\]+ | 3.0770838 | C12H18N2O | Isoproturon | PUIYMUZLKQOUOZ-UHFFFAOYSA-N |
 
 Table 9. MS1 annotation results. {.table}
 
@@ -3613,12 +3612,12 @@ target
 ```
 
               mzmin    mzmax     rtmin     rtmax
-    FT0371 138.0544 138.0552 146.32270 152.86115
-    FT0565 161.0391 161.0407 159.00234 164.30799
-    FT0732 182.0726 182.0756  32.71242  42.28755
-    FT0845 195.0799 195.0887  30.73235  35.67337
-    FT1171 229.1282 229.1335 178.01450 183.35303
-    FT5606 560.3539 560.3656  32.06570  35.33456
+    FT0371 138.0544 138.0552 146.32260 152.86115
+    FT0565 161.0391 161.0407 159.00243 164.30820
+    FT0732 182.0726 182.0756  32.71234  42.28771
+    FT0845 195.0799 195.0887  30.73226  35.67350
+    FT1171 229.1282 229.1335 178.01474 183.35316
+    FT5606 560.3539 560.3656  32.06569  35.33469
 
 We next identify the fragment spectra with their precursor *m/z* and
 retention times within these ranges. We use the
@@ -3695,7 +3694,7 @@ spectra have been prepared, we can proceed with the matching process. We
 use the
 [`matchSpectra()`](https://rdrr.io/pkg/MetaboAnnotation/man/matchSpectra.html)
 function from the
-*[MetaboAnnotation](https://bioconductor.org/packages/3.22/MetaboAnnotation)*
+*[MetaboAnnotation](https://bioconductor.org/packages/3.23/MetaboAnnotation)*
 package with the `CompareSpectraParam` to define the settings for the
 matching. With the following parameters:
 
@@ -3927,7 +3926,7 @@ et al. 2020](#ref-nothias_feature-based_2020)), among others. To use
 these, the data must be exported in a supported format. For MS2 spectra,
 the data can easily be exported in the required MGF file format using
 the
-*[MsBackendMgf](https://bioconductor.org/packages/3.22/MsBackendMgf)*
+*[MsBackendMgf](https://bioconductor.org/packages/3.23/MsBackendMgf)*
 Bioconductor package.
 
 Alternatively, or in addition, evidence for the potential matching
@@ -3936,7 +3935,7 @@ pattern of the full MS1 scan. This provides information on the isotope
 composition. Various functions can be used for this task, such as
 [`isotopologues()`](https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html)
 from the
-*[MetaboCoreUtils](https://bioconductor.org/packages/3.22/MetaboCoreUtils)*
+*[MetaboCoreUtils](https://bioconductor.org/packages/3.23/MetaboCoreUtils)*
 package or the functionality of the **enviPat** R package ([Loos et al.
 2015](#ref-loos_accelerated_2015)).
 
@@ -3988,6 +3987,55 @@ message("Number of features with at least one MS2 spectrum: ", length(l))
 
 # Combine the individual Spectra objects into one list
 ms2_all <- concatenateSpectra(ms2_all)
+```
+
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+    Warning in rbindlistWithRownames(list(res@spectraData,
+    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+    rownames not available for all data.frames
+
+``` r
 
 # Assign the feature identifier to each MS2 spectrum so we can track them
 ms2_all$feature_id <- rep(names(l), l)
@@ -4088,9 +4136,9 @@ annotation libraries.
 sessionInfo()
 ```
 
-    R version 4.5.2 (2025-10-31)
+    R version 4.6.1 (2026-06-24)
     Platform: x86_64-pc-linux-gnu
-    Running under: Ubuntu 24.04.3 LTS
+    Running under: Ubuntu 24.04.4 LTS
 
     Matrix products: default
     BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
@@ -4112,90 +4160,90 @@ sessionInfo()
     [8] base
 
     other attached packages:
-     [1] UpSetR_1.4.0                ggVennDiagram_1.5.7
-     [3] MetaboAnnotation_1.14.0     CompoundDb_1.14.2
-     [5] AnnotationFilter_1.34.0     AnnotationHub_4.0.0
-     [7] BiocFileCache_3.0.0         dbplyr_2.5.2
-     [9] gridExtra_2.3               ggfortify_0.4.19
-    [11] ggplot2_4.0.2               vioplot_0.5.1
+     [1] UpSetR_1.4.1                ggVennDiagram_1.5.7
+     [3] MetaboAnnotation_1.16.0     CompoundDb_1.16.0
+     [5] AnnotationFilter_1.36.0     AnnotationHub_4.2.2
+     [7] BiocFileCache_3.2.0         dbplyr_2.6.0
+     [9] gridExtra_2.3.1             ggfortify_0.4.19
+    [11] ggplot2_4.0.3               vioplot_0.5.1
     [13] zoo_1.8-15                  sm_2.2-6.0
     [15] pheatmap_1.0.13             RColorBrewer_1.1-3
-    [17] pander_0.6.6                limma_3.66.0
-    [19] MetaboCoreUtils_1.18.1      xcms_4.8.0
-    [21] MsBackendMgf_1.18.0         MsBackendMetaboLights_1.4.2
-    [23] Spectra_1.20.1              BiocParallel_1.44.0
-    [25] alabaster.se_1.10.0         alabaster.base_1.10.0
-    [27] SummarizedExperiment_1.40.0 Biobase_2.70.0
-    [29] GenomicRanges_1.62.1        Seqinfo_1.0.0
-    [31] IRanges_2.44.0              S4Vectors_0.48.0
-    [33] BiocGenerics_0.56.0         generics_0.1.4
-    [35] MatrixGenerics_1.22.0       matrixStats_1.5.0
-    [37] MsIO_0.0.12                 MsExperiment_1.12.0
-    [39] ProtGenerics_1.42.0         readxl_1.4.5
-    [41] BiocStyle_2.38.0            quarto_1.5.1.9002
+    [17] pander_0.6.6                limma_3.68.4
+    [19] MetaboCoreUtils_1.20.1      xcms_4.10.1
+    [21] MsBackendMgf_1.20.0         MsBackendMetaboLights_1.6.1
+    [23] Spectra_1.22.2              BiocParallel_1.46.0
+    [25] alabaster.se_1.12.0         alabaster.base_1.12.1
+    [27] SummarizedExperiment_1.42.0 Biobase_2.72.0
+    [29] GenomicRanges_1.64.0        Seqinfo_1.2.0
+    [31] IRanges_2.46.0              S4Vectors_0.50.1
+    [33] BiocGenerics_0.58.1         generics_0.1.4
+    [35] MatrixGenerics_1.24.0       matrixStats_1.5.0
+    [37] MsIO_0.0.17                 MsExperiment_1.14.0
+    [39] ProtGenerics_1.44.0         readxl_1.5.0
+    [41] BiocStyle_2.40.0            quarto_1.5.1.9002
     [43] knitr_1.51
 
     loaded via a namespace (and not attached):
       [1] later_1.4.8                 bitops_1.0-9
       [3] filelock_1.0.3              tibble_3.3.1
-      [5] cellranger_1.1.0            preprocessCore_1.72.0
-      [7] XML_3.99-0.22               lifecycle_1.0.5
-      [9] httr2_1.2.2                 doParallel_1.0.17
-     [11] processx_3.8.6              lattice_0.22-9
-     [13] MASS_7.3-65                 MultiAssayExperiment_1.36.1
-     [15] magrittr_2.0.4              rmarkdown_2.30
+      [5] cellranger_1.1.0            preprocessCore_1.74.0
+      [7] XML_3.99-0.23               lifecycle_1.0.5
+      [9] httr2_1.3.0                 doParallel_1.0.17
+     [11] processx_3.9.0              lattice_0.22-9
+     [13] MASS_7.3-66                 MultiAssayExperiment_1.38.0
+     [15] magrittr_2.0.5              rmarkdown_2.31
      [17] yaml_2.3.12                 otel_0.2.0
-     [19] MsCoreUtils_1.22.1          DBI_1.3.0
-     [21] abind_1.4-8                 purrr_1.2.1
-     [23] RCurl_1.98-1.17             rappdirs_0.3.4
-     [25] MSnbase_2.36.0              ncdf4_1.24
-     [27] codetools_0.2-20            DelayedArray_0.36.0
-     [29] DT_0.34.0                   xml2_1.5.2
+     [19] MsCoreUtils_1.24.0          DBI_1.3.0
+     [21] abind_1.4-8                 purrr_1.2.2
+     [23] RCurl_1.98-1.19             rappdirs_0.3.4
+     [25] MSnbase_2.37.0              ncdf4_1.24
+     [27] codetools_0.2-20            DelayedArray_0.38.2
+     [29] DT_0.34.0                   xml2_1.6.0
      [31] tidyselect_1.2.1            farver_2.1.2
      [33] base64enc_0.1-6             jsonlite_2.0.0
-     [35] iterators_1.0.14            foreach_1.5.2
-     [37] tools_4.5.2                 progress_1.2.3
-     [39] Rcpp_1.1.1                  glue_1.8.0
-     [41] SparseArray_1.10.9          BiocBaseUtils_1.12.0
-     [43] xfun_0.56                   dplyr_1.2.0
-     [45] HDF5Array_1.38.0            withr_3.0.2
+     [35] PTMods_1.0.0                iterators_1.0.14
+     [37] foreach_1.5.2               tools_4.6.1
+     [39] progress_1.2.3              Rcpp_1.1.2
+     [41] glue_1.8.1                  SparseArray_1.12.2
+     [43] xfun_0.60                   dplyr_1.2.1
+     [45] HDF5Array_1.40.0            withr_3.0.3
      [47] BiocManager_1.30.27         fastmap_1.2.0
-     [49] rhdf5filters_1.22.0         digest_0.6.39
+     [49] rhdf5filters_1.24.0         digest_0.6.39
      [51] R6_2.6.1                    rsvg_2.7.0
-     [53] RSQLite_2.4.6               h5mread_1.2.1
-     [55] tidyr_1.3.2                 data.table_1.18.2.1
-     [57] prettyunits_1.2.0           PSMatch_1.14.0
+     [53] RSQLite_3.53.3              h5mread_1.4.0
+     [55] tidyr_1.3.2                 data.table_1.18.4
+     [57] prettyunits_1.2.0           PSMatch_1.16.0
      [59] httr_1.4.8                  htmlwidgets_1.6.4
-     [61] S4Arrays_1.10.1             pkgconfig_2.0.3
+     [61] S4Arrays_1.12.0             pkgconfig_2.0.3
      [63] gtable_0.3.6                blob_1.3.0
-     [65] S7_0.2.1                    impute_1.84.0
-     [67] MassSpecWavelet_1.76.0      XVector_0.50.0
+     [65] S7_0.2.2                    impute_1.86.0
+     [67] MassSpecWavelet_1.78.2      XVector_0.52.0
      [69] htmltools_0.5.9             MALDIquant_1.22.3
-     [71] clue_0.3-67                 scales_1.4.0
-     [73] alabaster.matrix_1.10.0     png_0.1-9
-     [75] rstudioapi_0.18.0           reshape2_1.4.5
-     [77] rjson_0.2.23                curl_7.0.0
-     [79] cachem_1.1.0                rhdf5_2.54.1
-     [81] stringr_1.6.0               BiocVersion_3.22.0
-     [83] parallel_4.5.2              AnnotationDbi_1.72.0
-     [85] mzID_1.48.0                 vsn_3.78.1
-     [87] pillar_1.11.1               grid_4.5.2
-     [89] alabaster.schemas_1.10.0    vctrs_0.7.1
-     [91] MsFeatures_1.18.0           pcaMethods_2.2.0
+     [71] clue_0.3-68                 scales_1.4.0
+     [73] alabaster.matrix_1.12.0     png_0.1-9
+     [75] rstudioapi_0.19.0           reshape2_1.4.5
+     [77] rjson_0.2.23                curl_7.1.0
+     [79] cachem_1.1.0                rhdf5_2.56.0
+     [81] stringr_1.6.0               BiocVersion_3.23.1
+     [83] parallel_4.6.1              AnnotationDbi_1.74.0
+     [85] mzID_1.50.0                 vsn_3.80.0
+     [87] pillar_1.11.1               grid_4.6.1
+     [89] alabaster.schemas_1.12.0    vctrs_0.7.3
+     [91] MsFeatures_1.20.0           pcaMethods_2.4.0
      [93] cluster_2.1.8.2             evaluate_1.0.5
-     [95] cli_3.6.5                   compiler_4.5.2
-     [97] rlang_1.1.7                 crayon_1.5.3
-     [99] labeling_0.4.3              QFeatures_1.20.0
-    [101] ChemmineR_3.62.0            ps_1.9.1
-    [103] affy_1.88.0                 plyr_1.8.9
-    [105] fs_1.6.7                    stringi_1.8.7
-    [107] Biostrings_2.78.0           lazyeval_0.2.2
-    [109] Matrix_1.7-4                hms_1.1.4
-    [111] bit64_4.6.0-1               Rhdf5lib_1.32.0
-    [113] KEGGREST_1.50.0             statmod_1.5.1
-    [115] alabaster.ranges_1.10.0     mzR_2.44.0
-    [117] igraph_2.2.2                memoise_2.0.1
-    [119] affyio_1.80.0               bit_4.6.0                  
+     [95] cli_3.6.6                   compiler_4.6.1
+     [97] rlang_1.3.0                 crayon_1.5.3
+     [99] labeling_0.4.3              QFeatures_1.22.0
+    [101] ChemmineR_3.64.0            ps_1.9.3
+    [103] affy_1.90.0                 plyr_1.8.9
+    [105] fs_2.1.0                    stringi_1.8.7
+    [107] Biostrings_2.80.1           lazyeval_0.2.3
+    [109] Matrix_1.7-5                hms_1.1.4
+    [111] bit64_4.8.2                 Rhdf5lib_2.0.0
+    [113] KEGGREST_1.52.2             statmod_1.5.2
+    [115] alabaster.ranges_1.12.0     mzR_2.46.0
+    [117] igraph_2.3.3                memoise_2.0.1
+    [119] affyio_1.82.0               bit_4.6.0                  
 
 ## Aknowledgment
 
@@ -4206,40 +4254,33 @@ development of the software used in this tutorial.
 
 ## References
 
-Broadhurst, David, Royston Goodacre, Stacey N. Reinke, Julia Kuligowski,
-Ian D. Wilson, Matthew R. Lewis, and Warwick B. Dunn. 2018. “Guidelines
-and Considerations for the Use of System Suitability and Quality Control
-Samples in Mass Spectrometry Assays Applied in Untargeted Clinical
-Metabolomic Studies.” *Metabolomics : Official Journal of the
-Metabolomic Society* 14 (6): 72.
+Broadhurst, David, Royston Goodacre, Stacey N. Reinke, et al. 2018.
+“Guidelines and Considerations for the Use of System Suitability and
+Quality Control Samples in Mass Spectrometry Assays Applied in
+Untargeted Clinical Metabolomic Studies.” *Metabolomics : Official
+Journal of the Metabolomic Society* 14 (6): 72.
 <https://doi.org/10.1007/s11306-018-1367-3>.
 
-Chambers, Matthew C, Brendan Maclean, Robert Burke, Dario Amodei, Daniel
-L Ruderman, Steffen Neumann, Laurent Gatto, et al. 2012. “A
+Chambers, Matthew C, Brendan Maclean, Robert Burke, et al. 2012. “A
 Cross-Platform Toolkit for Mass Spectrometry and Proteomics.” *Nature
 Biotechnology* 30 (10): 918–20. <https://doi.org/10.1038/nbt.2377>.
 
-De Livera, Alysha M., Daniel A. Dias, David De Souza, Thusitha
-Rupasinghe, James Pyke, Dedreia Tull, Ute Roessner, Malcolm McConville,
-and Terence P. Speed. 2012. “Normalizing and Integrating Metabolomics
-Data.” *Analytical Chemistry* 84 (24): 10768–76.
-<https://doi.org/10.1021/ac302748b>.
+De Livera, Alysha M., Daniel A. Dias, David De Souza, et al. 2012.
+“Normalizing and Integrating Metabolomics Data.” *Analytical Chemistry*
+84 (24): 10768–76. <https://doi.org/10.1021/ac302748b>.
 
-Dührkop, Kai, Markus Fleischauer, Marcus Ludwig, Alexander A. Aksenov,
-Alexey V. Melnik, Marvin Meusel, Pieter C. Dorrestein, Juho Rousu, and
-Sebastian Böcker. 2019. “SIRIUS 4: A Rapid Tool for Turning Tandem Mass
-Spectra into Metabolite Structure Information.” *Nature Methods* 16 (4):
-299–302. <https://doi.org/10.1038/s41592-019-0344-8>.
+Dührkop, Kai, Markus Fleischauer, Marcus Ludwig, et al. 2019. “SIRIUS 4:
+A Rapid Tool for Turning Tandem Mass Spectra into Metabolite Structure
+Information.” *Nature Methods* 16 (4): 299–302.
+<https://doi.org/10.1038/s41592-019-0344-8>.
 
-Klåvus, Anton, Marietta Kokla, Stefania Noerman, Ville M. Koistinen,
-Marjo Tuomainen, Iman Zarei, Topi Meuronen, et al. 2020. “‘Notame’:
+Klåvus, Anton, Marietta Kokla, Stefania Noerman, et al. 2020. “‘Notame’:
 Workflow for Non-Targeted LC–MS Metabolic Profiling.” *Metabolites* 10
 (4): 135. <https://doi.org/10.3390/metabo10040135>.
 
-Li, Shuzhao, Youngja Park, Sai Duraisingham, Frederick H. Strobel,
-Nooruddin Khan, Quinlyn A. Soltow, Dean P. Jones, and Bali Pulendran.
-2013. “Predicting Network Activity from High Throughput Metabolomics.”
-*PLoS Computational Biology* 9 (7): e1003123.
+Li, Shuzhao, Youngja Park, Sai Duraisingham, et al. 2013. “Predicting
+Network Activity from High Throughput Metabolomics.” *PLoS Computational
+Biology* 9 (7): e1003123.
 <https://doi.org/10.1371/journal.pcbi.1003123>.
 
 Loos, Martin, Christian Gerber, Francesco Corona, Juliane Hollender, and
@@ -4247,27 +4288,24 @@ Heinz Singer. 2015. “Accelerated Isotope Fine Structure Calculation
 Using Pruned Transition Trees.” *Analytical Chemistry* 87 (11): 5738–44.
 <https://doi.org/10.1021/acs.analchem.5b00941>.
 
-Louail, Philippine, Carl Brunius, Mar Garcia-Aloy, William Kumler,
-Norman Storz, Jan Stanstrup, Hendrik Treutler, et al. 2025. “Xcms in
+Louail, Philippine, Carl Brunius, Mar Garcia-Aloy, et al. 2025. “Xcms in
 Peak Form: Now Anchoring a Complete Metabolomics Data Preprocessing and
-Analysis Software Ecosystem.” *Analytical Chemistry*, December.
-<https://doi.org/10.1021/acs.analchem.5c04338>.
+Analysis Software Ecosystem.” *Analytical Chemistry*, ahead of print,
+December. <https://doi.org/10.1021/acs.analchem.5c04338>.
 
-Nothias, Louis-Félix, Daniel Petras, Robin Schmid, Kai Dührkop, Johannes
-Rainer, Abinesh Sarvepalli, Ivan Protsyuk, et al. 2020. “Feature-Based
-Molecular Networking in the GNPS Analysis Environment.” *Nature Methods*
-17 (9): 905–8. <https://doi.org/10.1038/s41592-020-0933-6>.
+Nothias, Louis-Félix, Daniel Petras, Robin Schmid, et al. 2020.
+“Feature-Based Molecular Networking in the GNPS Analysis Environment.”
+*Nature Methods* 17 (9): 905–8.
+<https://doi.org/10.1038/s41592-020-0933-6>.
 
-Rainer, Johannes, Andrea Vicini, Liesa Salzer, Jan Stanstrup, Josep M.
-Badia, Steffen Neumann, Michael A. Stravs, et al. 2022. “A Modular and
-Expandable Ecosystem for Metabolomics Data Annotation in R.”
+Rainer, Johannes, Andrea Vicini, Liesa Salzer, et al. 2022. “A Modular
+and Expandable Ecosystem for Metabolomics Data Annotation in R.”
 *Metabolites* 12 (2): 173. <https://doi.org/10.3390/metabo12020173>.
 
-Schymanski, Emma L., Junho Jeon, Rebekka Gulde, Kathrin Fenner, Matthias
-Ruff, Heinz P. Singer, and Juliane Hollender. 2014. “Identifying Small
-Molecules via High Resolution Mass Spectrometry: Communicating
-Confidence.” *Environmental Science & Technology* 48 (4): 2097–98.
-<https://doi.org/10.1021/es5002105>.
+Schymanski, Emma L., Junho Jeon, Rebekka Gulde, et al. 2014.
+“Identifying Small Molecules via High Resolution Mass Spectrometry:
+Communicating Confidence.” *Environmental Science & Technology* 48 (4):
+2097–98. <https://doi.org/10.1021/es5002105>.
 
 Smyth, Gordon K. 2004. “Linear Models and Empirical Bayes Methods for
 Assessing Differential Expression in Microarray Experiments.”
@@ -4279,8 +4317,7 @@ of Mass Spectral Library Search Algorithms for Compound Identification.”
 *Journal of the American Society for Mass Spectrometry* 5 (9): 859–66.
 <https://doi.org/10.1021/jasms.8b00613>.
 
-Sumner, Lloyd W., Alexander Amberg, Dave Barrett, Michael H. Beale,
-Richard Beger, Clare A. Daykin, Teresa W.-M. Fan, et al. 2007. “Proposed
+Sumner, Lloyd W., Alexander Amberg, Dave Barrett, et al. 2007. “Proposed
 Minimum Reporting Standards for Chemical Analysis Chemical Analysis
 Working Group (CAWG) Metabolomics Standards Initiative (MSI).”
 *Metabolomics : Official Journal of the Metabolomic Society* 3 (3):

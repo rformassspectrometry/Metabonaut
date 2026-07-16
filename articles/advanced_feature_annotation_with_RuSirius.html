@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Advanced Feature Annotation using RuSirius">
 </head>
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,7 @@
     <li><a class="dropdown-item" href="../articles/advanced_feature_annotation_with_RuSirius.html">Advanced Feature Annotation using RuSirius</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>--- Other ---</h6></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/generation_of_mzTabM_file.html">mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -274,12 +275,12 @@ formula predictions back into R for downstream analysis.</p>
 <div class="section level3">
 <h3 id="high-level-summary">High-Level Summary<a class="anchor" aria-label="anchor" href="#high-level-summary"></a>
 </h3>
-<p>The <code><a href="https://rdrr.io/pkg/RuSirius/man/results.html" class="external-link">summary()</a></code> function provides a compact overview of
+<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function provides a compact overview of
 the top formulas, structures, and compound classes predicted for each
 feature. This includes confidence scores that indicate how reliable each
 annotation is.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">summary_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RuSirius/man/results.html" class="external-link">summary</a></span><span class="op">(</span>sirius <span class="op">=</span> <span class="va">srs</span>, result.type <span class="op">=</span> <span class="st">"structure"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">summary_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span>sirius <span class="op">=</span> <span class="va">srs</span>, result.type <span class="op">=</span> <span class="st">"structure"</span><span class="op">)</span></span>
 <span><span class="va">summary_results</span></span>
 <span><span class="co">#&gt;     alignedFeatureId         compoundId externalFeatureId</span></span>
 <span><span class="co">#&gt; 1 818899412191263562 818899412153514821            FT0371</span></span>
@@ -371,7 +372,7 @@ annotation is.</p>
 <span><span class="co">#&gt; 3            0.02842510                  OFF     FALSE</span></span>
 <span><span class="co">#&gt; 4            0.89135261                  OFF     FALSE</span></span>
 <span><span class="co">#&gt; 5            0.03929589          APPROXIMATE     FALSE</span></span></code></pre></div>
-<p>The <code><a href="https://rdrr.io/pkg/RuSirius/man/results.html" class="external-link">summary()</a></code> output contains the top-ranked molecular
+<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> output contains the top-ranked molecular
 formula, predicted structure (with SMILES, InChIKey, and CSI:FingerID
 score), compound class predictions (NPC pathway, superclass, class), and
 — critically — the confidence scores (<code>confidenceExactMatch</code>
@@ -427,7 +428,7 @@ recommended to also use ZODIAC re-ranking when running
 <p>We can now retrieve the <em>de novo</em> results:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Get de novo summary</span></span>
-<span><span class="va">summary_denovo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RuSirius/man/results.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">srs</span>, result.type <span class="op">=</span> <span class="st">"deNovo"</span><span class="op">)</span></span>
+<span><span class="va">summary_denovo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">srs</span>, result.type <span class="op">=</span> <span class="st">"deNovo"</span><span class="op">)</span></span>
 <span><span class="va">summary_denovo</span></span>
 <span><span class="co">#&gt;     alignedFeatureId         compoundId externalFeatureId</span></span>
 <span><span class="co">#&gt; 1 818899412191263562 818899412153514821            FT0371</span></span>
@@ -772,7 +773,7 @@ Mass Spectra.”</span> <em>Nature Methods</em> 19: 865–70. <a href="https://d
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.9000.</p>
 </div>
 
     </footer>

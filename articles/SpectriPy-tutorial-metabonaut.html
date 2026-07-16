@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="SpectriPy-tutorial-metabonaut_files/libs/quarto-html/popper.min.js"></script><script src="SpectriPy-tutorial-metabonaut_files/libs/quarto-html/tippy.umd.min.js"></script><link href="SpectriPy-tutorial-metabonaut_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="SpectriPy-tutorial-metabonaut_files/libs/quarto-html/light-border.css" rel="stylesheet">
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,7 @@
     <li><a class="dropdown-item" href="../articles/advanced_feature_annotation_with_RuSirius.html">Advanced Feature Annotation using RuSirius</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>--- Other ---</h6></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/generation_of_mzTabM_file.html">mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -73,7 +74,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>LC-MS/MS Data Annotation using R and Python</h1>
 
       <p class="author">Marilyn De Graeve, Johannes Rainer</p>
-      <p class="date">2026-03-17</p>
+      <p class="date">2026-07-16</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/SpectriPy-tutorial-metabonaut.qmd" class="external-link"><code>vignettes/SpectriPy-tutorial-metabonaut.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -263,7 +264,7 @@ Processing:
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Show which metadata is available in the first spectrum</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>r.ms2_ctr_fts[<span class="dv">0</span>].metadata.keys()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>dict_keys(['precursor_mz', 'precursor_intensity', 'charge', 'retention_time', 'collision_energy', 'isolation_window_target_mz', 'ms_level'])</code></pre>
+<pre><code>dict_keys(['precursor_mz', 'precursor_intensity', 'charge', 'retention_time', 'collision_energy', 'isolation_window_target_mz', 'ms_level', 'data_storage'])</code></pre>
 </div>
 </div>
 <p>Second, we translate the <code>Spectra</code> object <code>ms2_ctr_fts</code> to respective Python <code>matchms.Spectrum</code> objects using the <code><a href="https://rdrr.io/pkg/SpectriPy/man/conversion.html" class="external-link">rspec_to_pyspec()</a></code> function. With the <code><a href="https://rstudio.github.io/reticulate/reference/py_set_attr.html" class="external-link">py_set_attr()</a></code> function we assign the variable directly to an attribute in the Python session (which avoids repeated cross-programming language references).</p>
@@ -322,37 +323,37 @@ Processing:
 <a class="anchor" aria-label="anchor" href="#calculating-spectra-similarities-using-the-modified-cosine-algorithm-from-matchms"></a>
 </h2>
 <p>We calculate the pairwise spectral similarity between the query spectra and the reference library spectra using Python’s <em>matchms</em> library.</p>
-<p>Here, we use the spectral similarity algorithm ModifiedCosine from <em>matchms</em>, from source <a href="https://github.com/matchms/matchms/blob/master/README.rst" class="external-link">matchms</a>. This algorithm can easily be exchanged for another spectral similarity calculation from <em>matchms</em> (see <a href="https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html" class="external-link">here</a>).</p>
+<p>Here, we use the modified cosine spectral similarity algorithm from <em>matchms</em>, from source <a href="https://github.com/matchms/matchms/blob/master/README.rst" class="external-link">matchms</a>. This algorithm can easily be exchanged for another spectral similarity calculation from <em>matchms</em> (see <a href="https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html" class="external-link">here</a>).</p>
+<p>Since <em>matchms</em> version 0.32, this algorithm is called <code>ModifiedCosineGreedy</code> (it was named <code>ModifiedCosine</code> before). The implementation solves the peak assignment between two spectra in a <em>greedy</em> way, i.e. it repeatedly takes the highest scoring peak pair, which is fast but only an approximation of the optimal assignment. <em>matchms</em> also provides <code>ModifiedCosineHungarian</code>, which computes the exact assignment at the cost of longer run times. For a typical annotation workflow such as this one the greedy variant is the pragmatic choice, but the exact variant can be preferable e.g. for benchmarking or method development.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matchms <span class="im">import</span> calculate_scores</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matchms.similarity <span class="im">import</span> ModifiedCosine</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matchms.similarity <span class="im">import</span> ModifiedCosineGreedy</span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' Calculate Cosine similarity scores between all spectra</span></span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' For other similarity score methods see</span></span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">#' https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>similarity_score <span class="op">=</span> ModifiedCosine(tolerance <span class="op">=</span> <span class="fl">0.1</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>similarity_score <span class="op">=</span> ModifiedCosineGreedy(tolerance <span class="op">=</span> <span class="fl">0.1</span>)</span>
 <span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> calculate_scores(references <span class="op">=</span> clean_mgf_py,</span>
 <span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                          queries <span class="op">=</span> ms2_ctr_fts_py,</span>
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>                          similarity_function <span class="op">=</span> similarity_score)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Calculating similarities:   0%|          | 0/78 [00:00&lt;?, ?it/s]
-Calculating similarities:   1%|1         | 1/78 [00:01&lt;02:18,  1.80s/it]
-Calculating similarities:  13%|#2        | 10/78 [00:01&lt;00:09,  7.12it/s]
-Calculating similarities:  26%|##5       | 20/78 [00:02&lt;00:03, 15.77it/s]
-Calculating similarities:  38%|###8      | 30/78 [00:02&lt;00:01, 25.66it/s]
-Calculating similarities:  50%|#####     | 39/78 [00:02&lt;00:01, 34.86it/s]
-Calculating similarities:  62%|######1   | 48/78 [00:02&lt;00:00, 43.27it/s]
-Calculating similarities:  73%|#######3  | 57/78 [00:02&lt;00:00, 52.19it/s]
-Calculating similarities:  85%|########4 | 66/78 [00:02&lt;00:00, 60.08it/s]
-Calculating similarities:  97%|#########7| 76/78 [00:02&lt;00:00, 68.55it/s]
-Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</code></pre>
+Calculating similarities:   1%|1         | 1/78 [00:02&lt;03:07,  2.44s/it]
+Calculating similarities:  14%|#4        | 11/78 [00:02&lt;00:11,  5.92it/s]
+Calculating similarities:  27%|##6       | 21/78 [00:02&lt;00:04, 12.81it/s]
+Calculating similarities:  41%|####1     | 32/78 [00:02&lt;00:02, 21.98it/s]
+Calculating similarities:  55%|#####5    | 43/78 [00:02&lt;00:01, 32.15it/s]
+Calculating similarities:  68%|######7   | 53/78 [00:02&lt;00:00, 40.79it/s]
+Calculating similarities:  81%|########  | 63/78 [00:03&lt;00:00, 50.58it/s]
+Calculating similarities:  95%|#########4| 74/78 [00:03&lt;00:00, 61.48it/s]
+Calculating similarities: 100%|##########| 78/78 [00:03&lt;00:00, 24.28it/s]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>scores</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;78x291x2 stacked sparse array containing scores for ('ModifiedCosine_score', 'ModifiedCosine_matches') with 12376 stored elements in COOrdinate format&gt;</code></pre>
+<pre><code>&lt;78x291x2 stacked sparse array containing scores for ('ModifiedCosineGreedy_score', 'ModifiedCosineGreedy_matches') with 12376 stored elements in COOrdinate format&gt;</code></pre>
 </div>
 </div>
 <p>We next rearrange the spectra similarity results to make a data frame containing the best matched compound name (derived from the reference library) per queried spectrum.</p>
@@ -361,7 +362,7 @@ Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</co
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Convert to array and transpose</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sim_matchms <span class="op">=</span> scores.to_array()[<span class="st">"ModifiedCosine_score"</span>]</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sim_matchms <span class="op">=</span> scores.to_array()[<span class="st">"ModifiedCosineGreedy_score"</span>]</span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>sim_matchms <span class="op">=</span> sim_matchms.T</span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' Contains 1 row for each spectrum in query</span></span>
@@ -392,7 +393,7 @@ Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</co
 <span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"query_feature_id"</span>: name_row,</span>
 <span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"reference"</span>: max_col,</span>
 <span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"reference_compound_name"</span>: name_max_col,</span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"ModifiedCosine_score"</span>: max_value})</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"ModifiedCosineGreedy_score"</span>: max_value})</span>
 <span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co">#' Convert to DataFrame</span></span>
@@ -401,12 +402,12 @@ Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</co
 <span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="co">#' Print the first 5 rows of the unfiltered DataFrame</span></span>
 <span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   query query_feature_id  ...  reference_compound_name ModifiedCosine_score
-0      1           FT0371  ...         Benzyl succinate             0.554071
-1      2           FT0371  ...         Benzyl succinate             0.557885
-2      3           FT0371  ...      L-(+)-Ergothioneine             0.103269
-3      4           FT0371  ...         Benzyl succinate             0.464949
-4      5           FT0371  ...         Benzyl succinate             0.508411
+<pre><code>   query query_feature_id  ...  reference_compound_name ModifiedCosineGreedy_score
+0      1           FT0371  ...         Benzyl succinate                   0.554071
+1      2           FT0371  ...         Benzyl succinate                   0.557885
+2      3           FT0371  ...      L-(+)-Ergothioneine                   0.103269
+3      4           FT0371  ...         Benzyl succinate                   0.464949
+4      5           FT0371  ...         Benzyl succinate                   0.508411
 
 [5 rows x 5 columns]</code></pre>
 </div>
@@ -417,7 +418,7 @@ Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</co
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Python session:</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Keep only rows where score &gt;= 0.6</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>df_filtered <span class="op">=</span> df[df[<span class="st">"ModifiedCosine_score"</span>] <span class="op">&gt;=</span> <span class="fl">0.6</span>]</span></code></pre></div>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>df_filtered <span class="op">=</span> df[df[<span class="st">"ModifiedCosineGreedy_score"</span>] <span class="op">&gt;=</span> <span class="fl">0.6</span>]</span></code></pre></div>
 </div>
 <div class="sourceCode cell-code" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' R session:</span></span>
@@ -430,9 +431,9 @@ Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</co
 <col style="width: 8%">
 <col style="width: 6%">
 <col style="width: 16%">
-<col style="width: 10%">
-<col style="width: 36%">
-<col style="width: 20%">
+<col style="width: 9%">
+<col style="width: 34%">
+<col style="width: 25%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: center;"> </th>
@@ -440,7 +441,7 @@ Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</co
 <th style="text-align: center;">query_feature_id</th>
 <th style="text-align: center;">reference</th>
 <th style="text-align: center;">reference_compound_name</th>
-<th style="text-align: center;">ModifiedCosine_score</th>
+<th style="text-align: center;">ModifiedCosineGreedy_score</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -886,9 +887,9 @@ Calculating similarities: 100%|##########| 78/78 [00:02&lt;00:00, 29.31it/s]</co
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R version 4.5.2 (2025-10-31)
+<pre><code>R version 4.6.1 (2026-06-24)
 Platform: x86_64-pc-linux-gnu
-Running under: Ubuntu 24.04.3 LTS
+Running under: Ubuntu 24.04.4 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
@@ -910,35 +911,36 @@ attached base packages:
 [8] base
 
 other attached packages:
-[1] pander_0.6.6        Spectra_1.20.1      BiocParallel_1.44.0
-[4] S4Vectors_0.48.0    BiocGenerics_0.56.0 generics_0.1.4
-[7] SpectriPy_1.0.1     reticulate_1.45.0
+[1] pander_0.6.6        Spectra_1.22.2      BiocParallel_1.46.0
+[4] S4Vectors_0.50.1    BiocGenerics_0.58.1 generics_0.1.4
+[7] SpectriPy_1.3.0     reticulate_1.46.0
 
 loaded via a namespace (and not attached):
- [1] cli_3.6.5              knitr_1.51             rlang_1.1.7
- [4] xfun_0.56              ProtGenerics_1.42.0    otel_0.2.0
- [7] png_0.1-9              jsonlite_2.0.0         clue_0.3-67
-[10] rprojroot_2.1.1        htmltools_0.5.9        rmarkdown_2.30
-[13] grid_4.5.2             evaluate_1.0.5         MASS_7.3-65
-[16] fastmap_1.2.0          yaml_2.3.12            IRanges_2.44.0
-[19] MsCoreUtils_1.22.1     cluster_2.1.8.2        compiler_4.5.2
-[22] codetools_0.2-20       fs_1.6.7               Rcpp_1.1.1
-[25] here_1.0.2             MetaboCoreUtils_1.18.1 lattice_0.22-9
-[28] digest_0.6.39          parallel_4.5.2         Matrix_1.7-4
-[31] withr_3.0.2            tools_4.5.2           </code></pre>
+ [1] Matrix_1.7-5           jsonlite_2.0.0         compiler_4.6.1
+ [4] Rcpp_1.1.2             parallel_4.6.1         snakecase_0.11.1
+ [7] cluster_2.1.8.2        IRanges_2.46.0         png_0.1-9
+[10] yaml_2.3.12            fastmap_1.2.0          lattice_0.22-9
+[13] here_1.0.2             ProtGenerics_1.44.0    knitr_1.51
+[16] MASS_7.3-66            rprojroot_2.1.1        rlang_1.3.0
+[19] xfun_0.60              fs_2.1.0               MsCoreUtils_1.24.0
+[22] otel_0.2.0             cli_3.6.6              withr_3.0.3
+[25] digest_0.6.39          grid_4.6.1             MetaboCoreUtils_1.20.1
+[28] clue_0.3-68            evaluate_1.0.5         data.table_1.18.4
+[31] codetools_0.2-20       rmarkdown_2.31         tools_4.6.1
+[34] htmltools_0.5.9       </code></pre>
 </div>
 </div>
 </section><section class="section level2"><h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-graeve_spectripy_2025" class="csl-entry" role="listitem">
-Graeve, Marilyn De, Wout Bittremieux, Thomas Naake, Carolin Huber, Matthias Anagho-Mattanovich, Nils Hoffmann, Pierre Marchal, et al. 2025. <span>“<span>SpectriPy</span>: <span>Enhancing</span> <span>Cross</span>-<span>Language</span> <span>Mass</span> <span>Spectrometry</span> <span>Data</span> <span>Analysis</span> with <span>R</span> and <span>Python</span>.”</span> <em>Journal of Open Source Software</em> 10 (109): 8070. <a href="https://doi.org/10.21105/joss.08070" class="external-link">https://doi.org/10.21105/joss.08070</a>.
+Graeve, Marilyn De, Wout Bittremieux, Thomas Naake, et al. 2025. <span>“<span>SpectriPy</span>: <span>Enhancing</span> <span>Cross</span>-<span>Language</span> <span>Mass</span> <span>Spectrometry</span> <span>Data</span> <span>Analysis</span> with <span>R</span> and <span>Python</span>.”</span> <em>Journal of Open Source Software</em> 10 (109): 8070. <a href="https://doi.org/10.21105/joss.08070" class="external-link">https://doi.org/10.21105/joss.08070</a>.
 </div>
 <div id="ref-huber_matchms_2020" class="csl-entry" role="listitem">
-Huber, Florian, Stefan Verhoeven, Christiaan Meijer, Hanno Spreeuw, Efraín Castilla, Cunliang Geng, Justin Van Der Hooft, et al. 2020. <span>“Matchms - Processing and Similarity Evaluation of Mass Spectrometry Data.”</span> <em>Journal of Open Source Software</em> 5 (52): 2411. <a href="https://doi.org/10.21105/joss.02411" class="external-link">https://doi.org/10.21105/joss.02411</a>.
+Huber, Florian, Stefan Verhoeven, Christiaan Meijer, et al. 2020. <span>“Matchms - Processing and Similarity Evaluation of Mass Spectrometry Data.”</span> <em>Journal of Open Source Software</em> 5 (52): 2411. <a href="https://doi.org/10.21105/joss.02411" class="external-link">https://doi.org/10.21105/joss.02411</a>.
 </div>
 <div id="ref-louail_metabonaut_2025" class="csl-entry" role="listitem">
-Louail, Philippine, and Johannes Rainer. 2025. <span>“Rformassspectrometry/Metabonaut: Metabonaut Version 1.0.0.”</span> Zenodo. <a href="https://doi.org/10.5281/ZENODO.15062930" class="external-link">https://doi.org/10.5281/ZENODO.15062930</a>.
+Louail, Philippine, and Johannes Rainer. 2025. <em>Rformassspectrometry/Metabonaut: Metabonaut Version 1.0.0</em>. V. v1.0.0. Zenodo, released March 21. <a href="https://doi.org/10.5281/ZENODO.15062930" class="external-link">https://doi.org/10.5281/ZENODO.15062930</a>.
 </div>
 </div>
 </section><script id="quarto-html-after-body" type="application/javascript">
@@ -1033,7 +1035,7 @@ Louail, Philippine, and Johannes Rainer. 2025. <span>“Rformassspectrometry/Met
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.9000.</p>
 </div>
 
     </footer>

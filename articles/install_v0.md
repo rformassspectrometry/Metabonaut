@@ -3,6 +3,26 @@
 For manual installation, an [R](https://www.r-project.org/) version \>=
 4.4.0 is required.
 
+## Running workflows in the cloud
+
+No installation is needed to run the workflows: Metabonaut is available
+as a *Curated Workshop* on the [Bioconductor Workshop
+platform](https://workshop.bioconductor.org), a Galaxy-based service
+hosted on the Jetstream2 academic cloud (NSF-ACCESS).
+
+- Log in on
+  [workshop.bioconductor.org](https://workshop.bioconductor.org) with a
+  Bioconductor account.
+- Launch the **Metabonaut** workshop. This starts a private RStudio
+  session, based on the same docker image as below, with all required
+  packages and the example data already installed.
+- Open any of the Quarto files in the *vignettes* folder and evaluate
+  the R code blocks.
+
+Note that these sessions are ephemeral: all data and progress are erased
+when the workshop is stopped, so download a local copy of anything you
+want to keep.
+
 ## Running workflows locally
 
 To install on your computer all the packages necessary for the workflows

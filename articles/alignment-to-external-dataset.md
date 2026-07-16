@@ -469,7 +469,7 @@ summary
 ```
 
       Total_peaks Matched_peaks Total_lamas Model_summary
-    1        6832          1825        5374  1666, c(....
+    1        6834          1826        5374  1667, c(....
     2        6860          1785        5374  1617, c(....
     3        7588          2082        5374  1869, c(....
 
@@ -479,7 +479,7 @@ summary
 summary$Matched_peaks / summary$Total_peaks * 100
 ```
 
-    [1] 26.71253 26.02041 27.43806
+    [1] 26.71934 26.02041 27.43806
 
 ``` r
 
@@ -491,10 +491,10 @@ summary$Model_summary[[1]]
     loess(formula = ref ~ obs, data = rt_map, weights = weights,
         span = span)
 
-    Number of Observations: 1666
-    Equivalent Number of Parameters: 7.38
+    Number of Observations: 1667
+    Equivalent Number of Parameters: 7.37
     Residual Standard Error: 2.315
-    Trace of smoother matrix: 8.13  (exact)
+    Trace of smoother matrix: 8.11  (exact)
 
     Control settings:
       span     :  0.5

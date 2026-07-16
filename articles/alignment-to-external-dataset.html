@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="alignment-to-external-dataset_files/libs/quarto-html/popper.min.js"></script><script src="alignment-to-external-dataset_files/libs/quarto-html/tippy.umd.min.js"></script><link href="alignment-to-external-dataset_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="alignment-to-external-dataset_files/libs/quarto-html/light-border.css" rel="stylesheet">
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,7 @@
     <li><a class="dropdown-item" href="../articles/advanced_feature_annotation_with_RuSirius.html">Advanced Feature Annotation using RuSirius</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>--- Other ---</h6></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/generation_of_mzTabM_file.html">mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -73,7 +74,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset</h1>
 
       <p class="author">Philippine Louail, Anton Ribbenstedt, Olle Hartvigsson, Carl Brunius, Johannes Rainer</p>
-      <p class="date">2026-03-17</p>
+      <p class="date">2026-07-16</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/alignment-to-external-dataset.qmd" class="external-link"><code>vignettes/alignment-to-external-dataset.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -513,7 +514,7 @@ FT0007 54.01010 235.9032</code></pre>
 <span><span class="va">summary</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Total_peaks Matched_peaks Total_lamas Model_summary
-1        6832          1825        5374  1666, c(....
+1        6834          1826        5374  1667, c(....
 2        6860          1785        5374  1617, c(....
 3        7588          2082        5374  1869, c(....</code></pre>
 </div>
@@ -521,7 +522,7 @@ FT0007 54.01010 235.9032</code></pre>
 <code class="sourceCode R"><span><span class="co">#' Coverage for each file</span></span>
 <span><span class="va">summary</span><span class="op">$</span><span class="va">Matched_peaks</span> <span class="op">/</span> <span class="va">summary</span><span class="op">$</span><span class="va">Total_peaks</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 26.71253 26.02041 27.43806</code></pre>
+<pre><code>[1] 26.71934 26.02041 27.43806</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Access the information on the model of for the first file</span></span>
@@ -531,10 +532,10 @@ FT0007 54.01010 235.9032</code></pre>
 loess(formula = ref ~ obs, data = rt_map, weights = weights,
     span = span)
 
-Number of Observations: 1666
-Equivalent Number of Parameters: 7.38
+Number of Observations: 1667
+Equivalent Number of Parameters: 7.37
 Residual Standard Error: 2.315
-Trace of smoother matrix: 8.13  (exact)
+Trace of smoother matrix: 8.11  (exact)
 
 Control settings:
   span     :  0.5
@@ -657,7 +658,7 @@ drop.square:  FALSE </code></pre>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.9000.</p>
 </div>
 
     </footer>

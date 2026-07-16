@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/popper.min.js"></script><script src="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/tippy.umd.min.js"></script><link href="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/light-border.css" rel="stylesheet">
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,7 @@
     <li><a class="dropdown-item" href="../articles/advanced_feature_annotation_with_RuSirius.html">Advanced Feature Annotation using RuSirius</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>--- Other ---</h6></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/generation_of_mzTabM_file.html">mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -73,7 +74,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Complete end-to-end LC-MS/MS Metabolomic Data analysis</h1>
 
       <p class="author">Philippine Louail, Anna Tagliaferri, Vinicius Verri Hernandes, Daniel Marques de Sá e Silva, Johannes Rainer</p>
-      <p class="date">2026-03-17</p>
+      <p class="date">2026-07-16</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/a-end-to-end-untargeted-metabolomics.qmd" class="external-link"><code>vignettes/a-end-to-end-untargeted-metabolomics.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -155,7 +156,7 @@
 <span>                      keepProtocol <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                      simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>We next configure the parallel processing setup. Most functions from the <em>xcms</em> package allow per-sample parallel processing, which can improve the performance of the analysis, especially for large data sets. <em>xcms</em> and all packages from the <em>RforMassSpectrometry</em> package ecosystem use the parallel processing setup configured through the <em><a href="https://bioconductor.org/packages/3.22/BiocParallel" class="external-link">BiocParallel</a></em> Bioconductor package. With the code below we use a <em>fork-based</em> parallel processing on unix system, and a <em>socket-based</em> parallel processing on the Windows operating system.</p>
+<p>We next configure the parallel processing setup. Most functions from the <em>xcms</em> package allow per-sample parallel processing, which can improve the performance of the analysis, especially for large data sets. <em>xcms</em> and all packages from the <em>RforMassSpectrometry</em> package ecosystem use the parallel processing setup configured through the <em><a href="https://bioconductor.org/packages/3.23/BiocParallel" class="external-link">BiocParallel</a></em> Bioconductor package. With the code below we use a <em>fork-based</em> parallel processing on unix system, and a <em>socket-based</em> parallel processing on the Windows operating system.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Set up parallel processing using 2 cores</span></span>
@@ -167,7 +168,7 @@
 </div>
 </section><section class="section level2"><h2 id="data-organisation">Data organisation<a class="anchor" aria-label="anchor" href="#data-organisation"></a>
 </h2>
-<p>The experimental data is now represented by a <code>MsExperiment</code> object from the <em><a href="https://bioconductor.org/packages/3.22/MsExperiment" class="external-link">MsExperiment</a></em> package. The <code>MsExperiment</code> object is a container for metadata and spectral data that provides and manages also the linkage between samples and spectra.</p>
+<p>The experimental data is now represented by a <code>MsExperiment</code> object from the <em><a href="https://bioconductor.org/packages/3.23/MsExperiment" class="external-link">MsExperiment</a></em> package. The <code>MsExperiment</code> object is a container for metadata and spectral data that provides and manages also the linkage between samples and spectra.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lcms1</span></span></code></pre></div>
@@ -425,7 +426,7 @@
 <span>                          <span class="st">"CTR"</span><span class="op">)</span> <span class="co"># purple</span></span>
 <span><span class="va">col_sample</span> <span class="op">&lt;-</span> <span class="va">col_phenotype</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span><span class="op">]</span></span></code></pre></div>
 </div>
-<p>The MS data of this experiment is stored as a <code>Spectra</code> object (from the <em><a href="https://bioconductor.org/packages/3.22/Spectra" class="external-link">Spectra</a></em> Bioconductor package) within the <code>MsExperiment</code> object and can be accessed using <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra()</a></code> function. Each element in this object is a spectrum - they are organised linearly and are all combined in the same <code>Spectra</code> object one after the other (ordered by retention time and samples).</p>
+<p>The MS data of this experiment is stored as a <code>Spectra</code> object (from the <em><a href="https://bioconductor.org/packages/3.23/Spectra" class="external-link">Spectra</a></em> Bioconductor package) within the <code>MsExperiment</code> object and can be accessed using <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra()</a></code> function. Each element in this object is a spectrum - they are organised linearly and are all combined in the same <code>Spectra</code> object one after the other (ordered by retention time and samples).</p>
 <p>Below we access the dataset’s <code>Spectra</code> object which will summarize its available information and provide, among other things, the total number of spectra of the data set.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
@@ -667,7 +668,7 @@ MS_B_POS.mzML
 <section class="level2"><h3 id="chromatographic-peak-detection">Chromatographic peak detection<a class="anchor" aria-label="anchor" href="#chromatographic-peak-detection"></a>
 </h3>
 <p>The initial preprocessing step involves detecting intensity peaks along the retention time axis, the so called <em>chromatographic peaks</em>. To achieve this, we employ the <code><a href="https://rdrr.io/pkg/xcms/man/findChromPeaks.html" class="external-link">findChromPeaks()</a></code> function within <em>xcms</em> <span class="citation" data-cites="louail_xcms_2025">(<a href="#ref-louail_xcms_2025" role="doc-biblioref">Louail et al. 2025</a>)</span>. This function supports various algorithms for peak detection, which can be selected and configured with their respective parameter objects.</p>
-<p>The preferred algorithm in this case, <em>CentWave</em>, utilizes continuous wavelet transformation (CWT)-based peak detection <span class="citation" data-cites="tautenhahn_highly_2008">(<a href="#ref-tautenhahn_highly_2008" role="doc-biblioref">Tautenhahn, Böttcher, and Neumann 2008</a>)</span>. This method is known for its effectiveness in handling non-Gaussian shaped chromatographic peaks or peaks with varying retention time widths, which are commonly encountered in HILIC separations.</p>
+<p>The preferred algorithm in this case, <em>CentWave</em>, utilizes continuous wavelet transformation (CWT)-based peak detection <span class="citation" data-cites="tautenhahn_highly_2008">(<a href="#ref-tautenhahn_highly_2008" role="doc-biblioref">Tautenhahn et al. 2008</a>)</span>. This method is known for its effectiveness in handling non-Gaussian shaped chromatographic peaks or peaks with varying retention time widths, which are commonly encountered in HILIC separations.</p>
 <p>Below we apply the CentWave algorithm with its default settings on the EICs of cystine and methionine ions and evaluate the results.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
@@ -932,7 +933,7 @@ mzmin 12669.821  3   1     10</code></pre>
 <code class="sourceCode R"><span><span class="co">#' Apply on whole dataset</span></span>
 <span><span class="va">lcms1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/refineChromPeaks.html" class="external-link">refineChromPeaks</a></span><span class="op">(</span><span class="va">lcms1</span>, param <span class="op">=</span> <span class="va">param</span>, chunkSize <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Reduced from 106714 to 89182 chromatographic peaks.</code></pre>
+<pre><code>Reduced from 106714 to 89185 chromatographic peaks.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeakData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span> <span class="op">|&gt;</span></span>
@@ -940,7 +941,7 @@ mzmin 12669.821  3   1     10</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 FALSE  TRUE
-79908  9274 </code></pre>
+79943  9242 </code></pre>
 </div>
 </div>
 <p>Before proceeding with the next preprocessing step it is generally suggested to evaluate the results of the chromatographic peak detection on EICs of e.g. internal standards or other compounds/ions known to be present in the samples. Here we update our EICs objects for the internal standards with the results of the chromatographic peak detection and refinement.</p>
@@ -996,10 +997,10 @@ FALSE  TRUE
 </tr>
 <tr class="even">
 <td style="text-align: left;">peak_count</td>
-<td style="text-align: left;">9287</td>
-<td style="text-align: left;">8986</td>
+<td style="text-align: left;">9288</td>
+<td style="text-align: left;">8987</td>
 <td style="text-align: left;">8738</td>
-<td style="text-align: left;">9193</td>
+<td style="text-align: left;">9194</td>
 <td style="text-align: left;">8351</td>
 <td style="text-align: left;">8778</td>
 <td style="text-align: left;">9211</td>
@@ -1095,7 +1096,7 @@ FALSE  TRUE
 </div>
 </div>
 <p>These QC samples representing the same sample (pool) were measured at regular intervals during the measurement run of the experiment and were all measured on the same day. Still, small shifts can be observed, especially in the region between 100 and 150 seconds. To facilitate proper correspondence of signals across samples (and hence definition of the LC-MS features), it is essential to minimize these differences in retention times.</p>
-<p>Theoretically, we proceed in two steps: first we select only the QC samples of our dataset and do a first alignment on these, using the so-called <em>anchor peaks</em>. In this way we can assume a linear shift in time, since we are always measuring the same sample in different regular time intervals. Despite having external QCs in our data set, we still use the subset-based alignment assuming retention time shifts to be independent of the different sample matrix (human serum or plasma) and instead are mostly instrument-dependent. Note that it would also be possible to manually specify anchor peaks, respectively their retention times or to align a data set against an external, reference, data set. More information is provided in the vignettes of the <em><a href="https://bioconductor.org/packages/3.22/xcms" class="external-link">xcms</a></em> package.</p>
+<p>Theoretically, we proceed in two steps: first we select only the QC samples of our dataset and do a first alignment on these, using the so-called <em>anchor peaks</em>. In this way we can assume a linear shift in time, since we are always measuring the same sample in different regular time intervals. Despite having external QCs in our data set, we still use the subset-based alignment assuming retention time shifts to be independent of the different sample matrix (human serum or plasma) and instead are mostly instrument-dependent. Note that it would also be possible to manually specify anchor peaks, respectively their retention times or to align a data set against an external, reference, data set. More information is provided in the vignettes of the <em><a href="https://bioconductor.org/packages/3.23/xcms" class="external-link">xcms</a></em> package.</p>
 <p>After calculating how much to adjust the retention time in these samples, we apply this shift also on the study samples.</p>
 <p>In <em>xcms</em>, retention time alignment can be performed using the <code><a href="https://rdrr.io/pkg/xcms/man/adjustRtime.html" class="external-link">adjustRtime()</a></code> function with an alignment algorithm. For this example we use the <em>PeakGroups</em> method <span class="citation" data-cites="louail_xcms_2025">(<a href="#ref-louail_xcms_2025" role="doc-biblioref">Louail et al. 2025</a>)</span> that performs the alignment by minimizing differences in retention times of a set of <em>anchor peaks</em> in the different samples. This method requires an initial correspondence analysis to match/group chromatographic peaks across samples from which the algorithm then selects the anchor peaks for the alignment.</p>
 <p>For the initial correspondence, we use the <em>PeakDensity</em> approach <span class="citation" data-cites="louail_xcms_2025">(<a href="#ref-louail_xcms_2025" role="doc-biblioref">Louail et al. 2025</a>)</span> that groups chromatographic peaks with similar <em>m/z</em> and retention time into LC-MS features. The parameters for this algorithm, that can be configured using the <code>PeakDensityParam</code> object, are <code>sampleGroups</code>, <code>minFraction</code>, <code>binSize</code>, <code>ppm</code> and <code>bw</code>.</p>
@@ -1263,7 +1264,7 @@ FALSE  TRUE
 </div>
 </div>
 <p>The non-endogenous cystine ion was already well aligned so the difference is minimal. The methionine ion, however, shows a slight improvement in alignment.</p>
-<p>In addition to a visual inspection of the results, we also evaluate the impact of the alignment by comparing the variance in retention times for internal standards before and after alignment. To this end, we first need to identify chromatographic peaks in each sample with an <em>m/z</em> and retention time close to the expected values for each internal standard. For this we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchValues.html" class="external-link">matchValues()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.22/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package <span class="citation" data-cites="rainer_modular_2022">(<a href="#ref-rainer_modular_2022" role="doc-biblioref">Rainer et al. 2022</a>)</span> using the <code>MzRtParam</code> method to identify all chromatographic peaks with similar <em>m/z</em> (+/- 50 ppm) and retention time (+/- 10 seconds) to the internal standard’s values. With parameters <code>mzColname</code> and <code>rtColname</code> we specify the column names in the query (our IS) and target (chromatographic peaks) that contain the <em>m/z</em> and retention time values on which to match entities. We perform this matching separately for each sample. For each internal standard in every sample, we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">filterMatches()</a></code> function and the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">SingleMatchParam()</a></code> parameter to select the chromatographic peak with the highest intensity.</p>
+<p>In addition to a visual inspection of the results, we also evaluate the impact of the alignment by comparing the variance in retention times for internal standards before and after alignment. To this end, we first need to identify chromatographic peaks in each sample with an <em>m/z</em> and retention time close to the expected values for each internal standard. For this we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchValues.html" class="external-link">matchValues()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package <span class="citation" data-cites="rainer_modular_2022">(<a href="#ref-rainer_modular_2022" role="doc-biblioref">Rainer et al. 2022</a>)</span> using the <code>MzRtParam</code> method to identify all chromatographic peaks with similar <em>m/z</em> (+/- 50 ppm) and retention time (+/- 10 seconds) to the internal standard’s values. With parameters <code>mzColname</code> and <code>rtColname</code> we specify the column names in the query (our IS) and target (chromatographic peaks) that contain the <em>m/z</em> and retention time values on which to match entities. We perform this matching separately for each sample. For each internal standard in every sample, we use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">filterMatches()</a></code> function and the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">SingleMatchParam()</a></code> parameter to select the chromatographic peak with the highest intensity.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Extract the matrix with all chromatographic peaks and add a column</span></span>
@@ -1343,7 +1344,8 @@ FALSE  TRUE
  - minSamples: [1] 1
  - binSize: [1] 0.25
  - maxFeatures: [1] 50
- - ppm: [1] 0</code></pre>
+ - ppm: [1] 0
+ - rtCenterFun: [1] "median"</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1476,19 +1478,19 @@ FALSE  TRUE
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          mzmed    mzmin    mzmax    rtmed    rtmin    rtmax npeaks CTR CVD QC
-FT0001 50.98979 50.98949 50.99038 203.6001 203.1181 204.2331      8   1   3  4
-FT0002 51.05904 51.05880 51.05941 191.1675 190.8787 191.5050      9   2   3  4
-FT0003 51.98657 51.98631 51.98699 203.1467 202.6406 203.6710      7   0   3  4
-FT0004 53.02036 53.02009 53.02043 203.2343 202.5652 204.0901     10   3   3  4
-FT0005 53.52080 53.52051 53.52102 203.1936 202.8490 204.0901     10   3   3  4
-FT0006 54.01007 54.00988 54.01015 159.2816 158.8499 159.4484      6   1   3  2
+FT0001 50.98979 50.98949 50.99038 203.5975 203.1200 204.2317      8   1   3  4
+FT0002 51.05904 51.05880 51.05941 191.1672 190.8783 191.5046      9   2   3  4
+FT0003 51.98657 51.98631 51.98699 203.1455 202.6389 203.6731      7   0   3  4
+FT0004 53.02036 53.02009 53.02043 203.2318 202.5668 204.0906     10   3   3  4
+FT0005 53.52080 53.52051 53.52102 203.1915 202.8478 204.0906     10   3   3  4
+FT0006 54.01007 54.00988 54.01015 159.2817 158.8499 159.4483      6   1   3  2
             peakidx ms_level
-FT0001 7702, 16....        1
-FT0002 7176, 16....        1
-FT0003 7680, 17....        1
-FT0004 7763, 17....        1
-FT0005 8353, 17....        1
-FT0006 5800, 15....        1</code></pre>
+FT0001 7705, 16....        1
+FT0002 7179, 16....        1
+FT0003 7683, 17....        1
+FT0004 7766, 17....        1
+FT0005 8357, 17....        1
+FT0006 5803, 15....        1</code></pre>
 </div>
 </div>
 <p>This data frame provides the average <em>m/z</em> and retention time (in columns <code>"mzmed"</code> and <code>"rtmed"</code>) that characterize a LC-MS feature. Column, <code>"peakidx"</code> contains the indices of all chromatographic peaks that were assigned to that feature. The actual abundances for these features, which represent also the final preprocessing results, can be extracted with the <code><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-peak-grouping-results.html" class="external-link">featureValues()</a></code> function:</p>
@@ -1531,7 +1533,7 @@ FT0006     6817.8785                    NA</code></pre>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-peak-grouping-results.html" class="external-link">featureValues</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-peak-grouping-results.html" class="external-link">featureValues</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 26.41597</code></pre>
+<pre><code>[1] 26.41045</code></pre>
 </div>
 </div>
 <p>We can observe a substantial number of missing values values in our dataset. Let’s therefore delve into the process of <em>gap-filling</em>. We first evaluate some example features for which a chromatographic peak was only detected in some samples:</p>
@@ -1562,7 +1564,7 @@ FT0006     6817.8785                    NA</code></pre>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-peak-grouping-results.html" class="external-link">featureValues</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-peak-grouping-results.html" class="external-link">featureValues</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.155492</code></pre>
+<pre><code>[1] 5.161006</code></pre>
 </div>
 </div>
 <p>With <code><a href="https://rdrr.io/pkg/xcms/man/fillChromPeaks.html" class="external-link">fillChromPeaks()</a></code> we could thus rescue most of the missing data in the data set. Note that, even if in a sample no ion would be present, in the worst case noise would be integrated, which is expected to be much lower than actual chromatographic peak signal. Let’s look at our previously missing values again:</p>
@@ -1619,7 +1621,7 @@ FT0006     6817.8785                    NA</code></pre>
 <div class="sourceCode cell-code" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' fit a linear regression line to the data</span></span>
 <span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">avg_filled</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">avg_detect</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/RuSirius/man/results.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1627,25 +1629,25 @@ lm(formula = log2(avg_filled) ~ log2(avg_detect))
 
 Residuals:
     Min      1Q  Median      3Q     Max
--6.8176 -0.3807  0.1725  0.5492  6.7504
+-6.8194 -0.3816  0.1698  0.5497  6.7473
 
 Coefficients:
                  Estimate Std. Error t value Pr(&gt;|t|)
-(Intercept)      -1.62359    0.11545  -14.06   &lt;2e-16 ***
-log2(avg_detect)  1.11763    0.01259   88.75   &lt;2e-16 ***
+(Intercept)       -1.6267     0.1155  -14.08   &lt;2e-16 ***
+log2(avg_detect)   1.1181     0.0126   88.72   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.9366 on 2846 degrees of freedom
-  (846 observations deleted due to missingness)
+Residual standard error: 0.9365 on 2844 degrees of freedom
+  (847 observations deleted due to missingness)
 Multiple R-squared:  0.7346,    Adjusted R-squared:  0.7345
-F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
+F-statistic:  7871 on 1 and 2844 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<p>The linear regression line has a slope of 1.12 and an intercept of -1.62. This indicates that the filled-in signal is on average 1.12 times higher than the detected signal.</p>
+<p>The linear regression line has a slope of 1.12 and an intercept of -1.63. This indicates that the filled-in signal is on average 1.12 times higher than the detected signal.</p>
 </section><section class="level2"><h3 id="filtering-features-missing-values">Filtering Features: Missing values<a class="anchor" aria-label="anchor" href="#filtering-features-missing-values"></a>
 </h3>
-<p>We now restrict the data set to features for which a chromatographic peak was detected in at least 2/3 of samples of at least one of the study samples groups. This ensures the statistical tests carried out later on the study samples are being performed on <em>reliable</em> signal. Also, with this filter we remove features that were mostly detected in QC samples, but not the study samples. Such filter can be performed with <code><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.22/xcms" class="external-link">xcms</a></em> package with the <code>PercentMissingFilter</code> setting. The parameters of this filer:</p>
+<p>We now restrict the data set to features for which a chromatographic peak was detected in at least 2/3 of samples of at least one of the study samples groups. This ensures the statistical tests carried out later on the study samples are being performed on <em>reliable</em> signal. Also, with this filter we remove features that were mostly detected in QC samples, but not the study samples. Such filter can be performed with <code><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/xcms" class="external-link">xcms</a></em> package with the <code>PercentMissingFilter</code> setting. The parameters of this filer:</p>
 <ul>
 <li>
 <code>threshold</code>: defines the maximal acceptable percentage of samples with missing value(s) in at least one of the sample groups defined by parameter <code>f</code>.</li>
@@ -1663,7 +1665,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span><span class="va">lcms1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">lcms1</span>, <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/PercentMissingFilter.html" class="external-link">PercentMissingFilter</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>, threshold <span class="op">=</span> <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>344 features were removed</code></pre>
+<pre><code>346 features were removed</code></pre>
 </div>
 </div>
 </section><section class="level2"><h3 id="preprocessing-results">Preprocessing results<a class="anchor" aria-label="anchor" href="#preprocessing-results"></a>
@@ -1676,7 +1678,7 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class "XProcessHistory"
  type: Peak detection
- date: Tue Mar 17 15:54:43 2026
+ date: Thu Jul 16 15:25:09 2026
  info:
  fileIndex: 1,2,3,4,5,6,7,8,9,10
  Parameter class: CentWaveParam
@@ -1694,10 +1696,10 @@ F-statistic:  7877 on 1 and 2846 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span><span class="va">res</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>class: SummarizedExperiment
-dim: 8724 10
+dim: 8722 10
 metadata(7): '' '' ... '' ''
 assays(1): raw
-rownames(8724): FT0001 FT0002 ... FT9067 FT9068
+rownames(8722): FT0001 FT0002 ... FT9067 FT9068
 rowData names(11): mzmed mzmin ... QC ms_level
 colnames(10): MS_QC_POOL_1_POS.mzML MS_A_POS.mzML ... MS_F_POS.mzML
   MS_QC_POOL_4_POS.mzML
@@ -1722,26 +1724,26 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"raw_filled"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       MS_QC_POOL_1_POS.mzML MS_A_POS.mzML MS_B_POS.mzML MS_QC_POOL_2_POS.mzML
-FT0001              421.6162      689.2422      411.3295              481.7436
-FT0002              710.8078      875.9192      457.5920              693.6997
-FT0003              445.5711      613.4410      277.5022              497.8866
+FT0001              421.6162      689.2422      411.1881              481.7436
+FT0002              710.8078      875.9192      457.6754              693.6997
+FT0003              445.5711      613.4410      283.9975              497.8866
 FT0004            16994.5260    24605.7340    19766.7069            17808.0933
 FT0005             3284.2664     4526.0531     3521.8221             3379.8909
-FT0006            10681.7476    10009.6602     9599.9701            10800.5449
+FT0006            10681.7476    10009.6602     9600.0959            10800.5449
        MS_C_POS.mzML MS_D_POS.mzML MS_QC_POOL_3_POS.mzML MS_E_POS.mzML
-FT0001      314.7567      635.2732              439.6086      570.5849
+FT0001      331.2090      635.2732              439.6086      570.5849
 FT0002      781.2416      648.4344              700.9716     1054.0207
-FT0003      425.3774      634.9370              449.0933      556.2544
+FT0003      425.5903      634.9370              449.0933      556.5328
 FT0004    22780.6683    22873.1061            16965.7762    23432.1252
 FT0005     4396.0762     4317.7734             3270.5290     4533.8667
-FT0006     4792.2390     7296.4262             2382.1788     9236.9799
+FT0006     4792.3018     7296.4262             2382.2100     9236.9799
        MS_F_POS.mzML MS_QC_POOL_4_POS.mzML
 FT0001      579.9360              437.0340
 FT0002      534.4577              711.0361
 FT0003      461.0465              232.1075
 FT0004    22198.4607            16796.4497
 FT0005     4161.0132             3142.2268
-FT0006     6817.8785             6911.5439</code></pre>
+FT0006     6817.8785             6911.6344</code></pre>
 </div>
 </div>
 <p>An advantage, in addition to being a container for the full preprocessing results is also the possibility of an easy and intuitive creation of data subsets ensuring data integrity. It would for example be very easy to subset the full data to a selection of features and/or samples:</p>
@@ -1774,11 +1776,11 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </section></section><section class="section level2"><h2 id="data-normalization">Data normalization<a class="anchor" aria-label="anchor" href="#data-normalization"></a>
 </h2>
-<p>After preprocessing, data normalization or scaling might need to be applied to remove any technical variances from the data. While simple approaches like median scaling can be implemented with a few lines of R code, more advanced normalization algorithms are available in packages such as Bioconductor’s <em><a href="https://bioconductor.org/packages/3.22/preprocessCore" class="external-link">preprocessCore</a></em>. The comprehensive workflow “Notame” also propose a very interesting normalization approach adaptable and scalable to the user dataset <span class="citation" data-cites="klavus_notame_2020">(<a href="#ref-klavus_notame_2020" role="doc-biblioref">Klåvus et al. 2020</a>)</span>.</p>
+<p>After preprocessing, data normalization or scaling might need to be applied to remove any technical variances from the data. While simple approaches like median scaling can be implemented with a few lines of R code, more advanced normalization algorithms are available in packages such as Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/preprocessCore" class="external-link">preprocessCore</a></em>. The comprehensive workflow “Notame” also propose a very interesting normalization approach adaptable and scalable to the user dataset <span class="citation" data-cites="klavus_notame_2020">(<a href="#ref-klavus_notame_2020" role="doc-biblioref">Klåvus et al. 2020</a>)</span>.</p>
 <p>Generally, for LC-MS data, bias can be categorized into three main groups<span class="citation" data-cites="broadhurst_guidelines_2018">(<a href="#ref-broadhurst_guidelines_2018" role="doc-biblioref">Broadhurst et al. 2018</a>)</span>:</p>
 <ul>
 <li><p>Variances introduced by sample collection and initial processing, which can include differences in sample amounts. This type of bias is expected to be sample-specific and affect all signals in a sample in the same way. Methods like median scaling, LOESS or quantiles normalization can adjust this bias.</p></li>
-<li><p>Signal drifts along measurement of samples from an experiment. Reasons for such drifts can be related to aging of the instrumentation used (columns, detector), but also to changes in metabolite abundances and characteristics due to reactions and modifications, such as oxidation. These changes are expected to affect more the samples measured later in a run rather than the ones measured at the beginning. For this reason, this bias can play a major role in large experiments bias can play a major role in large experiments measured over a long time range and is usually considered to affect individual metabolites (or metabolite groups) differently. For adjustment, moving average or linear regression-based approaches can be used. The latter can for example be performed using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.22/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p></li>
+<li><p>Signal drifts along measurement of samples from an experiment. Reasons for such drifts can be related to aging of the instrumentation used (columns, detector), but also to changes in metabolite abundances and characteristics due to reactions and modifications, such as oxidation. These changes are expected to affect more the samples measured later in a run rather than the ones measured at the beginning. For this reason, this bias can play a major role in large experiments bias can play a major role in large experiments measured over a long time range and is usually considered to affect individual metabolites (or metabolite groups) differently. For adjustment, moving average or linear regression-based approaches can be used. The latter can for example be performed using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p></li>
 <li><p>Batch-related biases. These comprise any noise that is specific to a larger set of samples, which can be the set of samples measured in one LC-MS measurement run (i.e. from one analysis plate) or samples measured using a specific batch of reagents. This noise is assumed to affect all samples in one batch in the same way and linear modeling-based approaches can be used to adjust for this.</p></li>
 </ul>
 <p>Unwanted variation can arise from various sources and is highly dependent on the experiment. Therefore, data normalization should be chosen carefully based on experimental design, statistical aims, and the balance of accuracy and precision achieved through the use of auxiliary information.</p>
@@ -1878,7 +1880,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </div>
 <p>The upper part of the plot show that the gap filling steps allowed to rescue a substantial number of <em>NAs</em> and allowed us to have a more consistent number of feature values per sample. This consistency aligns with our asspumption that every sample should have a similar amount of features detected. Additionally we observe that, on average, the signal distribution from the individual samples is very similar.</p>
-<p>An alternative way to evaluate differences in abundances between samples are <em>relative log abundance</em> (RLA) plots <span class="citation" data-cites="de_livera_normalizing_2012">(<a href="#ref-de_livera_normalizing_2012" role="doc-biblioref">De Livera et al. 2012</a>)</span>. An RLA value is the abundance of a feature in a sample relative to the median abundance of the same feature across multiple samples. We can discriminate between <em>within group</em> and <em>across group</em> RLAs, depending whether the abundance is compared against samples within the same sample group or across all samples. Within group RLA plots assess the tightness of replicates within groups and should have a median close to zero and low variation around it. When used across groups, they allow to compare behavior between groups. Generally, between-sample differences can be easily spotted using RLA plots. Below we calculate and visualize within group RLA values using the <code><a href="https://rdrr.io/pkg/xcms/man/rla.html" class="external-link">rowRla()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.22/MsCoreUtils" class="external-link">MsCoreUtils</a></em> package defining with parameter <code>f</code> the sample groups.</p>
+<p>An alternative way to evaluate differences in abundances between samples are <em>relative log abundance</em> (RLA) plots <span class="citation" data-cites="de_livera_normalizing_2012">(<a href="#ref-de_livera_normalizing_2012" role="doc-biblioref">De Livera et al. 2012</a>)</span>. An RLA value is the abundance of a feature in a sample relative to the median abundance of the same feature across multiple samples. We can discriminate between <em>within group</em> and <em>across group</em> RLAs, depending whether the abundance is compared against samples within the same sample group or across all samples. Within group RLA plots assess the tightness of replicates within groups and should have a median close to zero and low variation around it. When used across groups, they allow to compare behavior between groups. Generally, between-sample differences can be easily spotted using RLA plots. Below we calculate and visualize within group RLA values using the <code><a href="https://rdrr.io/pkg/xcms/man/rla.html" class="external-link">rowRla()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MsCoreUtils" class="external-link">MsCoreUtils</a></em> package defining with parameter <code>f</code> the sample groups.</p>
 <div class="cell">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">4.5</span>, <span class="fl">2.5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -2006,7 +2008,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>The normalization process has effectively centered the data around the median and medians for all samples are now closer to zero.</p>
 </section><section class="level3"><h4 id="coefficient-of-variation">Coefficient of variation<a class="anchor" aria-label="anchor" href="#coefficient-of-variation"></a>
 </h4>
-<p>We next evaluate the coefficient of variation (CV, also referred to as <em>relative standard deviation</em> RSD) for features across samples from either QC or study samples. In QC samples, the CV would represent technical noise, while in study samples it would include also expected biological differences. Thus, normalization should reduce the CV in QC samples, while only slightly reducing the CV in study samples. The CV is calculated below using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.22/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package. By setting <code>mad = TRUE</code> we use a more robust calculation using the median absolute deviation instead of the standard deviation.</p>
+<p>We next evaluate the coefficient of variation (CV, also referred to as <em>relative standard deviation</em> RSD) for features across samples from either QC or study samples. In QC samples, the CV would represent technical noise, while in study samples it would include also expected biological differences. Thus, normalization should reduce the CV in QC samples, while only slightly reducing the CV in study samples. The CV is calculated below using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package. By setting <code>mad = TRUE</code> we use a more robust calculation using the median absolute deviation instead of the standard deviation.</p>
 <div class="cell" data-tbl-cap="Table 6. Distribution of CV values across samples for the raw and normalized data.">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Calculate the CV values</span></span>
@@ -2048,33 +2050,33 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: right;">0.0000000</td>
 <td style="text-align: right;">0.0000000</td>
 <td style="text-align: right;">0.0008024</td>
-<td style="text-align: right;">0.0027477</td>
+<td style="text-align: right;">0.0027344</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">25%</td>
-<td style="text-align: right;">0.0450743</td>
-<td style="text-align: right;">0.0446309</td>
-<td style="text-align: right;">0.1423902</td>
-<td style="text-align: right;">0.1430977</td>
+<td style="text-align: right;">0.0450467</td>
+<td style="text-align: right;">0.0447356</td>
+<td style="text-align: right;">0.1425283</td>
+<td style="text-align: right;">0.1431397</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">50%</td>
-<td style="text-align: right;">0.0972048</td>
-<td style="text-align: right;">0.0970785</td>
-<td style="text-align: right;">0.2668930</td>
-<td style="text-align: right;">0.2658062</td>
+<td style="text-align: right;">0.0970285</td>
+<td style="text-align: right;">0.0965952</td>
+<td style="text-align: right;">0.2671896</td>
+<td style="text-align: right;">0.2661021</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">75%</td>
-<td style="text-align: right;">0.2003657</td>
-<td style="text-align: right;">0.1985980</td>
-<td style="text-align: right;">0.4867303</td>
-<td style="text-align: right;">0.4825679</td>
+<td style="text-align: right;">0.1997631</td>
+<td style="text-align: right;">0.1981580</td>
+<td style="text-align: right;">0.4867299</td>
+<td style="text-align: right;">0.4827306</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">100%</td>
-<td style="text-align: right;">1.4635996</td>
-<td style="text-align: right;">1.4637193</td>
+<td style="text-align: right;">1.4635999</td>
+<td style="text-align: right;">1.4637534</td>
 <td style="text-align: right;">1.4825882</td>
 <td style="text-align: right;">1.4825893</td>
 </tr>
@@ -2084,7 +2086,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>The table above shows the distribution of the CV for both raw and normalized data. The first column highlights the % of the data which is below a given CV value, e.g. 25% of the data has a CV equal or lower than 0.04557 at the <em>QC_raw</em> data. As anticipated, the CV values for the QCs, which reflect technical variance, are lower compared to those for the study samples, which include both technical and biological variance. Overall, minimal disparity exists between the raw and normalized data, which is a positive indication that the normalization process has not introduced bias into the dataset, but also reflects the little differences in average abundances between sample in the raw data.</p>
 </section><section class="level3"><h4 id="conclusion-on-normalization">Conclusion on normalization<a class="anchor" aria-label="anchor" href="#conclusion-on-normalization"></a>
 </h4>
-<p>The overall conclusion of the normalization process is that very little variance was present from the beginning, normalization was however able to center the data around the median (as shown by the RLA plot). Given the simplicity and limited size of our example dataset, we will conclude the normalization process at this stage. For more intricate datasets with diverse biases, a tailored approach would be devised. This could include also approaches to adjust for signal drifts or batch effects. One possible option would be to use a linear-model based approach such as can for example be applied with the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.22/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p>
+<p>The overall conclusion of the normalization process is that very little variance was present from the beginning, normalization was however able to center the data around the median (as shown by the RLA plot). Given the simplicity and limited size of our example dataset, we will conclude the normalization process at this stage. For more intricate datasets with diverse biases, a tailored approach would be devised. This could include also approaches to adjust for signal drifts or batch effects. One possible option would be to use a linear-model based approach such as can for example be applied with the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/fit_lm.html" class="external-link">adjust_lm()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package.</p>
 </section></section></section><section class="section level2"><h2 id="quality-control-feature-prefiltering">Quality control: Feature prefiltering<a class="anchor" aria-label="anchor" href="#quality-control-feature-prefiltering"></a>
 </h2>
 <p>After normalizing our data we can now pre-filter to clean the data before performing any statistical analysis. In general, pre-filtering of samples and features is performed to remove outliers.</p>
@@ -2094,7 +2096,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="co">#' Number of features before filtering</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 8724</code></pre>
+<pre><code>[1] 8722</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' keep unfiltered object</span></span>
@@ -2112,27 +2114,27 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span>                              mad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">res</span>, filter <span class="op">=</span> <span class="va">filter_dratio</span>, assay <span class="op">=</span> <span class="st">"norm_imputed"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>4206 features were removed</code></pre>
+<pre><code>4208 features were removed</code></pre>
 </div>
 </div>
 <p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>)of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
-<p>Note that the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowDratio()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.22/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package could be used to calculate the actual numeric values for the estimates used for filtering, to e.g. to evaluate their distribution in the whole data set or identify data set-dependent threshold values.</p>
+<p>Note that the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowDratio()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package could be used to calculate the actual numeric values for the estimates used for filtering, to e.g. to evaluate their distribution in the whole data set or identify data set-dependent threshold values.</p>
 <p>Finally, we evaluate the number of features left after the filtering steps and calculate the percentage of features that were removed.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Number of features after analysis</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4518</code></pre>
+<pre><code>[1] 4514</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb116"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Percentage left: end/beginning</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res_unfilt</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 51.78817</code></pre>
+<pre><code>[1] 51.75418</code></pre>
 </div>
 </div>
-<p>The dataset has been reduced from 8724 to 4518 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
+<p>The dataset has been reduced from 8722 to 4514 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_qc</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></span>
@@ -2172,20 +2174,20 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <div class="cell">
 <div class="sourceCode cell-code" id="cb121"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#make upsetplot</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hms-dbmi/UpSetR" class="external-link">UpSetR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hms-dbmi/UpSetR" class="external-link">UpSetR</a></span><span class="op">)</span></span>
 <span><span class="va">binary_data</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">df_logical</span>, MARGIN <span class="op">=</span> <span class="fl">2</span>, <span class="va">as.integer</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">upset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">binary_data</span><span class="op">)</span>, nset <span class="op">=</span> <span class="fl">6</span>, sets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df_logical</span><span class="op">)</span>, keep.order <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ℹ Please use `linewidth` instead.
 ℹ The deprecated feature was likely used in the UpSetR package.
-  Please report the issue to the authors.</code></pre>
+  Please report the issue at &lt;https://github.com/hms-dbmi/UpSetR/issues&gt;.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
 ℹ Please use the `linewidth` argument instead.
 ℹ The deprecated feature was likely used in the UpSetR package.
-  Please report the issue to the authors.</code></pre>
+  Please report the issue at &lt;https://github.com/hms-dbmi/UpSetR/issues&gt;.</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -2236,7 +2238,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>According to the PCA above, PC1 does not seem to be related to age.</p>
 <p>Even if there is some variance in the data set we can’t explain at this stage, we proceed with the (supervised) statistical tests to identify features of interest. We compute linear models for each metabolite explaining the observed feature abundance by the available study variables. While we could also use the base R function <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, we utilize the <code>R Biocpkg("limma")</code> package to conduct the differential abundance analysis: the <em>moderated</em> test statistics <span class="citation" data-cites="smyth_linear_2004">(<a href="#ref-smyth_linear_2004" role="doc-biblioref">Smyth 2004</a>)</span> provided by this package are specifically well suited for experiments with a limited number of replicates. For our tests we use a linear model <code>~ phenotype + age</code>, hence explaining the abundances of one metabolite accounting for the study group assignment and age of each individual. The analysis might benefit from inclusion of a study covariate associated with PC2 or explaining the variance seen in that principal component, but for the present analysis only the participant’s age and disease association was provided.</p>
-<p>Below we define the design of the study with the <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix()</a></code> function and fit feature-wise linear models to the log2-transformed abundances using the <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit()</a></code> function. P-values for significance of association are then calculated using the <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function, that also performs the empirical Bayes-based robust estimation of the standard errors. See also the excellent vignette/user guide of the <em><a href="https://bioconductor.org/packages/3.22/limma" class="external-link">limma</a></em> package for examples and details on the linear model procedure.</p>
+<p>Below we define the design of the study with the <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix()</a></code> function and fit feature-wise linear models to the log2-transformed abundances using the <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit()</a></code> function. P-values for significance of association are then calculated using the <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function, that also performs the empirical Bayes-based robust estimation of the standard errors. See also the excellent vignette/user guide of the <em><a href="https://bioconductor.org/packages/3.23/limma" class="external-link">limma</a></em> package for examples and details on the linear model procedure.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Define the linear model to be applied to the data</span></span>
@@ -2348,62 +2350,62 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <tr class="odd">
 <td style="text-align: left;">FT0732</td>
 <td style="text-align: right;">182.0749</td>
-<td style="text-align: right;">34.83789</td>
-<td style="text-align: right;">-8.540232</td>
-<td style="text-align: right;">0.0064152</td>
-<td style="text-align: right;">12.229286</td>
-<td style="text-align: right;">3.816143</td>
-<td style="text-align: right;">0.2116471</td>
+<td style="text-align: right;">34.83800</td>
+<td style="text-align: right;">-8.368575</td>
+<td style="text-align: right;">0.0069217</td>
+<td style="text-align: right;">12.228210</td>
+<td style="text-align: right;">3.952499</td>
+<td style="text-align: right;">0.2129312</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FT0845</td>
 <td style="text-align: right;">195.0877</td>
-<td style="text-align: right;">32.65668</td>
-<td style="text-align: right;">-6.330400</td>
-<td style="text-align: right;">0.0421988</td>
-<td style="text-align: right;">16.905340</td>
-<td style="text-align: right;">10.454994</td>
-<td style="text-align: right;">0.0304712</td>
+<td style="text-align: right;">32.65666</td>
+<td style="text-align: right;">-6.330037</td>
+<td style="text-align: right;">0.0347543</td>
+<td style="text-align: right;">16.904263</td>
+<td style="text-align: right;">10.454779</td>
+<td style="text-align: right;">0.0308570</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
-<td style="text-align: right;">162.13668</td>
-<td style="text-align: right;">-5.824858</td>
-<td style="text-align: right;">0.0346003</td>
-<td style="text-align: right;">10.287074</td>
-<td style="text-align: right;">4.191575</td>
-<td style="text-align: right;">0.0360903</td>
+<td style="text-align: right;">162.13666</td>
+<td style="text-align: right;">-5.609085</td>
+<td style="text-align: right;">0.0294508</td>
+<td style="text-align: right;">10.285998</td>
+<td style="text-align: right;">4.460656</td>
+<td style="text-align: right;">0.0353295</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FT1171</td>
 <td style="text-align: right;">229.1299</td>
-<td style="text-align: right;">181.08828</td>
-<td style="text-align: right;">-5.195353</td>
-<td style="text-align: right;">0.0162403</td>
-<td style="text-align: right;">10.721195</td>
-<td style="text-align: right;">5.673362</td>
-<td style="text-align: right;">0.0706276</td>
+<td style="text-align: right;">181.08851</td>
+<td style="text-align: right;">-5.305011</td>
+<td style="text-align: right;">0.0175049</td>
+<td style="text-align: right;">10.720119</td>
+<td style="text-align: right;">5.585054</td>
+<td style="text-align: right;">0.0710135</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
-<td style="text-align: right;">-5.162133</td>
-<td style="text-align: right;">0.0196731</td>
-<td style="text-align: right;">9.914862</td>
-<td style="text-align: right;">4.448416</td>
-<td style="text-align: right;">0.5564435</td>
+<td style="text-align: right;">148.39593</td>
+<td style="text-align: right;">-5.153581</td>
+<td style="text-align: right;">0.0204212</td>
+<td style="text-align: right;">9.913786</td>
+<td style="text-align: right;">4.458967</td>
+<td style="text-align: right;">0.5575909</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FT5606</td>
 <td style="text-align: right;">560.3603</td>
-<td style="text-align: right;">33.54917</td>
-<td style="text-align: right;">-3.855919</td>
-<td style="text-align: right;">0.0435719</td>
-<td style="text-align: right;">8.885918</td>
-<td style="text-align: right;">4.804876</td>
-<td style="text-align: right;">1.2139903</td>
+<td style="text-align: right;">33.54912</td>
+<td style="text-align: right;">-3.539932</td>
+<td style="text-align: right;">0.0347543</td>
+<td style="text-align: right;">8.884841</td>
+<td style="text-align: right;">5.141959</td>
+<td style="text-align: right;">1.2135934</td>
 </tr>
 </tbody>
 </table>
@@ -2447,7 +2449,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>We have now identified the features with significant differences in abundances between the two study groups. These provide information on metabolic pathways that differentiate affected from healthy individuals and might hence also serve as biomarkers. However, at this stage of the analysis we do not know what compounds/metabolites they actually represent. We thus need now to annotate these signals. Annotation can be performed at different level of confidence <span class="citation" data-cites="sumner_proposed_2007">Schymanski et al. (<a href="#ref-schymanski_identifying_2014" role="doc-biblioref">2014</a>)</span>. The lowest level of annotation, with the highest rate of false positive hits, bases on the features <em>m/z</em> ratios. Higher levels of annotations employ fragment spectra (MS2 spectra) of ions of interest requiring this however acquisition of additional data. In this section, we will demonstrate multiple ways to annotate our significant features using functionality provided through Bioconductor packages. Alternative approaches and external software tools, which may be better suited, will also be discussed later in the section.</p>
 <section class="level2"><h3 id="ms1-based-annotation">MS1-based annotation<a class="anchor" aria-label="anchor" href="#ms1-based-annotation"></a>
 </h3>
-<p>Our data set was acquired using an LC-MS setup and our features are thus only characterized by their <em>m/z</em> and retention times. The retention time is LC-setup-specific and, without prior data/knowledge provide only little information on the features’ identity. Modern MS instruments have a high accuracy and the <em>m/z</em> values should therefore be reliable estimates of the compound ion’s mass-to-charge ratio. As first approach, we use the features’ <em>m/z</em> values and match them against reference values, i.e., exact masses of chemical compounds that are provided by a reference database, in our case the MassBank database. The full MassBank data is re-distributed through Bioconductor’s <em><a href="https://bioconductor.org/packages/3.22/AnnotationHub" class="external-link">AnnotationHub</a></em> resource, which simplifies their integration into reproducible R-based analysis workflows.</p>
+<p>Our data set was acquired using an LC-MS setup and our features are thus only characterized by their <em>m/z</em> and retention times. The retention time is LC-setup-specific and, without prior data/knowledge provide only little information on the features’ identity. Modern MS instruments have a high accuracy and the <em>m/z</em> values should therefore be reliable estimates of the compound ion’s mass-to-charge ratio. As first approach, we use the features’ <em>m/z</em> values and match them against reference values, i.e., exact masses of chemical compounds that are provided by a reference database, in our case the MassBank database. The full MassBank data is re-distributed through Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/AnnotationHub" class="external-link">AnnotationHub</a></em> resource, which simplifies their integration into reproducible R-based analysis workflows.</p>
 <p>Below we load the resource, list all available MassBank data sets/releases and load one of them.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb134"><pre class="downlit sourceCode r">
@@ -2458,7 +2460,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">ah</span>, <span class="st">"MassBank"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>AnnotationHub with 8 records
-# snapshotDate(): 2025-10-29
+# snapshotDate(): 2026-04-23
 # $dataprovider: MassBank
 # $species: NA
 # $rdataclass: CompDb
@@ -2481,7 +2483,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code class="sourceCode R"><span><span class="co">#' Load one MassBank release</span></span>
 <span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="va">ah</span><span class="op">[[</span><span class="st">"AH116166"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 </div>
-<p>The MassBank data is provided as a self-contained SQLite database and data can be queried and accessed through the <em><a href="https://bioconductor.org/packages/3.22/CompoundDb" class="external-link">CompoundDb</a></em> Bioconductor package. Below we use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compounds()</a></code> function to extract small compound annotations from the database.</p>
+<p>The MassBank data is provided as a self-contained SQLite database and data can be queried and accessed through the <em><a href="https://bioconductor.org/packages/3.23/CompoundDb" class="external-link">CompoundDb</a></em> Bioconductor package. Below we use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compounds()</a></code> function to extract small compound annotations from the database.</p>
 <div class="cell" data-tbl-cap="Table 8. MassBank database extract.">
 <div class="sourceCode cell-code" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Extract compound annotations</span></span>
@@ -2540,8 +2542,8 @@ FT0371      FT0371   138.055   148.396      [M+H]+   1.93568        C7H7NO2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1867474      C8H10N4O2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.0614704      C8H10N4O2
 FT0845      FT0845   195.088   32.6567      [M+H]+ 0.1639884      C8H10N4O2
-FT1171      FT1171   229.130  181.0883     [M+Na]+ 3.0770838      C12H18N2O
-FT5606      FT5606   560.360   33.5492          NA        NA             NA
+FT1171      FT1171   229.130  181.0885     [M+Na]+ 3.0770838      C12H18N2O
+FT5606      FT5606   560.360   33.5491          NA        NA             NA
          target_name target_inchikey
          &lt;character&gt;     &lt;character&gt;
 FT0371 Benzohydro...   VDEUYMSGMP...
@@ -2601,7 +2603,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2611,7 +2613,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2621,7 +2623,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2631,7 +2633,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2641,7 +2643,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2651,7 +2653,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2661,7 +2663,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9246374</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2671,7 +2673,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2681,7 +2683,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2691,7 +2693,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2701,7 +2703,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9246374</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2711,7 +2713,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2721,7 +2723,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2731,7 +2733,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2741,7 +2743,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2751,7 +2753,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0371</td>
 <td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39599</td>
+<td style="text-align: right;">148.39593</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">1.9356815</td>
 <td style="text-align: left;">C7H7NO2</td>
@@ -2761,7 +2763,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
-<td style="text-align: right;">162.13668</td>
+<td style="text-align: right;">162.13666</td>
 <td style="text-align: left;">[M+Na]+</td>
 <td style="text-align: right;">3.1247452</td>
 <td style="text-align: left;">C8H10S</td>
@@ -2771,7 +2773,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0845</td>
 <td style="text-align: right;">195.0877</td>
-<td style="text-align: right;">32.65668</td>
+<td style="text-align: right;">32.65666</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">0.0614704</td>
 <td style="text-align: left;">C8H10N4O2</td>
@@ -2781,7 +2783,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT0845</td>
 <td style="text-align: right;">195.0877</td>
-<td style="text-align: right;">32.65668</td>
+<td style="text-align: right;">32.65666</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">0.0614704</td>
 <td style="text-align: left;">C8H10N4O2</td>
@@ -2791,7 +2793,7 @@ FT5606            NA              NA</code></pre>
 <tr class="even">
 <td style="text-align: left;">FT0845</td>
 <td style="text-align: right;">195.0877</td>
-<td style="text-align: right;">32.65668</td>
+<td style="text-align: right;">32.65666</td>
 <td style="text-align: left;">[M+H]+</td>
 <td style="text-align: right;">0.1865772</td>
 <td style="text-align: left;">C8H10N4O2</td>
@@ -2801,7 +2803,7 @@ FT5606            NA              NA</code></pre>
 <tr class="odd">
 <td style="text-align: left;">FT1171</td>
 <td style="text-align: right;">229.1299</td>
-<td style="text-align: right;">181.08828</td>
+<td style="text-align: right;">181.08851</td>
 <td style="text-align: left;">[M+Na]+</td>
 <td style="text-align: right;">3.0770838</td>
 <td style="text-align: left;">C12H18N2O</td>
@@ -2977,12 +2979,12 @@ FT5606            NA              NA</code></pre>
 <span><span class="va">target</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          mzmin    mzmax     rtmin     rtmax
-FT0371 138.0544 138.0552 146.32270 152.86115
-FT0565 161.0391 161.0407 159.00234 164.30799
-FT0732 182.0726 182.0756  32.71242  42.28755
-FT0845 195.0799 195.0887  30.73235  35.67337
-FT1171 229.1282 229.1335 178.01450 183.35303
-FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
+FT0371 138.0544 138.0552 146.32260 152.86115
+FT0565 161.0391 161.0407 159.00243 164.30820
+FT0732 182.0726 182.0756  32.71234  42.28771
+FT0845 195.0799 195.0887  30.73226  35.67350
+FT1171 229.1282 229.1335 178.01474 183.35316
+FT5606 560.3539 560.3656  32.06569  35.33469</code></pre>
 </div>
 </div>
 <p>We next identify the fragment spectra with their precursor <em>m/z</em> and retention times within these ranges. We use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterRanges()</a></code> function that allows to filter a <code>Spectra</code> object using multiple ranges simultaneously. We apply this function separately to each feature (row in the above matrix) to extract the MS2 spectra representing fragmentation information of the presumed feature’s ions.</p>
@@ -3023,7 +3025,7 @@ FT5606 560.3539 560.3656  32.06570  35.33456</code></pre>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/addProcessing.html" class="external-link">scalePeaks</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>Note that here we could switch to a <code>MsBackendMemory</code> backend hence loading the full data from the reference database into memory. This could have a positive impact on the performance of the subsequent spectra matching, however it would also increase the memory demand of the present analysis.</p>
-<p>Now that both the <code>Spectra</code> object for the second run and the database spectra have been prepared, we can proceed with the matching process. We use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchSpectra.html" class="external-link">matchSpectra()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.22/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package with the <code>CompareSpectraParam</code> to define the settings for the matching. With the following parameters:</p>
+<p>Now that both the <code>Spectra</code> object for the second run and the database spectra have been prepared, we can proceed with the matching process. We use the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchSpectra.html" class="external-link">matchSpectra()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em> package with the <code>CompareSpectraParam</code> to define the settings for the matching. With the following parameters:</p>
 <ul>
 <li>
 <code>requirePrecursor = TRUE</code>: Limits spectra similarity calculations to fragment spectra with a similar precursor <em>m/z</em>.</li>
@@ -3186,8 +3188,8 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </div>
 </section></section><section class="section level2"><h2 id="external-tools-or-alternative-annotation-approaches">External tools or alternative annotation approaches<a class="anchor" aria-label="anchor" href="#external-tools-or-alternative-annotation-approaches"></a>
 </h2>
-<p>The present workflow highlights how annotation could be performed within R using packages from the Bioconductor project, but there are also other excellent external software tools that could be used as an alternative, such as SIRIUS <span class="citation" data-cites="duhrkop_sirius_2019">(<a href="#ref-duhrkop_sirius_2019" role="doc-biblioref">Dührkop et al. 2019</a>)</span>, mummichog <span class="citation" data-cites="li_predicting_2013">(<a href="#ref-li_predicting_2013" role="doc-biblioref">Li et al. 2013</a>)</span>, or GNPS <span class="citation" data-cites="nothias_feature-based_2020">(<a href="#ref-nothias_feature-based_2020" role="doc-biblioref">Nothias et al. 2020</a>)</span>, among others. To use these, the data must be exported in a supported format. For MS2 spectra, the data can easily be exported in the required MGF file format using the <em><a href="https://bioconductor.org/packages/3.22/MsBackendMgf" class="external-link">MsBackendMgf</a></em> Bioconductor package.</p>
-<p>Alternatively, or in addition, evidence for the potential matching chemical formula of a feature could be derived by evaluating the isotope pattern of the full MS1 scan. This provides information on the isotope composition. Various functions can be used for this task, such as <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html" class="external-link">isotopologues()</a></code> from the <em><a href="https://bioconductor.org/packages/3.22/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package or the functionality of the <strong>enviPat</strong> R package <span class="citation" data-cites="loos_accelerated_2015">(<a href="#ref-loos_accelerated_2015" role="doc-biblioref">Loos et al. 2015</a>)</span>.</p>
+<p>The present workflow highlights how annotation could be performed within R using packages from the Bioconductor project, but there are also other excellent external software tools that could be used as an alternative, such as SIRIUS <span class="citation" data-cites="duhrkop_sirius_2019">(<a href="#ref-duhrkop_sirius_2019" role="doc-biblioref">Dührkop et al. 2019</a>)</span>, mummichog <span class="citation" data-cites="li_predicting_2013">(<a href="#ref-li_predicting_2013" role="doc-biblioref">Li et al. 2013</a>)</span>, or GNPS <span class="citation" data-cites="nothias_feature-based_2020">(<a href="#ref-nothias_feature-based_2020" role="doc-biblioref">Nothias et al. 2020</a>)</span>, among others. To use these, the data must be exported in a supported format. For MS2 spectra, the data can easily be exported in the required MGF file format using the <em><a href="https://bioconductor.org/packages/3.23/MsBackendMgf" class="external-link">MsBackendMgf</a></em> Bioconductor package.</p>
+<p>Alternatively, or in addition, evidence for the potential matching chemical formula of a feature could be derived by evaluating the isotope pattern of the full MS1 scan. This provides information on the isotope composition. Various functions can be used for this task, such as <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html" class="external-link">isotopologues()</a></code> from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package or the functionality of the <strong>enviPat</strong> R package <span class="citation" data-cites="loos_accelerated_2015">(<a href="#ref-loos_accelerated_2015" role="doc-biblioref">Loos et al. 2015</a>)</span>.</p>
 <section class="level2"><h3 id="exporting-xcms-results-for-gnps2-feature-based-molecular-networking">Exporting xcms results for GNPS2 Feature Based Molecular Networking<a class="anchor" aria-label="anchor" href="#exporting-xcms-results-for-gnps2-feature-based-molecular-networking"></a>
 </h3>
 <p>Integration of <strong>xcms</strong> into feature-based molecular networking with GNPS is described in the <a href="https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-xcms3/" class="external-link">GNPS documentation</a>.</p>
@@ -3225,16 +3227,63 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Combine the individual Spectra objects into one list</span></span>
-<span><span class="va">ms2_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra</a></span><span class="op">(</span><span class="va">ms2_all</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Assign the feature identifier to each MS2 spectrum so we can track them</span></span>
+<span><span class="va">ms2_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra</a></span><span class="op">(</span><span class="va">ms2_all</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames
+Warning in rbindlistWithRownames(list(res@spectraData,
+objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
+rownames not available for all data.frames</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb181"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Assign the feature identifier to each MS2 spectrum so we can track them</span></span>
 <span><span class="va">ms2_all</span><span class="op">$</span><span class="va">feature_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span>, <span class="va">l</span><span class="op">)</span></span></code></pre></div>
 </div>
 </section><section class="level3"><h4 id="combining-spectra-into-consensus-spectra">Combining Spectra into Consensus Spectra<a class="anchor" aria-label="anchor" href="#combining-spectra-into-consensus-spectra"></a>
 </h4>
 <p>Often, a single feature will trigger multiple MS2 scans. To obtain a high-quality spectrum for annotation, we merge these multiple scans into a single “consensus” spectrum per feature. In this step, we keep only those peaks that are present in at least 75% of the scans for a given feature to reduce noise.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb180"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 2. Combine into Consensus Spectra</span></span>
 <span><span class="co"># Keep peaks present in at least 75% of spectra for that feature</span></span>
 <span><span class="va">ms2_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">combineSpectra</a></span><span class="op">(</span></span>
@@ -3249,7 +3298,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </h4>
 <p>Finally, we export the data in the specific formats required by GNPS. This involves creating a feature quantification table (.txt) and a spectral data file (.mgf). Note that we filter the feature table to ensure it strictly matches the features present in the MGF file.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Export Feature Table (Quantification)</span></span>
 <span><span class="va">fvals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-peak-grouping-results.html" class="external-link">featureValues</a></span><span class="op">(</span><span class="va">lcms1</span>, method <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">fvals</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_desc</span></span>
@@ -3287,12 +3336,12 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </section><section class="section level2"><h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R version 4.5.2 (2025-10-31)
+<pre><code>R version 4.6.1 (2026-06-24)
 Platform: x86_64-pc-linux-gnu
-Running under: Ubuntu 24.04.3 LTS
+Running under: Ubuntu 24.04.4 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
@@ -3314,90 +3363,90 @@ attached base packages:
 [8] base
 
 other attached packages:
- [1] UpSetR_1.4.0                ggVennDiagram_1.5.7
- [3] MetaboAnnotation_1.14.0     CompoundDb_1.14.2
- [5] AnnotationFilter_1.34.0     AnnotationHub_4.0.0
- [7] BiocFileCache_3.0.0         dbplyr_2.5.2
- [9] gridExtra_2.3               ggfortify_0.4.19
-[11] ggplot2_4.0.2               vioplot_0.5.1
+ [1] UpSetR_1.4.1                ggVennDiagram_1.5.7
+ [3] MetaboAnnotation_1.16.0     CompoundDb_1.16.0
+ [5] AnnotationFilter_1.36.0     AnnotationHub_4.2.2
+ [7] BiocFileCache_3.2.0         dbplyr_2.6.0
+ [9] gridExtra_2.3.1             ggfortify_0.4.19
+[11] ggplot2_4.0.3               vioplot_0.5.1
 [13] zoo_1.8-15                  sm_2.2-6.0
 [15] pheatmap_1.0.13             RColorBrewer_1.1-3
-[17] pander_0.6.6                limma_3.66.0
-[19] MetaboCoreUtils_1.18.1      xcms_4.8.0
-[21] MsBackendMgf_1.18.0         MsBackendMetaboLights_1.4.2
-[23] Spectra_1.20.1              BiocParallel_1.44.0
-[25] alabaster.se_1.10.0         alabaster.base_1.10.0
-[27] SummarizedExperiment_1.40.0 Biobase_2.70.0
-[29] GenomicRanges_1.62.1        Seqinfo_1.0.0
-[31] IRanges_2.44.0              S4Vectors_0.48.0
-[33] BiocGenerics_0.56.0         generics_0.1.4
-[35] MatrixGenerics_1.22.0       matrixStats_1.5.0
-[37] MsIO_0.0.12                 MsExperiment_1.12.0
-[39] ProtGenerics_1.42.0         readxl_1.4.5
-[41] BiocStyle_2.38.0            quarto_1.5.1.9002
+[17] pander_0.6.6                limma_3.68.4
+[19] MetaboCoreUtils_1.20.1      xcms_4.10.1
+[21] MsBackendMgf_1.20.0         MsBackendMetaboLights_1.6.1
+[23] Spectra_1.22.2              BiocParallel_1.46.0
+[25] alabaster.se_1.12.0         alabaster.base_1.12.1
+[27] SummarizedExperiment_1.42.0 Biobase_2.72.0
+[29] GenomicRanges_1.64.0        Seqinfo_1.2.0
+[31] IRanges_2.46.0              S4Vectors_0.50.1
+[33] BiocGenerics_0.58.1         generics_0.1.4
+[35] MatrixGenerics_1.24.0       matrixStats_1.5.0
+[37] MsIO_0.0.17                 MsExperiment_1.14.0
+[39] ProtGenerics_1.44.0         readxl_1.5.0
+[41] BiocStyle_2.40.0            quarto_1.5.1.9002
 [43] knitr_1.51
 
 loaded via a namespace (and not attached):
   [1] later_1.4.8                 bitops_1.0-9
   [3] filelock_1.0.3              tibble_3.3.1
-  [5] cellranger_1.1.0            preprocessCore_1.72.0
-  [7] XML_3.99-0.22               lifecycle_1.0.5
-  [9] httr2_1.2.2                 doParallel_1.0.17
- [11] processx_3.8.6              lattice_0.22-9
- [13] MASS_7.3-65                 MultiAssayExperiment_1.36.1
- [15] magrittr_2.0.4              rmarkdown_2.30
+  [5] cellranger_1.1.0            preprocessCore_1.74.0
+  [7] XML_3.99-0.23               lifecycle_1.0.5
+  [9] httr2_1.3.0                 doParallel_1.0.17
+ [11] processx_3.9.0              lattice_0.22-9
+ [13] MASS_7.3-66                 MultiAssayExperiment_1.38.0
+ [15] magrittr_2.0.5              rmarkdown_2.31
  [17] yaml_2.3.12                 otel_0.2.0
- [19] MsCoreUtils_1.22.1          DBI_1.3.0
- [21] abind_1.4-8                 purrr_1.2.1
- [23] RCurl_1.98-1.17             rappdirs_0.3.4
- [25] MSnbase_2.36.0              ncdf4_1.24
- [27] codetools_0.2-20            DelayedArray_0.36.0
- [29] DT_0.34.0                   xml2_1.5.2
+ [19] MsCoreUtils_1.24.0          DBI_1.3.0
+ [21] abind_1.4-8                 purrr_1.2.2
+ [23] RCurl_1.98-1.19             rappdirs_0.3.4
+ [25] MSnbase_2.37.0              ncdf4_1.24
+ [27] codetools_0.2-20            DelayedArray_0.38.2
+ [29] DT_0.34.0                   xml2_1.6.0
  [31] tidyselect_1.2.1            farver_2.1.2
  [33] base64enc_0.1-6             jsonlite_2.0.0
- [35] iterators_1.0.14            foreach_1.5.2
- [37] tools_4.5.2                 progress_1.2.3
- [39] Rcpp_1.1.1                  glue_1.8.0
- [41] SparseArray_1.10.9          BiocBaseUtils_1.12.0
- [43] xfun_0.56                   dplyr_1.2.0
- [45] HDF5Array_1.38.0            withr_3.0.2
+ [35] PTMods_1.0.0                iterators_1.0.14
+ [37] foreach_1.5.2               tools_4.6.1
+ [39] progress_1.2.3              Rcpp_1.1.2
+ [41] glue_1.8.1                  SparseArray_1.12.2
+ [43] xfun_0.60                   dplyr_1.2.1
+ [45] HDF5Array_1.40.0            withr_3.0.3
  [47] BiocManager_1.30.27         fastmap_1.2.0
- [49] rhdf5filters_1.22.0         digest_0.6.39
+ [49] rhdf5filters_1.24.0         digest_0.6.39
  [51] R6_2.6.1                    rsvg_2.7.0
- [53] RSQLite_2.4.6               h5mread_1.2.1
- [55] tidyr_1.3.2                 data.table_1.18.2.1
- [57] prettyunits_1.2.0           PSMatch_1.14.0
+ [53] RSQLite_3.53.3              h5mread_1.4.0
+ [55] tidyr_1.3.2                 data.table_1.18.4
+ [57] prettyunits_1.2.0           PSMatch_1.16.0
  [59] httr_1.4.8                  htmlwidgets_1.6.4
- [61] S4Arrays_1.10.1             pkgconfig_2.0.3
+ [61] S4Arrays_1.12.0             pkgconfig_2.0.3
  [63] gtable_0.3.6                blob_1.3.0
- [65] S7_0.2.1                    impute_1.84.0
- [67] MassSpecWavelet_1.76.0      XVector_0.50.0
+ [65] S7_0.2.2                    impute_1.86.0
+ [67] MassSpecWavelet_1.78.2      XVector_0.52.0
  [69] htmltools_0.5.9             MALDIquant_1.22.3
- [71] clue_0.3-67                 scales_1.4.0
- [73] alabaster.matrix_1.10.0     png_0.1-9
- [75] rstudioapi_0.18.0           reshape2_1.4.5
- [77] rjson_0.2.23                curl_7.0.0
- [79] cachem_1.1.0                rhdf5_2.54.1
- [81] stringr_1.6.0               BiocVersion_3.22.0
- [83] parallel_4.5.2              AnnotationDbi_1.72.0
- [85] mzID_1.48.0                 vsn_3.78.1
- [87] pillar_1.11.1               grid_4.5.2
- [89] alabaster.schemas_1.10.0    vctrs_0.7.1
- [91] MsFeatures_1.18.0           pcaMethods_2.2.0
+ [71] clue_0.3-68                 scales_1.4.0
+ [73] alabaster.matrix_1.12.0     png_0.1-9
+ [75] rstudioapi_0.19.0           reshape2_1.4.5
+ [77] rjson_0.2.23                curl_7.1.0
+ [79] cachem_1.1.0                rhdf5_2.56.0
+ [81] stringr_1.6.0               BiocVersion_3.23.1
+ [83] parallel_4.6.1              AnnotationDbi_1.74.0
+ [85] mzID_1.50.0                 vsn_3.80.0
+ [87] pillar_1.11.1               grid_4.6.1
+ [89] alabaster.schemas_1.12.0    vctrs_0.7.3
+ [91] MsFeatures_1.20.0           pcaMethods_2.4.0
  [93] cluster_2.1.8.2             evaluate_1.0.5
- [95] cli_3.6.5                   compiler_4.5.2
- [97] rlang_1.1.7                 crayon_1.5.3
- [99] labeling_0.4.3              QFeatures_1.20.0
-[101] ChemmineR_3.62.0            ps_1.9.1
-[103] affy_1.88.0                 plyr_1.8.9
-[105] fs_1.6.7                    stringi_1.8.7
-[107] Biostrings_2.78.0           lazyeval_0.2.2
-[109] Matrix_1.7-4                hms_1.1.4
-[111] bit64_4.6.0-1               Rhdf5lib_1.32.0
-[113] KEGGREST_1.50.0             statmod_1.5.1
-[115] alabaster.ranges_1.10.0     mzR_2.44.0
-[117] igraph_2.2.2                memoise_2.0.1
-[119] affyio_1.80.0               bit_4.6.0                  </code></pre>
+ [95] cli_3.6.6                   compiler_4.6.1
+ [97] rlang_1.3.0                 crayon_1.5.3
+ [99] labeling_0.4.3              QFeatures_1.22.0
+[101] ChemmineR_3.64.0            ps_1.9.3
+[103] affy_1.90.0                 plyr_1.8.9
+[105] fs_2.1.0                    stringi_1.8.7
+[107] Biostrings_2.80.1           lazyeval_0.2.3
+[109] Matrix_1.7-5                hms_1.1.4
+[111] bit64_4.8.2                 Rhdf5lib_2.0.0
+[113] KEGGREST_1.52.2             statmod_1.5.2
+[115] alabaster.ranges_1.12.0     mzR_2.46.0
+[117] igraph_2.3.3                memoise_2.0.1
+[119] affyio_1.82.0               bit_4.6.0                  </code></pre>
 </div>
 </div>
 </section><section class="section level2"><h2 id="aknowledgment">Aknowledgment<a class="anchor" aria-label="anchor" href="#aknowledgment"></a>
@@ -3405,39 +3454,39 @@ loaded via a namespace (and not attached):
 <p>Thanks to Steffen Neumann for his continuous work to develop and maintain the xcms software. And the Bioconductor and RforMassSpectrometry community for their continuous support and development of the software used in this tutorial.</p>
 </section><section class="section level2"><h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-broadhurst_guidelines_2018" class="csl-entry" role="listitem">
-Broadhurst, David, Royston Goodacre, Stacey N. Reinke, Julia Kuligowski, Ian D. Wilson, Matthew R. Lewis, and Warwick B. Dunn. 2018. <span>“Guidelines and Considerations for the Use of System Suitability and Quality Control Samples in Mass Spectrometry Assays Applied in Untargeted Clinical Metabolomic Studies.”</span> <em>Metabolomics : Official Journal of the Metabolomic Society</em> 14 (6): 72. <a href="https://doi.org/10.1007/s11306-018-1367-3" class="external-link">https://doi.org/10.1007/s11306-018-1367-3</a>.
+Broadhurst, David, Royston Goodacre, Stacey N. Reinke, et al. 2018. <span>“Guidelines and Considerations for the Use of System Suitability and Quality Control Samples in Mass Spectrometry Assays Applied in Untargeted Clinical Metabolomic Studies.”</span> <em>Metabolomics : Official Journal of the Metabolomic Society</em> 14 (6): 72. <a href="https://doi.org/10.1007/s11306-018-1367-3" class="external-link">https://doi.org/10.1007/s11306-018-1367-3</a>.
 </div>
 <div id="ref-chambers_cross-platform_2012" class="csl-entry" role="listitem">
-Chambers, Matthew C, Brendan Maclean, Robert Burke, Dario Amodei, Daniel L Ruderman, Steffen Neumann, Laurent Gatto, et al. 2012. <span>“A Cross-Platform Toolkit for Mass Spectrometry and Proteomics.”</span> <em>Nature Biotechnology</em> 30 (10): 918–20. <a href="https://doi.org/10.1038/nbt.2377" class="external-link">https://doi.org/10.1038/nbt.2377</a>.
+Chambers, Matthew C, Brendan Maclean, Robert Burke, et al. 2012. <span>“A Cross-Platform Toolkit for Mass Spectrometry and Proteomics.”</span> <em>Nature Biotechnology</em> 30 (10): 918–20. <a href="https://doi.org/10.1038/nbt.2377" class="external-link">https://doi.org/10.1038/nbt.2377</a>.
 </div>
 <div id="ref-de_livera_normalizing_2012" class="csl-entry" role="listitem">
-De Livera, Alysha M., Daniel A. Dias, David De Souza, Thusitha Rupasinghe, James Pyke, Dedreia Tull, Ute Roessner, Malcolm McConville, and Terence P. Speed. 2012. <span>“Normalizing and Integrating Metabolomics Data.”</span> <em>Analytical Chemistry</em> 84 (24): 10768–76. <a href="https://doi.org/10.1021/ac302748b" class="external-link">https://doi.org/10.1021/ac302748b</a>.
+De Livera, Alysha M., Daniel A. Dias, David De Souza, et al. 2012. <span>“Normalizing and Integrating Metabolomics Data.”</span> <em>Analytical Chemistry</em> 84 (24): 10768–76. <a href="https://doi.org/10.1021/ac302748b" class="external-link">https://doi.org/10.1021/ac302748b</a>.
 </div>
 <div id="ref-duhrkop_sirius_2019" class="csl-entry" role="listitem">
-Dührkop, Kai, Markus Fleischauer, Marcus Ludwig, Alexander A. Aksenov, Alexey V. Melnik, Marvin Meusel, Pieter C. Dorrestein, Juho Rousu, and Sebastian Böcker. 2019. <span>“<span>SIRIUS</span> 4: A Rapid Tool for Turning Tandem Mass Spectra into Metabolite Structure Information.”</span> <em>Nature Methods</em> 16 (4): 299–302. <a href="https://doi.org/10.1038/s41592-019-0344-8" class="external-link">https://doi.org/10.1038/s41592-019-0344-8</a>.
+Dührkop, Kai, Markus Fleischauer, Marcus Ludwig, et al. 2019. <span>“<span>SIRIUS</span> 4: A Rapid Tool for Turning Tandem Mass Spectra into Metabolite Structure Information.”</span> <em>Nature Methods</em> 16 (4): 299–302. <a href="https://doi.org/10.1038/s41592-019-0344-8" class="external-link">https://doi.org/10.1038/s41592-019-0344-8</a>.
 </div>
 <div id="ref-klavus_notame_2020" class="csl-entry" role="listitem">
-Klåvus, Anton, Marietta Kokla, Stefania Noerman, Ville M. Koistinen, Marjo Tuomainen, Iman Zarei, Topi Meuronen, et al. 2020. <span>“<span>‘<span>Notame</span>’</span>: <span>Workflow</span> for <span>Non</span>-<span>Targeted</span> <span>LC</span>–<span>MS</span> <span>Metabolic</span> <span>Profiling</span>.”</span> <em>Metabolites</em> 10 (4): 135. <a href="https://doi.org/10.3390/metabo10040135" class="external-link">https://doi.org/10.3390/metabo10040135</a>.
+Klåvus, Anton, Marietta Kokla, Stefania Noerman, et al. 2020. <span>“<span>‘<span>Notame</span>’</span>: <span>Workflow</span> for <span>Non</span>-<span>Targeted</span> <span>LC</span>–<span>MS</span> <span>Metabolic</span> <span>Profiling</span>.”</span> <em>Metabolites</em> 10 (4): 135. <a href="https://doi.org/10.3390/metabo10040135" class="external-link">https://doi.org/10.3390/metabo10040135</a>.
 </div>
 <div id="ref-li_predicting_2013" class="csl-entry" role="listitem">
-Li, Shuzhao, Youngja Park, Sai Duraisingham, Frederick H. Strobel, Nooruddin Khan, Quinlyn A. Soltow, Dean P. Jones, and Bali Pulendran. 2013. <span>“Predicting Network Activity from High Throughput Metabolomics.”</span> <em>PLoS Computational Biology</em> 9 (7): e1003123. <a href="https://doi.org/10.1371/journal.pcbi.1003123" class="external-link">https://doi.org/10.1371/journal.pcbi.1003123</a>.
+Li, Shuzhao, Youngja Park, Sai Duraisingham, et al. 2013. <span>“Predicting Network Activity from High Throughput Metabolomics.”</span> <em>PLoS Computational Biology</em> 9 (7): e1003123. <a href="https://doi.org/10.1371/journal.pcbi.1003123" class="external-link">https://doi.org/10.1371/journal.pcbi.1003123</a>.
 </div>
 <div id="ref-loos_accelerated_2015" class="csl-entry" role="listitem">
 Loos, Martin, Christian Gerber, Francesco Corona, Juliane Hollender, and Heinz Singer. 2015. <span>“Accelerated <span>Isotope</span> <span>Fine</span> <span>Structure</span> <span>Calculation</span> <span>Using</span> <span>Pruned</span> <span>Transition</span> <span>Trees</span>.”</span> <em>Analytical Chemistry</em> 87 (11): 5738–44. <a href="https://doi.org/10.1021/acs.analchem.5b00941" class="external-link">https://doi.org/10.1021/acs.analchem.5b00941</a>.
 </div>
 <div id="ref-louail_xcms_2025" class="csl-entry" role="listitem">
-Louail, Philippine, Carl Brunius, Mar Garcia-Aloy, William Kumler, Norman Storz, Jan Stanstrup, Hendrik Treutler, et al. 2025. <span>“Xcms in <span>Peak</span> <span>Form</span>: <span>Now</span> <span>Anchoring</span> a <span>Complete</span> <span>Metabolomics</span> <span>Data</span> <span>Preprocessing</span> and <span>Analysis</span> <span>Software</span> <span>Ecosystem</span>.”</span> <em>Analytical Chemistry</em>, December. <a href="https://doi.org/10.1021/acs.analchem.5c04338" class="external-link">https://doi.org/10.1021/acs.analchem.5c04338</a>.
+Louail, Philippine, Carl Brunius, Mar Garcia-Aloy, et al. 2025. <span>“Xcms in <span>Peak</span> <span>Form</span>: <span>Now</span> <span>Anchoring</span> a <span>Complete</span> <span>Metabolomics</span> <span>Data</span> <span>Preprocessing</span> and <span>Analysis</span> <span>Software</span> <span>Ecosystem</span>.”</span> <em>Analytical Chemistry</em>, ahead of print, December. <a href="https://doi.org/10.1021/acs.analchem.5c04338" class="external-link">https://doi.org/10.1021/acs.analchem.5c04338</a>.
 </div>
 <div id="ref-nothias_feature-based_2020" class="csl-entry" role="listitem">
-Nothias, Louis-Félix, Daniel Petras, Robin Schmid, Kai Dührkop, Johannes Rainer, Abinesh Sarvepalli, Ivan Protsyuk, et al. 2020. <span>“Feature-Based Molecular Networking in the <span>GNPS</span> Analysis Environment.”</span> <em>Nature Methods</em> 17 (9): 905–8. <a href="https://doi.org/10.1038/s41592-020-0933-6" class="external-link">https://doi.org/10.1038/s41592-020-0933-6</a>.
+Nothias, Louis-Félix, Daniel Petras, Robin Schmid, et al. 2020. <span>“Feature-Based Molecular Networking in the <span>GNPS</span> Analysis Environment.”</span> <em>Nature Methods</em> 17 (9): 905–8. <a href="https://doi.org/10.1038/s41592-020-0933-6" class="external-link">https://doi.org/10.1038/s41592-020-0933-6</a>.
 </div>
 <div id="ref-rainer_modular_2022" class="csl-entry" role="listitem">
-Rainer, Johannes, Andrea Vicini, Liesa Salzer, Jan Stanstrup, Josep M. Badia, Steffen Neumann, Michael A. Stravs, et al. 2022. <span>“A <span>Modular</span> and <span>Expandable</span> <span>Ecosystem</span> for <span>Metabolomics</span> <span>Data</span> <span>Annotation</span> in <span>R</span>.”</span> <em>Metabolites</em> 12 (2): 173. <a href="https://doi.org/10.3390/metabo12020173" class="external-link">https://doi.org/10.3390/metabo12020173</a>.
+Rainer, Johannes, Andrea Vicini, Liesa Salzer, et al. 2022. <span>“A <span>Modular</span> and <span>Expandable</span> <span>Ecosystem</span> for <span>Metabolomics</span> <span>Data</span> <span>Annotation</span> in <span>R</span>.”</span> <em>Metabolites</em> 12 (2): 173. <a href="https://doi.org/10.3390/metabo12020173" class="external-link">https://doi.org/10.3390/metabo12020173</a>.
 </div>
 <div id="ref-schymanski_identifying_2014" class="csl-entry" role="listitem">
-Schymanski, Emma L., Junho Jeon, Rebekka Gulde, Kathrin Fenner, Matthias Ruff, Heinz P. Singer, and Juliane Hollender. 2014. <span>“Identifying <span>Small</span> <span>Molecules</span> via <span>High</span> <span>Resolution</span> <span>Mass</span> <span>Spectrometry</span>: <span>Communicating</span> <span>Confidence</span>.”</span> <em>Environmental Science &amp; Technology</em> 48 (4): 2097–98. <a href="https://doi.org/10.1021/es5002105" class="external-link">https://doi.org/10.1021/es5002105</a>.
+Schymanski, Emma L., Junho Jeon, Rebekka Gulde, et al. 2014. <span>“Identifying <span>Small</span> <span>Molecules</span> via <span>High</span> <span>Resolution</span> <span>Mass</span> <span>Spectrometry</span>: <span>Communicating</span> <span>Confidence</span>.”</span> <em>Environmental Science &amp; Technology</em> 48 (4): 2097–98. <a href="https://doi.org/10.1021/es5002105" class="external-link">https://doi.org/10.1021/es5002105</a>.
 </div>
 <div id="ref-smyth_linear_2004" class="csl-entry" role="listitem">
 Smyth, Gordon K. 2004. <span>“Linear Models and Empirical <span>Bayes</span> Methods for Assessing Differential Expression in Microarray Experiments.”</span> <em>Statistical Applications in Genetics and Molecular Biology</em> 3: Art. 3, 29 pp. (electronic).
@@ -3446,7 +3495,7 @@ Smyth, Gordon K. 2004. <span>“Linear Models and Empirical <span>Bayes</span> M
 Stein, Stephen E., and Donald R. Scott. 1994. <span>“Optimization and Testing of Mass Spectral Library Search Algorithms for Compound Identification.”</span> <em>Journal of the American Society for Mass Spectrometry</em> 5 (9): 859–66. <a href="https://doi.org/10.1021/jasms.8b00613" class="external-link">https://doi.org/10.1021/jasms.8b00613</a>.
 </div>
 <div id="ref-sumner_proposed_2007" class="csl-entry" role="listitem">
-Sumner, Lloyd W., Alexander Amberg, Dave Barrett, Michael H. Beale, Richard Beger, Clare A. Daykin, Teresa W.-M. Fan, et al. 2007. <span>“Proposed Minimum Reporting Standards for Chemical Analysis <span>Chemical</span> <span>Analysis</span> <span>Working</span> <span>Group</span> (<span>CAWG</span>) <span>Metabolomics</span> <span>Standards</span> <span>Initiative</span> (<span>MSI</span>).”</span> <em>Metabolomics : Official Journal of the Metabolomic Society</em> 3 (3): 211–21. <a href="https://doi.org/10.1007/s11306-007-0082-2" class="external-link">https://doi.org/10.1007/s11306-007-0082-2</a>.
+Sumner, Lloyd W., Alexander Amberg, Dave Barrett, et al. 2007. <span>“Proposed Minimum Reporting Standards for Chemical Analysis <span>Chemical</span> <span>Analysis</span> <span>Working</span> <span>Group</span> (<span>CAWG</span>) <span>Metabolomics</span> <span>Standards</span> <span>Initiative</span> (<span>MSI</span>).”</span> <em>Metabolomics : Official Journal of the Metabolomic Society</em> 3 (3): 211–21. <a href="https://doi.org/10.1007/s11306-007-0082-2" class="external-link">https://doi.org/10.1007/s11306-007-0082-2</a>.
 </div>
 <div id="ref-tautenhahn_highly_2008" class="csl-entry" role="listitem">
 Tautenhahn, Ralf, Christoph Böttcher, and Steffen Neumann. 2008. <span>“Highly Sensitive Feature Detection for High Resolution <span>LC</span>/<span>MS</span>.”</span> <em>BMC Bioinformatics</em> 9 (1): 504. <a href="https://doi.org/10.1186/1471-2105-9-504" class="external-link">https://doi.org/10.1186/1471-2105-9-504</a>.
@@ -3545,7 +3594,7 @@ Tautenhahn, Ralf, Christoph Böttcher, and Steffen Neumann. 2008. <span>“Highl
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.9000.</p>
 </div>
 
     </footer>

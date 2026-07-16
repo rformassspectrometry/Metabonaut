@@ -206,10 +206,10 @@ formula predictions back into R for downstream analysis.
 
 ### High-Level Summary
 
-The [`summary()`](https://rdrr.io/pkg/RuSirius/man/results.html)
-function provides a compact overview of the top formulas, structures,
-and compound classes predicted for each feature. This includes
-confidence scores that indicate how reliable each annotation is.
+The [`summary()`](https://rdrr.io/r/base/summary.html) function provides
+a compact overview of the top formulas, structures, and compound classes
+predicted for each feature. This includes confidence scores that
+indicate how reliable each annotation is.
 
 ``` r
 
@@ -307,13 +307,13 @@ summary_results
 #> 5            0.03929589          APPROXIMATE     FALSE
 ```
 
-The [`summary()`](https://rdrr.io/pkg/RuSirius/man/results.html) output
-contains the top-ranked molecular formula, predicted structure (with
-SMILES, InChIKey, and CSI:FingerID score), compound class predictions
-(NPC pathway, superclass, class), and — critically — the confidence
-scores (`confidenceExactMatch` and `confidenceApproxMatch`). These
-confidence scores are the most important indicator for evaluating the
-reliability of the prediction.
+The [`summary()`](https://rdrr.io/r/base/summary.html) output contains
+the top-ranked molecular formula, predicted structure (with SMILES,
+InChIKey, and CSI:FingerID score), compound class predictions (NPC
+pathway, superclass, class), and — critically — the confidence scores
+(`confidenceExactMatch` and `confidenceApproxMatch`). These confidence
+scores are the most important indicator for evaluating the reliability
+of the prediction.
 
 You can seamlessly merge these results back into your `rowData(res)`
 from the main workflow using the feature identifiers to complement your

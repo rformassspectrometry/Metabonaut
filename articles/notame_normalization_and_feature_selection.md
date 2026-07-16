@@ -489,9 +489,9 @@ likely suffered as well.
 sessionInfo()
 ```
 
-    R version 4.5.2 (2025-10-31)
+    R version 4.6.1 (2026-06-24)
     Platform: x86_64-pc-linux-gnu
-    Running under: Ubuntu 24.04.3 LTS
+    Running under: Ubuntu 24.04.4 LTS
 
     Matrix products: default
     BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
@@ -513,54 +513,53 @@ sessionInfo()
     [8] base
 
     other attached packages:
-     [1] notameStats_1.0.0           notameViz_1.0.2
-     [3] notame_1.0.1                ggplot2_4.0.2
-     [5] limma_3.66.0                cowplot_1.2.0
-     [7] BiocParallel_1.44.0         alabaster.se_1.10.0
-     [9] alabaster.base_1.10.0       SummarizedExperiment_1.40.0
-    [11] Biobase_2.70.0              GenomicRanges_1.62.1
-    [13] Seqinfo_1.0.0               IRanges_2.44.0
-    [15] S4Vectors_0.48.0            BiocGenerics_0.56.0
-    [17] generics_0.1.4              MatrixGenerics_1.22.0
+     [1] notameStats_1.2.0           notameViz_1.2.0
+     [3] notame_1.2.0                ggplot2_4.0.3
+     [5] limma_3.68.4                cowplot_1.2.0
+     [7] BiocParallel_1.46.0         alabaster.se_1.12.0
+     [9] alabaster.base_1.12.1       SummarizedExperiment_1.42.0
+    [11] Biobase_2.72.0              GenomicRanges_1.64.0
+    [13] Seqinfo_1.2.0               IRanges_2.46.0
+    [15] S4Vectors_0.50.1            BiocGenerics_0.58.1
+    [17] generics_0.1.4              MatrixGenerics_1.24.0
     [19] matrixStats_1.5.0           quarto_1.5.1.9002
     [21] knitr_1.51
 
     loaded via a namespace (and not attached):
      [1] tidyselect_1.2.1         viridisLite_0.4.3        vipor_0.4.7
-     [4] dplyr_1.2.0              farver_2.1.2             S7_0.2.1
+     [4] dplyr_1.2.1              farver_2.1.2             S7_0.2.2
      [7] fastmap_1.2.0            digest_0.6.39            lifecycle_1.0.5
-    [10] alabaster.matrix_1.10.0  statmod_1.5.1            processx_3.8.6
-    [13] magrittr_2.0.4           compiler_4.5.2           rngtools_1.5.2
-    [16] rlang_1.1.7              tools_4.5.2              yaml_2.3.12
-    [19] lambda.r_1.2.4           doRNG_1.8.6.3            S4Arrays_1.10.1
-    [22] labeling_0.4.3           DelayedArray_0.36.0      RColorBrewer_1.1-3
-    [25] abind_1.4-8              HDF5Array_1.38.0         withr_3.0.2
-    [28] purrr_1.2.1              itertools_0.1-3          grid_4.5.2
-    [31] Rhdf5lib_1.32.0          iterators_1.0.14         scales_1.4.0
-    [34] MASS_7.3-65              cli_3.6.5                rmarkdown_2.30
-    [37] otel_0.2.0               rstudioapi_0.18.0        ggbeeswarm_0.7.3
-    [40] rhdf5_2.54.1             stringr_1.6.0            parallel_4.5.2
-    [43] formatR_1.14             XVector_0.50.0           alabaster.schemas_1.10.0
-    [46] vctrs_0.7.1              Matrix_1.7-4             jsonlite_2.0.0
-    [49] beeswarm_0.4.0           alabaster.ranges_1.10.0  foreach_1.5.2
-    [52] h5mread_1.2.1            tidyr_1.3.2              ggdendro_0.2.0
-    [55] missForest_1.6.1         glue_1.8.0               codetools_0.2-20
-    [58] ps_1.9.1                 stringi_1.8.7            gtable_0.3.6
+    [10] alabaster.matrix_1.12.0  statmod_1.5.2            processx_3.9.0
+    [13] magrittr_2.0.5           compiler_4.6.1           rngtools_1.5.2
+    [16] rlang_1.3.0              tools_4.6.1              yaml_2.3.12
+    [19] lambda.r_1.2.4           doRNG_1.8.6.3            S4Arrays_1.12.0
+    [22] labeling_0.4.3           DelayedArray_0.38.2      RColorBrewer_1.1-3
+    [25] abind_1.4-8              HDF5Array_1.40.0         withr_3.0.3
+    [28] purrr_1.2.2              itertools_0.1-3          grid_4.6.1
+    [31] Rhdf5lib_2.0.0           iterators_1.0.14         scales_1.4.0
+    [34] MASS_7.3-66              cli_3.6.6                rmarkdown_2.31
+    [37] otel_0.2.0               rstudioapi_0.19.0        ggbeeswarm_0.7.3
+    [40] rhdf5_2.56.0             stringr_1.6.0            parallel_4.6.1
+    [43] formatR_1.14             XVector_0.52.0           alabaster.schemas_1.12.0
+    [46] vctrs_0.7.3              Matrix_1.7-5             jsonlite_2.0.0
+    [49] beeswarm_0.4.0           alabaster.ranges_1.12.0  foreach_1.5.2
+    [52] h5mread_1.4.0            tidyr_1.3.2              ggdendro_0.2.0
+    [55] missForest_1.6.1         glue_1.8.1               codetools_0.2-20
+    [58] ps_1.9.3                 stringi_1.8.7            gtable_0.3.6
     [61] futile.logger_1.4.9      later_1.4.8              tibble_3.3.1
-    [64] pillar_1.11.1            pcaMethods_2.2.0         htmltools_0.5.9
-    [67] rhdf5filters_1.22.0      randomForest_4.7-1.2     R6_2.6.1
+    [64] pillar_1.11.1            pcaMethods_2.4.0         htmltools_0.5.9
+    [67] rhdf5filters_1.24.0      randomForest_4.7-1.2     R6_2.6.1
     [70] Rdpack_2.6.6             evaluate_1.0.5           lattice_0.22-9
-    [73] rbibutils_2.4.1          futile.options_1.0.1     Rcpp_1.1.1
-    [76] SparseArray_1.10.9       ranger_0.18.0            xfun_0.56
+    [73] rbibutils_2.4.1          futile.options_1.0.1     Rcpp_1.1.2
+    [76] SparseArray_1.12.2       ranger_0.18.0            xfun_0.60
     [79] pkgconfig_2.0.3         
 
 ## References
 
-Broadhurst, David, Royston Goodacre, Stacey N Reinke, Julia Kuligowski,
-Ian D Wilson, Matthew R Lewis, and Warwick B Dunn. 2018. “Guidelines and
-Considerations for the Use of System Suitability and Quality Control
-Samples in Mass Spectrometry Assays Applied in Untargeted Clinical
-Metabolomic Studies.” *Metabolomics* 14: 1–17.
+Broadhurst, David, Royston Goodacre, Stacey N Reinke, et al. 2018.
+“Guidelines and Considerations for the Use of System Suitability and
+Quality Control Samples in Mass Spectrometry Assays Applied in
+Untargeted Clinical Metabolomic Studies.” *Metabolomics* 14: 1–17.
 
 Dieterle, Frank, Alfred Ross, Götz Schlotterbeck, and Hans Senn. 2006.
 “Probabilistic Quotient Normalization as Robust Method to Account for
@@ -572,7 +571,6 @@ Kirwan, JA, DI Broadhurst, RL Davidson, and MR Viant. 2013.
 Infusion Mass Spectrometry (DIMS) Metabolomics Workflow.” *Analytical
 and Bioanalytical Chemistry* 405: 5147–57.
 
-Klåvus, Anton, Marietta Kokla, Stefania Noerman, Ville M Koistinen,
-Marjo Tuomainen, Iman Zarei, Topi Meuronen, et al. 2020. “‘Notame’:
+Klåvus, Anton, Marietta Kokla, Stefania Noerman, et al. 2020. “‘Notame’:
 Workflow for Non-Targeted LC–MS Metabolic Profiling.” *Metabolites* 10
 (4): 135.

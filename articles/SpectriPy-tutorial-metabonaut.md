@@ -245,7 +245,7 @@ r.ms2_ctr_fts[1]
 r.ms2_ctr_fts[0].metadata.keys()
 ```
 
-    dict_keys(['precursor_mz', 'precursor_intensity', 'charge', 'retention_time', 'collision_energy', 'isolation_window_target_mz', 'ms_level'])
+    dict_keys(['precursor_mz', 'precursor_intensity', 'charge', 'retention_time', 'collision_energy', 'isolation_window_target_mz', 'ms_level', 'data_storage'])
 
 Second, we translate the `Spectra` object `ms2_ctr_fts` to respective
 Python `matchms.Spectrum` objects using the
@@ -321,46 +321,55 @@ len(clean_mgf_py)
 We calculate the pairwise spectral similarity between the query spectra
 and the reference library spectra using Python’s *matchms* library.
 
-Here, we use the spectral similarity algorithm ModifiedCosine from
+Here, we use the modified cosine spectral similarity algorithm from
 *matchms*, from source
 [matchms](https://github.com/matchms/matchms/blob/master/README.rst).
 This algorithm can easily be exchanged for another spectral similarity
 calculation from *matchms* (see
 [here](https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html)).
 
+Since *matchms* version 0.32, this algorithm is called
+`ModifiedCosineGreedy` (it was named `ModifiedCosine` before). The
+implementation solves the peak assignment between two spectra in a
+*greedy* way, i.e. it repeatedly takes the highest scoring peak pair,
+which is fast but only an approximation of the optimal assignment.
+*matchms* also provides `ModifiedCosineHungarian`, which computes the
+exact assignment at the cost of longer run times. For a typical
+annotation workflow such as this one the greedy variant is the pragmatic
+choice, but the exact variant can be preferable e.g. for benchmarking or
+method development.
+
 ``` python
 #' Python session:
 
 from matchms import calculate_scores
-from matchms.similarity import ModifiedCosine
+from matchms.similarity import ModifiedCosineGreedy
 
 #' Calculate Cosine similarity scores between all spectra
 #' For other similarity score methods see
 #' https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html
-similarity_score = ModifiedCosine(tolerance = 0.1)
+similarity_score = ModifiedCosineGreedy(tolerance = 0.1)
 scores = calculate_scores(references = clean_mgf_py,
                           queries = ms2_ctr_fts_py,
                           similarity_function = similarity_score)
 ```
 
-
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:01<02:18,  1.80s/it]
-    Calculating similarities:  13%|#2        | 10/78 [00:01<00:09,  7.12it/s]
-    Calculating similarities:  26%|##5       | 20/78 [00:02<00:03, 15.77it/s]
-    Calculating similarities:  38%|###8      | 30/78 [00:02<00:01, 25.66it/s]
-    Calculating similarities:  50%|#####     | 39/78 [00:02<00:01, 34.86it/s]
-    Calculating similarities:  62%|######1   | 48/78 [00:02<00:00, 43.27it/s]
-    Calculating similarities:  73%|#######3  | 57/78 [00:02<00:00, 52.19it/s]
-    Calculating similarities:  85%|########4 | 66/78 [00:02<00:00, 60.08it/s]
-    Calculating similarities:  97%|#########7| 76/78 [00:02<00:00, 68.55it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 29.31it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:02<03:07,  2.44s/it]
+    Calculating similarities:  14%|#4        | 11/78 [00:02<00:11,  5.92it/s]
+    Calculating similarities:  27%|##6       | 21/78 [00:02<00:04, 12.81it/s]
+    Calculating similarities:  41%|####1     | 32/78 [00:02<00:02, 21.98it/s]
+    Calculating similarities:  55%|#####5    | 43/78 [00:02<00:01, 32.15it/s]
+    Calculating similarities:  68%|######7   | 53/78 [00:02<00:00, 40.79it/s]
+    Calculating similarities:  81%|########  | 63/78 [00:03<00:00, 50.58it/s]
+    Calculating similarities:  95%|#########4| 74/78 [00:03<00:00, 61.48it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:03<00:00, 24.28it/s]
 
 ``` python
 scores
 ```
 
-    <78x291x2 stacked sparse array containing scores for ('ModifiedCosine_score', 'ModifiedCosine_matches') with 12376 stored elements in COOrdinate format>
+    <78x291x2 stacked sparse array containing scores for ('ModifiedCosineGreedy_score', 'ModifiedCosineGreedy_matches') with 12376 stored elements in COOrdinate format>
 
 We next rearrange the spectra similarity results to make a data frame
 containing the best matched compound name (derived from the reference
@@ -375,7 +384,7 @@ query spectra `ms2_ctr_fts_py` against the cleaned reference library
 #' Python session:
 
 #' Convert to array and transpose
-sim_matchms = scores.to_array()["ModifiedCosine_score"]
+sim_matchms = scores.to_array()["ModifiedCosineGreedy_score"]
 sim_matchms = sim_matchms.T
 
 #' Contains 1 row for each spectrum in query
@@ -409,7 +418,7 @@ for i in range(sim_matchms.shape[0]):
                     "query_feature_id": name_row,
                     "reference": max_col,
                     "reference_compound_name": name_max_col,
-                    "ModifiedCosine_score": max_value})
+                    "ModifiedCosineGreedy_score": max_value})
 
 
 #' Convert to DataFrame
@@ -419,12 +428,12 @@ df = pd.DataFrame(results)
 df.head()
 ```
 
-       query query_feature_id  ...  reference_compound_name ModifiedCosine_score
-    0      1           FT0371  ...         Benzyl succinate             0.554071
-    1      2           FT0371  ...         Benzyl succinate             0.557885
-    2      3           FT0371  ...      L-(+)-Ergothioneine             0.103269
-    3      4           FT0371  ...         Benzyl succinate             0.464949
-    4      5           FT0371  ...         Benzyl succinate             0.508411
+       query query_feature_id  ...  reference_compound_name ModifiedCosineGreedy_score
+    0      1           FT0371  ...         Benzyl succinate                   0.554071
+    1      2           FT0371  ...         Benzyl succinate                   0.557885
+    2      3           FT0371  ...      L-(+)-Ergothioneine                   0.103269
+    3      4           FT0371  ...         Benzyl succinate                   0.464949
+    4      5           FT0371  ...         Benzyl succinate                   0.508411
 
     [5 rows x 5 columns]
 
@@ -445,7 +454,7 @@ standards.
 #' Python session:
 
 #' Keep only rows where score >= 0.6
-df_filtered = df[df["ModifiedCosine_score"] >= 0.6]
+df_filtered = df[df["ModifiedCosineGreedy_score"] >= 0.6]
 ```
 
 ``` r
@@ -457,7 +466,7 @@ library(pander)
 pandoc.table(py$df_filtered, style = "rmarkdown", split.table = Inf)
 ```
 
-|   | query | query_feature_id | reference | reference_compound_name | ModifiedCosine_score |
+|   | query | query_feature_id | reference | reference_compound_name | ModifiedCosineGreedy_score |
 |:--:|:--:|:--:|:--:|:--:|:--:|
 | **14** | 15 | FT0371 | 52 | Nordihydroguaiaretic acid | 0.6667 |
 | **33** | 34 | FT0565 | 35 | Ethambutol | 0.9623 |
@@ -529,9 +538,9 @@ filtering (e.g. maximum 1 Da difference).
 sessionInfo()
 ```
 
-    R version 4.5.2 (2025-10-31)
+    R version 4.6.1 (2026-06-24)
     Platform: x86_64-pc-linux-gnu
-    Running under: Ubuntu 24.04.3 LTS
+    Running under: Ubuntu 24.04.4 LTS
 
     Matrix products: default
     BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
@@ -553,37 +562,36 @@ sessionInfo()
     [8] base
 
     other attached packages:
-    [1] pander_0.6.6        Spectra_1.20.1      BiocParallel_1.44.0
-    [4] S4Vectors_0.48.0    BiocGenerics_0.56.0 generics_0.1.4
-    [7] SpectriPy_1.0.1     reticulate_1.45.0
+    [1] pander_0.6.6        Spectra_1.22.2      BiocParallel_1.46.0
+    [4] S4Vectors_0.50.1    BiocGenerics_0.58.1 generics_0.1.4
+    [7] SpectriPy_1.3.0     reticulate_1.46.0
 
     loaded via a namespace (and not attached):
-     [1] cli_3.6.5              knitr_1.51             rlang_1.1.7
-     [4] xfun_0.56              ProtGenerics_1.42.0    otel_0.2.0
-     [7] png_0.1-9              jsonlite_2.0.0         clue_0.3-67
-    [10] rprojroot_2.1.1        htmltools_0.5.9        rmarkdown_2.30
-    [13] grid_4.5.2             evaluate_1.0.5         MASS_7.3-65
-    [16] fastmap_1.2.0          yaml_2.3.12            IRanges_2.44.0
-    [19] MsCoreUtils_1.22.1     cluster_2.1.8.2        compiler_4.5.2
-    [22] codetools_0.2-20       fs_1.6.7               Rcpp_1.1.1
-    [25] here_1.0.2             MetaboCoreUtils_1.18.1 lattice_0.22-9
-    [28] digest_0.6.39          parallel_4.5.2         Matrix_1.7-4
-    [31] withr_3.0.2            tools_4.5.2           
+     [1] Matrix_1.7-5           jsonlite_2.0.0         compiler_4.6.1
+     [4] Rcpp_1.1.2             parallel_4.6.1         snakecase_0.11.1
+     [7] cluster_2.1.8.2        IRanges_2.46.0         png_0.1-9
+    [10] yaml_2.3.12            fastmap_1.2.0          lattice_0.22-9
+    [13] here_1.0.2             ProtGenerics_1.44.0    knitr_1.51
+    [16] MASS_7.3-66            rprojroot_2.1.1        rlang_1.3.0
+    [19] xfun_0.60              fs_2.1.0               MsCoreUtils_1.24.0
+    [22] otel_0.2.0             cli_3.6.6              withr_3.0.3
+    [25] digest_0.6.39          grid_4.6.1             MetaboCoreUtils_1.20.1
+    [28] clue_0.3-68            evaluate_1.0.5         data.table_1.18.4
+    [31] codetools_0.2-20       rmarkdown_2.31         tools_4.6.1
+    [34] htmltools_0.5.9       
 
 ## References
 
-Graeve, Marilyn De, Wout Bittremieux, Thomas Naake, Carolin Huber,
-Matthias Anagho-Mattanovich, Nils Hoffmann, Pierre Marchal, et al. 2025.
+Graeve, Marilyn De, Wout Bittremieux, Thomas Naake, et al. 2025.
 “SpectriPy: Enhancing Cross-Language Mass Spectrometry Data Analysis
 with R and Python.” *Journal of Open Source Software* 10 (109): 8070.
 <https://doi.org/10.21105/joss.08070>.
 
-Huber, Florian, Stefan Verhoeven, Christiaan Meijer, Hanno Spreeuw,
-Efraín Castilla, Cunliang Geng, Justin Van Der Hooft, et al. 2020.
+Huber, Florian, Stefan Verhoeven, Christiaan Meijer, et al. 2020.
 “Matchms - Processing and Similarity Evaluation of Mass Spectrometry
 Data.” *Journal of Open Source Software* 5 (52): 2411.
 <https://doi.org/10.21105/joss.02411>.
 
 Louail, Philippine, and Johannes Rainer. 2025.
-“Rformassspectrometry/Metabonaut: Metabonaut Version 1.0.0.” Zenodo.
-<https://doi.org/10.5281/ZENODO.15062930>.
+*Rformassspectrometry/Metabonaut: Metabonaut Version 1.0.0*. V. v1.0.0.
+Zenodo, released March 21. <https://doi.org/10.5281/ZENODO.15062930>.

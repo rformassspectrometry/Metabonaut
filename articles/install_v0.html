@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="install_v0_files/libs/quarto-html/popper.min.js"></script><script src="install_v0_files/libs/quarto-html/tippy.umd.min.js"></script><link href="install_v0_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="install_v0_files/libs/quarto-html/light-border.css" rel="stylesheet">
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,7 @@
     <li><a class="dropdown-item" href="../articles/advanced_feature_annotation_with_RuSirius.html">Advanced Feature Annotation using RuSirius</a></li>
     <li><h6 class="dropdown-header" data-toc-skip>--- Other ---</h6></li>
     <li><a class="dropdown-item" href="../articles/alignment-to-external-dataset.html">Seamless Alignment: Merging New data with Existing Preprocessed Datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/generation_of_mzTabM_file.html">mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
@@ -73,7 +74,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Install</h1>
 
 
-      <p class="date">2026-03-17</p>
+      <p class="date">2026-07-16</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/install_v0.qmd" class="external-link"><code>vignettes/install_v0.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -85,7 +86,16 @@
 
 
     <p>For manual installation, an <a href="https://www.r-project.org/" class="external-link">R</a> version &gt;= 4.4.0 is required.</p>
-<section class="section level2"><h2 id="running-workflows-locally">Running workflows locally<a class="anchor" aria-label="anchor" href="#running-workflows-locally"></a>
+<section class="section level2"><h2 id="running-workflows-in-the-cloud">Running workflows in the cloud<a class="anchor" aria-label="anchor" href="#running-workflows-in-the-cloud"></a>
+</h2>
+<p>No installation is needed to run the workflows: Metabonaut is available as a <em>Curated Workshop</em> on the <a href="https://workshop.bioconductor.org" class="external-link">Bioconductor Workshop platform</a>, a Galaxy-based service hosted on the Jetstream2 academic cloud (NSF-ACCESS).</p>
+<ul>
+<li>Log in on <a href="https://workshop.bioconductor.org" class="external-link">workshop.bioconductor.org</a> with a Bioconductor account.</li>
+<li>Launch the <strong>Metabonaut</strong> workshop. This starts a private RStudio session, based on the same docker image as below, with all required packages and the example data already installed.</li>
+<li>Open any of the Quarto files in the <em>vignettes</em> folder and evaluate the R code blocks.</li>
+</ul>
+<p>Note that these sessions are ephemeral: all data and progress are erased when the workshop is stopped, so download a local copy of anything you want to keep.</p>
+</section><section class="section level2"><h2 id="running-workflows-locally">Running workflows locally<a class="anchor" aria-label="anchor" href="#running-workflows-locally"></a>
 </h2>
 <p>To install on your computer all the packages necessary for the workflows run the code as follow:</p>
 <div class="cell">
@@ -214,7 +224,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.9000.</p>
 </div>
 
     </footer>

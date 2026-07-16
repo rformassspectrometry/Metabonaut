@@ -1,7 +1,7 @@
 # Let’s Explore and Learn to Analyze Untargeted Metabolomics Data
 
-[![License: CC BY-NC
-4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![License: CC BY-SA
+4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![DOI](https://zenodo.org/badge/849331979.svg)](https://doi.org/10.5281/zenodo.15062929)
 
 ## Welcome to **Metabonaut**! 🚀
@@ -11,6 +11,27 @@ dataset, utilizing **R** and **Bioconductor** packages. These workflows
 demonstrate how to adapt various algorithms to specific datasets and
 seamlessly integrate R packages for efficient, reproducible data
 processing.
+
+## 🚀 Getting Started
+
+There are three ways to run the workflows, from the least to the most
+setup:
+
+- **In your browser (no installation)**: Metabonaut is available as a
+  *Curated Workshop* on the [**Bioconductor Workshop
+  platform**](https://workshop.bioconductor.org), a Galaxy-based service
+  running on the Jetstream2 academic cloud (NSF-ACCESS). Log in with a
+  Bioconductor account, launch the **Metabonaut** workshop, and you get
+  your own private RStudio session with all packages and the example
+  data already installed, free of charge. ⚠️ Workshop sessions are
+  **ephemeral**: all data and progress are erased when the workshop is
+  stopped, so save a local copy of anything you want to keep.
+- **Docker**: pull `rformassspectrometry/metabonaut:latest` and run it
+  locally. See the [installation
+  instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
+- **Local R installation**: install the package and its dependencies
+  yourself, also described in the [installation
+  instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
 
 ## Available Vignettes
 
@@ -73,6 +94,11 @@ low-confidence database matches.
 Discover how to use a **flexible alignment algorithm** to integrate new
 datasets with previously processed ones based on features of interest.
 
+#### 9. [mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment](https://rformassspectrometry.github.io/Metabonaut/articles/generation_of_mzTabM_file.html)
+
+Use **RmzTabM** to import and export Summarized Experiment object to
+mzTab-M 2.1 files.
+
 ------------------------------------------------------------------------
 
 For a full list of all available vignettes, visit the [**Metabonaut
@@ -87,7 +113,7 @@ remain stable over time, allowing you to run all vignettes together as
 one comprehensive **super-vignette**.
 
 - **Major updates** will be documented here.
-  - Metabonaut now works with a stable version of Bioconductor (3.22)
+  - Metabonaut now works with a stable version of Bioconductor (3.23)
 - **Minor updates** can be found in the [News
   section](https://rformassspectrometry.github.io/Metabonaut/news/index.html).
 

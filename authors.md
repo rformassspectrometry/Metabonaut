@@ -3,7 +3,7 @@
 ## Authors
 
 - **Philippine Louail**. Author, maintainer.
-  [](https://orcid.org/0009-0007-5429-6846)  
+  [](https://orcid.org/0009-0007-5429-6846)\
   European Union HORIZON-MSCA-2021 project Grant No. 101073062: HUMAN –
   Harmonising and Unifying Blood Metabolic Analysis Networks
 
@@ -14,7 +14,7 @@
   [](https://orcid.org/0000-0002-3057-6460)
 
 - **Daniel Marques de Sá e Silva**. Contributor.
-  [](https://orcid.org/0000-0002-9674-042X)  
+  [](https://orcid.org/0000-0002-9674-042X)\
   European Union HORIZON-MSCA-2021 project Grant No. 101073062: HUMAN –
   Harmonising and Unifying Blood Metabolic Analysis Networks
 
@@ -25,6 +25,15 @@
 
 - **Kozo Nishida**. Contributor.
   [](https://orcid.org/0000-0001-8501-7319)
+
+- **Gabriele Tomè**. Contributor.
+  [](https://orcid.org/0000-0002-3976-6068)\
+  MetaRbolomics4Galaxy project (CUP: D53C25001030003) co-funded by the
+  Autonomous Province of Bolzano under the Joint Projects South
+  Tyrol–Germany 2025 program.
+
+- **Alexandru Mahmoud**. Contributor.
+  [](https://orcid.org/0000-0002-3779-492X)
 
 - **Johannes Rainer**. Author. [](https://orcid.org/0000-0002-6977-7147)
 

@@ -1,17 +1,18 @@
-pandoc: 3.8.2.1
-pkgdown: 2.2.0.9000
-pkgdown_sha: a6abe43ed48e58b1de42eba5e5541a5b6c46b46f
+pandoc: '3.10'
+pkgdown: 2.2.1.9000
+pkgdown_sha: 179cfaee3d4e17eaa9e7d7c700b1269dc62e4d46
 articles:
   a-end-to-end-untargeted-metabolomics: a-end-to-end-untargeted-metabolomics.html
   advanced_feature_annotation_with_RuSirius: advanced_feature_annotation_with_RuSirius.html
   alignment-to-external-dataset: alignment-to-external-dataset.html
   creating-using-annotation-resources: creating-using-annotation-resources.html
   dataset-investigation: dataset-investigation.html
+  generation_of_mzTabM_file: generation_of_mzTabM_file.html
   install_v0: install_v0.html
   large-scale-analysis: large-scale-analysis.html
   notame_normalization_and_feature_selection: notame_normalization_and_feature_selection.html
   SpectriPy-tutorial-metabonaut: SpectriPy-tutorial-metabonaut.html
-last_built: 2026-03-17T15:47Z
+last_built: 2026-07-16T15:06Z
 urls:
   reference: https://rformassspectrometry.github.io/Metabonaut/reference
   article: https://rformassspectrometry.github.io/Metabonaut/articles

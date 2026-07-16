@@ -1,6 +1,26 @@
 # Changelog
 
+## Metabonaut 1.6
+
+### Changes in 1.6.1
+
+- Install *RmzTabM* in the docker image for the mzTab-M vignette.
+- Document that Metabonaut can be run in the browser on the Bioconductor
+  Workshop platform (workshop.bioconductor.org).
+
+### Changes in 1.6.0
+
+- Add vignette to export and import MzTab-M files.
+
 ## Metabonaut 1.5
+
+### Changes in 1.5.1
+
+- Update the *SpectriPy* tutorial vignette to the current *matchms* API:
+  the `ModifiedCosine` similarity was renamed to `ModifiedCosineGreedy`
+  (tested with *matchms* 0.33.1). This is a pure renaming, the
+  implementation was already greedy; the vignette now also mentions the
+  exact `ModifiedCosineHungarian` alternative.
 
 ### Changes in 1.5.0
 
