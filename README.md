@@ -11,6 +11,27 @@ demonstrate how to adapt various algorithms to specific datasets and
 seamlessly integrate R packages for efficient, reproducible data
 processing.
 
+## 🚀 Getting Started
+
+There are three ways to run the workflows, from the least to the most setup:
+
+-   **In your browser (no installation)**: Metabonaut is available as a
+    *Curated Workshop* on the
+    [**Bioconductor Workshop platform**](https://workshop.bioconductor.org),
+    a Galaxy-based service running on the Jetstream2 academic cloud
+    (NSF-ACCESS). Log in with a Bioconductor account, launch the **Metabonaut**
+    workshop, and you get your own private RStudio session with all packages
+    and the example data already installed, free of charge.
+    ⚠️ Workshop sessions are **ephemeral**: all data and progress are erased
+    when the workshop is stopped, so save a local copy of anything you want to
+    keep.
+-   **Docker**: pull `rformassspectrometry/metabonaut:latest` and run it
+    locally. See the
+    [installation instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
+-   **Local R installation**: install the package and its dependencies
+    yourself, also described in the
+    [installation instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
+
 ## Available Vignettes
 
 ### End-to-End Workflow

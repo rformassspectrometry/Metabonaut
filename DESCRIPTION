@@ -1,6 +1,6 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.6.0
+Version: 1.6.1
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
             email = "philippine.louail@outlook.com",
@@ -37,6 +37,10 @@ Authors@R:
             role = "ctb",
             comment = c(ORCID = "0000-0002-3976-6068",
             fnd = "MetaRbolomics4Galaxy project (CUP: D53C25001030003) co-funded by the Autonomous Province of Bolzano under the Joint Projects South Tyrol–Germany 2025 program.")),
+     person(given = "Alexandru", family = "Mahmoud",
+            email = "almahmoud.research@gmail.com",
+            role = "ctb",
+            comment = c(ORCID = "0000-0002-3779-492X")),
      person(given = "Johannes", family = "Rainer",
             email = "Johannes.Rainer@eurac.edu",
             role = "aut",
