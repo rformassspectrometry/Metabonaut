@@ -403,39 +403,37 @@ table(s_py$adduct)
               [2M+FA-H]-              [2M+H]+           [2M+K-2H]-
                        1                  253                    1
                  [2M+K]+          [2M+Na-2H]-             [2M+Na]+
-                      10                    1                  129
+                      10                    1                  120
                [2M+NH4]+              [3M-H]-              [3M+H]+
                        4                    2                    1
                 [3M+Na]+            [3M+NH4]+        [M-2(H2O)+H]+
                        1                    1                    1
                  [M-2H]-             [M-2H]2-          [M-2H2O+H]+
                        1                   41                   84
-             [M-3H2O+H]+             [M-CH3]-               [M-e]-
-                       2                    1                   12
-                  [M-H]-           [M-H+H2O]-         [M-H+HCOOH]-
-                   12801                    1                    2
-               [M-H+Na]+           [M-H2O-H]-             [M-H2O]+
-                       6                    1                    1
-              [M-H2O+H]+                 [M]+             [M+2H]2+
-                     531                   88                  275
-              [M+2Na-H]+            [M+2Na]2+             [M+3H]3+
-                      55                    2                    1
-              [M+ACN+H]+               [M+C]-             [M+Ca]2+
-                       3                    1                    1
-             [M+CH3COO]- [M+CH3COO]-/[M-CH3]-         [M+CH3OH+H]+
-                      20                    7                    1
-                 [M+Cl]-            [M+FA-H]-          [M+H-3H2O]+
-                     162                   11                    5
-            [M+H-C2H5N]+          [M+H-C4H6]+       [M+H-C5H12N2]+
-                       1                    1                    5
-          [M+H-C5H9NO4]+           [M+H-H20]+           [M+H-NH3]+
-                       1                    1                    4
-                  [M+H]+            [M+HCOO]-               [M+K]+
-                   68362                   88                  465
-                 [M+Li]+           [M+Na-2H]-              [M+Na]+
-                       2                    2                13949
-                [M+NH4]+
-                     551 
+             [M-3H2O+H]+               [M-e]-               [M-H]-
+                       2                   12                12732
+              [M-H+H2O]-         [M-H+HCOOH]-            [M-H+Na]+
+                       1                    2                    6
+              [M-H2O-H]-             [M-H2O]+           [M-H2O+H]+
+                       1                    1                  531
+                    [M]+             [M+2H]2+           [M+2Na-H]+
+                      88                  270                   55
+               [M+2Na]2+             [M+3H]3+           [M+ACN+H]+
+                       2                    1                    3
+                  [M+C]-             [M+Ca]2+          [M+CH3COO]-
+                       1                    1                   20
+    [M+CH3COO]-/[M-CH3]-         [M+CH3OH+H]+              [M+Cl]-
+                       7                    1                  162
+               [M+FA-H]-          [M+H-3H2O]+         [M+H-C2H5N]+
+                      11                    5                    1
+             [M+H-C4H6]+       [M+H-C5H12N2]+       [M+H-C5H9NO4]+
+                       1                    5                    1
+              [M+H-H20]+           [M+H-NH3]+               [M+H]+
+                       1                    4                68446
+               [M+HCOO]-               [M+K]+              [M+Li]+
+                      88                  465                    2
+              [M+Na-2H]-              [M+Na]+             [M+NH4]+
+                       2                13949                  551 
 
 The `s_py` `Spectra` object is ready for R workflows. Data stay in
 Python and is translated on demand; switch to `MsBackendMemory` to copy
@@ -1036,7 +1034,7 @@ metadata(cdb)
     3     source_version                                      v4
     4        source_date                              2025-09-30
     5           organism                                    <NA>
-    6   db_creation_date                Thu Jul 16 15:52:45 2026
+    6   db_creation_date                Fri Jul 17 16:51:51 2026
     7 supporting_package                              CompoundDb
     8  supporting_object                                  CompDb
 
@@ -1125,7 +1123,7 @@ metadata(cdb)
     3     source_version                                      v4
     4        source_date                              2025-09-30
     5           organism                                    <NA>
-    6   db_creation_date                Thu Jul 16 15:52:45 2026
+    6   db_creation_date                Fri Jul 17 16:51:51 2026
     7 supporting_package                              CompoundDb
     8  supporting_object                                  CompDb
 

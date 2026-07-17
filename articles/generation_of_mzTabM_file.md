@@ -22,7 +22,7 @@ library(RmzTabM)
 For a general overview of the mzTab-M format see [this
 figure](https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/img/media/figure-mztab-sections.png).
 
-![](https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/img/media/figure-mztab-sections.png)
+![](https://raw.githubusercontent.com/HUPO-PSI/mzTab-M/main/specification_documents/img/media/figure-mztab-sections.png)
 
 mzTab-M format
 
