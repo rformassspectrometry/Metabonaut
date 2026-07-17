@@ -47,7 +47,7 @@ library(RmzTabM)
 
 For a general overview of the mzTab-M format see [this figure](https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/img/media/figure-mztab-sections.png).
 
-![mzTab-M format](https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/img/media/figure-mztab-sections.png)
+![mzTab-M format](https://raw.githubusercontent.com/HUPO-PSI/mzTab-M/main/specification_documents/img/media/figure-mztab-sections.png)
 
 For a description of the mzTab-M format and the set of mandatory and optional
 fields refer to the official [format definition](https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/mzTab_format_specification_2_1-M.adoc).
