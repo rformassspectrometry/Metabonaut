@@ -232,23 +232,33 @@ len(clean_mgf_py)
 We calculate the pairwise spectral similarity between the query spectra and the
 reference library spectra using Python's *matchms* library.
 
-Here, we use the spectral similarity algorithm ModifiedCosine from *matchms*,
+Here, we use the modified cosine spectral similarity algorithm from *matchms*,
 from source
 [matchms](https://github.com/matchms/matchms/blob/master/README.rst). This
 algorithm can easily be exchanged for another spectral similarity calculation
 from *matchms* (see
 [here](https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html)).
 
+Since *matchms* version 0.32, this algorithm is called `ModifiedCosineGreedy`
+(it was named `ModifiedCosine` before). The implementation solves the peak
+assignment between two spectra in a *greedy* way, i.e. it repeatedly takes the
+highest scoring peak pair, which is fast but only an approximation of the
+optimal assignment. *matchms* also provides `ModifiedCosineHungarian`, which
+computes the exact assignment at the cost of longer run times. For a typical
+annotation workflow such as this one the greedy variant is the pragmatic
+choice, but the exact variant can be preferable e.g. for benchmarking or method
+development.
+
 ```{python}
 #' Python session:
 
 from matchms import calculate_scores
-from matchms.similarity import ModifiedCosine
+from matchms.similarity import ModifiedCosineGreedy
 
 #' Calculate Cosine similarity scores between all spectra
 #' For other similarity score methods see
 #' https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html
-similarity_score = ModifiedCosine(tolerance = 0.1)
+similarity_score = ModifiedCosineGreedy(tolerance = 0.1)
 scores = calculate_scores(references = clean_mgf_py,
                           queries = ms2_ctr_fts_py,
                           similarity_function = similarity_score)
@@ -267,7 +277,7 @@ array will contain the similarity scores of one spectrum from our query spectra
 #' Python session:
 
 #' Convert to array and transpose
-sim_matchms = scores.to_array()["ModifiedCosine_score"]
+sim_matchms = scores.to_array()["ModifiedCosineGreedy_score"]
 sim_matchms = sim_matchms.T
 
 #' Contains 1 row for each spectrum in query
@@ -299,7 +309,7 @@ for i in range(sim_matchms.shape[0]):
                     "query_feature_id": name_row,
                     "reference": max_col,
                     "reference_compound_name": name_max_col,
-                    "ModifiedCosine_score": max_value})
+                    "ModifiedCosineGreedy_score": max_value})
 
 
 #' Convert to DataFrame
@@ -324,7 +334,7 @@ using e.g. rerunning samples in the presence of commercial standards.
 #' Python session:
 
 #' Keep only rows where score >= 0.6
-df_filtered = df[df["ModifiedCosine_score"] >= 0.6]
+df_filtered = df[df["ModifiedCosineGreedy_score"] >= 0.6]
 ```
 
 ```{r, results = "asis"}
