@@ -1457,7 +1457,6 @@ this method using the default parameters.
 ```{r}
 #' Fill in the missing values in the whole dataset
 lcms1 <- fillChromPeaks(lcms1, param = ChromPeakAreaParam(), chunkSize = 5)
-
 #' Percentage of missing values after gap-filling
 sum(is.na(featureValues(lcms1))) /
     length(featureValues(lcms1)) * 100
