@@ -6,6 +6,8 @@
   commit/version: *MsIO* (0.0.17), *RmzTabM* (0.99.1), *RuSirius* (1.0.4).
 - Use *SpectriPy* from Bioconductor 3.23 release branch.
 - Update installation and usage descriptions.
+- Fix typos and formatting errors in the *Using and Creating Metabolomics Data
+  Annotation Resources* and expand some textual passages.
 
 ## Changes in 1.6.1
 
