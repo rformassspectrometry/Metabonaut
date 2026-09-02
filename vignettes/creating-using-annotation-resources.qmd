@@ -76,7 +76,7 @@ doi <- "10.5281/zenodo.17232042" # v4
 
 #' download all data related to the DOI
 pth <- tempdir()
-download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
+download_zenodo(doi, path = pth, quiet = TRUE, timeout = 6000)
 dir(pth)
 ```
 

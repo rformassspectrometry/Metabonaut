@@ -79,21 +79,21 @@ code and examples from the vignettes can be evaluated within this environment
     tutorial e.g. from the command line with:
 
 ```
-docker pull rformassspectrometry/metabonaut:RELEASE_3_23
+docker pull rformassspectrometry/metabonaut:v1.6.2
 ```
 
 ::: {.callout-note appearance = "minimal"}
-ℹ️ the tag *RELEASE_3_23* selects the docker image specific for Bioconductor
-release 3.23. Docker images for upcoming Bioconductor releases will be made
-available using a different tag (e.g. RELEASE_3_24) ensuring this version of the
-image will be available also in future.
+ℹ️ the tag *v1.6.2* selects the docker image specific for Metabonaut version
+1.6.2. Docker images for upcoming versions releases will be made available using
+a different tag (e.g. v1.6.3) ensuring images from older versions will also be
+available in future.
 :::
 
 -   Start the docker container, either through the Docker Desktop, or on the
     command line with
 
 ```
-docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:RELEASE_3_23
+docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2
 ```
 
 -   Enter [`http://localhost:8787`](http://localhost:8787) in a web browser and

@@ -40,7 +40,7 @@ jobs:
             github_pat=${{ secrets.GITHUB_TOKEN }}
           tags: |
             rformassspectrometry/metabonaut:latest
-            rformassspectrometry/metabonaut:RELEASE_3_23
+            rformassspectrometry/metabonaut:v1.6.2
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
