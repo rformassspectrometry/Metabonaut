@@ -1,6 +1,6 @@
 Package: Metabonaut
 Title: Exploring and Analyzing LC-MS Data
-Version: 1.6.1
+Version: 1.6.2
 Authors@R:
     c(person(given = "Philippine", family = "Louail",
             email = "philippine.louail@outlook.com",
@@ -98,9 +98,9 @@ Suggests:
     RmzTabM,
     zen4R
 Remotes:
-    RforMassSpectrometry/MsIO,
-    RforMassSpectrometry/RuSirius,
-    RforMassSpectrometry/RmzTabM@gabri,
+    RforMassSpectrometry/MsIO@a669fa1303a023161581b7a16caed3ed20a43299,
+    RforMassSpectrometry/RuSirius@cf0c6ed3bb031495861c0e2964fef6a7debc2988,
+    RforMassSpectrometry/RmzTabM@96e79f180031485cbf581971f3f3d8cac6979379,
     sirius-ms/sirius-client-openAPI/client-api_r/generated@2c983e6
 URL: https://github.com/rformassspectrometry/Metabonaut/, https://rformassspectrometry.github.io/Metabonaut/
 BugReports: https://github.com/rformassspectrometry/Metabonaut/issues/new

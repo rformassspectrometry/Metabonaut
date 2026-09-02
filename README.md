@@ -111,8 +111,13 @@ remain stable over time, allowing you to run all vignettes together as
 one comprehensive **super-vignette**.
 
 -   **Major updates** will be documented here.
-    -   Metabonaut now works with a stable version of Bioconductor
-        (3.23)
+    -   Metabonaut (1.6.2) now works with a stable version of Bioconductor
+        (3.23). Packages not yet included in Bioconductor are installed from
+        GitHub: [*MsIO*](https://github.com/RforMassSpectrometry/MsIO) (version
+        0.0.17), [*RmzTabM*](https://github.com/RforMassSpectrometry/RmzTabM)
+        (version 0.99.1),
+        [*RuSirius*](https://github.com/RforMassSpectrometry/RuSirius) (version
+        1.0.4).
 -   **Minor updates** can be found in the
     [News section](https://rformassspectrometry.github.io/Metabonaut/news/index.html).
 

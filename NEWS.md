@@ -1,5 +1,12 @@
 # Metabonaut 1.6
 
+## Changes in 1.6.2
+
+- Fix Docker image to lock packages installed from GitHub to a specific
+  commit/version: *MsIO* (0.0.17), *RmzTabM* (0.99.1), *RuSirius* (1.0.4).
+- Use *SpectriPy* from Bioconductor 3.23 release branch.
+- Update installation and usage descriptions.
+
 ## Changes in 1.6.1
 
 - Install *RmzTabM* in the docker image for the mzTab-M vignette.
