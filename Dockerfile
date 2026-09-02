@@ -25,7 +25,7 @@ RUN rm -rf /home/rstudio/scripts /home/rstudio/vignettes/.quarto
 ## with the Remotes field in DESCRIPTION, otherwise main is installed over it.
 RUN --mount=type=secret,id=github_pat \
     export GITHUB_PAT="$(cat /run/secrets/github_pat 2>/dev/null || true)" && \
-    Rscript -e "install.packages('remotes'); BiocManager::install(c('RforMassSpectrometry/MsIO', 'RforMassSpectrometry/RmzTabM@gabri', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
+    Rscript -e "install.packages('remotes'); BiocManager::install(c('RforMassSpectrometry/MsIO@a669fa1303a023161581b7a16caed3ed20a43299', 'RforMassSpectrometry/RmzTabM@96e79f180031485cbf581971f3f3d8cac6979379', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
 
 ## Use SpectriPy with virtual env to avoid need to install miniconda
 ENV SPECTRIPY_USE_CONDA="FALSE"
@@ -38,7 +38,7 @@ USER rstudio
 RUN --mount=type=secret,id=github_pat,uid=1000 \
     export GITHUB_PAT="$(cat /run/secrets/github_pat 2>/dev/null || true)" && \
     Rscript -e "install.packages('reticulate')" && \
-    Rscript -e "BiocManager::install('RforMassSpectrometry/SpectriPy', ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)" && \
+    Rscript -e "BiocManager::install('SpectriPy', ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)" && \
     Rscript -e "library(MsBackendMetaboLights);Spectra('MTBLS8735', source = MsBackendMetaboLights())"
 
 ## Install the current package and build its vignettes in two steps.
@@ -80,5 +80,4 @@ RUN chmod a+x /etc/cont-init.d/03_sirius
 ## Install RuSirius (R interface to Sirius) for interactive use
 RUN --mount=type=secret,id=github_pat \
     export GITHUB_PAT="$(cat /run/secrets/github_pat 2>/dev/null || true)" && \
-    Rscript -e "BiocManager::install('RforMassSpectrometry/RuSirius', ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"
-
+    Rscript -e "BiocManager::install('RforMassSpectrometry/RuSirius@cf0c6ed3bb031495861c0e2964fef6a7debc2988', ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"

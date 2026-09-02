@@ -10,7 +10,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-For manual installation, an [R](https://www.r-project.org/) version \>= 4.4.0 is
+For manual installation, an [R](https://www.r-project.org/) version \>= 4.6.0 is
 required.
 
 # Running workflows in the cloud
@@ -33,13 +33,14 @@ the workshop is stopped, so download a local copy of anything you want to keep.
 
 # Running workflows locally
 
-To install on your computer all the packages necessary for the workflows run the
-code as follow:
+To install all the packages required to run the workflows locally run the
+code as follow in an R session (R >= 4.6.0):
 
 ```{r eval=FALSE}
 install.packages("BiocManager")
-BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE,
-                     dependencies = TRUE)
+BiocManager::install(
+    "RforMassSpectrometry/MsIO@a669fa1303a023161581b7a16caed3ed20a43299",
+    ask = FALSE, dependencies = TRUE)
 
 BiocManager::install("RforMassSpectrometry/Metabonaut",
                      dependencies = TRUE, ask = FALSE, update = TRUE)
@@ -56,10 +57,16 @@ gitcreds::gitcreds_get()
 gitcreds::gitcreds_delete()
 ```
 
+The workflow source files (quarto and Rmarkdown documents) can be downloaded
+from Metabonaut's GitHub
+[repository](https://github.com/RforMassSpectrometry/Metabonaut) (download
+either individual files from the *vignettes* folder, or the full repository).
+
 # Docker image
 
 The vignettes files along with an R runtime environment including all required
-packages and the RStudio (Posit) editor are all bundled in a *docker* container.
+packages and data as well as the RStudio (Posit) editor are all bundled in a
+*docker* container.
 
 After installation, this docker container can be run on the computer and the
 code and examples from the vignettes can be evaluated within this environment
@@ -71,15 +78,22 @@ code and examples from the vignettes can be evaluated within this environment
     image](https://hub.docker.com/r/rformassspectrometry/metabonaut) of this
     tutorial e.g. from the command line with:
 
-```         
-docker pull rformassspectrometry/metabonaut:latest
 ```
+docker pull rformassspectrometry/metabonaut:RELEASE_3_23
+```
+
+::: {.callout-note appearance = "minimal"}
+ℹ️ the tag *RELEASE_3_23* selects the docker image specific for Bioconductor
+release 3.23. Docker images for upcoming Bioconductor releases will be made
+available using a different tag (e.g. RELEASE_3_24) ensuring this version of the
+image will be available also in future.
+:::
 
 -   Start the docker container, either through the Docker Desktop, or on the
     command line with
 
-```         
-docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:latest
+```
+docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:RELEASE_3_23
 ```
 
 -   Enter [`http://localhost:8787`](http://localhost:8787) in a web browser and
