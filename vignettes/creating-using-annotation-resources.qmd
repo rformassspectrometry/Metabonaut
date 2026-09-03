@@ -49,9 +49,9 @@ future work toward harmonized formats such as
 # Accessing and using spectral libraries
 
 Spectral libraries come in different formats. Packages from the
-*RforMassSpectrometry* initiative (`r Biocpkg("MsBackendMgf")`, `r
-Biocpkg("MsBackendMsp")`, `r Biocpkg("MsBackendMassbank")`, `r
-Biocpkg("CompoundDb")`) parse these formats into `Spectra` objects ready for
+*RforMassSpectrometry* initiative (`r Biocpkg("MsBackendMgf")`,
+`r Biocpkg("MsBackendMsp")`, `r Biocpkg("MsBackendMassbank")`,
+`r Biocpkg("CompoundDb")`) parse these formats into `Spectra` objects ready for
 R-based workflows. Below we load GNPS and MassBank libraries for LC-MS/MS
 annotation.
 
@@ -59,14 +59,14 @@ annotation.
 
 [GNPS2](https://gnps2.org) provides MS/MS spectral libraries, integrating data
 from sources such as [MassBank](https://massbank.eu/MassBank/) and
-[MoNA](https://mona.fiehnlab.ucdavis.edu/). Libraries are available as MGF, MSP,
-or JSON from the [GNPS2 site](https://external.gnps2.org/gnpslibrary) and on
-Zenodo or Figshare with their own DOIs.
+[MoNA](https://mona.fiehnlab.ucdavis.edu/). Libraries are available in MGF, MSP,
+or JSON format from the [GNPS2 site](https://external.gnps2.org/gnpslibrary) and
+on Zenodo or Figshare with their own data set-specific DOIs.
 
 Here we download the GNPS2 drug library from
 [Zenodo](https://doi.org/10.5281/zenodo.13892288), a centralized collection of
-drug spectra with pharmacologic metadata [@zhao_resource_2025]. We fetch all v4
-resources (DOI: 10.5281/zenodo.17232042) to a temporary folder.
+drug spectra with pharmacologic metadata [@zhao_resource_2025]. We fetch all
+version 4 (v4) resources (DOI: 10.5281/zenodo.17232042) to a temporary folder.
 
 ```{r, message = FALSE}
 library(Spectra)
@@ -76,7 +76,7 @@ doi <- "10.5281/zenodo.17232042" # v4
 
 #' download all data related to the DOI
 pth <- tempdir()
-download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
+download_zenodo(doi, path = pth, quiet = TRUE, timeout = 6000)
 dir(pth)
 ```
 
@@ -91,10 +91,10 @@ readLines(mgf_fl, n = 25)
 The MGF format allows having additional fields to provide spectra metadata on
 top of mandatory fields such as *PEPMASS* (for precursor *m/z*) or *CHARGE* (for
 the precursor's charge). MGF files can be imported into a `Spectra` object using
-the `r Biocpkg("MsBackendMgf")`, which supports import of all metadata fields,
-renaming and mapping them to specific spectra variables. Below we define such a
-variable name mapping to map e.g. *MSLEVEL* to the spectra variable `msLevel`
-and *NAME* to *spectrum_name*.
+the `r Biocpkg("MsBackendMgf")` package, which supports import of all metadata
+fields, renaming and mapping them to specific spectra variables. Below we
+define such a variable name mapping to map e.g. *MSLEVEL* to the spectra
+variable *msLevel* and *NAME* to *spectrum_name*.
 
 ```{r}
 library(MsBackendMgf)
@@ -119,7 +119,7 @@ drug_ms2 <- Spectra(mgf_fl, source = MsBackendMgf(), mapping = svm)
 ```
 
 We convert `IONMODE` from `"Positive"`/`"Negative"` to the standard `polarity`
-encoding (`1`/`0`).
+encoding (`1`/`0`) used by the R packages.
 
 ```{r}
 drug_ms2$polarity[which(drug_ms2$IONMODE == "Positive")] <- 1L
@@ -175,9 +175,9 @@ plotSpectra(drug_ms2[1:4])
 The number of fragment peaks per spectrum was thus reduced and intensities are
 now relative to the total intensity sum.
 
-This `Spectra` object can now be used to match MS/MS spectra from the *Complete
-end-to-end LC-MS/MS metabolomics data analysis* workflow. We load the example
-`Spectra` object below.
+This `Spectra` object can now be used as a *reference data* to match MS/MS
+spectra from the *Complete end-to-end LC-MS/MS metabolomics data analysis*
+workflow. We load the example `Spectra` object below.
 
 ```{r}
 #' load the MS2 spectra for significant features
@@ -208,16 +208,16 @@ caffeine.
 res$target_spectrum_name |> unique()
 ```
 
-To summarize, through packages such as `r Biocpkg("MsBackendMgf")`, `r
-Biocpkg("MsBackendMsp")` it is easily possible to integrate public (or in-house)
-spectral reference libraries in MGF or MSP file format into R-based annotation
-workflows.
+To summarize, through packages such as `r Biocpkg("MsBackendMgf")`,
+or `r Biocpkg("MsBackendMsp")` it is easily possible to integrate public (or
+in-house) spectral reference libraries in MGF or MSP file format into R-based
+annotation workflows.
 
 ### Importing and cleaning GNPS MGF files using Python's *matchms* library
 
 Alternatively, it is possible to import and clean the GNPS MGF file in Python
-with *matchms* and access it in R through `MsBackendPy` from the `r
-Biocpkg("SpectriPy")` package [@graeve_spectripy_2025].
+with *matchms* and access it in R through `MsBackendPy` from the
+`r Biocpkg("SpectriPy")` package [@graeve_spectripy_2025].
 
 ```{r}
 #' load the required SpectriPy package; this will also install
@@ -226,9 +226,12 @@ library(SpectriPy)
 ```
 
 We next import the MGF file in Python using the *matchms* library
-[@huber_matchms_2020].
+[@huber_matchms_2020] (source code blocks like the one below with the comment
+`#' Python` contain code in Python and are executed and evaluated through the
+Python interpreter).
 
 ```{python}
+#' Python
 import matchms
 from matchms.importing import load_from_mgf
 
@@ -240,7 +243,9 @@ Next we clean and harmonize metadata with *matchms* filters. See the
 [*matchms.filtering* documentation](https://matchms.readthedocs.io/en/latest/api/matchms.filtering.html)
 or [@de_jonge_reproducible_2024] for options.
 
-```{python, warning = FALSE}
+```{python}
+#| warning: false
+#' Python
 from matchms.filtering import default_filters, clean_adduct
 
 #' apply filters to clean the spectra metadata
@@ -263,7 +268,7 @@ s_py <- Spectra("s_py_clean", source = MsBackendPy())
 spectraVariables(s_py)
 ```
 
-The *adduct* information was now harmonized by the filtering workflow in Python:
+The *adduct* information was harmonized by the filtering workflow in Python:
 
 ```{r}
 #' get the unique adduct types
@@ -313,11 +318,11 @@ mb
 ```
 
 The result is returned as a `CompDb` object from the `r Biocpkg("CompoundDb")`
-package which can be directly used with the annotation functions from the `r
-Biocpkg("MetaboAnnotation")` package. While this approach is convenient and
-fast, not all MassBank releases are available through *AnnotationHub*.
+package which can be directly used with the annotation functions from the
+`r Biocpkg("MetaboAnnotation")` package. While this approach is convenient and
+fast, not all MassBank releases are available through *AnnotationHub* yet.
 
-Alternatively, download MassBank data from the [MassBank GitHub
+Alternatively, we can download MassBank data from the [MassBank GitHub
 page](https://github.com/MassBank/MassBank-data/releases) or Zenodo. DOI
 [10.5281/zenodo.3378723](https://doi.org/10.5281/zenodo.3378723) points to the
 latest release. Here we fetch release *2025.10* via DOI 10.5281/zenodo.17432277:
@@ -329,7 +334,7 @@ library(zen4R)
 doi <- "10.5281/zenodo.17432277"
 
 pth <- tempdir()
-download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
+download_zenodo(doi, path = pth, quiet = TRUE, timeout = 6000)
 dir(pth)
 ```
 
@@ -348,7 +353,7 @@ length(fls)
 ```
 
 Each file holds one spectrum with compound, instrument, and provider metadata in
-MassBank format. We import the full release with `MsBackendMassbank()` into a
+MassBank format. We import the full data set with `MsBackendMassbank()` into a
 `Spectra` object.
 
 ```{r, message = FALSE}
@@ -370,7 +375,7 @@ spectraVariables(s_mb)
 The `metaBlocks` parameter can be used to enable import of extra
 metadata. MassBank metadata are *generally* more standardized and include more
 compound information (e.g., formula, exact mass). We now match the end-to-end
-vignette spectra against MassBank 2025.10 with `matchSpectra()`.
+vignette spectra against MassBank 2025.10 with *MetaboAnnotation*'s `matchSpectra()`.
 
 ```{r}
 #' match the experimental spectra against the GNPS2 drug library
@@ -405,15 +410,15 @@ unlink(dir(pth, full.names = TRUE), recursive = TRUE)
 # Creating or expanding annotation resources
 
 Public MGF/MSP libraries can be imported into `Spectra` and exported again.
-Alternatively, annotations can be stored in SQL databases *via* the `r
-Biocpkg("CompoundDb")` package, which defines a simple database schema for small
-compounds and MS data. Here we build a database from the GNPS2 drug library; see
-the vignette [*Creating CompoundDb annotation
+Alternatively, annotations can be stored in SQL databases *via* the
+`r Biocpkg("CompoundDb")` package, which defines a simple but flexible database
+schema for small compounds and MS data. Here we build a database from the GNPS2
+drug library; see the vignette [*Creating CompoundDb annotation
 resources*](https://rformassspectrometry.github.io/CompoundDb/articles/create-compounddb.html)
 for more examples.
 
 ::: {.callout-note appearance="minimal"}
-The *CompDb* database layout defines 3 main database tables, one for compound
+ℹ️ The *CompDb* database layout defines 3 main database tables, one for compound
 annotations, one for spectra metadata and one to store the actual mass (or
 fragment) peaks. These tables are linked with each other through specific
 identifier columns (*primary/foreign keys*): each table has its own *ID* column
@@ -448,7 +453,7 @@ To define the names for the compounds we first parse (and then strip) the adduct
 information from the spectrum name. The pattern defined below finds all
 sub-strings that start with a white space, followed by no, one or two `"["`, an
 `"M"` (or `"2M"` etc) with a `"+"` or a `"-"` followed by any character until
-the end of the string. This patter *should* allow to find all adduct
+the end of the string. This pattern *should* allow to find all adduct
 definitions, even if they don't follow the standard nomenclature.
 
 ```{r}
@@ -749,6 +754,13 @@ harmonizing metadata and annotations across sources. Interpretation benefits
 from cleaned, standardized information. Efforts such as
 [@de_jonge_reproducible_2024] help, but broader standardization of data and
 naming conventions is still needed.
+
+The selection of the annotation reference resource, subset of version has an
+impact on the annotation result. Also, not all annotation resources use
+versioning and their content can therefore change on a daily basis preventing
+reproducibility. Building and reporting versioned, self-contained and
+re-distributable annotation assets, as described in this vignette, can help
+guaranteeing transparent and reproducible results.
 
 # Outlook
 

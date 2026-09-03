@@ -319,7 +319,7 @@ data sets, also on conventional computing infrastructure (e.g. laptop). With
 time. Peak detection is then performed in parallel on 8 CPUs using our
 predefined default parallel processing setup.
 
-```{r, eval = eval_preprocess}
+```{r find-chrom-peaks, eval = eval_preprocess}
 cwp <- CentWaveParam(ppm = 25,
                      peakwidth = c(2, 20),
                      prefilter = c(3, 500),
@@ -339,7 +339,7 @@ Memory usage and time elapsed for this processing step where:
 ```{r, results = "asis", eval = eval_preprocess}
 tmp <- data.frame(
     `Peak RAM [MiB]` = p$Peak_RAM_Used_MiB,
-    `Processing time [min]` = p$Elapsed_Time_sec / 60,
+    `Processing time [hours]` = p$Elapsed_Time_sec / 60 / 60,
     check.names = FALSE)
 pandoc.table(
     tmp, style = "rmarkdown", split.table = Inf,
@@ -408,7 +408,7 @@ detection artifacts, such as duplicated peaks, overlapping peaks or artificially
 split peaks. Again, we process the data in chunks of 8 data files at a time to
 keep memory usage manageable for the used computer system.
 
-```{r, eval = eval_preprocess}
+```{r merge-neighboring-peaks, eval = eval_preprocess}
 #' Perform peak refinement
 mnpp <- MergeNeighboringPeaksParam(expandRt = 5)
 
@@ -465,7 +465,7 @@ pandoc.table(
 We can next perform the retention time alignment using the *peak groups*
 method.
 
-```{r, eval = eval_preprocess}
+```{r adjust-rtime, eval = eval_preprocess}
 pgp <- PeakGroupsParam(minFraction = 0.8, extraPeaks = 100,
                        span = 0.5)
 #' Perform the alignment
@@ -512,7 +512,7 @@ chromatographic peaks across samples and define the *LC-MS features*. We reduce
 `minFraction` parameter to also define features if chromatographic peaks were
 only present in 30% of the samples and use a more stringent `bw` parameter.
 
-```{r, eval = eval_preprocess}
+```{r group-chrom-peaks, eval = eval_preprocess}
 pdp <- PeakDensityParam(sampleGroups = rep(1L, length(twins)),
                         minFraction = 0.3,
                         binSize = 0.01,
@@ -589,7 +589,7 @@ features for which in some samples no chromatographic peak was detected (and for
 which hence a missing value is reported). Here we can again benefit from
 chunk-wise parallel processing.
 
-```{r, eval = eval_preprocess}
+```{r fill-chrom-peaks, eval = eval_preprocess}
 #' Perform the gap filling
 cpap <- ChromPeakAreaParam()
 
@@ -632,7 +632,10 @@ The results from the preprocessing could now be converted to a
 analysis e.g. by performing further data exploration, normalization or
 statistical data analysis.
 
-
+```{r save-results, echo = FALSE}
+## Silently saving results for eventual later evaluation
+save(twins, file = "twins.RData")
+```
 
 # Performance evaluation
 
@@ -680,7 +683,7 @@ We next execute the performance tests. To use the new `XcmsExperimentHdf5`, we
 need to specify the path and file name of the HDF5 file where the results should
 be stored to.
 
-```{r, eval = eval_performance}
+```{r performance-peak-detect, eval = eval_performance}
 #' Settings
 cwp <- CentWaveParam(ppm = 25,
                      peakwidth = c(2, 20),
@@ -762,7 +765,7 @@ the associated HDF5 files. To perform the peak refinement on the same initial
 data we thus need to create copies of the original HDF5 file for each
 configuration.
 
-```{r, eval = eval_performance}
+```{r performance-refine-chrom-peaks, eval = eval_performance}
 #' Settings
 mnpp <- MergeNeighboringPeaksParam(expandRt = 5)
 
@@ -836,7 +839,7 @@ analysis and does thus not support the `chunkSize` parameter nor does it support
 parallel processing. We thus only compare the performance of in-memory and
 on-disk results below.
 
-```{r, eval = eval_performance}
+```{r performance-group-chrom-peaks, eval = eval_performance}
 #' Settings
 pdp <- PeakDensityParam(sampleGroups = rep(1, length(tsub)),
                         minFraction = 0.3,
@@ -876,7 +879,7 @@ Next we evaluate the performance of the retention time alignment step using the
 *peak groups* approach. This method relies on the peak detection and
 correspondence results and does not support parallel processing.
 
-```{r, eval = eval_performance}
+```{r performance-adjust-rtime, eval = eval_performance}
 #' Settings
 pgp <- PeakGroupsParam(minFraction = 0.9, extraPeaks = 1000,
                        span = 0.5)
@@ -901,7 +904,7 @@ pandoc.table(
                      "retention time alignment analysis."))
 ```
 
-```{r, echo = FALSE, message = FALSE, eval = eval_performance}
+```{r performance-group-chrom-peaks2, echo = FALSE, message = FALSE, eval = eval_performance}
 #' Silently performing alignment for all HDF5 result objects
 t2 <- adjustRtime(t2, param = pgp)
 t4 <- adjustRtime(t4, param = pgp)
@@ -922,7 +925,7 @@ Finally we evaluate the performance of the gap-filling step. This method
 requires access to the full MS data and can thus again be configured with the
 `chunkSize` parameter and different parallel processing setups.
 
-```{r, eval = eval_performance}
+```{r performance-fill-chrom-peaks, eval = eval_performance}
 #' Settings
 cpap <- ChromPeakAreaParam()
 
