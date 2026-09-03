@@ -10,6 +10,8 @@
   Annotation Resources* and expand some textual passages.
 - Fix typos and expand descriptions in the *LC-MS/MS Data Annotation using R and
   Python* vignette.
+- Fix typos, format and reformulate some descriptions in the *mzTab-M file
+  format: import-export of mzTab-M 2.1 files from SummarizedExperiment*.
 
 ## Changes in 1.6.1
 

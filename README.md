@@ -152,7 +152,7 @@ actively refining the website. If you're experiencing any issues:
 🐛 If the issue persists, report it with a **reproducible example** on
 [**GitHub Issues**](https://github.com/rformassspectrometry/Metabonaut/issues).
 
-Currently, there are **no known issues** with the code.
+Currently, all vignettes run without problems.
 
 ---
 
