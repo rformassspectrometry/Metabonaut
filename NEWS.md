@@ -8,6 +8,8 @@
 - Update installation and usage descriptions.
 - Fix typos and formatting errors in the *Using and Creating Metabolomics Data
   Annotation Resources* and expand some textual passages.
+- Fix typos and expand descriptions in the *LC-MS/MS Data Annotation using R and
+  Python* vignette.
 
 ## Changes in 1.6.1
 

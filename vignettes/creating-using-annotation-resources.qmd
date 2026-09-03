@@ -243,7 +243,8 @@ Next we clean and harmonize metadata with *matchms* filters. See the
 [*matchms.filtering* documentation](https://matchms.readthedocs.io/en/latest/api/matchms.filtering.html)
 or [@de_jonge_reproducible_2024] for options.
 
-```{python, warning = FALSE}
+```{python}
+#| warning: false
 #' Python
 from matchms.filtering import default_filters, clean_adduct
 
@@ -417,7 +418,7 @@ resources*](https://rformassspectrometry.github.io/CompoundDb/articles/create-co
 for more examples.
 
 ::: {.callout-note appearance="minimal"}
-The *CompDb* database layout defines 3 main database tables, one for compound
+ℹ️ The *CompDb* database layout defines 3 main database tables, one for compound
 annotations, one for spectra metadata and one to store the actual mass (or
 fragment) peaks. These tables are linked with each other through specific
 identifier columns (*primary/foreign keys*): each table has its own *ID* column
