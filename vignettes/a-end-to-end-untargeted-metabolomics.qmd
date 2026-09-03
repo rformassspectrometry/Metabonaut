@@ -1,5 +1,5 @@
 ---
-title: "Complete end-to-end LC-MS/MS Metabolomic Data analysis"
+title: "Complete end-to-end LC-MS/MS Metabolomic Data Analysis"
 author: "Philippine Louail, Anna Tagliaferri, Vinicius Verri Hernandes, Daniel Marques de Sá e Silva, Johannes Rainer"
 format: html
 tbl-cap-location: bottom
@@ -8,7 +8,7 @@ minimal: true
 bibliography: references.bib
 date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 vignette: >
-  %\VignetteIndexEntry{Complete end-to-end LC-MS/MS Metabolomic Data analysis}
+  %\VignetteIndexEntry{Complete end-to-end LC-MS/MS Metabolomic Data Analysis}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -45,6 +45,10 @@ See the [data
 description](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html)
 vignette for detailed explanation of the dataset we go through in this workflow
 and general tips on what should be done when you first get your data.
+
+It should be noted that the described analysis is purely didactic and that due
+to the low number of available replicates (n = 3) no defensible disease-relevant
+findings can be expected.
 
 # Packages needed
 
@@ -95,9 +99,9 @@ used to convert files to the .mzML format [@chambers_cross-platform_2012].
 
 Below we will show how to extract our dataset from the MetaboLigths database
 and load it as an `MsExperiment` object. For more information on how to load
-your data from the MetaboLights database, refer to the
+your data from the MetaboLights repository, refer to the
 [vignette](https://rformassspectrometry.github.io/MsIO/articles/MsIO.html#loading-data-from-metabolights).
-For other type of data loading, check out this xcms
+For other type of data loading, check out this *xcms*
 [vignette](https://jorainer.github.io/xcmsTutorials/articles/xcms-preprocessing.html#data-import-and-exploration)
 A more specific vignette will be created for data import soon.
 
@@ -194,8 +198,8 @@ abbreviations essential for proper interpretation of this metadata information:
 -   *phenotype*: The sample groups of the experiment:
     -   `"QC"`: Quality control sample (pool of serum samples from an external,
         large cohort).
-    -   `"CVD"`: Sample from an individual with a cardiovascular disease.
-    -   `"CTR"`: Sample from a presumably healthy control.
+    -   `"CVD"`: blood plasma sample from an individual with a cardiovascular disease.
+    -   `"CTR"`: blood plasma Sample from a presumably healthy control.
 -   *sample_name*: An arbitrary name/identifier of the sample.
 -   *age*: The (rounded) age of the individuals.
 -   *injection_index*: An index representing the order (position) in which an
@@ -275,7 +279,7 @@ the performance of liquid chromatography across various samples in an
 experiment. In our case, we extract the BPC from our data to create such a
 plot. The BPC captures the maximum peak signal from each spectrum in a data
 file and plots this information against the retention time for that spectrum on
-the y-axis. The BPC can be extracted using the `chromatogram` function.
+the y-axis. The BPC can be extracted using the `chromatogram()` function.
 
 By setting the parameter `aggregationFun = "max"`, we instruct the function to
 report the maximum signal per spectrum. Conversely, when setting
@@ -337,7 +341,7 @@ essence, a BPC condenses the three-dimensional LC-MS data (*m/z* by retention
 time by intensity) into two dimensions (retention time by intensity).
 
 We can also here compare similarities of the TICs in a heatmap. The retention
-times will however not be identical between different samples. Thus we *bin()*
+times will however not be identical between different samples. Thus we `bin()`
 the chromatographic signal per sample along the retention time axis into bins of
 two seconds resulting in data with the same number of bins/data points. We can
 then calculate pairwise similarities between these data vectors using the
@@ -377,7 +381,7 @@ standards (IS), and it was the case here. We strongly recommend using them for
 visualization throughout the entire analysis. For this experiment, a set of 15
 IS was spiked to all samples. After reviewing their respective chromatoraphic
 peaks, we selected two to guide this analysis process. However, we advise to
-plot and evaluate all the ions after each steps.
+plot and evaluate all the ions after each step.
 
 To illustrate this, we generate Extracted Ion Chromatograms (EIC) for these
 selected *test ions*. By restricting the MS data to intensities within a
@@ -461,10 +465,10 @@ legend(
 )
 ```
 
-We can observe a clear concentration difference between QCs and study samples
-for the isotope labeled cystine ion. Meanwhile, the labeled methionine internal
-standard exhibits a discernible signal amidst some noise and a noticeable
-retention time shift between samples.
+We can observe a clear concentration difference between QCs (serum) and study
+(blood plasma) samples for the isotope labeled cystine ion. Meanwhile, the
+labeled methionine internal standard exhibits a discernible signal amidst some
+noise and a noticeable retention time shift between samples.
 
 # Data preprocessing
 
@@ -724,7 +728,7 @@ eics <- chromatogram(lcms1[3], rt = mz_rt[, c("rtmin", "rtmax")],
 plot(eics)
 ```
 
-In both cases the signal presumably from a single type of ion was split into
+In both cases the signal, presumably from a single type of ion, was split into
 two separate chromatographic peaks (indicated by the vertical line). The
 `MergeNeigboringPeaksParam` allows to combine such split peaks. The parameters
 for this algorithm are defined below:
@@ -1308,7 +1312,7 @@ We can observe that the peaks are now grouped more accurately into a single
 feature for each test ion. The other important parameters optimized here are:
 
 -   `binsize`: Our data was generated on a high resolution MS instrument, thus
-    we select a low value for this paramete.
+    we select a low value for this parameter.
 
 -   `ppm`: For TOF instruments, it is suggested to use a value for `ppm` larger
     than 0 to accommodate the higher measurement error of the instrument for
@@ -1670,6 +1674,13 @@ Below we will save our `XcmsExperiment` object into a file format handled by the
 ensures that our object can be easily read from other languages like Python and
 Javascript as well as loaded easily back into R.
 
+::: {.callout-note appearance="minimal"}
+ℹ️ Storage of MS result objects in language-agnostic and portable file formats is
+currently being implemented in the `r Biocpkg("MsStash")`, *SpectraStash* and
+*xcmsStash* packages. These will in future replace the *MsIO* package described
+here.
+:::
+
 ```{r}
 #' XcmsExperiment object:
 saveMsObject(lcms1,
@@ -1688,7 +1699,8 @@ median scaling can be implemented with a few lines of R code, more advanced
 normalization algorithms are available in packages such as Bioconductor's
 `r Biocpkg("preprocessCore")`. The comprehensive workflow "Notame" also propose
 a very interesting normalization approach adaptable and scalable to the user
-dataset [@klavus_notame_2020].
+dataset [@klavus_notame_2020] (see also the *Normalization and feature selection
+with the notame package* workflow).
 
 Generally, for LC-MS data, bias can be categorized into three main
 groups[@broadhurst_guidelines_2018]:
@@ -2104,9 +2116,9 @@ res_unfilt <- res
 ```
 
 Here we will eliminate features that exhibit high variability in our dataset.
-Repeatedly measured QC samples typically serve as a robust basis for cleansing
+Repeatedly measured QC samples typically serve as a robust basis for cleaning
 datasets allowing to identify features with excessively high noise. As in our
-data set external QC samples were used, i.e. pooled samples from a different
+data set external QC samples were used, i.e., pooled samples from a different
 collection and using a slightly different sample matrix, their utility for
 filtering is somewhat limited. For a comprehensive description and guidelines
 for data filtering in untargeted metabolomic studies, please refer to
@@ -2137,13 +2149,13 @@ variability in the data, relating the variance observed in QC samples with that
 in study samples. By setting a threshold of 0.4, we remove features that have a
 high degree of variability between the QC and study samples. In this example,
 any feature in which the deviation at the QC is higher than 40%
-(`threshold = 0.4`)of the deviation on the study samples is removed. This
+(`threshold = 0.4`) of the deviation on the study samples is removed. This
 filtering step ensures that only features are retained that have considerably
 lower technical than biological variance.
 
 Note that the `rowDratio()` and `rowRsd()` functions from the
 `r Biocpkg("MetaboCoreUtils")` package could be used to calculate the actual
-numeric values for the estimates used for filtering, to e.g. to evaluate their
+numeric values for the estimates used for filtering, to e.g. evaluate their
 distribution in the whole data set or identify data set-dependent threshold
 values.
 
@@ -2224,7 +2236,7 @@ upset(as.data.frame(binary_data), nset = 6, sets = colnames(df_logical), keep.or
 Other quality analysis of the data could be, evaluating the number of feature
 detected per group, the overall abundance, the noise, ... This all depends on
 the goal of the user research. R has a lot of flexibility, you can do many
-things !
+things!
 
 # Differential abundance analysis
 
@@ -2278,7 +2290,7 @@ Even if there is some variance in the data set we can't explain at this stage,
 we proceed with the (supervised) statistical tests to identify features of
 interest. We compute linear models for each metabolite explaining the observed
 feature abundance by the available study variables. While we could also use the
-base R function `lm()`, we utilize the `R Biocpkg("limma")` package to conduct
+base R function `lm()`, we utilize the `r Biocpkg("limma")` package to conduct
 the differential abundance analysis: the *moderated* test statistics
 [@smyth_linear_2004] provided by this package are specifically well suited for
 experiments with a limited number of replicates. For our tests we use a linear
@@ -2359,10 +2371,10 @@ for an enrichment of small p-values, the raw p-values are (more or less)
 uniformly distributed, which indicates the absence of any strong systematic
 biases in the data. The adjusted p-values are more conservative and account for
 multiple testing; this is important here as we fit a linear model to each
-feature and therefore perform a large number of tests which leads to a high
-chance of false positive findings. We do see that some features have very low
-p-values, indicating that they are likely to be significantly different between
-the two study groups.
+feature and therefore perform a large number of tests on the same data set which
+leads to a high chance of false positive findings. We do see that some features
+have very low p-values, indicating that they are likely to be significantly
+different between the two study groups.
 
 Below we plot the adjusted p-values against the log2 fold change of (average)
 abundances. This volcano plot will allow us to visualize the features that are
@@ -2437,10 +2449,6 @@ intensities are (as already observed above) much larger in the CTR than in the
 CVD samples. With the exception of the second feature (second EIC in the top
 row), the intensities for all significant features are however generally low.
 This might make it challenging to identify them using an LC-MS/MS setup.
-
-# Multivariate Analysis
-
-Coming soon...
 
 # Annotation
 
@@ -2582,12 +2590,12 @@ formula).
 
 Considering both features' *m/z* and retention times in the MS1-based annotation
 will increase the annotation confidence, but requires additional data, such as
-recording of the retention time of thepure standard for a compound on the same
-LC setup. An alternative approach which might provide better inside on
+recording of the retention time of the pure standard for a compound on the same
+LC setup. An alternative approach which might provide better insight on
 annotations and help to choose between different annotations for a same feature
 is to evaluate certain chemical properties of the possible matches. For
 instance, the LogP value, available in several databases such HMDB, provides an
-insight on a given compound's polarity. As this property highly affects the
+estimate on a given compound's polarity. As this property highly affects the
 interaction of the analyte with the column, it usually also directly affects
 separation. Therefore, a comparison between an analyte's retention time and
 polarity can help to rule out some possible misidentifications.
@@ -2700,7 +2708,7 @@ certain retention time windows.
 
 We next extract the `Spectra` object with the MS data from the data object and
 assign a new spectra variable with the employed collision energy, which we
-extract from the data object `sampleData`.
+extract from the data object's `sampleData`.
 
 ```{r}
 ms2_ctr <- spectra(lcms2)
@@ -2776,7 +2784,8 @@ and retention time ranges of the features' chromatographic peaks and therefore
 increase the chance of finding a correct match. This however also assumes that
 retention times between the first and second run don't differ by much.
 Alternatively, we would need to align the retention times of the second LC-MS/MS
-data set to those of the first.
+data set to those of the first (see the *Seamless Alignment: Merging New Data
+with an Existing Preprocessed Dataset* workflow).
 
 Below we first extract the *feature area*, i.e., the *m/z* and retention time
 ranges, for the significant features.
@@ -2822,8 +2831,8 @@ save(ms2_ctr_fts, file = "objects/spectra_significant_fts.RData")
 We have now a `Spectra` object with fragment spectra for the significant
 features from our differential expression analysis.
 
-This object can be used for annotation using various tools, see the vignette
-presenting how to process and annotate it using python tools [here](https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html).
+This object can be used for annotation using various tools (see also the
+*LC-MS/MS Data Annotation using R and Python* workflow).
 
 We next build our reference data which we need to process the same way as our
 *query* spectra. We extract all fragment spectra from the MassBank database,
@@ -3032,7 +3041,7 @@ Alternatively, or in addition, evidence for the potential matching chemical
 formula of a feature could be derived by evaluating the isotope pattern of the
 full MS1 scan. This provides information on the isotope composition. Various
 functions can be used for this task, such as `isotopologues()` from the
-`r Biocpkg("MetaboCoreUtils")` package or the functionality of the **enviPat** R
+`r Biocpkg("MetaboCoreUtils")` package or the functionality of the *enviPat* R
 package [@loos_accelerated_2015].
 
 ## Exporting xcms results for GNPS2 Feature Based Molecular Networking
@@ -3046,7 +3055,7 @@ The first step is to identify which MS2 spectra belong to the defined
 chromatographic features. We define the retention time and m/z ranges for all
 features and then extract the corresponding MS2 scans.
 
-```{r}
+```{r, warning = FALSE}
 # Define ranges for all features based on the LC-MS analysis
 target_all <- featureArea(lcms1)
 
@@ -3079,7 +3088,7 @@ ms2_all$feature_id <- rep(names(l), l)
 
 Often, a single feature will trigger multiple MS2 scans. To obtain a
 high-quality spectrum for annotation, we merge these multiple scans into a
-single "consensus" spectrum per feature. In this step, we keep only those
+single *consensus* spectrum per feature. In this step, we keep only those
 peaks that are present in at least 75% of the scans for a given feature to
 reduce noise.
 
@@ -3132,7 +3141,7 @@ ms2_all_gnps <- formatSpectraForGNPS(ms2_all)
 export(ms2_all_gnps, backend = MsBackendMgf(), file = "xcms_ms2_spectra.mgf")
 ```
 
-The 2 exported files `xcms_ms2_features.txt` and `xcms_ms2_spectra.mgf` can then
+The 2 exported files *xcms_ms2_features.txt* and *xcms_ms2_spectra.mgf* can then
 be uploaded to GNPS2 for feature-based molecular networking analysis.
 
 # Summary

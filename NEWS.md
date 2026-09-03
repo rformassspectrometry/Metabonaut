@@ -12,6 +12,8 @@
   Python* vignette.
 - Fix typos, format and reformulate some descriptions in the *mzTab-M file
   format: import-export of mzTab-M 2.1 files from SummarizedExperiment*.
+- Fix typos and expand description in the *Complete end-to-end LC-MS/MS
+  Metabolomic Data Analysis* vignette.
 
 ## Changes in 1.6.1
 
