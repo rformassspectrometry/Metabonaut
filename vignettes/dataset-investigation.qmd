@@ -66,11 +66,6 @@ samples were analyzed using ultra-high-performance liquid chromatography
 chromatographic separation was achieved using hydrophilic interaction liquid
 chromatography (HILIC).
 
--   Provide more in-depth visualizations to explore and understand the dataset
-    quality.
--   Compare pool lc-ms and pool lc-ms/ms and show that we have better
-    separation on the second run.
-
 # Package
 
 ```{r packages-used, message=FALSE, warning=FALSE}
@@ -541,9 +536,6 @@ axis(1, at = seq_along(group), labels = names(group))
 ```
 
 There seems to be more background noise in the CVD samples...
-
-More coming soon...
-
 
 ## Evaluating MS *foreground* and *background* signal
 

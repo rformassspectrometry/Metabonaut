@@ -2438,10 +2438,6 @@ CVD samples. With the exception of the second feature (second EIC in the top
 row), the intensities for all significant features are however generally low.
 This might make it challenging to identify them using an LC-MS/MS setup.
 
-# Multivariate Analysis
-
-Coming soon...
-
 # Annotation
 
 We have now identified the features with significant differences in abundances

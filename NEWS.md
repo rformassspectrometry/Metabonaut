@@ -12,6 +12,10 @@
   Python* vignette.
 - Fix typos, format and reformulate some descriptions in the *mzTab-M file
   format: import-export of mzTab-M 2.1 files from SummarizedExperiment*.
+- Remove unfinished/placeholder sections from the *Dataset Investigation* and
+  *End-to-End* vignettes.
+- Point the README to the versioned docker image tag, consistent with the
+  installation instructions.
 
 ## Changes in 1.6.1
 
