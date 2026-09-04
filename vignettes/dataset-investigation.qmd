@@ -49,7 +49,7 @@ In this workflow, two datasets are used:
 
 The samples were randomly selected from a larger study aimed at identifying
 metabolites with varying abundances between individuals suffering from
-cardiovascular disease (CVD) and healthy controls (CTR). The subset analyzed
+cardiovascular disease (CVD) and healthy individuals (CTR). The subset analyzed
 here includes data for three CVD patients, three CTR individuals, and four
 quality control (QC) samples. The QC samples, representing a pooled serum
 sample from a large cohort, were measured repeatedly throughout the experiment
@@ -66,7 +66,9 @@ samples were analyzed using ultra-high-performance liquid chromatography
 chromatographic separation was achieved using hydrophilic interaction liquid
 chromatography (HILIC).
 
-# Package
+# Packages used
+
+Below we define and load all R packages used in this document.
 
 ```{r packages-used, message=FALSE, warning=FALSE}
 ## Data Import and handling
@@ -270,8 +272,8 @@ between sets of samples. In particular, BPS 1, 4, 7 and 10 (counting row-wise
 from left to right) seem different than the others. In fact, these four BPS are
 from QC samples, and the remaining six from the study samples. The observed
 differences might be explained by the fact that the QC samples are pools of
-serum samples from a different cohort, while the study samples represent plasma
-samples, from a different sample collection.
+serum samples from a different cohort, while the study samples represent blood
+plasma samples, from a different sample collection.
 
 Next to the visual inspection above, we can also calculate and express the
 similarity between the BPS with a heatmap. Below we use the `compareSpectra()`
@@ -335,7 +337,7 @@ plotSpectra(spec2, main = "CTR sample")
 
 Above, we can observe that the spectra between CVD and CTR samples are not
 entirely similar, but they do exhibit similar main peaks between 200 and 600
-m/z with a general higher intensity in control samples. However the peak
+*m/z* with a general higher intensity in control samples. However the peak
 distribution (or at least intensity) seems to vary the most between an *m/z* of
 10 to 210 and after an *m/z* of 600.
 
@@ -390,7 +392,7 @@ essence, a BPC condenses the three-dimensional LC-MS data (*m/z* by retention
 time by intensity) into two dimensions (retention time by intensity).
 
 We can also here compare similarities of the BPCs in a heatmap. The retention
-times will however not be identical between different samples. Thus we *bin()*
+times will however not be identical between different samples. Thus we `bin()`
 the chromatographic signal per sample along the retention time axis into bins
 of two seconds resulting in data with the same number of bins/data points. We
 can then calculate pairwise similarities between these data vectors using the
@@ -449,7 +451,7 @@ different signal in the retention time range from about 40 to 160 seconds.
 Whether, and how strong this difference will impact the following analysis
 remains to be determined.
 
-## known compounds
+## Known compounds
 
 While the artificially isotope labeled compounds were spiked to the individual
 samples, there should also be the signal from the endogenous compounds in serum
@@ -481,13 +483,14 @@ legend("topright", col = col_phenotype, legend = names(col_phenotype),
 ```
 
 The two cystine EICs above look highly similar (the endogenous shown left, the
-isotope labeled right in the plot above), if not for the shift in m/z, which
+isotope labeled right in the plot above), if not for the shift in *m/z*, which
 arises from the artificial labeling. This shift allows us to discriminate
 between the endogenous and non-endogenous compound.
 
 ## Further post-processing analysis
 
-Below we load the `lcms1` object that we saved after preprocessing.
+Below we load the `lcms1` object that we saved after preprocessing (described in
+the *Complete end-to-end LC-MS/MS Metabolomic Data Analysis* workflow).
 
 ```{r}
 # load preprocessed xcmsExperiment
@@ -502,7 +505,7 @@ res <- readObject(system.file("extdata", "preprocessed_res",
 ## Noise analysis
 
 Below we plot the backgrounds signal for each study group. This can be
-interesting in cases on technical evaluation. In our cases we expect very
+an interesting technical evaluation of the data. In our case we expect very
 similar background noise in both CVD and CTR.
 
 ```{r echo=TRUE}
@@ -535,7 +538,14 @@ for (i in seq_along(group)) {
 axis(1, at = seq_along(group), labels = names(group))
 ```
 
-There seems to be more background noise in the CVD samples...
+Although there seem to be differences in background noise between CVD and CTR,
+these are only very small.
+
+The code above calculated background signal as the difference between the total
+sum of signal and the quantified abundance of the LC-MS features. An
+alternative, and more accurate but more computationally intense, approach to
+estimate the background signal, which removes actual mass peaks for identified
+chromatographic peaks from the full MS data is performed in the next section.
 
 ## Evaluating MS *foreground* and *background* signal
 
@@ -675,7 +685,6 @@ It should however be noted that each individual filter (i.e., row in the
 matrices provided with `mz` and `rtime`) is evaluated iteratively and thus the
 performance of the filter step depends heavily on the number of rows of these
 matrices.
-
 
 # Session information
 

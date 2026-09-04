@@ -1,12 +1,12 @@
 ---
-title: "Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset"
+title: "Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset"
 author: "Philippine Louail, Anton Ribbenstedt, Olle Hartvigsson, Carl Brunius, Johannes Rainer"
 format: html
 editor: visual
 minimal: true
 date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 vignette: >
-  %\VignetteIndexEntry{Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset}
+  %\VignetteIndexEntry{Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
