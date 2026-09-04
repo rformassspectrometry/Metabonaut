@@ -370,12 +370,12 @@ scores = calculate_scores(references = clean_mgf_py,
 ```
 
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:01<01:59,  1.56s/it]
-    Calculating similarities:  22%|##1       | 17/78 [00:01<00:04, 14.03it/s]
-    Calculating similarities:  44%|####3     | 34/78 [00:01<00:01, 30.74it/s]
-    Calculating similarities:  63%|######2   | 49/78 [00:01<00:00, 46.41it/s]
-    Calculating similarities:  85%|########4 | 66/78 [00:01<00:00, 65.42it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 38.29it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:01<02:15,  1.76s/it]
+    Calculating similarities:  26%|##5       | 20/78 [00:01<00:03, 14.73it/s]
+    Calculating similarities:  51%|#####1    | 40/78 [00:01<00:01, 32.48it/s]
+    Calculating similarities:  73%|#######3  | 57/78 [00:02<00:00, 49.03it/s]
+    Calculating similarities:  99%|#########8| 77/78 [00:02<00:00, 70.77it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 35.77it/s]
 
 ``` python
 scores
