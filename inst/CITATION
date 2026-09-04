@@ -1,26 +1,29 @@
 citHeader("To cite this workflow:")
 
 citEntry(entry = "Misc",
-         title  = "rformassspectrometry/Metabonaut: v1.4.0",
+         title  = "rformassspectrometry/Metabonaut: v1.6.2",
          author = personList(
            person(given = "Philippine", family = "Louail"),
            person(given = "Marilyn", family = "De Graeve"),
-           person(given = "Anna", family = "Tagliaferri"),
+           person(given = "Alexandru", family = "Mahmoud"),
            person(given = "Daniel", family = "Marques de Sá e Silva"),
-           person(given = "Vinicius", family = "Verri Hernandes"),
            person(given = "Kozo", family = "Nishida"),
            person(given = "Vilhelm", family = "Suksi"),
+           person(given = "Anna", family = "Tagliaferri"),
+           person(given = "Gabriele", family = "Tomè"),
+           person(given = "Vinicius", family = "Verri Hernandes"),
            person(given = "Johannes", family = "Rainer")
          ),
          publisher = "Zenodo",
          year = "2026",
-         month = "January",
-         version = "v1.4.0",
-         doi = "10.5281/zenodo.18172608",
-         url = "https://doi.org/10.5281/zenodo.18172608",
-         textVersion = paste0("Philippine Louail, Marilyn De Graeve, Anna Tagliaferri, ",
-                              "Daniel Marques de Sá e Silva, Vinicius Verri Hernandes, ",
-                              "Kozo Nishida, Vilhelm Suksi, & Johannes Rainer. (2026). ",
-                              "rformassspectrometry/Metabonaut: v1.4.0. ",
-                              "Zenodo. https://doi.org/10.5281/zenodo.18172608")
+         month = "September",
+         version = "v1.6.2",
+         doi = "10.5281/zenodo.22300919",
+         url = "https://doi.org/10.5281/zenodo.22300919",
+         textVersion = paste0("Philippine Louail, Marilyn De Graeve, Alexandru Mahmoud, ",
+                              "Daniel Marques de Sá e Silva, Kozo Nishida, Vilhelm Suksi, ",
+                              "Anna Tagliaferri, Gabriele Tomè, Vinicius Verri Hernandes, ",
+                              "& Johannes Rainer. (2026). ",
+                              "rformassspectrometry/Metabonaut: v1.6.2. ",
+                              "Zenodo. https://doi.org/10.5281/zenodo.22300919")
 )
