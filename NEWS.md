@@ -12,12 +12,14 @@
   Python* vignette.
 - Fix typos, format and reformulate some descriptions in the *mzTab-M file
   format: import-export of mzTab-M 2.1 files from SummarizedExperiment*.
-- Fix typos and expand description in the *Complete end-to-end LC-MS/MS
-  Metabolomic Data Analysis* vignette.
 - Fix typos and small formatting issues in the *Normalization and feature
   selection with the notame package* vignette.
 - Remove comments and complete partial sentences in the *Dataset investigation:
   What to do when you get your data* vignette.
+- Remove unfinished/placeholder sections from the *Dataset Investigation* and
+  *End-to-End* vignettes.
+- Point the README to the versioned docker image tag, consistent with the
+  installation instructions.
 
 ## Changes in 1.6.1
 

@@ -19,10 +19,8 @@ RUN rm -rf /home/rstudio/scripts /home/rstudio/vignettes/.quarto
 ## Global installation of required packages
 ## Need MsBackendMetaboLights to pre-download the dataset.
 ## Need MsIO and RmzTabM because not on any repository
-## NOTE: RmzTabM from the 'gabri' branch, the mzTab-M vignette needs
-## makeSummarizedExperimentFromMzTabM(), which is not yet merged into main (see
-## RmzTabM PR #48). Revert to the default branch once it is merged. Keep in sync
-## with the Remotes field in DESCRIPTION, otherwise main is installed over it.
+## NOTE: packages from GitHub are pinned to a specific commit for
+## reproducibility. Keep these in sync with the Remotes field in DESCRIPTION.
 RUN --mount=type=secret,id=github_pat \
     export GITHUB_PAT="$(cat /run/secrets/github_pat 2>/dev/null || true)" && \
     Rscript -e "install.packages('remotes'); BiocManager::install(c('RforMassSpectrometry/MsIO@a669fa1303a023161581b7a16caed3ed20a43299', 'RforMassSpectrometry/RmzTabM@96e79f180031485cbf581971f3f3d8cac6979379', 'MsBackendMetaboLights', 'mzR') , ask = FALSE, dependencies = c('Depends', 'Imports'), build_vignettes = FALSE)"

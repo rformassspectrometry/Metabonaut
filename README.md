@@ -25,7 +25,7 @@ There are three ways to run the workflows, from the least to the most setup:
     ⚠️ Workshop sessions are **ephemeral**: all data and progress are erased
     when the workshop is stopped, so save a local copy of anything you want to
     keep.
--   **Docker**: pull `rformassspectrometry/metabonaut:latest` and run it
+-   **Docker**: pull `rformassspectrometry/metabonaut:v1.6.2` and run it
     locally. See the
     [installation instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
 -   **Local R installation**: install the package and its dependencies
