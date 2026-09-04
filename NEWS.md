@@ -14,6 +14,10 @@
   format: import-export of mzTab-M 2.1 files from SummarizedExperiment*.
 - Fix typos and expand description in the *Complete end-to-end LC-MS/MS
   Metabolomic Data Analysis* vignette.
+- Fix typos and small formatting issues in the *Normalization and feature
+  selection with the notame package* vignette.
+- Remove comments and complete partial sentences in the *Dataset investigation:
+  What to do when you get your data* vignette.
 
 ## Changes in 1.6.1
 

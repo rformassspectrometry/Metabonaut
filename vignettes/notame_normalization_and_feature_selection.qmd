@@ -19,10 +19,11 @@ knitr::opts_knit$set(root.dir = './')
 ```
 
 # Introduction
+
 Herein, we will perform normalization and feature selection using the
 *notame* R packages, originally developed in parallel with a protocol
-article published in the "Metabolomics Data Processing and Data
-Analysis—Current Best Practices” special issue of the Metabolites journal
+article published in the *Metabolomics Data Processing and Data
+Analysis—Current Best Practices* special issue of the Metabolites journal
 [@klavus_notame_2020]. The main outcome is identifying interesting features
 for laborious downstream steps relating to biological context, such as
 annotation and pathway analysis, which fall outside the purview of *notame*.
@@ -31,11 +32,16 @@ adopted by new practitioners. We will not follow the protocol article
 exactly and instead do an analysis which meshes with the trunk of the end-to-
 end Metabonaut workflow.
 
-The normalization process is based on QC samples so the sample size here is limiting, with only four QC samples. The QC samples were also pooled from another sample collection, whereas typically, the QC samples would be pooled from the same sample collection. These limitations will become evident below, so we make an effort to explain the basic things one would want to look out for.
+The normalization process is based on QC samples so the sample size here is
+limiting, with only four QC samples. The QC samples were also pooled from
+another sample collection, whereas typically, the QC samples would be pooled
+from the same sample collection. These limitations will become evident below, so
+we make an effort to explain the basic things one would want to look out for.
 
 # Setup
+
 Let's prepare by attaching packages and loading the preprocessed data as a
-SummarizedExperiment object returned from `MSExperiment::quantify()`.
+`SummarizedExperiment` object returned from `xcms::quantify()`.
 
 ```{r, message=FALSE, warning=FALSE}
 library(alabaster.se) # Portable loading and saving of SummarizedExperiment
@@ -58,11 +64,12 @@ dir <- system.file("extdata", "preprocessed_res", package = "Metabonaut")
 se <- readObject(dir)
 se
 ```
+
 The `SummarizedExperiment` container supports several assays. In *notame*, you
 need to specify the assay using the `assay.type` parameter if using multiple
-assays. Herein, we have two assays: "raw" contains the detected peaks
-without gap-filling, whereas "raw_filled" contains the gap-filled peak
-table. For this demo to go smoothly, we prepare the SummarizedExperiment
+assays. Herein, we have two assays: `"raw"` contains the detected peaks
+without gap-filling, whereas `"raw_filled"` contains the gap-filled peak
+table. For this demo to go smoothly, we prepare the `SummarizedExperiment`
 object for all the functions at once, mostly by renaming and creating
 columns.
 
@@ -91,6 +98,7 @@ assay(se, "raw") <- as.matrix(assay(se, "raw"))
 ```
 
 # Normalization
+
 Features with a low detection rate are flagged, as they are deemed too
 unreliable not only for statistical analysis, but also for the normalization
 process which relies heavily on QC samples. Flagged features are
@@ -320,7 +328,7 @@ We flag low-quality features, excluding them from downstream steps.
 In addition to the D-ratio and detection rate in the trunk of the workflow, we
 flag features by their relative standard deviation in QC samples. The non-
 parametric, robust versions of the D-ratio and relative standard deviation are
-used[@broadhurst_guidelines_2018].
+used [@broadhurst_guidelines_2018].
 
 ```{r, message=FALSE, warning=FALSE}
 se <- flag_quality(se, assay.type = "dil_norm",
@@ -341,7 +349,6 @@ with a single assay for the remainder of the analysis. We also drop flagged
 features, although low-quality features can be needed in annotation when
 searching for specific ions or fragments of known molecules.
 
-
 ```{r, message=FALSE, warning=FALSE, results='hold'}
 set.seed(2024)
 pretreated <- impute_rf(drop_qcs(se), assay.type = "dil_norm",
@@ -353,6 +360,7 @@ assays(base)[names(assays(base)) != "imputed"] <- NULL
 The out-of-bag error is promising. Now the data is ready for feature selection.
 
 # Differential abundance analysis
+
 Let's get a final look at the data with PCA, this time without QC samples and
 coloring by the only available clinical covariate, age.
 
@@ -397,14 +405,14 @@ plot_grid(plot_p_histogram(list(lm_results$phenotypeCVD.p.value)),
 The p-value histogram for looks promising; it is a relatively uniform
 distribution with an overabundance of low p-values. However, there are no
 significant features after correction for multiple testing. For demonstration
-purposes, we'll consider the feature "FT0845", which was identified as caffeine
+purposes, we'll consider the feature *FT0845*, which was identified as caffeine
 in the trunk of the workflow, most interesting.
 
 After differential abundance analysis or feature selection using supervised
 learning, for example, the number of significant features or a ranking cutoff
 allows for manual inspection of feature-wise plots. *notameViz* includes a
 variety of feature-wise visualizations adaptable to a variety of study designs.
-For feature "FT0845", the abundance of CTR samples is reduced after
+For feature *FT0845*, the abundance of CTR samples is reduced after
 normalization.
 
 ```{r, results=FALSE, message=FALSE}
@@ -424,7 +432,7 @@ plot_grid(save_beeswarm_plots(pretreated["FT0845", ], x = "phenotype",
 ```
 
 The results are also visualized with a variety of comprehensive visualizations.
-The volcano plot below shows that feature "FT0845" is distinct in having a low
+The volcano plot below shows that feature *FT0845* is distinct in having a low
 p-value and the second-largest fold-change. Manhattan plots and cloud plots
 could also be used to inspect how interesting features relate to m/z and
 retention time. We often co-visualize results from differential abundance
@@ -444,14 +452,19 @@ volcano_plot(base, x = "phenotypeCVD.estimate",
 ```
 
 # Conclusion
+
 Caffeine is a mild diuretic and can concentrate blood in high doses, so a
-difference in biological dilution between the study groups can be expected. The
+difference in biological dilution between the study groups can be expected. Due
+to the low number of replicates and the potential confounding with a difference
+in life style between the compared sample groups, any biological interpretation
+of results from this data set should however be taken with care. The
 overall structure of the data seems to be intact after normalization. On
 the other hand, the QC samples were from a different source so the most
 probable dilution factors may not have been determined accurately for the
 biological samples and drift correction likely suffered as well.
 
 # Session information
+
 ```{r}
 sessionInfo()
 ```
