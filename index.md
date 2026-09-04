@@ -26,7 +26,7 @@ setup:
   data already installed, free of charge. ⚠️ Workshop sessions are
   **ephemeral**: all data and progress are erased when the workshop is
   stopped, so save a local copy of anything you want to keep.
-- **Docker**: pull `rformassspectrometry/metabonaut:latest` and run it
+- **Docker**: pull `rformassspectrometry/metabonaut:v1.6.2` and run it
   locally. See the [installation
   instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
 - **Local R installation**: install the package and its dependencies
@@ -113,7 +113,14 @@ remain stable over time, allowing you to run all vignettes together as
 one comprehensive **super-vignette**.
 
 - **Major updates** will be documented here.
-  - Metabonaut now works with a stable version of Bioconductor (3.23)
+  - Metabonaut (1.6.2) now works with a stable version of Bioconductor
+    (3.23). Packages not yet included in Bioconductor are installed from
+    GitHub: [*MsIO*](https://github.com/RforMassSpectrometry/MsIO)
+    (version 0.0.17),
+    [*RmzTabM*](https://github.com/RforMassSpectrometry/RmzTabM)
+    (version 0.99.1),
+    [*RuSirius*](https://github.com/RforMassSpectrometry/RuSirius)
+    (version 1.0.4).
 - **Minor updates** can be found in the [News
   section](https://rformassspectrometry.github.io/Metabonaut/news/index.html).
 
@@ -148,7 +155,7 @@ the issue persists, report it with a **reproducible example** on
 [**GitHub
 Issues**](https://github.com/rformassspectrometry/Metabonaut/issues).
 
-Currently, there are **no known issues** with the code.
+Currently, all vignettes run without problems.
 
 ------------------------------------------------------------------------
 

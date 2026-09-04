@@ -1,5 +1,10 @@
 # LC-MS/MS Data Annotation using R and Python
 
+``` r
+
+library(BiocStyle)
+```
+
 ## Introduction
 
 The *SpectriPy* R package enables powerful mass spectrometry (MS) data
@@ -28,18 +33,23 @@ features in this tutorial originates from a small *in-house* reference
 library (provided in MGF format) available in the *SpectriPy* package.
 
 The analysis in this document is performed using R and Python code
-chunks. A comment *\#’ R session:* or *\#’ Python session:* is used for
-easier distinction of these.
+chunks. A comment `#' R session:` or `#' Python session:` is used for
+easier distinction of these. Additional examples of combined R+Python
+analyses are also provided in the Metabonaut *Using and Creating
+Metabolomics Data Annotation Resources* vignette.
 
 ## Load *SpectriPy*
 
-Load the required R *SpectriPy* package. If you already have a Python
-environment opened, please restart your Integrated Development
-Environment and run this as a first command, to load the required
-package *reticulate* and setup the conda environment ‘r-spectripy’
-correctly. Please see the [Detailed information on installation and
-configuration](https://rformassspectrometry.github.io/SpectriPy/articles/detailed-installation-configuration.html)
-document for other options.
+Load the required R \`r Biocpkg(“SpectriPy”) package. First-time loading
+of the package will also configure the Python environment and install
+all required Python libraries.
+
+> **Note**
+>
+> ℹ️ See also the [Detailed information on installation and
+> configuration](https://rformassspectrometry.github.io/SpectriPy/articles/detailed-installation-configuration.html)
+> vignette for alternatives, e.g. using a system Python installation
+> with *SpectriPy*.
 
 ``` r
 
@@ -59,8 +69,8 @@ Analysis in
 R](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html).
 
 First, we load the `Spectra` object with the MS2 spectra of the unknown
-features found to be significant in the “Differential abundance
-analysis”, see section [MS2-based
+features found to be significant in the *Differential abundance
+analysis*, see section [MS2-based
 annotation](https://rformassspectrometry.github.io/Metabonaut/articles/end-to-end-untargeted-metabolomics.html#differential-abundance-analysis).
 This `Spectra` object is shared as part of the *Metabonaut* package.
 
@@ -135,9 +145,9 @@ ms2_ctr_fts$feature_id[1]
 
 ## Filter query data
 
-To ensure this `Spectra` object only contains MS2 data, we filter to
-only MS2 spectra with more than 2 fragment peaks per spectrum using some
-classical filtering functions from the *Spectra* package.
+To ensure this `Spectra` object to contain only MS2 data, we filter the
+data to MS level 2 and restrict in addition to spectra with more than 2
+fragment peaks.
 
 ``` r
 
@@ -174,7 +184,7 @@ ms2_ctr_fts
 
 ## Load reference MS2 data
 
-As the *in-house* spectral library, we import a small test data file in
+As the *reference* spectral library, we import a small test data file in
 MGF format. This file is part of the *SpectriPy* package and we below
 define its path on the local computer.
 
@@ -186,10 +196,16 @@ define its path on the local computer.
 mgf_file <- system.file("extdata", "mgf", "test.mgf", package = "SpectriPy")
 ```
 
-The loading of this file is then performed using the Python *matchms*
-library. The variable with the MGF file name can be accessed in the
-associated Python session using `r.mgf_file`. The loaded object is a
-Python list of `matchms.Spectrum` objects.
+We load this file next using the Python *matchms* library. The variable
+with the MGF file name defined in R can be accessed in the associated
+Python session using `r.mgf_file`. The loaded object is a Python list of
+`matchms.Spectrum` objects.
+
+> **Note**
+>
+> ℹ️ In *reticulate*-based shared R/Python sessions R variables can be
+> accessed in Python using the prefix `r.` while Python attributes can
+> be accessed from R using `py$`.
 
 ``` python
 #' Python session:
@@ -282,9 +298,10 @@ ms2_ctr_fts_py[0]
 ## Filter the reference library
 
 Before we run the spectral comparisons of our query data to the MGF
-reference library, we first apply some MS2 processing from *matchms*.
-Default filtering from *matchms* is performed to standardize ion mode,
-correct charge and more. See the [matchms filtering
+reference library, we first apply some MS2 processing from the Python
+*matchms* library. Default filtering from *matchms* is performed to
+standardize ion mode, correct charge and more. See the [matchms
+filtering
 documentation](https://matchms.readthedocs.io/en/latest/api/matchms.filtering.html).
 Also, we keep only reference spectra with a precursor m/z as the
 similarity algorithm we use later requires spectra to have a precursor
@@ -321,17 +338,15 @@ len(clean_mgf_py)
 We calculate the pairwise spectral similarity between the query spectra
 and the reference library spectra using Python’s *matchms* library.
 
-Here, we use the modified cosine spectral similarity algorithm from
-*matchms*, from source
-[matchms](https://github.com/matchms/matchms/blob/master/README.rst).
-This algorithm can easily be exchanged for another spectral similarity
+Here, we use the modified cosine spectral similarity algorithm. This
+algorithm can easily be exchanged for another spectral similarity
 calculation from *matchms* (see
 [here](https://matchms.readthedocs.io/en/latest/api/matchms.similarity.html)).
 
 Since *matchms* version 0.32, this algorithm is called
 `ModifiedCosineGreedy` (it was named `ModifiedCosine` before). The
 implementation solves the peak assignment between two spectra in a
-*greedy* way, i.e. it repeatedly takes the highest scoring peak pair,
+*greedy* way, i.e., it repeatedly takes the highest scoring peak pair,
 which is fast but only an approximation of the optimal assignment.
 *matchms* also provides `ModifiedCosineHungarian`, which computes the
 exact assignment at the cost of longer run times. For a typical
@@ -355,15 +370,12 @@ scores = calculate_scores(references = clean_mgf_py,
 ```
 
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:02<03:12,  2.49s/it]
-    Calculating similarities:  14%|#4        | 11/78 [00:02<00:11,  5.79it/s]
-    Calculating similarities:  27%|##6       | 21/78 [00:02<00:04, 12.53it/s]
-    Calculating similarities:  41%|####1     | 32/78 [00:02<00:02, 21.48it/s]
-    Calculating similarities:  55%|#####5    | 43/78 [00:02<00:01, 31.43it/s]
-    Calculating similarities:  68%|######7   | 53/78 [00:03<00:00, 39.93it/s]
-    Calculating similarities:  81%|########  | 63/78 [00:03<00:00, 49.35it/s]
-    Calculating similarities:  95%|#########4| 74/78 [00:03<00:00, 59.79it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:03<00:00, 23.71it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:01<01:59,  1.56s/it]
+    Calculating similarities:  22%|##1       | 17/78 [00:01<00:04, 14.03it/s]
+    Calculating similarities:  44%|####3     | 34/78 [00:01<00:01, 30.74it/s]
+    Calculating similarities:  63%|######2   | 49/78 [00:01<00:00, 46.41it/s]
+    Calculating similarities:  85%|########4 | 66/78 [00:01<00:00, 65.42it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 38.29it/s]
 
 ``` python
 scores
@@ -393,9 +405,9 @@ sim_matchms.shape
 
     (291, 78)
 
-Next, we create a data frame with per queried spectrum from our unknown
-variables, the compound name of the higest matching spectra from the
-reference library and the corresponding similarity score.
+Next, we create a data frame with one row per queried spectrum adding
+the compound name of the highest matching spectra from the reference
+library and the corresponding similarity score.
 
 ``` python
 #' Python session:
@@ -437,13 +449,15 @@ df.head()
 
     [5 rows x 5 columns]
 
-\[!\] **Caution**: As the higest score is taken as criteria for the
-annotation, a lot of caution is needed evaluation the trueness of the
-match. A low score is not reliable, as the similarity algorithm will
-calculate a score for each pair of spectra. Therefore, a match will
-always be found. In addition, if your unknown compound is absent in the
-reference library, it will match wrongly to another compound that is
-present in the database.
+> **Note**
+>
+> ⚠️ As the higest score is taken as criteria for the annotation, a lot
+> of caution is needed evaluation the trueness of the match. A low score
+> is not reliable, as the similarity algorithm will calculate a score
+> for each pair of spectra. Therefore, a match will always be found. In
+> addition, if your unknown compound is absent in the reference library,
+> it will match wrongly to another compound that is present in the
+> database.
 
 Below we filter the results retaining only matches with a similarity
 value above 0.6. Above this value, the potential annotations need to be
@@ -456,6 +470,8 @@ standards.
 #' Keep only rows where score >= 0.6
 df_filtered = df[df["ModifiedCosineGreedy_score"] >= 0.6]
 ```
+
+The table below shows these matches:
 
 ``` r
 
@@ -563,22 +579,22 @@ sessionInfo()
 
     other attached packages:
     [1] pander_0.6.6        Spectra_1.22.2      BiocParallel_1.46.0
-    [4] S4Vectors_0.50.1    BiocGenerics_0.58.1 generics_0.1.4
-    [7] SpectriPy_1.3.0     reticulate_1.46.0
+    [4] S4Vectors_0.50.2    BiocGenerics_0.58.1 generics_0.1.4
+    [7] SpectriPy_1.2.1     reticulate_1.47.0   BiocStyle_2.40.0
 
     loaded via a namespace (and not attached):
-     [1] Matrix_1.7-5           jsonlite_2.0.0         compiler_4.6.1
-     [4] Rcpp_1.1.2             parallel_4.6.1         snakecase_0.11.1
-     [7] cluster_2.1.8.2        IRanges_2.46.0         png_0.1-9
-    [10] yaml_2.3.12            fastmap_1.2.0          lattice_0.22-9
-    [13] here_1.0.2             ProtGenerics_1.44.0    knitr_1.51
-    [16] MASS_7.3-66            rprojroot_2.1.1        rlang_1.3.0
-    [19] xfun_0.60              fs_2.1.0               MsCoreUtils_1.24.0
-    [22] otel_0.2.0             cli_3.6.6              withr_3.0.3
-    [25] digest_0.6.39          grid_4.6.1             MetaboCoreUtils_1.20.1
-    [28] clue_0.3-68            evaluate_1.0.5         data.table_1.18.4
-    [31] codetools_0.2-20       rmarkdown_2.31         tools_4.6.1
-    [34] htmltools_0.5.9       
+     [1] Matrix_1.7-6           jsonlite_2.0.0         compiler_4.6.1
+     [4] BiocManager_1.30.27    Rcpp_1.1.2             parallel_4.6.1
+     [7] snakecase_0.11.1       cluster_2.1.8.3        IRanges_2.46.0
+    [10] png_0.1-9              yaml_2.3.12            fastmap_1.2.0
+    [13] lattice_0.23-1         here_1.0.2             ProtGenerics_1.44.0
+    [16] knitr_1.51             MASS_7.3-66            rprojroot_2.1.1
+    [19] rlang_1.3.0            xfun_0.60              fs_2.1.0
+    [22] MsCoreUtils_1.24.0     otel_0.2.0             cli_3.6.6
+    [25] withr_3.0.3            digest_0.6.39          grid_4.6.1
+    [28] MetaboCoreUtils_1.20.1 clue_0.3-68            evaluate_1.0.5
+    [31] data.table_1.18.6.1    codetools_0.2-20       rmarkdown_2.32
+    [34] tools_4.6.1            htmltools_0.5.9       
 
 ## References
 

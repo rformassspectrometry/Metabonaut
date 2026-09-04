@@ -32,11 +32,12 @@ In this workflow, two datasets are used:
 
 The samples were randomly selected from a larger study aimed at
 identifying metabolites with varying abundances between individuals
-suffering from cardiovascular disease (CVD) and healthy controls (CTR).
-The subset analyzed here includes data for three CVD patients, three CTR
-individuals, and four quality control (QC) samples. The QC samples,
-representing a pooled serum sample from a large cohort, were measured
-repeatedly throughout the experiment to monitor signal stability.
+suffering from cardiovascular disease (CVD) and healthy individuals
+(CTR). The subset analyzed here includes data for three CVD patients,
+three CTR individuals, and four quality control (QC) samples. The QC
+samples, representing a pooled serum sample from a large cohort, were
+measured repeatedly throughout the experiment to monitor signal
+stability.
 
 The data and metadata for this workflow are available on the
 MetaboLights database under the ID: MTBLS8735.
@@ -49,12 +50,9 @@ chromatography (UHPLC) coupled to a Q-TOF mass spectrometer (TripleTOF
 5600+), and chromatographic separation was achieved using hydrophilic
 interaction liquid chromatography (HILIC).
 
-- Provide more in-depth visualizations to explore and understand the
-  dataset quality.
-- Compare pool lc-ms and pool lc-ms/ms and show that we have better
-  separation on the second run.
+## Packages used
 
-## Package
+Below we define and load all R packages used in this document.
 
 ``` r
 
@@ -321,7 +319,7 @@ differences between sets of samples. In particular, BPS 1, 4, 7 and 10
 In fact, these four BPS are from QC samples, and the remaining six from
 the study samples. The observed differences might be explained by the
 fact that the QC samples are pools of serum samples from a different
-cohort, while the study samples represent plasma samples, from a
+cohort, while the study samples represent blood plasma samples, from a
 different sample collection.
 
 Next to the visual inspection above, we can also calculate and express
@@ -398,9 +396,9 @@ one CTR sample.
 
 Above, we can observe that the spectra between CVD and CTR samples are
 not entirely similar, but they do exhibit similar main peaks between 200
-and 600 m/z with a general higher intensity in control samples. However
-the peak distribution (or at least intensity) seems to vary the most
-between an *m/z* of 10 to 210 and after an *m/z* of 600.
+and 600 *m/z* with a general higher intensity in control samples.
+However the peak distribution (or at least intensity) seems to vary the
+most between an *m/z* of 10 to 210 and after an *m/z* of 600.
 
 The CTR spectrum above exhibits significant peaks around an *m/z* of
 150 - 200 that have a much lower intensity in the CVD sample. To delve
@@ -495,12 +493,13 @@ time by intensity).
 
 We can also here compare similarities of the BPCs in a heatmap. The
 retention times will however not be identical between different samples.
-Thus we *bin()* the chromatographic signal per sample along the
-retention time axis into bins of two seconds resulting in data with the
-same number of bins/data points. We can then calculate pairwise
-similarities between these data vectors using the
-[`cor()`](https://rdrr.io/r/stats/cor.html) function and visualize the
-result using
+Thus we
+[`bin()`](https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html) the
+chromatographic signal per sample along the retention time axis into
+bins of two seconds resulting in data with the same number of bins/data
+points. We can then calculate pairwise similarities between these data
+vectors using the [`cor()`](https://rdrr.io/r/stats/cor.html) function
+and visualize the result using
 [`pheatmap()`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html).
 
 ``` r
@@ -565,7 +564,7 @@ show a different signal in the retention time range from about 40 to 160
 seconds. Whether, and how strong this difference will impact the
 following analysis remains to be determined.
 
-### known compounds
+### Known compounds
 
 While the artificially isotope labeled compounds were spiked to the
 individual samples, there should also be the signal from the endogenous
@@ -606,12 +605,14 @@ Figure 9. EIC of endogenous cystine vs spiked.
 
 The two cystine EICs above look highly similar (the endogenous shown
 left, the isotope labeled right in the plot above), if not for the shift
-in m/z, which arises from the artificial labeling. This shift allows us
-to discriminate between the endogenous and non-endogenous compound.
+in *m/z*, which arises from the artificial labeling. This shift allows
+us to discriminate between the endogenous and non-endogenous compound.
 
 ### Further post-processing analysis
 
-Below we load the `lcms1` object that we saved after preprocessing.
+Below we load the `lcms1` object that we saved after preprocessing
+(described in the *Complete end-to-end LC-MS/MS Metabolomic Data
+Analysis* workflow).
 
 ``` r
 
@@ -627,7 +628,7 @@ res <- readObject(system.file("extdata", "preprocessed_res",
 ### Noise analysis
 
 Below we plot the backgrounds signal for each study group. This can be
-interesting in cases on technical evaluation. In our cases we expect
+an interesting technical evaluation of the data. In our case we expect
 very similar background noise in both CVD and CTR.
 
 ``` r
@@ -663,9 +664,15 @@ axis(1, at = seq_along(group), labels = names(group))
 
 Figure 10. Evaluation of background signal.
 
-There seems to be more background noise in the CVD samples…
+Although there seem to be differences in background noise between CVD
+and CTR, these are only very small.
 
-More coming soon…
+The code above calculated background signal as the difference between
+the total sum of signal and the quantified abundance of the LC-MS
+features. An alternative, and more accurate but more computationally
+intense, approach to estimate the background signal, which removes
+actual mass peaks for identified chromatographic peaks from the full MS
+data is performed in the next section.
 
 ### Evaluating MS *foreground* and *background* signal
 
@@ -888,7 +895,7 @@ sessionInfo()
      [9] Seqinfo_1.2.0               IRanges_2.46.0
     [11] MatrixGenerics_1.24.0       matrixStats_1.5.0
     [13] MsBackendMetaboLights_1.6.1 Spectra_1.22.2
-    [15] BiocParallel_1.46.0         S4Vectors_0.50.1
+    [15] BiocParallel_1.46.0         S4Vectors_0.50.2
     [17] BiocGenerics_0.58.1         generics_0.1.4
     [19] MsIO_0.0.17                 MsExperiment_1.14.0
     [21] ProtGenerics_1.44.0         BiocStyle_2.40.0
@@ -898,23 +905,23 @@ sessionInfo()
       [1] rstudioapi_0.19.0           jsonlite_2.0.0
       [3] MultiAssayExperiment_1.38.0 magrittr_2.0.5
       [5] farver_2.1.2                MALDIquant_1.22.3
-      [7] rmarkdown_2.31              fs_2.1.0
+      [7] rmarkdown_2.32              fs_2.1.0
       [9] vctrs_0.7.3                 memoise_2.0.1
      [11] htmltools_0.5.9             S4Arrays_1.12.0
-     [13] progress_1.2.3              curl_7.1.0
+     [13] progress_1.2.3              curl_8.0.0
      [15] Rhdf5lib_2.0.0              SparseArray_1.12.2
      [17] rhdf5_2.56.0                mzID_1.50.0
      [19] alabaster.base_1.12.1       plyr_1.8.9
      [21] httr2_1.3.0                 impute_1.86.0
      [23] cachem_1.1.0                igraph_2.3.3
      [25] lifecycle_1.0.5             iterators_1.0.14
-     [27] pkgconfig_2.0.3             Matrix_1.7-5
+     [27] pkgconfig_2.0.3             Matrix_1.7-6
      [29] R6_2.6.1                    fastmap_1.2.0
      [31] clue_0.3-68                 digest_0.6.39
      [33] pcaMethods_2.4.0            ps_1.9.3
      [35] RSQLite_3.53.3              filelock_1.0.3
      [37] abind_1.4-8                 compiler_4.6.1
-     [39] bit64_4.8.2                 withr_3.0.3
+     [39] bit64_4.8.6                 withr_3.0.3
      [41] doParallel_1.0.17           S7_0.2.2
      [43] PTMods_1.0.0                DBI_1.3.0
      [45] alabaster.ranges_1.12.0     HDF5Array_1.40.0
@@ -922,19 +929,19 @@ sessionInfo()
      [49] DelayedArray_0.38.2         mzR_2.46.0
      [51] tools_4.6.1                 PSMatch_1.16.0
      [53] otel_0.2.0                  glue_1.8.1
-     [55] h5mread_1.4.0               QFeatures_1.22.0
-     [57] rhdf5filters_1.24.0         grid_4.6.1
-     [59] cluster_2.1.8.2             reshape2_1.4.5
+     [55] h5mread_1.4.1               QFeatures_1.22.0
+     [57] rhdf5filters_1.24.1         grid_4.6.1
+     [59] cluster_2.1.8.3             reshape2_1.4.5
      [61] gtable_0.3.6                preprocessCore_1.74.0
-     [63] tidyr_1.3.2                 data.table_1.18.4
+     [63] tidyr_1.3.2                 data.table_1.18.6.1
      [65] hms_1.1.4                   XVector_0.52.0
      [67] foreach_1.5.2               pillar_1.11.1
-     [69] stringr_1.6.0               limma_3.68.4
+     [69] stringr_1.6.0               limma_3.68.5
      [71] later_1.4.8                 dplyr_1.2.1
-     [73] BiocFileCache_3.2.0         lattice_0.22-9
+     [73] BiocFileCache_3.2.0         lattice_0.23-1
      [75] bit_4.6.0                   tidyselect_1.2.1
      [77] xfun_0.60                   statmod_1.5.2
-     [79] MSnbase_2.37.0              stringi_1.8.7
+     [79] MSnbase_2.38.1              stringi_1.8.9
      [81] lazyeval_0.2.3              yaml_2.3.12
      [83] evaluate_1.0.5              codetools_0.2-20
      [85] MsCoreUtils_1.24.0          tibble_3.3.1
@@ -942,7 +949,7 @@ sessionInfo()
      [89] cli_3.6.6                   affyio_1.82.0
      [91] processx_3.9.0              Rcpp_1.1.2
      [93] MassSpecWavelet_1.78.2      dbplyr_2.6.0
-     [95] XML_3.99-0.23               parallel_4.6.1
+     [95] XML_3.99-0.24               parallel_4.6.1
      [97] ggplot2_4.0.3               blob_1.3.0
      [99] prettyunits_1.2.0           AnnotationFilter_1.36.0
     [101] alabaster.se_1.12.0         MsFeatures_1.20.0

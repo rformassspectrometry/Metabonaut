@@ -1,4 +1,4 @@
-# Complete end-to-end LC-MS/MS Metabolomic Data analysis
+# Complete end-to-end LC-MS/MS Metabolomic Data Analysis
 
 ## Introduction
 
@@ -21,6 +21,10 @@ description](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-
 vignette for detailed explanation of the dataset we go through in this
 workflow and general tips on what should be done when you first get your
 data.
+
+It should be noted that the described analysis is purely didactic and
+that due to the low number of available replicates (n = 3) no defensible
+disease-relevant findings can be expected.
 
 ## Packages needed
 
@@ -73,9 +77,9 @@ format ([Chambers et al. 2012](#ref-chambers_cross-platform_2012)).
 
 Below we will show how to extract our dataset from the MetaboLigths
 database and load it as an `MsExperiment` object. For more information
-on how to load your data from the MetaboLights database, refer to the
+on how to load your data from the MetaboLights repository, refer to the
 [vignette](https://rformassspectrometry.github.io/MsIO/articles/MsIO.html#loading-data-from-metabolights).
-For other type of data loading, check out this xcms
+For other type of data loading, check out this *xcms*
 [vignette](https://jorainer.github.io/xcmsTutorials/articles/xcms-preprocessing.html#data-import-and-exploration)
 A more specific vignette will be created for data import soon.
 
@@ -218,8 +222,9 @@ for proper interpretation of this metadata information:
 - *phenotype*: The sample groups of the experiment:
   - `"QC"`: Quality control sample (pool of serum samples from an
     external, large cohort).
-  - `"CVD"`: Sample from an individual with a cardiovascular disease.
-  - `"CTR"`: Sample from a presumably healthy control.
+  - `"CVD"`: blood plasma sample from an individual with a
+    cardiovascular disease.
+  - `"CTR"`: blood plasma Sample from a presumably healthy control.
 - *sample_name*: An arbitrary name/identifier of the sample.
 - *age*: The (rounded) age of the individuals.
 - *injection_index*: An index representing the order (position) in which
@@ -329,7 +334,8 @@ in an experiment. In our case, we extract the BPC from our data to
 create such a plot. The BPC captures the maximum peak signal from each
 spectrum in a data file and plots this information against the retention
 time for that spectrum on the y-axis. The BPC can be extracted using the
-`chromatogram` function.
+[`chromatogram()`](https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html)
+function.
 
 By setting the parameter `aggregationFun = "max"`, we instruct the
 function to report the maximum signal per spectrum. Conversely, when
@@ -410,12 +416,13 @@ time by intensity).
 
 We can also here compare similarities of the TICs in a heatmap. The
 retention times will however not be identical between different samples.
-Thus we *bin()* the chromatographic signal per sample along the
-retention time axis into bins of two seconds resulting in data with the
-same number of bins/data points. We can then calculate pairwise
-similarities between these data vectors using the
-[`cor()`](https://rdrr.io/r/stats/cor.html) function and visualize the
-result using
+Thus we
+[`bin()`](https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html) the
+chromatographic signal per sample along the retention time axis into
+bins of two seconds resulting in data with the same number of bins/data
+points. We can then calculate pairwise similarities between these data
+vectors using the [`cor()`](https://rdrr.io/r/stats/cor.html) function
+and visualize the result using
 [`pheatmap()`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html).
 
 ``` r
@@ -457,7 +464,7 @@ recommend using them for visualization throughout the entire analysis.
 For this experiment, a set of 15 IS was spiked to all samples. After
 reviewing their respective chromatoraphic peaks, we selected two to
 guide this analysis process. However, we advise to plot and evaluate all
-the ions after each steps.
+the ions after each step.
 
 To illustrate this, we generate Extracted Ion Chromatograms (EIC) for
 these selected *test ions*. By restricting the MS data to intensities
@@ -550,10 +557,11 @@ legend(
 
 Figure 5. EIC of cystine and methionine.
 
-We can observe a clear concentration difference between QCs and study
-samples for the isotope labeled cystine ion. Meanwhile, the labeled
-methionine internal standard exhibits a discernible signal amidst some
-noise and a noticeable retention time shift between samples.
+We can observe a clear concentration difference between QCs (serum) and
+study (blood plasma) samples for the isotope labeled cystine ion.
+Meanwhile, the labeled methionine internal standard exhibits a
+discernible signal amidst some noise and a noticeable retention time
+shift between samples.
 
 ## Data preprocessing
 
@@ -911,8 +919,8 @@ plot(eics)
 
 Figure 8. Examples of CentWave peak detection artifacts.
 
-In both cases the signal presumably from a single type of ion was split
-into two separate chromatographic peaks (indicated by the vertical
+In both cases the signal, presumably from a single type of ion, was
+split into two separate chromatographic peaks (indicated by the vertical
 line). The `MergeNeigboringPeaksParam` allows to combine such split
 peaks. The parameters for this algorithm are defined below:
 
@@ -1628,7 +1636,7 @@ single feature for each test ion. The other important parameters
 optimized here are:
 
 - `binsize`: Our data was generated on a high resolution MS instrument,
-  thus we select a low value for this paramete.
+  thus we select a low value for this parameter.
 
 - `ppm`: For TOF instruments, it is suggested to use a value for `ppm`
   larger than 0 to accommodate the higher measurement error of the
@@ -2016,7 +2024,7 @@ processHistory(lcms1)[[1]]
 
     Object of class "XProcessHistory"
      type: Peak detection
-     date: Fri Jul 17 16:22:04 2026
+     date: Fri Sep  4 10:39:33 2026
      info:
      fileIndex: 1,2,3,4,5,6,7,8,9,10
      Parameter class: CentWaveParam
@@ -2170,6 +2178,14 @@ framework](https://github.com/ArtifactDB/alabaster.base), which ensures
 that our object can be easily read from other languages like Python and
 Javascript as well as loaded easily back into R.
 
+> **Note**
+>
+> ℹ️ Storage of MS result objects in language-agnostic and portable file
+> formats is currently being implemented in the
+> *[MsStash](https://bioconductor.org/packages/3.23/MsStash)*,
+> *SpectraStash* and *xcmsStash* packages. These will in future replace
+> the *MsIO* package described here.
+
 ``` r
 
 #' XcmsExperiment object:
@@ -2191,7 +2207,8 @@ such as Bioconductor’s
 *[preprocessCore](https://bioconductor.org/packages/3.23/preprocessCore)*.
 The comprehensive workflow “Notame” also propose a very interesting
 normalization approach adaptable and scalable to the user dataset
-([Klåvus et al. 2020](#ref-klavus_notame_2020)).
+([Klåvus et al. 2020](#ref-klavus_notame_2020)) (see also the
+*Normalization and feature selection with the notame package* workflow).
 
 Generally, for LC-MS data, bias can be categorized into three main
 groups([Broadhurst et al. 2018](#ref-broadhurst_guidelines_2018)):
@@ -2310,18 +2327,6 @@ pca_res <- prcomp(vals, scale = FALSE, center = FALSE)
 vals_st <- cbind(vals, phenotype = res$phenotype)
 pca_12 <- autoplot(pca_res, data = vals_st , colour = 'phenotype', scale = 0) +
     scale_color_manual(values = col_phenotype)
-```
-
-    Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
-    ℹ Please use tidy evaluation idioms with `aes()`.
-    ℹ See also `vignette("ggplot2-in-packages")` for more information.
-    ℹ The deprecated feature was likely used in the ggfortify package.
-      Please report the issue at <https://github.com/sinhrks/ggfortify/issues>.
-
-Show the code
-
-``` r
-
 pca_34 <- autoplot(pca_res, data = vals_st, colour = 'phenotype',
                    x = 3, y = 4, scale = 0) +
     scale_color_manual(values = col_phenotype)
@@ -2688,9 +2693,9 @@ res_unfilt <- res
 
 Here we will eliminate features that exhibit high variability in our
 dataset. Repeatedly measured QC samples typically serve as a robust
-basis for cleansing datasets allowing to identify features with
+basis for cleaning datasets allowing to identify features with
 excessively high noise. As in our data set external QC samples were
-used, i.e. pooled samples from a different collection and using a
+used, i.e., pooled samples from a different collection and using a
 slightly different sample matrix, their utility for filtering is
 somewhat limited. For a comprehensive description and guidelines for
 data filtering in untargeted metabolomic studies, please refer to
@@ -2718,14 +2723,14 @@ filter_dratio <- DratioFilter(threshold = 0.4,
 res <- filterFeatures(res, filter = filter_dratio, assay = "norm_imputed")
 ```
 
-    4207 features were removed
+    4202 features were removed
 
 The Dratio filter is a powerful tool to identify features that exhibit
 high variability in the data, relating the variance observed in QC
 samples with that in study samples. By setting a threshold of 0.4, we
 remove features that have a high degree of variability between the QC
 and study samples. In this example, any feature in which the deviation
-at the QC is higher than 40% (`threshold = 0.4`)of the deviation on the
+at the QC is higher than 40% (`threshold = 0.4`) of the deviation on the
 study samples is removed. This filtering step ensures that only features
 are retained that have considerably lower technical than biological
 variance.
@@ -2737,8 +2742,8 @@ and
 functions from the
 *[MetaboCoreUtils](https://bioconductor.org/packages/3.23/MetaboCoreUtils)*
 package could be used to calculate the actual numeric values for the
-estimates used for filtering, to e.g. to evaluate their distribution in
-the whole data set or identify data set-dependent threshold values.
+estimates used for filtering, to e.g. evaluate their distribution in the
+whole data set or identify data set-dependent threshold values.
 
 Finally, we evaluate the number of features left after the filtering
 steps and calculate the percentage of features that were removed.
@@ -2749,7 +2754,7 @@ steps and calculate the percentage of features that were removed.
 nrow(res)
 ```
 
-    [1] 4515
+    [1] 4520
 
 ``` r
 
@@ -2757,9 +2762,9 @@ nrow(res)
 nrow(res) / nrow(res_unfilt) * 100
 ```
 
-    [1] 51.76565
+    [1] 51.82298
 
-The dataset has been reduced from 8722 to 4515 features. We did remove a
+The dataset has been reduced from 8722 to 4520 features. We did remove a
 considerable amount of features but this is expected as we want to focus
 on the most reliable features for our analysis. For the rest of our
 analysis we need to separate the QC samples from the study samples. We
@@ -2826,6 +2831,12 @@ binary_data <-apply(df_logical, MARGIN = 2, as.integer)
 upset(as.data.frame(binary_data), nset = 6, sets = colnames(df_logical), keep.order = TRUE)
 ```
 
+    Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+    ℹ Please use tidy evaluation idioms with `aes()`.
+    ℹ See also `vignette("ggplot2-in-packages")` for more information.
+    ℹ The deprecated feature was likely used in the UpSetR package.
+      Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
+
     Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
     ℹ Please use `linewidth` instead.
     ℹ The deprecated feature was likely used in the UpSetR package.
@@ -2841,7 +2852,7 @@ upset(as.data.frame(binary_data), nset = 6, sets = colnames(df_logical), keep.or
 Other quality analysis of the data could be, evaluating the number of
 feature detected per group, the overall abundance, the noise, … This all
 depends on the goal of the user research. R has a lot of flexibility,
-you can do many things !
+you can do many things!
 
 ## Differential abundance analysis
 
@@ -2909,16 +2920,17 @@ features of interest. We compute linear models for each metabolite
 explaining the observed feature abundance by the available study
 variables. While we could also use the base R function
 [`lm()`](https://rdrr.io/r/stats/lm.html), we utilize the
-`R Biocpkg("limma")` package to conduct the differential abundance
-analysis: the *moderated* test statistics ([Smyth
-2004](#ref-smyth_linear_2004)) provided by this package are specifically
-well suited for experiments with a limited number of replicates. For our
-tests we use a linear model `~ phenotype + age`, hence explaining the
-abundances of one metabolite accounting for the study group assignment
-and age of each individual. The analysis might benefit from inclusion of
-a study covariate associated with PC2 or explaining the variance seen in
-that principal component, but for the present analysis only the
-participant’s age and disease association was provided.
+*[limma](https://bioconductor.org/packages/3.23/limma)* package to
+conduct the differential abundance analysis: the *moderated* test
+statistics ([Smyth 2004](#ref-smyth_linear_2004)) provided by this
+package are specifically well suited for experiments with a limited
+number of replicates. For our tests we use a linear model
+`~ phenotype + age`, hence explaining the abundances of one metabolite
+accounting for the study group assignment and age of each individual.
+The analysis might benefit from inclusion of a study covariate
+associated with PC2 or explaining the variance seen in that principal
+component, but for the present analysis only the participant’s age and
+disease association was provided.
 
 Below we define the design of the study with the
 [`model.matrix()`](https://rdrr.io/r/stats/model.matrix.html) function
@@ -3003,10 +3015,10 @@ or less) uniformly distributed, which indicates the absence of any
 strong systematic biases in the data. The adjusted p-values are more
 conservative and account for multiple testing; this is important here as
 we fit a linear model to each feature and therefore perform a large
-number of tests which leads to a high chance of false positive findings.
-We do see that some features have very low p-values, indicating that
-they are likely to be significantly different between the two study
-groups.
+number of tests on the same data set which leads to a high chance of
+false positive findings. We do see that some features have very low
+p-values, indicating that they are likely to be significantly different
+between the two study groups.
 
 Below we plot the adjusted p-values against the log2 fold change of
 (average) abundances. This volcano plot will allow us to visualize the
@@ -3061,11 +3073,11 @@ kable(tab, format = "pipe")
 
 |        |    mzmed |     rtmed |  coef.CVD |  adjp.CVD |   avg.CTR |   avg.CVD |     qc_cv |
 |:-------|---------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| FT0732 | 182.0749 |  34.83800 | -8.370759 | 0.0069515 | 12.228210 |  3.950362 | 0.2129312 |
-| FT0845 | 195.0877 |  32.65666 | -6.330037 | 0.0417980 | 16.904263 | 10.454779 | 0.0308570 |
-| FT0565 | 161.0400 | 162.13666 | -5.551579 | 0.0274770 | 10.285998 |  4.516785 | 0.0353295 |
-| FT0371 | 138.0547 | 148.39593 | -5.314311 | 0.0221370 |  9.913786 |  4.247594 | 0.5575909 |
-| FT1171 | 229.1299 | 181.08851 | -5.198843 | 0.0161178 | 10.720119 |  5.670044 | 0.0710135 |
+| FT0732 | 182.0749 |  34.83800 | -8.548659 | 0.0115229 | 12.228210 |  3.776834 | 0.2129312 |
+| FT0845 | 195.0877 |  32.65666 | -6.330037 | 0.0417480 | 16.904263 | 10.454779 | 0.0308570 |
+| FT0565 | 161.0400 | 162.13666 | -5.789937 | 0.0357586 | 10.285998 |  4.225612 | 0.0353295 |
+| FT1171 | 229.1299 | 181.08851 | -5.475713 | 0.0251194 | 10.720119 |  5.448402 | 0.0710135 |
+| FT0371 | 138.0547 | 148.39593 | -5.232038 | 0.0246392 |  9.913786 |  4.355789 | 0.5575909 |
 
 Table 7. Features with significant differences in abundances. {.table
 style="width:100%;"}
@@ -3108,10 +3120,6 @@ than in the CVD samples. With the exception of the second feature
 (second EIC in the top row), the intensities for all significant
 features are however generally low. This might make it challenging to
 identify them using an LC-MS/MS setup.
-
-## Multivariate Analysis
-
-Coming soon…
 
 ## Annotation
 
@@ -3360,12 +3368,12 @@ compounds (all with the same chemical formula).
 
 Considering both features’ *m/z* and retention times in the MS1-based
 annotation will increase the annotation confidence, but requires
-additional data, such as recording of the retention time of thepure
+additional data, such as recording of the retention time of the pure
 standard for a compound on the same LC setup. An alternative approach
-which might provide better inside on annotations and help to choose
+which might provide better insight on annotations and help to choose
 between different annotations for a same feature is to evaluate certain
 chemical properties of the possible matches. For instance, the LogP
-value, available in several databases such HMDB, provides an insight on
+value, available in several databases such HMDB, provides an estimate on
 a given compound’s polarity. As this property highly affects the
 interaction of the analyte with the column, it usually also directly
 affects separation. Therefore, a comparison between an analyte’s
@@ -3506,7 +3514,7 @@ eluting within certain retention time windows.
 
 We next extract the `Spectra` object with the MS data from the data
 object and assign a new spectra variable with the employed collision
-energy, which we extract from the data object `sampleData`.
+energy, which we extract from the data object’s `sampleData`.
 
 ``` r
 
@@ -3598,7 +3606,8 @@ ranges of the features’ chromatographic peaks and therefore increase the
 chance of finding a correct match. This however also assumes that
 retention times between the first and second run don’t differ by much.
 Alternatively, we would need to align the retention times of the second
-LC-MS/MS data set to those of the first.
+LC-MS/MS data set to those of the first (see the *Seamless Alignment:
+Merging New Data with an Existing Preprocessed Dataset* workflow).
 
 Below we first extract the *feature area*, i.e., the *m/z* and retention
 time ranges, for the significant features.
@@ -3661,9 +3670,8 @@ save(ms2_ctr_fts, file = "objects/spectra_significant_fts.RData")
 We have now a `Spectra` object with fragment spectra for the significant
 features from our differential expression analysis.
 
-This object can be used for annotation using various tools, see the
-vignette presenting how to process and annotate it using python tools
-[here](https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html).
+This object can be used for annotation using various tools (see also the
+*LC-MS/MS Data Annotation using R and Python* workflow).
 
 We next build our reference data which we need to process the same way
 as our *query* spectra. We extract all fragment spectra from the
@@ -3934,7 +3942,7 @@ composition. Various functions can be used for this task, such as
 [`isotopologues()`](https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html)
 from the
 *[MetaboCoreUtils](https://bioconductor.org/packages/3.23/MetaboCoreUtils)*
-package or the functionality of the **enviPat** R package ([Loos et al.
+package or the functionality of the *enviPat* R package ([Loos et al.
 2015](#ref-loos_accelerated_2015)).
 
 ### Exporting xcms results for GNPS2 Feature Based Molecular Networking
@@ -3985,55 +3993,6 @@ message("Number of features with at least one MS2 spectrum: ", length(l))
 
 # Combine the individual Spectra objects into one list
 ms2_all <- concatenateSpectra(ms2_all)
-```
-
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-    Warning in rbindlistWithRownames(list(res@spectraData,
-    objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-    rownames not available for all data.frames
-
-``` r
 
 # Assign the feature identifier to each MS2 spectrum so we can track them
 ms2_all$feature_id <- rep(names(l), l)
@@ -4043,7 +4002,7 @@ ms2_all$feature_id <- rep(names(l), l)
 
 Often, a single feature will trigger multiple MS2 scans. To obtain a
 high-quality spectrum for annotation, we merge these multiple scans into
-a single “consensus” spectrum per feature. In this step, we keep only
+a single *consensus* spectrum per feature. In this step, we keep only
 those peaks that are present in at least 75% of the scans for a given
 feature to reduce noise.
 
@@ -4098,7 +4057,7 @@ ms2_all_gnps <- formatSpectraForGNPS(ms2_all)
 export(ms2_all_gnps, backend = MsBackendMgf(), file = "xcms_ms2_spectra.mgf")
 ```
 
-The 2 exported files `xcms_ms2_features.txt` and `xcms_ms2_spectra.mgf`
+The 2 exported files *xcms_ms2_features.txt* and *xcms_ms2_spectra.mgf*
 can then be uploaded to GNPS2 for feature-based molecular networking
 analysis.
 
@@ -4162,18 +4121,18 @@ sessionInfo()
      [3] MetaboAnnotation_1.16.0     CompoundDb_1.16.0
      [5] AnnotationFilter_1.36.0     AnnotationHub_4.2.2
      [7] BiocFileCache_3.2.0         dbplyr_2.6.0
-     [9] gridExtra_2.3.1             ggfortify_0.4.19
+     [9] gridExtra_2.3.1             ggfortify_0.4.22
     [11] ggplot2_4.0.3               vioplot_0.5.1
-    [13] zoo_1.8-15                  sm_2.2-6.0
+    [13] zoo_1.9-0                   sm_2.2-6.0
     [15] pheatmap_1.0.13             RColorBrewer_1.1-3
-    [17] pander_0.6.6                limma_3.68.4
+    [17] pander_0.6.6                limma_3.68.5
     [19] MetaboCoreUtils_1.20.1      xcms_4.10.1
-    [21] MsBackendMgf_1.20.0         MsBackendMetaboLights_1.6.1
+    [21] MsBackendMgf_1.20.1         MsBackendMetaboLights_1.6.1
     [23] Spectra_1.22.2              BiocParallel_1.46.0
     [25] alabaster.se_1.12.0         alabaster.base_1.12.1
     [27] SummarizedExperiment_1.42.0 Biobase_2.72.0
     [29] GenomicRanges_1.64.0        Seqinfo_1.2.0
-    [31] IRanges_2.46.0              S4Vectors_0.50.1
+    [31] IRanges_2.46.0              S4Vectors_0.50.2
     [33] BiocGenerics_0.58.1         generics_0.1.4
     [35] MatrixGenerics_1.24.0       matrixStats_1.5.0
     [37] MsIO_0.0.17                 MsExperiment_1.14.0
@@ -4182,19 +4141,19 @@ sessionInfo()
     [43] knitr_1.51
 
     loaded via a namespace (and not attached):
-      [1] later_1.4.8                 bitops_1.0-9
+      [1] later_1.4.8                 bitops_1.1-0
       [3] filelock_1.0.3              tibble_3.3.1
       [5] cellranger_1.1.0            preprocessCore_1.74.0
-      [7] XML_3.99-0.23               lifecycle_1.0.5
+      [7] XML_3.99-0.24               lifecycle_1.0.5
       [9] httr2_1.3.0                 doParallel_1.0.17
-     [11] processx_3.9.0              lattice_0.22-9
+     [11] processx_3.9.0              lattice_0.23-1
      [13] MASS_7.3-66                 MultiAssayExperiment_1.38.0
-     [15] magrittr_2.0.5              rmarkdown_2.31
+     [15] magrittr_2.0.5              rmarkdown_2.32
      [17] yaml_2.3.12                 otel_0.2.0
      [19] MsCoreUtils_1.24.0          DBI_1.3.0
      [21] abind_1.4-8                 purrr_1.2.2
-     [23] RCurl_1.98-1.19             rappdirs_0.3.4
-     [25] MSnbase_2.37.0              ncdf4_1.24
+     [23] RCurl_1.98-1.20             rappdirs_0.3.4
+     [25] MSnbase_2.38.1              ncdf4_1.24
      [27] codetools_0.2-20            DelayedArray_0.38.2
      [29] DT_0.34.0                   xml2_1.6.0
      [31] tidyselect_1.2.1            farver_2.1.2
@@ -4206,12 +4165,12 @@ sessionInfo()
      [43] xfun_0.60                   dplyr_1.2.1
      [45] HDF5Array_1.40.0            withr_3.0.3
      [47] BiocManager_1.30.27         fastmap_1.2.0
-     [49] rhdf5filters_1.24.0         digest_0.6.39
+     [49] rhdf5filters_1.24.1         digest_0.6.39
      [51] R6_2.6.1                    rsvg_2.7.0
-     [53] RSQLite_3.53.3              h5mread_1.4.0
-     [55] tidyr_1.3.2                 data.table_1.18.4
+     [53] RSQLite_3.53.3              h5mread_1.4.1
+     [55] tidyr_1.3.2                 data.table_1.18.6.1
      [57] prettyunits_1.2.0           PSMatch_1.16.0
-     [59] httr_1.4.8                  htmlwidgets_1.6.4
+     [59] httr_1.4.9                  htmlwidgets_1.6.4
      [61] S4Arrays_1.12.0             pkgconfig_2.0.3
      [63] gtable_0.3.6                blob_1.3.0
      [65] S7_0.2.2                    impute_1.86.0
@@ -4220,7 +4179,7 @@ sessionInfo()
      [71] clue_0.3-68                 scales_1.4.0
      [73] alabaster.matrix_1.12.0     png_0.1-9
      [75] rstudioapi_0.19.0           reshape2_1.4.5
-     [77] rjson_0.2.23                curl_7.1.0
+     [77] rjson_0.2.23                curl_8.0.0
      [79] cachem_1.1.0                rhdf5_2.56.0
      [81] stringr_1.6.0               BiocVersion_3.23.1
      [83] parallel_4.6.1              AnnotationDbi_1.74.0
@@ -4228,16 +4187,16 @@ sessionInfo()
      [87] pillar_1.11.1               grid_4.6.1
      [89] alabaster.schemas_1.12.0    vctrs_0.7.3
      [91] MsFeatures_1.20.0           pcaMethods_2.4.0
-     [93] cluster_2.1.8.2             evaluate_1.0.5
+     [93] cluster_2.1.8.3             evaluate_1.0.5
      [95] cli_3.6.6                   compiler_4.6.1
      [97] rlang_1.3.0                 crayon_1.5.3
      [99] labeling_0.4.3              QFeatures_1.22.0
     [101] ChemmineR_3.64.0            ps_1.9.3
     [103] affy_1.90.0                 plyr_1.8.9
-    [105] fs_2.1.0                    stringi_1.8.7
-    [107] Biostrings_2.80.1           lazyeval_0.2.3
-    [109] Matrix_1.7-5                hms_1.1.4
-    [111] bit64_4.8.2                 Rhdf5lib_2.0.0
+    [105] fs_2.1.0                    stringi_1.8.9
+    [107] Biostrings_2.80.2           lazyeval_0.2.3
+    [109] Matrix_1.7-6                hms_1.1.4
+    [111] bit64_4.8.6                 Rhdf5lib_2.0.0
     [113] KEGGREST_1.52.2             statmod_1.5.2
     [115] alabaster.ranges_1.12.0     mzR_2.46.0
     [117] igraph_2.3.3                memoise_2.0.1

@@ -3,18 +3,17 @@
 ### All vignettes
 
 - [Complete end-to-end LC-MS/MS Metabolomic Data
-  analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.md):
+  Analysis](https://rformassspectrometry.github.io/Metabonaut/articles/a-end-to-end-untargeted-metabolomics.md):
 - [Advanced Feature Annotation using
   RuSirius](https://rformassspectrometry.github.io/Metabonaut/articles/advanced_feature_annotation_with_RuSirius.md):
-- [Seamless Alignment: Merging New Data with and Existing Preprocessed
+- [Seamless Alignment: Merging New Data with an Existing Preprocessed
   Dataset](https://rformassspectrometry.github.io/Metabonaut/articles/alignment-to-external-dataset.md):
 - [Using and Creating Metabolomics Data Annotation
   Resources](https://rformassspectrometry.github.io/Metabonaut/articles/creating-using-annotation-resources.md):
 - [Dataset investigation: What to do when you get your
   data](https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.md):
 - [mzTab-M file format: import-export of mzTab-M 2.1 files from
-  Summarized
-  Experiment](https://rformassspectrometry.github.io/Metabonaut/articles/generation_of_mzTabM_file.md):
+  SummarizedExperiment](https://rformassspectrometry.github.io/Metabonaut/articles/generation_of_mzTabM_file.md):
 - [Install](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.md):
 - [Large Scale Data Preprocessing with
   xcms](https://rformassspectrometry.github.io/Metabonaut/articles/large-scale-analysis.md):

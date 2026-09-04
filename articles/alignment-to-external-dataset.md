@@ -1,4 +1,4 @@
-# Seamless Alignment: Merging New Data with and Existing Preprocessed Dataset
+# Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset
 
 ## Introduction
 

@@ -35,27 +35,27 @@ metadata, and outline future work toward harmonized formats such as
 Spectral libraries come in different formats. Packages from the
 *RforMassSpectrometry* initiative
 (*[MsBackendMgf](https://bioconductor.org/packages/3.23/MsBackendMgf)*,
-`r Biocpkg("MsBackendMsp")`,
+*[MsBackendMsp](https://bioconductor.org/packages/3.23/MsBackendMsp)*,
 *[MsBackendMassbank](https://bioconductor.org/packages/3.23/MsBackendMassbank)*,
-`r Biocpkg("CompoundDb")`) parse these formats into `Spectra` objects
-ready for R-based workflows. Below we load GNPS and MassBank libraries
-for LC-MS/MS annotation.
+*[CompoundDb](https://bioconductor.org/packages/3.23/CompoundDb)*) parse
+these formats into `Spectra` objects ready for R-based workflows. Below
+we load GNPS and MassBank libraries for LC-MS/MS annotation.
 
 ### Using spectral libraries from GNPS
 
 [GNPS2](https://gnps2.org) provides MS/MS spectral libraries,
 integrating data from sources such as
 [MassBank](https://massbank.eu/MassBank/) and
-[MoNA](https://mona.fiehnlab.ucdavis.edu/). Libraries are available as
-MGF, MSP, or JSON from the [GNPS2
+[MoNA](https://mona.fiehnlab.ucdavis.edu/). Libraries are available in
+MGF, MSP, or JSON format from the [GNPS2
 site](https://external.gnps2.org/gnpslibrary) and on Zenodo or Figshare
-with their own DOIs.
+with their own data set-specific DOIs.
 
 Here we download the GNPS2 drug library from
 [Zenodo](https://doi.org/10.5281/zenodo.13892288), a centralized
 collection of drug spectra with pharmacologic metadata ([Zhao et al.
-2025](#ref-zhao_resource_2025)). We fetch all v4 resources (DOI:
-10.5281/zenodo.17232042) to a temporary folder.
+2025](#ref-zhao_resource_2025)). We fetch all version 4 (v4) resources
+(DOI: 10.5281/zenodo.17232042) to a temporary folder.
 
 ``` r
 
@@ -66,7 +66,7 @@ doi <- "10.5281/zenodo.17232042" # v4
 
 #' download all data related to the DOI
 pth <- tempdir()
-download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
+download_zenodo(doi, path = pth, quiet = TRUE, timeout = 6000)
 dir(pth)
 ```
 
@@ -115,11 +115,11 @@ The MGF format allows having additional fields to provide spectra
 metadata on top of mandatory fields such as *PEPMASS* (for precursor
 *m/z*) or *CHARGE* (for the precursor’s charge). MGF files can be
 imported into a `Spectra` object using the
-*[MsBackendMgf](https://bioconductor.org/packages/3.23/MsBackendMgf)*,
-which supports import of all metadata fields, renaming and mapping them
-to specific spectra variables. Below we define such a variable name
-mapping to map e.g. *MSLEVEL* to the spectra variable `msLevel` and
-*NAME* to *spectrum_name*.
+*[MsBackendMgf](https://bioconductor.org/packages/3.23/MsBackendMgf)*
+package, which supports import of all metadata fields, renaming and
+mapping them to specific spectra variables. Below we define such a
+variable name mapping to map e.g. *MSLEVEL* to the spectra variable
+*msLevel* and *NAME* to *spectrum_name*.
 
 ``` r
 
@@ -148,7 +148,7 @@ drug_ms2 <- Spectra(mgf_fl, source = MsBackendMgf(), mapping = svm)
     Start data import from 1 files ... done
 
 We convert `IONMODE` from `"Positive"`/`"Negative"` to the standard
-`polarity` encoding (`1`/`0`).
+`polarity` encoding (`1`/`0`) used by the R packages.
 
 ``` r
 
@@ -224,9 +224,9 @@ plotSpectra(drug_ms2[1:4])
 The number of fragment peaks per spectrum was thus reduced and
 intensities are now relative to the total intensity sum.
 
-This `Spectra` object can now be used to match MS/MS spectra from the
-*Complete end-to-end LC-MS/MS metabolomics data analysis* workflow. We
-load the example `Spectra` object below.
+This `Spectra` object can now be used as a *reference data* to match
+MS/MS spectra from the *Complete end-to-end LC-MS/MS metabolomics data
+analysis* workflow. We load the example `Spectra` object below.
 
 ``` r
 
@@ -312,16 +312,17 @@ res$target_spectrum_name |> unique()
 
 To summarize, through packages such as
 *[MsBackendMgf](https://bioconductor.org/packages/3.23/MsBackendMgf)*,
-`r Biocpkg("MsBackendMsp")` it is easily possible to integrate public
-(or in-house) spectral reference libraries in MGF or MSP file format
-into R-based annotation workflows.
+or *[MsBackendMsp](https://bioconductor.org/packages/3.23/MsBackendMsp)*
+it is easily possible to integrate public (or in-house) spectral
+reference libraries in MGF or MSP file format into R-based annotation
+workflows.
 
 #### Importing and cleaning GNPS MGF files using Python’s *matchms* library
 
 Alternatively, it is possible to import and clean the GNPS MGF file in
 Python with *matchms* and access it in R through `MsBackendPy` from the
-`r Biocpkg("SpectriPy")` package ([Graeve et al.
-2025](#ref-graeve_spectripy_2025)).
+*[SpectriPy](https://bioconductor.org/packages/3.23/SpectriPy)* package
+([Graeve et al. 2025](#ref-graeve_spectripy_2025)).
 
 ``` r
 
@@ -333,9 +334,12 @@ library(SpectriPy)
     Loading required package: reticulate
 
 We next import the MGF file in Python using the *matchms* library
-([Huber et al. 2020](#ref-huber_matchms_2020)).
+([Huber et al. 2020](#ref-huber_matchms_2020)) (source code blocks like
+the one below with the comment `#' Python` contain code in Python and
+are executed and evaluated through the Python interpreter).
 
 ``` python
+#' Python
 import matchms
 from matchms.importing import load_from_mgf
 
@@ -349,6 +353,7 @@ documentation](https://matchms.readthedocs.io/en/latest/api/matchms.filtering.ht
 or ([Jonge et al. 2024](#ref-de_jonge_reproducible_2024)) for options.
 
 ``` python
+#' Python
 from matchms.filtering import default_filters, clean_adduct
 
 #' apply filters to clean the spectra metadata
@@ -389,7 +394,7 @@ spectraVariables(s_py)
     [29] "scans"                   "smiles"
     [31] "spectrum_id"             "submit_user"            
 
-The *adduct* information was now harmonized by the filtering workflow in
+The *adduct* information was harmonized by the filtering workflow in
 Python:
 
 ``` r
@@ -410,30 +415,32 @@ table(s_py$adduct)
                        1                    1                    1
                  [M-2H]-             [M-2H]2-          [M-2H2O+H]+
                        1                   41                   84
-             [M-3H2O+H]+               [M-e]-               [M-H]-
-                       2                   12                12732
-              [M-H+H2O]-         [M-H+HCOOH]-            [M-H+Na]+
-                       1                    2                    6
-              [M-H2O-H]-             [M-H2O]+           [M-H2O+H]+
-                       1                    1                  531
-                    [M]+             [M+2H]2+           [M+2Na-H]+
-                      88                  270                   55
-               [M+2Na]2+             [M+3H]3+           [M+ACN+H]+
-                       2                    1                    3
-                  [M+C]-             [M+Ca]2+          [M+CH3COO]-
-                       1                    1                   20
-    [M+CH3COO]-/[M-CH3]-         [M+CH3OH+H]+              [M+Cl]-
-                       7                    1                  162
-               [M+FA-H]-          [M+H-3H2O]+         [M+H-C2H5N]+
-                      11                    5                    1
-             [M+H-C4H6]+       [M+H-C5H12N2]+       [M+H-C5H9NO4]+
-                       1                    5                    1
-              [M+H-H20]+           [M+H-NH3]+               [M+H]+
-                       1                    4                68446
-               [M+HCOO]-               [M+K]+              [M+Li]+
-                      88                  465                    2
-              [M+Na-2H]-              [M+Na]+             [M+NH4]+
-                       2                13949                  551 
+             [M-3H2O+H]+             [M-CH3]-               [M-e]-
+                       2                    1                   12
+                  [M-H]-           [M-H+H2O]-         [M-H+HCOOH]-
+                   12800                    1                    2
+               [M-H+Na]+           [M-H2O-H]-             [M-H2O]+
+                       6                    1                    1
+              [M-H2O+H]+                 [M]+             [M+2H]2+
+                     531                   88                  274
+              [M+2Na-H]+            [M+2Na]2+             [M+3H]3+
+                      55                    2                    1
+              [M+ACN+H]+               [M+C]-             [M+Ca]2+
+                       3                    1                    1
+             [M+CH3COO]- [M+CH3COO]-/[M-CH3]-         [M+CH3OH+H]+
+                      20                    7                    1
+                 [M+Cl]-            [M+FA-H]-          [M+H-3H2O]+
+                     162                   11                    5
+            [M+H-C2H5N]+          [M+H-C4H6]+       [M+H-C5H12N2]+
+                       1                    1                    5
+          [M+H-C5H9NO4]+           [M+H-H20]+           [M+H-NH3]+
+                       1                    1                    4
+                  [M+H]+            [M+HCOO]-               [M+K]+
+                   68371                   88                  465
+                 [M+Li]+           [M+Na-2H]-              [M+Na]+
+                       2                    2                13949
+                [M+NH4]+             [M+OAc]-
+                     551                    2 
 
 The `s_py` `Spectra` object is ready for R workflows. Data stay in
 Python and is translated on demand; switch to `MsBackendMemory` to copy
@@ -506,11 +513,12 @@ mb
 The result is returned as a `CompDb` object from the
 *[CompoundDb](https://bioconductor.org/packages/3.23/CompoundDb)*
 package which can be directly used with the annotation functions from
-the `r Biocpkg("MetaboAnnotation")` package. While this approach is
-convenient and fast, not all MassBank releases are available through
-*AnnotationHub*.
+the
+*[MetaboAnnotation](https://bioconductor.org/packages/3.23/MetaboAnnotation)*
+package. While this approach is convenient and fast, not all MassBank
+releases are available through *AnnotationHub* yet.
 
-Alternatively, download MassBank data from the [MassBank GitHub
+Alternatively, we can download MassBank data from the [MassBank GitHub
 page](https://github.com/MassBank/MassBank-data/releases) or Zenodo. DOI
 [10.5281/zenodo.3378723](https://doi.org/10.5281/zenodo.3378723) points
 to the latest release. Here we fetch release *2025.10* via DOI
@@ -524,7 +532,7 @@ library(zen4R)
 doi <- "10.5281/zenodo.17432277"
 
 pth <- tempdir()
-download_zenodo(doi, path = pth, quiet = TRUE, timeout = 600)
+download_zenodo(doi, path = pth, quiet = TRUE, timeout = 6000)
 dir(pth)
 ```
 
@@ -548,7 +556,7 @@ length(fls)
     [1] 134674
 
 Each file holds one spectrum with compound, instrument, and provider
-metadata in MassBank format. We import the full release with
+metadata in MassBank format. We import the full data set with
 [`MsBackendMassbank()`](https://rdrr.io/pkg/MsBackendMassbank/man/MsBackendMassbank.html)
 into a `Spectra` object.
 
@@ -606,6 +614,7 @@ The `metaBlocks` parameter can be used to enable import of extra
 metadata. MassBank metadata are *generally* more standardized and
 include more compound information (e.g., formula, exact mass). We now
 match the end-to-end vignette spectra against MassBank 2025.10 with
+*MetaboAnnotation*’s
 [`matchSpectra()`](https://rdrr.io/pkg/MetaboAnnotation/man/matchSpectra.html).
 
 ``` r
@@ -657,18 +666,18 @@ res$target_name |>
 
 Public MGF/MSP libraries can be imported into `Spectra` and exported
 again. Alternatively, annotations can be stored in SQL databases *via*
-the `r Biocpkg("CompoundDb")` package, which defines a simple database
-schema for small compounds and MS data. Here we build a database from
-the GNPS2 drug library; see the vignette [*Creating CompoundDb
-annotation
+the *[CompoundDb](https://bioconductor.org/packages/3.23/CompoundDb)*
+package, which defines a simple but flexible database schema for small
+compounds and MS data. Here we build a database from the GNPS2 drug
+library; see the vignette [*Creating CompoundDb annotation
 resources*](https://rformassspectrometry.github.io/CompoundDb/articles/create-compounddb.html)
 for more examples.
 
 > **Note**
 >
-> The *CompDb* database layout defines 3 main database tables, one for
-> compound annotations, one for spectra metadata and one to store the
-> actual mass (or fragment) peaks. These tables are linked with each
+> ℹ️ The *CompDb* database layout defines 3 main database tables, one
+> for compound annotations, one for spectra metadata and one to store
+> the actual mass (or fragment) peaks. These tables are linked with each
 > other through specific identifier columns (*primary/foreign keys*):
 > each table has its own *ID* column with **unique** identifiers for
 > each row. To link the MS spectra tables with the compound annotation
@@ -723,9 +732,9 @@ To define the names for the compounds we first parse (and then strip)
 the adduct information from the spectrum name. The pattern defined below
 finds all sub-strings that start with a white space, followed by no, one
 or two `"["`, an `"M"` (or `"2M"` etc) with a `"+"` or a `"-"` followed
-by any character until the end of the string. This patter *should* allow
-to find all adduct definitions, even if they don’t follow the standard
-nomenclature.
+by any character until the end of the string. This pattern *should*
+allow to find all adduct definitions, even if they don’t follow the
+standard nomenclature.
 
 ``` r
 
@@ -1034,7 +1043,7 @@ metadata(cdb)
     3     source_version                                      v4
     4        source_date                              2025-09-30
     5           organism                                    <NA>
-    6   db_creation_date                Fri Jul 17 16:51:51 2026
+    6   db_creation_date                Fri Sep  4 11:09:49 2026
     7 supporting_package                              CompoundDb
     8  supporting_object                                  CompDb
 
@@ -1123,7 +1132,7 @@ metadata(cdb)
     3     source_version                                      v4
     4        source_date                              2025-09-30
     5           organism                                    <NA>
-    6   db_creation_date                Fri Jul 17 16:51:51 2026
+    6   db_creation_date                Fri Sep  4 11:09:49 2026
     7 supporting_package                              CompoundDb
     8  supporting_object                                  CompDb
 
@@ -1145,6 +1154,14 @@ is harmonizing metadata and annotations across sources. Interpretation
 benefits from cleaned, standardized information. Efforts such as ([Jonge
 et al. 2024](#ref-de_jonge_reproducible_2024)) help, but broader
 standardization of data and naming conventions is still needed.
+
+The selection of the annotation reference resource, subset of version
+has an impact on the annotation result. Also, not all annotation
+resources use versioning and their content can therefore change on a
+daily basis preventing reproducibility. Building and reporting
+versioned, self-contained and re-distributable annotation assets, as
+described in this vignette, can help guaranteeing transparent and
+reproducible results.
 
 ## Outlook
 
@@ -1186,14 +1203,14 @@ sessionInfo()
     other attached packages:
      [1] RSQLite_3.53.3           stringr_1.6.0            MsBackendMassbank_1.20.0
      [4] CompoundDb_1.16.0        AnnotationFilter_1.36.0  AnnotationHub_4.2.2
-     [7] BiocFileCache_3.2.0      dbplyr_2.6.0             SpectriPy_1.3.0
-    [10] reticulate_1.46.0        MetaboAnnotation_1.16.0  MsBackendMgf_1.20.0
+     [7] BiocFileCache_3.2.0      dbplyr_2.6.0             SpectriPy_1.2.1
+    [10] reticulate_1.47.0        MetaboAnnotation_1.16.0  MsBackendMgf_1.20.1
     [13] zen4R_0.10.6             Spectra_1.22.2           BiocParallel_1.46.0
-    [16] S4Vectors_0.50.1         BiocGenerics_0.58.1      generics_0.1.4
+    [16] S4Vectors_0.50.2         BiocGenerics_0.58.1      generics_0.1.4
     [19] BiocStyle_2.40.0         quarto_1.5.1.9002        knitr_1.51
 
     loaded via a namespace (and not attached):
-      [1] DBI_1.3.0                   bitops_1.0-9
+      [1] DBI_1.3.0                   bitops_1.1-0
       [3] httr2_1.3.0                 gridExtra_2.3.1
       [5] rlang_1.3.0                 magrittr_2.0.5
       [7] clue_0.3-68                 snakecase_0.11.1
@@ -1203,36 +1220,36 @@ sessionInfo()
      [15] ProtGenerics_1.44.0         crayon_1.5.3
      [17] pkgconfig_2.0.3             MetaboCoreUtils_1.20.1
      [19] fastmap_1.2.0               XVector_0.52.0
-     [21] utf8_1.2.6                  rmarkdown_2.31
+     [21] utf8_1.2.6                  rmarkdown_2.32
      [23] ps_1.9.3                    purrr_1.2.2
      [25] bit_4.6.0                   xfun_0.60
      [27] MultiAssayExperiment_1.38.0 cachem_1.1.0
      [29] ChemmineR_3.64.0            jsonlite_2.0.0
      [31] blob_1.3.0                  later_1.4.8
      [33] DelayedArray_0.38.2         parallel_4.6.1
-     [35] cluster_2.1.8.2             R6_2.6.1
-     [37] stringi_1.8.7               RColorBrewer_1.1-3
+     [35] cluster_2.1.8.3             R6_2.6.1
+     [37] stringi_1.8.9               RColorBrewer_1.1-3
      [39] GenomicRanges_1.64.0        Rcpp_1.1.2
      [41] Seqinfo_1.2.0               SummarizedExperiment_1.42.0
      [43] base64enc_0.1-6             IRanges_2.46.0
-     [45] Matrix_1.7-5                igraph_2.3.3
+     [45] Matrix_1.7-6                igraph_2.3.3
      [47] tidyselect_1.2.1            rstudioapi_0.19.0
      [49] abind_1.4-8                 yaml_2.3.12
-     [51] codetools_0.2-20            curl_7.1.0
-     [53] processx_3.9.0              lattice_0.22-9
+     [51] codetools_0.2-20            curl_8.0.0
+     [53] processx_3.9.0              lattice_0.23-1
      [55] tibble_3.3.1                plyr_1.8.9
      [57] withr_3.0.3                 KEGGREST_1.52.2
      [59] Biobase_2.72.0              S7_0.2.2
      [61] evaluate_1.0.5              xml2_1.6.0
-     [63] Biostrings_2.80.1           filelock_1.0.3
+     [63] Biostrings_2.80.2           filelock_1.0.3
      [65] pillar_1.11.1               BiocManager_1.30.27
      [67] MatrixGenerics_1.24.0       DT_0.34.0
-     [69] rprojroot_2.1.1             RCurl_1.98-1.19
+     [69] rprojroot_2.1.1             RCurl_1.98-1.20
      [71] BiocVersion_3.23.1          ggplot2_4.0.3
      [73] scales_1.4.0                glue_1.8.1
      [75] lazyeval_0.2.3              tools_4.6.1
-     [77] data.table_1.18.4           QFeatures_1.22.0
-     [79] fs_2.1.0                    XML_3.99-0.23
+     [77] data.table_1.18.6.1         QFeatures_1.22.0
+     [79] fs_2.1.0                    XML_3.99-0.24
      [81] grid_4.6.1                  tidyr_1.3.2
      [83] AnnotationDbi_1.74.0        MsCoreUtils_1.24.0
      [85] cli_3.6.6                   rappdirs_0.3.4
@@ -1243,7 +1260,7 @@ sessionInfo()
      [95] htmlwidgets_1.6.4           farver_2.1.2
      [97] memoise_2.0.1               htmltools_0.5.9
      [99] lifecycle_1.0.5             here_1.0.2
-    [101] httr_1.4.8                  bit64_4.8.2
+    [101] httr_1.4.9                  bit64_4.8.6
     [103] MASS_7.3-66                
 
 ## References

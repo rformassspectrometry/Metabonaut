@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Complete end-to-end LC-MS/MS Metabolomic Data analysis • Metabonaut</title>
+<title>Complete end-to-end LC-MS/MS Metabolomic Data Analysis • Metabonaut</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/popper.min.js"></script><script src="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/tippy.umd.min.js"></script><link href="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="a-end-to-end-untargeted-metabolomics_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Complete end-to-end LC-MS/MS Metabolomic Data analysis">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Complete end-to-end LC-MS/MS Metabolomic Data Analysis">
 <meta property="og:image" content="https://rformassspectrometry.github.io/Metabonaut/logo.png">
 </head>
 <body>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,10 +71,10 @@
 </nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Complete end-to-end LC-MS/MS Metabolomic Data analysis</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Complete end-to-end LC-MS/MS Metabolomic Data Analysis</h1>
 
       <p class="author">Philippine Louail, Anna Tagliaferri, Vinicius Verri Hernandes, Daniel Marques de Sá e Silva, Johannes Rainer</p>
-      <p class="date">2026-07-17</p>
+      <p class="date">2026-09-04</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/a-end-to-end-untargeted-metabolomics.qmd" class="external-link"><code>vignettes/a-end-to-end-untargeted-metabolomics.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -102,6 +102,7 @@
 </section><section class="section level2"><h2 id="data-description">Data description<a class="anchor" aria-label="anchor" href="#data-description"></a>
 </h2>
 <p>See the <a href="https://rformassspectrometry.github.io/Metabonaut/articles/dataset-investigation.html">data description</a> vignette for detailed explanation of the dataset we go through in this workflow and general tips on what should be done when you first get your data.</p>
+<p>It should be noted that the described analysis is purely didactic and that due to the low number of available replicates (n = 3) no defensible disease-relevant findings can be expected.</p>
 </section><section class="section level2"><h2 id="packages-needed">Packages needed<a class="anchor" aria-label="anchor" href="#packages-needed"></a>
 </h2>
 <p>Our workflow is therefore based on the following dependencies:</p>
@@ -142,7 +143,7 @@
 </section><section class="section level2"><h2 id="data-import">Data import<a class="anchor" aria-label="anchor" href="#data-import"></a>
 </h2>
 <p>Note that different equipment will generate various file extensions, so a conversion step might be needed beforehand, though it does not apply to this dataset. The Spectra package supports a variety of ways to store and retrieve MS data, including mzML, mzXML, CDF files, simple flat files, or database systems. If necessary, several tools, such as ProteoWizard’s MSConvert, can be used to convert files to the .mzML format <span class="citation" data-cites="chambers_cross-platform_2012">(<a href="#ref-chambers_cross-platform_2012" role="doc-biblioref">Chambers et al. 2012</a>)</span>.</p>
-<p>Below we will show how to extract our dataset from the MetaboLigths database and load it as an <code>MsExperiment</code> object. For more information on how to load your data from the MetaboLights database, refer to the <a href="https://rformassspectrometry.github.io/MsIO/articles/MsIO.html#loading-data-from-metabolights" class="external-link">vignette</a>. For other type of data loading, check out this xcms <a href="https://jorainer.github.io/xcmsTutorials/articles/xcms-preprocessing.html#data-import-and-exploration" class="external-link">vignette</a> A more specific vignette will be created for data import soon.</p>
+<p>Below we will show how to extract our dataset from the MetaboLigths database and load it as an <code>MsExperiment</code> object. For more information on how to load your data from the MetaboLights repository, refer to the <a href="https://rformassspectrometry.github.io/MsIO/articles/MsIO.html#loading-data-from-metabolights" class="external-link">vignette</a>. For other type of data loading, check out this <em>xcms</em> <a href="https://jorainer.github.io/xcmsTutorials/articles/xcms-preprocessing.html#data-import-and-exploration" class="external-link">vignette</a> A more specific vignette will be created for data import soon.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/MetaboLightsParam.html" class="external-link">MetaboLightsParam</a></span><span class="op">(</span>mtblsId <span class="op">=</span> <span class="st">"MTBLS8735"</span>,</span>
@@ -404,9 +405,9 @@
 <li>
 <code>"QC"</code>: Quality control sample (pool of serum samples from an external, large cohort).</li>
 <li>
-<code>"CVD"</code>: Sample from an individual with a cardiovascular disease.</li>
+<code>"CVD"</code>: blood plasma sample from an individual with a cardiovascular disease.</li>
 <li>
-<code>"CTR"</code>: Sample from a presumably healthy control.</li>
+<code>"CTR"</code>: blood plasma Sample from a presumably healthy control.</li>
 </ul>
 </li>
 <li>
@@ -471,7 +472,7 @@ MS_B_POS.mzML
 <section class="level2"><h3 id="chromatographic-data-visualization-bpc-and-tic">Chromatographic Data Visualization: BPC and TIC<a class="anchor" aria-label="anchor" href="#chromatographic-data-visualization-bpc-and-tic"></a>
 </h3>
 <p>The <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram()</a></code> function facilitates the extraction of intensities along the retention time. However, access to chromatographic information is currently not as efficient and seamless as it is for spectral information. Work is underway to develop/improve the infrastructure for chromatographic data through a new <code>Chromatograms</code> object aimed to be as flexible and user-friendly as the <code>Spectra</code> object.</p>
-<p>For visualizing LC-MS data, a BPC or TIC serves as a valuable tool to assess the performance of liquid chromatography across various samples in an experiment. In our case, we extract the BPC from our data to create such a plot. The BPC captures the maximum peak signal from each spectrum in a data file and plots this information against the retention time for that spectrum on the y-axis. The BPC can be extracted using the <code>chromatogram</code> function.</p>
+<p>For visualizing LC-MS data, a BPC or TIC serves as a valuable tool to assess the performance of liquid chromatography across various samples in an experiment. In our case, we extract the BPC from our data to create such a plot. The BPC captures the maximum peak signal from each spectrum in a data file and plots this information against the retention time for that spectrum on the y-axis. The BPC can be extracted using the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram()</a></code> function.</p>
 <p>By setting the parameter <code>aggregationFun = "max"</code>, we instruct the function to report the maximum signal per spectrum. Conversely, when setting <code>aggregationFun = "sum"</code>, it sums up all intensities of a spectrum, thereby creating a TIC.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
@@ -529,7 +530,7 @@ MS_B_POS.mzML
 </div>
 <p>Initially, we examined the entire BPC and subsequently filtered it based on the desired retention times. This not only results in a smaller file size but also facilitates a more straightforward interpretation of the BPC.</p>
 <p>The final plot illustrates the BPC for each sample colored by phenotype, providing insights on the signal measured along the retention times of each sample. It reveals the points at which compounds eluted from the LC column. In essence, a BPC condenses the three-dimensional LC-MS data (<em>m/z</em> by retention time by intensity) into two dimensions (retention time by intensity).</p>
-<p>We can also here compare similarities of the TICs in a heatmap. The retention times will however not be identical between different samples. Thus we <em>bin()</em> the chromatographic signal per sample along the retention time axis into bins of two seconds resulting in data with the same number of bins/data points. We can then calculate pairwise similarities between these data vectors using the <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor()</a></code> function and visualize the result using <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap()</a></code>.</p>
+<p>We can also here compare similarities of the TICs in a heatmap. The retention times will however not be identical between different samples. Thus we <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">bin()</a></code> the chromatographic signal per sample along the retention time axis into bins of two seconds resulting in data with the same number of bins/data points. We can then calculate pairwise similarities between these data vectors using the <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor()</a></code> function and visualize the result using <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap()</a></code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Total ion chromatogram</span></span>
@@ -560,7 +561,7 @@ MS_B_POS.mzML
 <p>The heatmap above reinforces what our exploration of spectra data showed, which is a strong separation between the QC and study samples. This is important to bear in mind for later analyses.</p>
 </section><section class="level2"><h3 id="chromatographic-data-visualization-eics">Chromatographic Data Visualization: EICs<a class="anchor" aria-label="anchor" href="#chromatographic-data-visualization-eics"></a>
 </h3>
-<p>Throughout the entire process, it is crucial to have reference points within the dataset, such as well-known ions. Most experiments nowadays include internal standards (IS), and it was the case here. We strongly recommend using them for visualization throughout the entire analysis. For this experiment, a set of 15 IS was spiked to all samples. After reviewing their respective chromatoraphic peaks, we selected two to guide this analysis process. However, we advise to plot and evaluate all the ions after each steps.</p>
+<p>Throughout the entire process, it is crucial to have reference points within the dataset, such as well-known ions. Most experiments nowadays include internal standards (IS), and it was the case here. We strongly recommend using them for visualization throughout the entire analysis. For this experiment, a set of 15 IS was spiked to all samples. After reviewing their respective chromatoraphic peaks, we selected two to guide this analysis process. However, we advise to plot and evaluate all the ions after each step.</p>
 <p>To illustrate this, we generate Extracted Ion Chromatograms (EIC) for these selected <em>test ions</em>. By restricting the MS data to intensities within a restricted, <em>m/z</em> range and a selected retention time window, EICs are expected to contain only signal from a single type of ion. The expected <em>m/z</em> and retention times for our set of IS was determined in a different experiment. Additionally, in cases where internal standards are not available, commonly present ions in the sample matrix can serve as suitable alternatives. Ideally, these compounds should be distributed across the entire retention time range of the experiment.</p>
 <div class="cell" data-tbl-cap="Table 3. Internal standard list with respective m/z and expected retention time [s]." data-tbl-style="font-size: 0.6em" data-tbl-colwidths="[20,20,20]">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
@@ -661,7 +662,7 @@ MS_B_POS.mzML
 </div>
 </div>
 </div>
-<p>We can observe a clear concentration difference between QCs and study samples for the isotope labeled cystine ion. Meanwhile, the labeled methionine internal standard exhibits a discernible signal amidst some noise and a noticeable retention time shift between samples.</p>
+<p>We can observe a clear concentration difference between QCs (serum) and study (blood plasma) samples for the isotope labeled cystine ion. Meanwhile, the labeled methionine internal standard exhibits a discernible signal amidst some noise and a noticeable retention time shift between samples.</p>
 </section></section><section class="section level2"><h2 id="data-preprocessing">Data preprocessing<a class="anchor" aria-label="anchor" href="#data-preprocessing"></a>
 </h2>
 <p>Preprocessing stands as the inaugural step in the analysis of untargeted LC-MS. It is characterized by 3 main stages: <strong>chromatographic peak detection</strong>, <strong>retention time shift correction</strong> (alignment) and <strong>correspondence</strong> which results in features defined. The primary objective of preprocessing is the quantification of signals from ions measured in a sample, addressing any potential retention time drifts between samples, and ensuring alignment of quantified signals across samples within an experiment. The final result of LC-MS data preprocessing is a numeric matrix with abundances of quantified entities in the samples of the experiment.</p>
@@ -896,7 +897,7 @@ mzmin 12669.821  3   1     10</code></pre>
 </div>
 </div>
 </div>
-<p>In both cases the signal presumably from a single type of ion was split into two separate chromatographic peaks (indicated by the vertical line). The <code>MergeNeigboringPeaksParam</code> allows to combine such split peaks. The parameters for this algorithm are defined below:</p>
+<p>In both cases the signal, presumably from a single type of ion, was split into two separate chromatographic peaks (indicated by the vertical line). The <code>MergeNeigboringPeaksParam</code> allows to combine such split peaks. The parameters for this algorithm are defined below:</p>
 <ul>
 <li>
 <code>expandMz</code>and <code>expandRt</code>: Define which chromatographic peaks should be evaluated for merging.
@@ -1412,7 +1413,7 @@ FALSE  TRUE
 </div>
 <p>We can observe that the peaks are now grouped more accurately into a single feature for each test ion. The other important parameters optimized here are:</p>
 <ul>
-<li><p><code>binsize</code>: Our data was generated on a high resolution MS instrument, thus we select a low value for this paramete.</p></li>
+<li><p><code>binsize</code>: Our data was generated on a high resolution MS instrument, thus we select a low value for this parameter.</p></li>
 <li><p><code>ppm</code>: For TOF instruments, it is suggested to use a value for <code>ppm</code> larger than 0 to accommodate the higher measurement error of the instrument for larger <em>m/z</em> values.</p></li>
 <li><p><code>minFraction</code>: We set it to <code>minFraction = 0.75</code>, hence defining features only if a chromatographic peak was identified in at least 75% of the samples of one of the sample groups.</p></li>
 <li><p><code>sampleGroups</code>: We use the information available in our <code>sampleData</code>’s <code>"phenotype"</code> column. Note that this parameter also accept factors, and therefore more complicated groupings can be performed if wanted.</p></li>
@@ -1678,7 +1679,7 @@ F-statistic:  7871 on 1 and 2844 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class "XProcessHistory"
  type: Peak detection
- date: Fri Jul 17 16:22:04 2026
+ date: Fri Sep  4 10:39:33 2026
  info:
  fileIndex: 1,2,3,4,5,6,7,8,9,10
  Parameter class: CentWaveParam
@@ -1764,6 +1765,12 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </div>
 <p>Before moving to the next step of the analysis, it is advisable to save the preprocessing results. We have multiple format options to save into, and they can be found in the <code>MsIO</code> package <a href="https://rformassspectrometry.github.io/MsIO/articles/MsIO.html" class="external-link">documentation</a>. Below we will save our <code>XcmsExperiment</code> object into a file format handled by the <a href="https://github.com/ArtifactDB/alabaster.base" class="external-link">alabster framework</a>, which ensures that our object can be easily read from other languages like Python and Javascript as well as loaded easily back into R.</p>
+<div>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>ℹ️ Storage of MS result objects in language-agnostic and portable file formats is currently being implemented in the <em><a href="https://bioconductor.org/packages/3.23/MsStash" class="external-link">MsStash</a></em>, <em>SpectraStash</em> and <em>xcmsStash</em> packages. These will in future replace the <em>MsIO</em> package described here.</p>
+</blockquote>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' XcmsExperiment object:</span></span>
@@ -1776,7 +1783,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </section></section><section class="section level2"><h2 id="data-normalization">Data normalization<a class="anchor" aria-label="anchor" href="#data-normalization"></a>
 </h2>
-<p>After preprocessing, data normalization or scaling might need to be applied to remove any technical variances from the data. While simple approaches like median scaling can be implemented with a few lines of R code, more advanced normalization algorithms are available in packages such as Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/preprocessCore" class="external-link">preprocessCore</a></em>. The comprehensive workflow “Notame” also propose a very interesting normalization approach adaptable and scalable to the user dataset <span class="citation" data-cites="klavus_notame_2020">(<a href="#ref-klavus_notame_2020" role="doc-biblioref">Klåvus et al. 2020</a>)</span>.</p>
+<p>After preprocessing, data normalization or scaling might need to be applied to remove any technical variances from the data. While simple approaches like median scaling can be implemented with a few lines of R code, more advanced normalization algorithms are available in packages such as Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/preprocessCore" class="external-link">preprocessCore</a></em>. The comprehensive workflow “Notame” also propose a very interesting normalization approach adaptable and scalable to the user dataset <span class="citation" data-cites="klavus_notame_2020">(<a href="#ref-klavus_notame_2020" role="doc-biblioref">Klåvus et al. 2020</a>)</span> (see also the <em>Normalization and feature selection with the notame package</em> workflow).</p>
 <p>Generally, for LC-MS data, bias can be categorized into three main groups<span class="citation" data-cites="broadhurst_guidelines_2018">(<a href="#ref-broadhurst_guidelines_2018" role="doc-biblioref">Broadhurst et al. 2018</a>)</span>:</p>
 <ul>
 <li><p>Variances introduced by sample collection and initial processing, which can include differences in sample amounts. This type of bias is expected to be sample-specific and affect all signals in a sample in the same way. Methods like median scaling, LOESS or quantiles normalization can adjust this bias.</p></li>
@@ -1824,16 +1831,8 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span><span class="co">#' Plot the results</span></span>
 <span><span class="va">vals_st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">vals</span>, phenotype <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span><span class="op">)</span></span>
 <span><span class="va">pca_12</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">pca_res</span>, data <span class="op">=</span> <span class="va">vals_st</span> , colour <span class="op">=</span> <span class="st">'phenotype'</span>, scale <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">col_phenotype</span><span class="op">)</span></span></code></pre></div>
-</details><div class="cell-output cell-output-stderr">
-<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
-ℹ Please use tidy evaluation idioms with `aes()`.
-ℹ See also `vignette("ggplot2-in-packages")` for more information.
-ℹ The deprecated feature was likely used in the ggfortify package.
-  Please report the issue at &lt;https://github.com/sinhrks/ggfortify/issues&gt;.</code></pre>
-</div>
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb101"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pca_34</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">pca_res</span>, data <span class="op">=</span> <span class="va">vals_st</span>, colour <span class="op">=</span> <span class="st">'phenotype'</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">col_phenotype</span><span class="op">)</span></span>
+<span><span class="va">pca_34</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">pca_res</span>, data <span class="op">=</span> <span class="va">vals_st</span>, colour <span class="op">=</span> <span class="st">'phenotype'</span>,</span>
 <span>                   x <span class="op">=</span> <span class="fl">3</span>, y <span class="op">=</span> <span class="fl">4</span>, scale <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">col_phenotype</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span><span class="va">pca_12</span>, <span class="va">pca_34</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
@@ -1850,7 +1849,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </h4>
 <p>Global differences in feature abundances between samples (e.g. due to sample-specific biases) can be evaluated by plotting the distribution of the log2 transformed feature abundances using boxplots of violin plots. Below we show the number of detected chromatographic peaks per sample and the distribution of the log2 transformed feature abundances.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb102"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span>mat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">4.5</span>, <span class="fl">0.2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
@@ -1882,7 +1881,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>The upper part of the plot show that the gap filling steps allowed to rescue a substantial number of <em>NAs</em> and allowed us to have a more consistent number of feature values per sample. This consistency aligns with our asspumption that every sample should have a similar amount of features detected. Additionally we observe that, on average, the signal distribution from the individual samples is very similar.</p>
 <p>An alternative way to evaluate differences in abundances between samples are <em>relative log abundance</em> (RLA) plots <span class="citation" data-cites="de_livera_normalizing_2012">(<a href="#ref-de_livera_normalizing_2012" role="doc-biblioref">De Livera et al. 2012</a>)</span>. An RLA value is the abundance of a feature in a sample relative to the median abundance of the same feature across multiple samples. We can discriminate between <em>within group</em> and <em>across group</em> RLAs, depending whether the abundance is compared against samples within the same sample group or across all samples. Within group RLA plots assess the tightness of replicates within groups and should have a median close to zero and low variation around it. When used across groups, they allow to compare behavior between groups. Generally, between-sample differences can be easily spotted using RLA plots. Below we calculate and visualize within group RLA values using the <code><a href="https://rdrr.io/pkg/xcms/man/rla.html" class="external-link">rowRla()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MsCoreUtils" class="external-link">MsCoreUtils</a></em> package defining with parameter <code>f</code> the sample groups.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb103"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">4.5</span>, <span class="fl">2.5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MsCoreUtils/man/rla.html" class="external-link">rowRla</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"raw_filled"</span><span class="op">)</span>,</span>
 <span>                            f <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span>, transform <span class="op">=</span> <span class="st">"log2"</span><span class="op">)</span>,</span>
@@ -1913,7 +1912,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>This method involves computing the median for each sample, followed by determining the median of these individual sample medians. This ensures consistent median values for each sample throughout the entire data set. Maintaining uniformity in the average total metabolite abundance across all samples is crucial for effective implementation.</p>
 <p>This process aims to establish a shared baseline for the central tendency of metabolite abundance, mitigating the impact of sample-specific technical variations. This approach fosters a more robust and comparable analysis of the top features across the data set. The assumption is that normalizing based on the median, known for its lower sensitivity to extreme values, enhances the comparability of top features and ensures a consistent average abundance across samples.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb104"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Compute median and generate normalization factor</span></span>
 <span><span class="va">mdns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"raw_filled"</span><span class="op">)</span>, MARGIN <span class="op">=</span> <span class="fl">2</span>, <span class="va">median</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">nf_mdn</span> <span class="op">&lt;-</span> <span class="va">mdns</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">mdns</span><span class="op">)</span></span>
@@ -1930,7 +1929,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <section class="level3"><h4 id="principal-component-analysis-1">Principal Component Analysis<a class="anchor" aria-label="anchor" href="#principal-component-analysis-1"></a>
 </h4>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb105"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Data before normalization</span></span>
 <span><span class="va">vals_st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">vals</span>, phenotype <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span><span class="op">)</span></span>
 <span><span class="va">pca_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">pca_res</span>, data <span class="op">=</span> <span class="va">vals_st</span>, colour <span class="op">=</span> <span class="st">'phenotype'</span>, scale <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1957,7 +1956,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>Normalization did not have a large impact on PC1 or PC2, but the separation of the study groups on PC3 seems to be better and difference between QC samples lower after normalization (see below).</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb106"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pca_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">pca_res</span>, data <span class="op">=</span> <span class="va">vals_st</span> ,</span>
 <span>                    colour <span class="op">=</span> <span class="st">'phenotype'</span>, x <span class="op">=</span> <span class="fl">3</span>, y <span class="op">=</span> <span class="fl">4</span>, scale <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">col_phenotype</span><span class="op">)</span></span>
@@ -1978,7 +1977,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </h4>
 <p>We compare the RLA plots before and after between-sample normalization to evaluate its impact on the data.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb107"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">4.5</span>, <span class="fl">2.5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/rla.html" class="external-link">rowRla</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"raw_filled"</span><span class="op">)</span>, group <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span><span class="op">)</span>,</span>
@@ -2010,7 +2009,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </h4>
 <p>We next evaluate the coefficient of variation (CV, also referred to as <em>relative standard deviation</em> RSD) for features across samples from either QC or study samples. In QC samples, the CV would represent technical noise, while in study samples it would include also expected biological differences. Thus, normalization should reduce the CV in QC samples, while only slightly reducing the CV in study samples. The CV is calculated below using the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> function from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package. By setting <code>mad = TRUE</code> we use a more robust calculation using the median absolute deviation instead of the standard deviation.</p>
 <div class="cell" data-tbl-cap="Table 6. Distribution of CV values across samples for the raw and normalized data.">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb108"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Calculate the CV values</span></span>
 <span><span class="va">index_study</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CTR"</span>, <span class="st">"CVD"</span><span class="op">)</span></span>
 <span><span class="va">index_QC</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span></span>
@@ -2092,21 +2091,21 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>After normalizing our data we can now pre-filter to clean the data before performing any statistical analysis. In general, pre-filtering of samples and features is performed to remove outliers.</p>
 <p>Below we copy the original result object to also keep the unfiltered data for later comparisons.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb109"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb107"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Number of features before filtering</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8722</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' keep unfiltered object</span></span>
 <span><span class="va">res_unfilt</span> <span class="op">&lt;-</span> <span class="va">res</span></span></code></pre></div>
 </div>
-<p>Here we will eliminate features that exhibit high variability in our dataset. Repeatedly measured QC samples typically serve as a robust basis for cleansing datasets allowing to identify features with excessively high noise. As in our data set external QC samples were used, i.e. pooled samples from a different collection and using a slightly different sample matrix, their utility for filtering is somewhat limited. For a comprehensive description and guidelines for data filtering in untargeted metabolomic studies, please refer to <span class="citation" data-cites="broadhurst_guidelines_2018">(<a href="#ref-broadhurst_guidelines_2018" role="doc-biblioref">Broadhurst et al. 2018</a>)</span>.</p>
+<p>Here we will eliminate features that exhibit high variability in our dataset. Repeatedly measured QC samples typically serve as a robust basis for cleaning datasets allowing to identify features with excessively high noise. As in our data set external QC samples were used, i.e., pooled samples from a different collection and using a slightly different sample matrix, their utility for filtering is somewhat limited. For a comprehensive description and guidelines for data filtering in untargeted metabolomic studies, please refer to <span class="citation" data-cites="broadhurst_guidelines_2018">(<a href="#ref-broadhurst_guidelines_2018" role="doc-biblioref">Broadhurst et al. 2018</a>)</span>.</p>
 <p>Following the guidelines stated above we decided to still use the QC samples for pre-filtering, on the basis that they represent similar bio-fluids to our study samples, and thus, we anticipate observing relatively similar metabolites affected by similar measurement biases.</p>
 <p>We therefore evaluate the <em>dispersion ratio</em> (Dratio) <span class="citation" data-cites="broadhurst_guidelines_2018">(<a href="#ref-broadhurst_guidelines_2018" role="doc-biblioref">Broadhurst et al. 2018</a>)</span> for all features in the data set. We accomplish this task using the same function as above but this time with the <code>DratioFilter</code> parameter. More filters exist for this function and we invite the user to explore them as to decide what is best for their dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb112"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Compute and filter based on the Dratio</span></span>
 <span><span class="va">filter_dratio</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/DratioFilter.html" class="external-link">DratioFilter</a></span><span class="op">(</span>threshold <span class="op">=</span> <span class="fl">0.4</span>,</span>
 <span>                              qcIndex <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span>,</span>
@@ -2114,35 +2113,35 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <span>                              mad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/filterFeatures.html" class="external-link">filterFeatures</a></span><span class="op">(</span><span class="va">res</span>, filter <span class="op">=</span> <span class="va">filter_dratio</span>, assay <span class="op">=</span> <span class="st">"norm_imputed"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>4207 features were removed</code></pre>
+<pre><code>4202 features were removed</code></pre>
 </div>
 </div>
-<p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>)of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
-<p>Note that the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowDratio()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package could be used to calculate the actual numeric values for the estimates used for filtering, to e.g. to evaluate their distribution in the whole data set or identify data set-dependent threshold values.</p>
+<p>The Dratio filter is a powerful tool to identify features that exhibit high variability in the data, relating the variance observed in QC samples with that in study samples. By setting a threshold of 0.4, we remove features that have a high degree of variability between the QC and study samples. In this example, any feature in which the deviation at the QC is higher than 40% (<code>threshold = 0.4</code>) of the deviation on the study samples is removed. This filtering step ensures that only features are retained that have considerably lower technical than biological variance.</p>
+<p>Note that the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowDratio()</a></code> and <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd()</a></code> functions from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package could be used to calculate the actual numeric values for the estimates used for filtering, to e.g. evaluate their distribution in the whole data set or identify data set-dependent threshold values.</p>
 <p>Finally, we evaluate the number of features left after the filtering steps and calculate the percentage of features that were removed.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb114"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Number of features after analysis</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4515</code></pre>
+<pre><code>[1] 4520</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb116"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Percentage left: end/beginning</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res_unfilt</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 51.76565</code></pre>
+<pre><code>[1] 51.82298</code></pre>
 </div>
 </div>
-<p>The dataset has been reduced from 8722 to 4515 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
+<p>The dataset has been reduced from 8722 to 4520 features. We did remove a considerable amount of features but this is expected as we want to focus on the most reliable features for our analysis. For the rest of our analysis we need to separate the QC samples from the study samples. We will store the QC samples in a separate object for later use.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb118"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb116"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_qc</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">res</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">!=</span> <span class="st">"QC"</span><span class="op">]</span></span></code></pre></div>
 </div>
 <p>We in addition calculate the CV of the QC samples and add that as an additional column to the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> of our result object. These could be used later to prioritize identified <em>significant</em> features with e.g. low technical noise.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb119"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Calculate the QC's CV and add as feature variable to the data set</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">qc_cv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">res_qc</span>, <span class="st">"norm"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/quality_assessment.html" class="external-link">rowRsd</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -2152,7 +2151,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </h2>
 <p>Before performing complex statistical analysis we do some short quality analysis. A possible evaluation is to which features are overlapping between the different groups. In our case grouping per condition (CTR versus CVD group) would be the most interesting plot. However we want to address the case when people test more than 3 condition therefore we will show the overlapping feature per sample (therefore comparing 6 groups).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb120"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_logical</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"raw_filled"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a Venn diagram</span></span>
@@ -2172,11 +2171,18 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>In case of a large number of groups a Venn diagram can be replace by an Upset plot which can handle a larger number of groups, while being still readable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb121"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#make upsetplot</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hms-dbmi/UpSetR" class="external-link">UpSetR</a></span><span class="op">)</span></span>
 <span><span class="va">binary_data</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">df_logical</span>, MARGIN <span class="op">=</span> <span class="fl">2</span>, <span class="va">as.integer</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">upset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">binary_data</span><span class="op">)</span>, nset <span class="op">=</span> <span class="fl">6</span>, sets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df_logical</span><span class="op">)</span>, keep.order <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+ℹ Please use tidy evaluation idioms with `aes()`.
+ℹ See also `vignette("ggplot2-in-packages")` for more information.
+ℹ The deprecated feature was likely used in the UpSetR package.
+  Please report the issue at &lt;https://github.com/hms-dbmi/UpSetR/issues&gt;.</code></pre>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ℹ Please use `linewidth` instead.
@@ -2196,13 +2202,13 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </div>
 </div>
-<p>Other quality analysis of the data could be, evaluating the number of feature detected per group, the overall abundance, the noise, … This all depends on the goal of the user research. R has a lot of flexibility, you can do many things !</p>
+<p>Other quality analysis of the data could be, evaluating the number of feature detected per group, the overall abundance, the noise, … This all depends on the goal of the user research. R has a lot of flexibility, you can do many things!</p>
 </section><section class="section level2"><h2 id="differential-abundance-analysis">Differential abundance analysis<a class="anchor" aria-label="anchor" href="#differential-abundance-analysis"></a>
 </h2>
 <p>After normalization and quality control, the next step is to identify features that are differential abundant between the study groups. This crucial step allows us to identify potential biomarkers or metabolites that are associated with the study groups. There are various approaches and methods available for the identification of such features of interest. In this workflow we use a multiple linear regression analysis to identify features with significantly difference in abundances between the CVD or CTR study group.</p>
 <p>Before performing the tests we evaluate similarities between study samples using a PCA (after excluding the QC samples to avoid them influencing the results).</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb124"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb123"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Define the colors for the plot</span></span>
 <span><span class="va">col_sample</span> <span class="op">&lt;-</span> <span class="va">col_phenotype</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">phenotype</span><span class="op">]</span></span>
 <span></span>
@@ -2225,7 +2231,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>The samples clearly separate by study group on PCA indicating that there are differences in the metabolite profiles between the two groups. However, what drives the separation on PC1 is not clear. Below we evaluate whether this could be explained by the other available variable of our study, i.e., age:</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb125"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb124"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Add age to the PCA plot</span></span>
 <span><span class="va">vals_st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">vals</span>, age <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">pca_res</span>, data <span class="op">=</span> <span class="va">vals_st</span>, colour <span class="op">=</span> <span class="st">'age'</span>, scale <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
@@ -2237,10 +2243,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </div>
 <p>According to the PCA above, PC1 does not seem to be related to age.</p>
-<p>Even if there is some variance in the data set we can’t explain at this stage, we proceed with the (supervised) statistical tests to identify features of interest. We compute linear models for each metabolite explaining the observed feature abundance by the available study variables. While we could also use the base R function <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, we utilize the <code>R Biocpkg("limma")</code> package to conduct the differential abundance analysis: the <em>moderated</em> test statistics <span class="citation" data-cites="smyth_linear_2004">(<a href="#ref-smyth_linear_2004" role="doc-biblioref">Smyth 2004</a>)</span> provided by this package are specifically well suited for experiments with a limited number of replicates. For our tests we use a linear model <code>~ phenotype + age</code>, hence explaining the abundances of one metabolite accounting for the study group assignment and age of each individual. The analysis might benefit from inclusion of a study covariate associated with PC2 or explaining the variance seen in that principal component, but for the present analysis only the participant’s age and disease association was provided.</p>
+<p>Even if there is some variance in the data set we can’t explain at this stage, we proceed with the (supervised) statistical tests to identify features of interest. We compute linear models for each metabolite explaining the observed feature abundance by the available study variables. While we could also use the base R function <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, we utilize the <em><a href="https://bioconductor.org/packages/3.23/limma" class="external-link">limma</a></em> package to conduct the differential abundance analysis: the <em>moderated</em> test statistics <span class="citation" data-cites="smyth_linear_2004">(<a href="#ref-smyth_linear_2004" role="doc-biblioref">Smyth 2004</a>)</span> provided by this package are specifically well suited for experiments with a limited number of replicates. For our tests we use a linear model <code>~ phenotype + age</code>, hence explaining the abundances of one metabolite accounting for the study group assignment and age of each individual. The analysis might benefit from inclusion of a study covariate associated with PC2 or explaining the variance seen in that principal component, but for the present analysis only the participant’s age and disease association was provided.</p>
 <p>Below we define the design of the study with the <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix()</a></code> function and fit feature-wise linear models to the log2-transformed abundances using the <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit()</a></code> function. P-values for significance of association are then calculated using the <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function, that also performs the empirical Bayes-based robust estimation of the standard errors. See also the excellent vignette/user guide of the <em><a href="https://bioconductor.org/packages/3.23/limma" class="external-link">limma</a></em> package for examples and details on the linear model procedure.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb126"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Define the linear model to be applied to the data</span></span>
 <span><span class="va">p.cut</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># cut-off for significance.</span></span>
 <span><span class="va">m.cut</span> <span class="op">&lt;-</span> <span class="fl">0.5</span> <span class="co"># cut-off for log2 fold change</span></span>
@@ -2256,7 +2262,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>After the linear models have been fitted, we can now proceed to extract the results. We create a data frame containing the coefficients, raw and adjusted p-values (applying a Benjamini-Hochberg correction, i.e., <code>method = "BH"</code> for improved control of the false discovery rate), the average intensity of signals in CVD and CTR samples, and an indication of whether a feature is deemed significant or not. We consider all metabolites with an adjusted p-value smaller than 0.05 to be significant, but we could also include the (absolute) difference in abundances in the cut-off criteria. At last, we add the differential abundance results to the result object’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb127"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Compile a result data frame</span></span>
 <span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    coef.CVD <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span>, <span class="st">"phenotypeCVD"</span><span class="op">]</span>,</span>
@@ -2273,7 +2279,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>We can now proceed to visualize the distribution of the raw and adjusted p-values.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb128"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Plot the distribution of p-values</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">pvalue.CVD</span>, breaks <span class="op">=</span> <span class="fl">64</span>, xlab <span class="op">=</span> <span class="st">"p value"</span>,</span>
@@ -2289,10 +2295,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </div>
 </div>
-<p>The histograms above show the distribution of raw and adjusted p-values. Except for an enrichment of small p-values, the raw p-values are (more or less) uniformly distributed, which indicates the absence of any strong systematic biases in the data. The adjusted p-values are more conservative and account for multiple testing; this is important here as we fit a linear model to each feature and therefore perform a large number of tests which leads to a high chance of false positive findings. We do see that some features have very low p-values, indicating that they are likely to be significantly different between the two study groups.</p>
+<p>The histograms above show the distribution of raw and adjusted p-values. Except for an enrichment of small p-values, the raw p-values are (more or less) uniformly distributed, which indicates the absence of any strong systematic biases in the data. The adjusted p-values are more conservative and account for multiple testing; this is important here as we fit a linear model to each feature and therefore perform a large number of tests on the same data set which leads to a high chance of false positive findings. We do see that some features have very low p-values, indicating that they are likely to be significantly different between the two study groups.</p>
 <p>Below we plot the adjusted p-values against the log2 fold change of (average) abundances. This volcano plot will allow us to visualize the features that are significantly different between the two study groups. These are highlighted with a blue color in the plot below.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb129"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Plot volcano plot of the statistical results</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">coef.CVD</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">adjp.CVD</span><span class="op">)</span>,</span>
@@ -2315,7 +2321,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>The most interesting features are in the top corners in the volcano plot (i.e., features with a large difference in abundance between the groups and a small p-value). All significant features have a negative coefficient (log2 fold change value) indicating that their abundance is lower in CVD samples compared to the CTR samples. These features are listed, along with their average difference in (log2) abundance between the compared groups, their adjusted p-values, their average (log2) abundance in each sample group and their RSD (CV) in QC samples in the table below.</p>
 <div class="cell" data-tbl-cap="Table 7. Features with significant differences in abundances.">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb130"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb129"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Table of significant features</span></span>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">significant.CVD</span>,</span>
 <span>                    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mzmed"</span>, <span class="st">"rtmed"</span>, <span class="st">"coef.CVD"</span>, <span class="st">"adjp.CVD"</span>,</span>
@@ -2351,10 +2357,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0732</td>
 <td style="text-align: right;">182.0749</td>
 <td style="text-align: right;">34.83800</td>
-<td style="text-align: right;">-8.370759</td>
-<td style="text-align: right;">0.0069515</td>
+<td style="text-align: right;">-8.548659</td>
+<td style="text-align: right;">0.0115229</td>
 <td style="text-align: right;">12.228210</td>
-<td style="text-align: right;">3.950362</td>
+<td style="text-align: right;">3.776834</td>
 <td style="text-align: right;">0.2129312</td>
 </tr>
 <tr class="even">
@@ -2362,7 +2368,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: right;">195.0877</td>
 <td style="text-align: right;">32.65666</td>
 <td style="text-align: right;">-6.330037</td>
-<td style="text-align: right;">0.0417980</td>
+<td style="text-align: right;">0.0417480</td>
 <td style="text-align: right;">16.904263</td>
 <td style="text-align: right;">10.454779</td>
 <td style="text-align: right;">0.0308570</td>
@@ -2371,31 +2377,31 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <td style="text-align: left;">FT0565</td>
 <td style="text-align: right;">161.0400</td>
 <td style="text-align: right;">162.13666</td>
-<td style="text-align: right;">-5.551579</td>
-<td style="text-align: right;">0.0274770</td>
+<td style="text-align: right;">-5.789937</td>
+<td style="text-align: right;">0.0357586</td>
 <td style="text-align: right;">10.285998</td>
-<td style="text-align: right;">4.516785</td>
+<td style="text-align: right;">4.225612</td>
 <td style="text-align: right;">0.0353295</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">FT0371</td>
-<td style="text-align: right;">138.0547</td>
-<td style="text-align: right;">148.39593</td>
-<td style="text-align: right;">-5.314311</td>
-<td style="text-align: right;">0.0221370</td>
-<td style="text-align: right;">9.913786</td>
-<td style="text-align: right;">4.247594</td>
-<td style="text-align: right;">0.5575909</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">FT1171</td>
 <td style="text-align: right;">229.1299</td>
 <td style="text-align: right;">181.08851</td>
-<td style="text-align: right;">-5.198843</td>
-<td style="text-align: right;">0.0161178</td>
+<td style="text-align: right;">-5.475713</td>
+<td style="text-align: right;">0.0251194</td>
 <td style="text-align: right;">10.720119</td>
-<td style="text-align: right;">5.670044</td>
+<td style="text-align: right;">5.448402</td>
 <td style="text-align: right;">0.0710135</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FT0371</td>
+<td style="text-align: right;">138.0547</td>
+<td style="text-align: right;">148.39593</td>
+<td style="text-align: right;">-5.232038</td>
+<td style="text-align: right;">0.0246392</td>
+<td style="text-align: right;">9.913786</td>
+<td style="text-align: right;">4.355789</td>
+<td style="text-align: right;">0.5575909</td>
 </tr>
 </tbody>
 </table>
@@ -2409,7 +2415,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <code>peakBg</code>: defines the (background) color for each individual chromatographic peak in the EIC object.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb131"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb130"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Restrict the raw data to study samples.</span></span>
 <span><span class="va">lcms1_study</span> <span class="op">&lt;-</span> <span class="va">lcms1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span> <span class="op">!=</span> <span class="st">"QC"</span>, keepFeatures <span class="op">=</span> <span class="cn">TRUE</span><span class="op">]</span></span>
 <span><span class="co">#' Extract EICs for the significant features</span></span>
@@ -2418,7 +2424,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <div class="cell-output cell-output-stderr">
 <pre><code>Processing chromatographic peaks for features</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb133"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Plot the EICs.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eic_sign</span>, col <span class="op">=</span> <span class="va">col_sample</span>,</span>
 <span>     peakBg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">col_sample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeaks</a></span><span class="op">(</span><span class="va">eic_sign</span><span class="op">)</span><span class="op">[</span>, <span class="st">"sample"</span><span class="op">]</span><span class="op">]</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
@@ -2431,9 +2437,6 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 </div>
 <p>The EICs for all significant features show a clear and single peak. Their intensities are (as already observed above) much larger in the CTR than in the CVD samples. With the exception of the second feature (second EIC in the top row), the intensities for all significant features are however generally low. This might make it challenging to identify them using an LC-MS/MS setup.</p>
-</section><section class="section level2"><h2 id="multivariate-analysis">Multivariate Analysis<a class="anchor" aria-label="anchor" href="#multivariate-analysis"></a>
-</h2>
-<p>Coming soon…</p>
 </section><section class="section level2"><h2 id="annotation">Annotation<a class="anchor" aria-label="anchor" href="#annotation"></a>
 </h2>
 <p>We have now identified the features with significant differences in abundances between the two study groups. These provide information on metabolic pathways that differentiate affected from healthy individuals and might hence also serve as biomarkers. However, at this stage of the analysis we do not know what compounds/metabolites they actually represent. We thus need now to annotate these signals. Annotation can be performed at different level of confidence <span class="citation" data-cites="sumner_proposed_2007">Schymanski et al. (<a href="#ref-schymanski_identifying_2014" role="doc-biblioref">2014</a>)</span>. The lowest level of annotation, with the highest rate of false positive hits, bases on the features <em>m/z</em> ratios. Higher levels of annotations employ fragment spectra (MS2 spectra) of ions of interest requiring this however acquisition of additional data. In this section, we will demonstrate multiple ways to annotate our significant features using functionality provided through Bioconductor packages. Alternative approaches and external software tools, which may be better suited, will also be discussed later in the section.</p>
@@ -2442,10 +2445,10 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 <p>Our data set was acquired using an LC-MS setup and our features are thus only characterized by their <em>m/z</em> and retention times. The retention time is LC-setup-specific and, without prior data/knowledge provide only little information on the features’ identity. Modern MS instruments have a high accuracy and the <em>m/z</em> values should therefore be reliable estimates of the compound ion’s mass-to-charge ratio. As first approach, we use the features’ <em>m/z</em> values and match them against reference values, i.e., exact masses of chemical compounds that are provided by a reference database, in our case the MassBank database. The full MassBank data is re-distributed through Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/AnnotationHub" class="external-link">AnnotationHub</a></em> resource, which simplifies their integration into reproducible R-based analysis workflows.</p>
 <p>Below we load the resource, list all available MassBank data sets/releases and load one of them.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb134"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' load reference data</span></span>
 <span><span class="va">ah</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">AnnotationHub</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode cell-code" id="cb135"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' List available MassBank data sets</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">ah</span>, <span class="st">"MassBank"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2469,13 +2472,13 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
   AH119518 | MassBank CompDb for release 2024.06
   AH119519 | MassBank CompDb for release 2024.11  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb137"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Load one MassBank release</span></span>
 <span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="va">ah</span><span class="op">[[</span><span class="st">"AH116166"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 </div>
 <p>The MassBank data is provided as a self-contained SQLite database and data can be queried and accessed through the <em><a href="https://bioconductor.org/packages/3.23/CompoundDb" class="external-link">CompoundDb</a></em> Bioconductor package. Below we use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compounds()</a></code> function to extract small compound annotations from the database.</p>
 <div class="cell" data-tbl-cap="Table 8. MassBank database extract.">
-<div class="sourceCode cell-code" id="cb138"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Extract compound annotations</span></span>
 <span><span class="va">cmps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compounds</a></span><span class="op">(</span><span class="va">mb</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"formula"</span>, <span class="st">"exactmass"</span>, <span class="st">"inchikey"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cmps</span><span class="op">)</span></span></code></pre></div>
@@ -2491,7 +2494,7 @@ colData names(11): sample_name derived_spectra_data_file ... phenotype
 </div>
 <p>MassBank (as most other small compound annotation databases) provides the (exact) molecular mass of each compound. Since almost all small compounds are neutral in their natural state, they need to be first converted to <em>m/z</em> values to allow matching against the feature’s <em>m/z</em>. To calculate an <em>m/z</em> from a neutral mass, we need to assume which ion (adduct) might be generated from the measured metabolites by the employed electro-spray ionization. In positive polarity, for human serum samples, the most common ions will be protonated (<em>[M+H]+</em>), or bear the addition of sodium (<em>[M+Na]+</em>) or ammonium (<em>[M+H-NH3]+</em>) ions. To match the observed <em>m/z</em> values against reference values from these potential ions we use again the <code><a href="https://rdrr.io/pkg/MetaboAnnotation/man/matchValues.html" class="external-link">matchValues()</a></code> function with the <code>Mass2MzParam</code> approach, that allows to specify the types of expected ions with its <code>adducts</code> parameter and the maximal allowed difference between the compared values using the <code>tolerance</code> and <code>ppm</code> parameters. Below we first prepare the data.frame with the significant features, set up the parameters for the matching and perform the comparison of the query features against the reference database.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb140"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Prepare query data frame</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">feature_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res_sig</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">significant.CVD</span>, <span class="op">]</span></span>
@@ -2512,7 +2515,7 @@ Number of target objects: 25685 (43 matched)</code></pre>
 </div>
 <p>The resulting <code>Matched</code> object shows that 4 of our 6 significant features could be matched to ions of compounds from the MassBank database. Below we extract the full result from the <code>Matched</code> object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb142"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Extracting the results</span></span>
 <span><span class="va">mtch_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">matchedData</a></span><span class="op">(</span><span class="va">mtch</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature_id"</span>, <span class="st">"mzmed"</span>, <span class="st">"rtmed"</span>,</span>
 <span>                                <span class="st">"adduct"</span>, <span class="st">"ppm_error"</span>,</span>
@@ -2551,7 +2554,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </div>
 <p>Thus, in total 43 ions of compounds in MassBank were matched to our significant features based on the specified tolerance settings. Many compounds, while having a different structure and thus function/chemical property, have an identical chemical formula and thus mass. Matching exclusively on the <em>m/z</em> of features will hence result in many potentially false positive hits and is thus considered to provide only low confidence annotation. An additional complication is that some annotation resources, like MassBank, being community maintained, contain a large amount of redundant information. To reduce redundancy in the result table we below iterate over the hits of a feature and keep only matches to unique compounds (identified by their INCHIKEY). The INCHI or INCHIKEY combine information from compound’s chemical formula and structure, so while different compounds can share the same chemical formula, they should have a different structure and thus INCHI.</p>
 <div class="cell" data-tbl-cap="Table 9. MS1 annotation results.">
-<div class="sourceCode cell-code" id="cb144"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mtch_res</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
 <span><span class="co">#' Keep only info on features that machted - create a utility function for that</span></span>
@@ -2805,7 +2808,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </div>
 </div>
 <p>The table above shows the results of the MS1-based annotation process. We can see that four of our significant features were matched. The matches seem to be pretty accurate with low ppm errors. The deduplication performed above considerably reduced the number of hits for each feature, but the first still matches ions of a large number of compounds (all with the same chemical formula).</p>
-<p>Considering both features’ <em>m/z</em> and retention times in the MS1-based annotation will increase the annotation confidence, but requires additional data, such as recording of the retention time of thepure standard for a compound on the same LC setup. An alternative approach which might provide better inside on annotations and help to choose between different annotations for a same feature is to evaluate certain chemical properties of the possible matches. For instance, the LogP value, available in several databases such HMDB, provides an insight on a given compound’s polarity. As this property highly affects the interaction of the analyte with the column, it usually also directly affects separation. Therefore, a comparison between an analyte’s retention time and polarity can help to rule out some possible misidentifications.</p>
+<p>Considering both features’ <em>m/z</em> and retention times in the MS1-based annotation will increase the annotation confidence, but requires additional data, such as recording of the retention time of the pure standard for a compound on the same LC setup. An alternative approach which might provide better insight on annotations and help to choose between different annotations for a same feature is to evaluate certain chemical properties of the possible matches. For instance, the LogP value, available in several databases such HMDB, provides an estimate on a given compound’s polarity. As this property highly affects the interaction of the analyte with the column, it usually also directly affects separation. Therefore, a comparison between an analyte’s retention time and polarity can help to rule out some possible misidentifications.</p>
 <p>While being of low confidence, MS1-based annotation can provide first candidate annotations that could be confirmed or rejected by additional analyses.</p>
 </section><section class="level2"><h3 id="ms2-based-annotation">MS2-based annotation<a class="anchor" aria-label="anchor" href="#ms2-based-annotation"></a>
 </h3>
@@ -2813,7 +2816,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 <p>MS2 data can be generated through LC-MS/MS measurement in which MS2 spectra are recorded for ions either in a data dependent acquisition (DDA) or data independent acquisition (DIA) mode. Generally, it is advised to include some LC-MS/MS runs of QC samples or randomly selected study samples already during the acquisition of the MS1 data that is used for quantification of the signals. As an alternative, or in addition, a post-hoc LC-MS/MS acquisition can be performed to generate the MS2 data needed for annotation. For the present experiment, a separate LC-MS/MS measurement was conducted on QC samples and selected study samples to generate such data using an <em>inclusion list</em> of pre-selected ions. These represent features found to be significantly different between CVD and CTR samples in an initial analysis of the full experiment. We use a subset of this second LC-MS/MS data set to show how such data can be used for MS2-based annotation. In our differential abundance analysis we found features with significantly higher abundances in CTR samples. Consequently, we will utilize the MS2 data obtained from the CTR samples to annotate these significant features.</p>
 <p>Below we load the LC-MS/MS data from the experiment and restrict it to data acquired from the CTR sample.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb145"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Load form the MetaboLights Database</span></span>
 <span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsIO/man/MetaboLightsParam.html" class="external-link">MetaboLightsParam</a></span><span class="op">(</span>mtblsId <span class="op">=</span> <span class="st">"MTBLS8735"</span>,</span>
 <span>                           assayName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"a_MTBLS8735_LC-MSMS_positive_"</span>,</span>
@@ -2827,7 +2830,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 <span>                     simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="cell" data-tbl-cap="Table 10. Samples from the LC-MS/MS data set.">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb146"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#adjust sampleData</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample_name"</span>, <span class="st">"derived_spectra_data_file"</span>,</span>
 <span>                                <span class="st">"metabolite_asssignment_file"</span>,</span>
@@ -2881,14 +2884,14 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </tbody>
 </table>
 </div>
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb147"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Filter the data to the same RT range as the LC-MS run</span></span>
 <span><span class="va">lcms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterRt</a></span><span class="op">(</span><span class="va">lcms2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">240</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </details>
 </div>
 <p>In total we have 3 LC-MS/MS data files for the control samples, each with a different collision energy to fragment the ions. Below we show the number of MS1 and MS2 spectra for each of the files.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb148"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' check the number of spectra per ms level</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">msLevel</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -2903,7 +2906,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </div>
 <p>Compared to the number of MS2 spectra, far less MS1 spectra were acquired. The configuration of the MS instrument was set to ensure that the ions specified in the <em>inclusion list</em> were selected for fragmentation, even if their intensity might be very low. With this setting, however, most of the recorded MS2 spectra will represent only noise. The plot below shows the location of precursor ions in the <em>m/z</em> - retention time plane for the three files.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb150"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/plotPrecursorIons.html" class="external-link">plotPrecursorIons</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2913,16 +2916,16 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </div>
 </div>
 <p>We can see MS2 spectra being recorded for the <em>m/z</em> of interest along the full retention time range, even if the actual ions will only be eluting within certain retention time windows.</p>
-<p>We next extract the <code>Spectra</code> object with the MS data from the data object and assign a new spectra variable with the employed collision energy, which we extract from the data object <code>sampleData</code>.</p>
+<p>We next extract the <code>Spectra</code> object with the MS data from the data object and assign a new spectra variable with the employed collision energy, which we extract from the data object’s <code>sampleData</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ms2_ctr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectra</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span></span>
 <span><span class="va">ms2_ctr</span><span class="op">$</span><span class="va">collision_energy</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">$</span><span class="va">fragmentation_mode</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">spectraSampleIndex</a></span><span class="op">(</span><span class="va">lcms2</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 </div>
 <p>We next filter the MS data by first restricting to MS2 spectra and then removing mass peaks from each spectrum with an intensity that is lower than 5% of the highest intensity for that spectrum, assuming that these very low intensity peaks represent background signal.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Remove low intensity peaks</span></span>
 <span><span class="va">low_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">x</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.05</span></span>
@@ -2933,7 +2936,7 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </div>
 <p>We next remove also mass peaks with an <em>m/z</em> value greater or equal to the precursor <em>m/z</em> of the ion. This puts, for the later matching against reference spectra, more weight on the fragmentation pattern of ions and avoids hits based only on the precursor <em>m/z</em> peak (and hence a similar mass of the compared compounds). At last, we restrict the data to spectra with at least two fragment peaks and scale their intensities such that their sum is 1 for each spectrum. While similarity calculations are not affected by this scaling, it makes visual comparison of fragment spectra easier to read.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Remove precursor peaks and restrict to spectra with a minimum</span></span>
 <span><span class="co">#' number of peaks</span></span>
 <span><span class="va">ms2_ctr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/filterMsLevel.html" class="external-link">filterPrecursorPeaks</a></span><span class="op">(</span><span class="va">ms2_ctr</span>, ppm <span class="op">=</span> <span class="fl">50</span>, mz <span class="op">=</span> <span class="st">"&gt;="</span><span class="op">)</span></span>
@@ -2942,13 +2945,13 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </div>
 <p>Finally, also to speed up the later comparison of the spectra against the reference database, we load the full MS data into memory (by changing the <em>backend</em> to <code>MsBackendMemory</code>) and <em>apply</em> all processing steps performed on this data so far. Keeping the MS data in memory has performance benefits, but is generally not suggested for large data sets. To evaluate the impact for the present data set we print in addition the size of the data object before and after changing the backend.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Size of the object before loading into memory</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"MB"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1.9 Mb</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb156"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Load the MS data subset into memory</span></span>
 <span><span class="va">ms2_ctr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/backendInitialize.html" class="external-link">setBackend</a></span><span class="op">(</span><span class="va">ms2_ctr</span>, <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackendMemory</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ms2_ctr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/processingQueue.html" class="external-link">applyProcessing</a></span><span class="op">(</span><span class="va">ms2_ctr</span><span class="op">)</span></span>
@@ -2960,10 +2963,10 @@ FT1171 Isoproturo...   PUIYMUZLKQ...</code></pre>
 </div>
 </div>
 <p>There is thus only a moderate increase in memory demand after loading the MS data into memory (also because we filtered and cleaned the MS2 data).</p>
-<p>While we could proceed and match all these experimental MS2 spectra against reference fragment spectra, for our workflow we aim to annotate the features found significant in the differential abundance analysis. The goal is thus to identify the MS2 spectra from the second (LC-MS/MS) run that could represent fragments of the ions of features from the data in the first (LC-MS) run. Our approach is to match MS2 spectra against the significant features determined earlier based on their precursor <em>m/z</em> and retention time (given an acceptable tolerance) to the feature’s <em>m/z</em> and retention time. This can be easily done using the <code><a href="https://rdrr.io/pkg/xcms/man/XcmsExperiment.html" class="external-link">featureArea()</a></code> function that effectively considers the actual <em>m/z</em> and retention time ranges of the features’ chromatographic peaks and therefore increase the chance of finding a correct match. This however also assumes that retention times between the first and second run don’t differ by much. Alternatively, we would need to align the retention times of the second LC-MS/MS data set to those of the first.</p>
+<p>While we could proceed and match all these experimental MS2 spectra against reference fragment spectra, for our workflow we aim to annotate the features found significant in the differential abundance analysis. The goal is thus to identify the MS2 spectra from the second (LC-MS/MS) run that could represent fragments of the ions of features from the data in the first (LC-MS) run. Our approach is to match MS2 spectra against the significant features determined earlier based on their precursor <em>m/z</em> and retention time (given an acceptable tolerance) to the feature’s <em>m/z</em> and retention time. This can be easily done using the <code><a href="https://rdrr.io/pkg/xcms/man/XcmsExperiment.html" class="external-link">featureArea()</a></code> function that effectively considers the actual <em>m/z</em> and retention time ranges of the features’ chromatographic peaks and therefore increase the chance of finding a correct match. This however also assumes that retention times between the first and second run don’t differ by much. Alternatively, we would need to align the retention times of the second LC-MS/MS data set to those of the first (see the <em>Seamless Alignment: Merging New Data with an Existing Preprocessed Dataset</em> workflow).</p>
 <p>Below we first extract the <em>feature area</em>, i.e., the <em>m/z</em> and retention time ranges, for the significant features.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb158"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Define the m/z and retention time ranges for the significant features</span></span>
 <span><span class="va">target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XcmsExperiment.html" class="external-link">featureArea</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">res_sig</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">target</span></span></code></pre></div>
@@ -2978,7 +2981,7 @@ FT1171 229.1282 229.1335 178.01474 183.35316</code></pre>
 </div>
 <p>We next identify the fragment spectra with their precursor <em>m/z</em> and retention times within these ranges. We use the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterRanges()</a></code> function that allows to filter a <code>Spectra</code> object using multiple ranges simultaneously. We apply this function separately to each feature (row in the above matrix) to extract the MS2 spectra representing fragmentation information of the presumed feature’s ions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb160"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Identify for each feature MS2 spectra with their precursor m/z and</span></span>
 <span><span class="co">#' retention time within the feature's m/z and retention time range</span></span>
 <span><span class="va">ms2_ctr_fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">target</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtmin"</span>, <span class="st">"rtmax"</span>, <span class="st">"mzmin"</span>, <span class="st">"mzmax"</span><span class="op">)</span><span class="op">]</span>,</span>
@@ -2992,7 +2995,7 @@ FT1171 229.1282 229.1335 178.01474 183.35316</code></pre>
 </div>
 <p>The result from this <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> call is a <code>list</code> of <code>Spectra</code>, each element representing the result for one feature. With the exception of the last feature, multiple MS2 spectra could be identified. We next combine the <code>list</code> of <code>Spectra</code> into a single <code>Spectra</code> object using the <code><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra()</a></code> function and add an additional spectra variable containing the respective feature identifier.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb162"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lengths.html" class="external-link">lengths</a></span><span class="op">(</span><span class="va">ms2_ctr_fts</span><span class="op">)</span></span>
 <span><span class="co">#' Combine the individual Spectra objects</span></span>
 <span><span class="va">ms2_ctr_fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra</a></span><span class="op">(</span><span class="va">ms2_ctr_fts</span><span class="op">)</span></span>
@@ -3002,10 +3005,10 @@ FT1171 229.1282 229.1335 178.01474 183.35316</code></pre>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">ms2_ctr_fts</span>, file <span class="op">=</span> <span class="st">"objects/spectra_significant_fts.RData"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>We have now a <code>Spectra</code> object with fragment spectra for the significant features from our differential expression analysis.</p>
-<p>This object can be used for annotation using various tools, see the vignette presenting how to process and annotate it using python tools <a href="https://rformassspectrometry.github.io/Metabonaut/articles/SpectriPy_tutorial_metabonaut.html">here</a>.</p>
+<p>This object can be used for annotation using various tools (see also the <em>LC-MS/MS Data Annotation using R and Python</em> workflow).</p>
 <p>We next build our reference data which we need to process the same way as our <em>query</em> spectra. We extract all fragment spectra from the MassBank database, restrict to positive polarity data (since our experiment was acquired in positive polarity) and perform the same processing to the fragment spectra from the MassBank database.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb163"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ms2_ref</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a></span><span class="op">(</span><span class="va">mb</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterPolarity</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterIntensity</a></span><span class="op">(</span>intensity <span class="op">=</span> <span class="va">low_int</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -3024,7 +3027,7 @@ FT1171 229.1282 229.1335 178.01474 183.35316</code></pre>
 <code>THRESHFUN</code>: Defines which matches to report. Here, we keep all matches resulting in a spectra similarity score (calculated with the normalized dot product <span class="citation" data-cites="stein_optimization_1994">(<a href="#ref-stein_optimization_1994" role="doc-biblioref">Stein and Scott 1994</a>)</span>, the default similarity function) larger than 0.6.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb164"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/register.html" class="external-link">register</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#' Define the settings for the spectra matching.</span></span>
 <span><span class="va">prm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboAnnotation/man/CompareSpectraParam.html" class="external-link">CompareSpectraParam</a></span><span class="op">(</span>ppm <span class="op">=</span> <span class="fl">40</span>, tolerance <span class="op">=</span> <span class="fl">0.05</span>,</span>
@@ -3043,7 +3046,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 <p>Thus, from the total 102 query MS2 spectra, only 10 could be matched to (at least) one reference fragment spectrum.</p>
 <p>Below we restrict the results to these matching spectra and extract all metadata of the query and target spectra as well as the similarity score (the complete list of available metadata information can be listed with the <code><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames()</a></code> function).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb166"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Keep only query spectra with matching reference spectra</span></span>
 <span><span class="va">ms2_mtch</span> <span class="op">&lt;-</span> <span class="va">ms2_mtch</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MetaboAnnotation/man/Matched.html" class="external-link">whichQuery</a></span><span class="op">(</span><span class="va">ms2_mtch</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
@@ -3055,7 +3058,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </div>
 </div>
 <p>Now, we have query-target pairs with a spectra similarity higher than 0.7. Similar to the MS1-based annotation also this result table contains redundant information: we have multiple fragment spectra per feature and also MassBank contains several fragment spectra for each compound, measured using differing collision energies or MS instruments, by different laboratories. Below we thus iterate over the feature-compound pairs and select for each the one with the highest score. As an identifier for a compound, we use its fragment spectra’s INCHI-key, since compound names in MassBank do not have accepted consensus/controlled vocabularies.</p>
-<div class="sourceCode cell-code" id="cb168"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' - split the result per feature</span></span>
 <span><span class="co">#' - select for each feature the best matching result for each compound</span></span>
 <span><span class="co">#' - combine the result again into a data frame</span></span>
@@ -3107,14 +3110,14 @@ Number of target objects: 69561 (14 matched)</code></pre>
 <p>Thus, combining the information from the MS1- and MS2 based annotation we can only annotate one feature with a considerable confidence. The feature with the <em>m/z</em> of 195.0879 and a retention time of 32 seconds seems to be an ion of caffeine. While the result is somewhat disappointing it also clearly shows the importance of proper experimental planning and the need to control for all potential confounding factors. For the present experiment, no disease-specific biomarker could be identified, but a life-style property of individuals suffering from this disease: coffee consumption was probably contraindicated to patients of the CVD group to reduce the risk of heart arrhythmia.</p>
 <p>We below plot the EIC for this feature highlighting the retention time at which the highest scoring MS2 spectra was recorded and create a mirror plot comparing this MS2 spectra to the reference fragment spectra for caffeine.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb169"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">col_sample</span> <span class="op">&lt;-</span> <span class="va">col_phenotype</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">phenotype</span><span class="op">]</span></span>
 <span><span class="co">#' Extract and plot EIC for the annotated feature</span></span>
 <span><span class="va">eic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/featureChromatograms.html" class="external-link">featureChromatograms</a></span><span class="op">(</span><span class="va">lcms1</span>, features <span class="op">=</span> <span class="va">ms2_mtch_res</span><span class="op">$</span><span class="va">feature_id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>Processing chromatographic peaks for features</code></pre>
 </div>
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb171"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eic</span>, col <span class="op">=</span> <span class="va">col_sample</span>, peakCol <span class="op">=</span> <span class="va">col_sample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeaks</a></span><span class="op">(</span><span class="va">eic</span><span class="op">)</span><span class="op">[</span>, <span class="st">"sample"</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>     peakBg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">col_sample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-class.html" class="external-link">chromPeaks</a></span><span class="op">(</span><span class="va">eic</span><span class="op">)</span><span class="op">[</span>, <span class="st">"sample"</span><span class="op">]</span><span class="op">]</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col <span class="op">=</span> <span class="va">col_phenotype</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">col_phenotype</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -3132,7 +3135,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </div>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb172"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Get the index of the MS2 spectrum in the query object</span></span>
 <span><span class="va">query_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">ms2_mtch</span><span class="op">)</span><span class="op">$</span><span class="va">.original_query_index</span> <span class="op">==</span></span>
 <span>                                  <span class="va">ms2_mtch_res</span><span class="op">$</span><span class="va">.original_query_index</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">)</span></span>
@@ -3156,7 +3159,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 <p>The plot above clearly shows the higher signal for this feature in CTR compared to CVD samples. The QC samples exhibit a lower but highly consistent signal, suggesting the absence of strong technical noise or biases in the raw data of this experiment. The vertical line indicates the retention time of the fragment spectrum with the best match against a reference spectrum. It has to be noted that, since the fragment spectra were measured in a separate LC-MS/MS experiment, this should only be considered as an indication of the approximate retention time in which ions were fragmented in the second experiment. The fragment spectrum for this feature, shown in the upper panel of the right plot above is highly similar to the reference spectrum for caffeine from MassBank (shown in the lower panel). In addition to their matching precursor <em>m/z</em>, the same two fragments (same <em>m/z</em> and intensity) are present in both spectra.</p>
 <p>We can also extract additional metadata for the matching reference spectrum, such as the used collision energy, fragmentation mode, instrument type, instrument as well as the ion (adduct) that was fragmented.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb173"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span></span>
 <span>  <span class="va">target_ms2</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -3178,7 +3181,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </section></section><section class="section level2"><h2 id="external-tools-or-alternative-annotation-approaches">External tools or alternative annotation approaches<a class="anchor" aria-label="anchor" href="#external-tools-or-alternative-annotation-approaches"></a>
 </h2>
 <p>The present workflow highlights how annotation could be performed within R using packages from the Bioconductor project, but there are also other excellent external software tools that could be used as an alternative, such as SIRIUS <span class="citation" data-cites="duhrkop_sirius_2019">(<a href="#ref-duhrkop_sirius_2019" role="doc-biblioref">Dührkop et al. 2019</a>)</span>, mummichog <span class="citation" data-cites="li_predicting_2013">(<a href="#ref-li_predicting_2013" role="doc-biblioref">Li et al. 2013</a>)</span>, or GNPS <span class="citation" data-cites="nothias_feature-based_2020">(<a href="#ref-nothias_feature-based_2020" role="doc-biblioref">Nothias et al. 2020</a>)</span>, among others. To use these, the data must be exported in a supported format. For MS2 spectra, the data can easily be exported in the required MGF file format using the <em><a href="https://bioconductor.org/packages/3.23/MsBackendMgf" class="external-link">MsBackendMgf</a></em> Bioconductor package.</p>
-<p>Alternatively, or in addition, evidence for the potential matching chemical formula of a feature could be derived by evaluating the isotope pattern of the full MS1 scan. This provides information on the isotope composition. Various functions can be used for this task, such as <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html" class="external-link">isotopologues()</a></code> from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package or the functionality of the <strong>enviPat</strong> R package <span class="citation" data-cites="loos_accelerated_2015">(<a href="#ref-loos_accelerated_2015" role="doc-biblioref">Loos et al. 2015</a>)</span>.</p>
+<p>Alternatively, or in addition, evidence for the potential matching chemical formula of a feature could be derived by evaluating the isotope pattern of the full MS1 scan. This provides information on the isotope composition. Various functions can be used for this task, such as <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/isotopologues.html" class="external-link">isotopologues()</a></code> from the <em><a href="https://bioconductor.org/packages/3.23/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></em> package or the functionality of the <em>enviPat</em> R package <span class="citation" data-cites="loos_accelerated_2015">(<a href="#ref-loos_accelerated_2015" role="doc-biblioref">Loos et al. 2015</a>)</span>.</p>
 <section class="level2"><h3 id="exporting-xcms-results-for-gnps2-feature-based-molecular-networking">Exporting xcms results for GNPS2 Feature Based Molecular Networking<a class="anchor" aria-label="anchor" href="#exporting-xcms-results-for-gnps2-feature-based-molecular-networking"></a>
 </h3>
 <p>Integration of <strong>xcms</strong> into feature-based molecular networking with GNPS is described in the <a href="https://ccms-ucsd.github.io/GNPSDocumentation/featurebasedmolecularnetworking-with-xcms3/" class="external-link">GNPS documentation</a>.</p>
@@ -3186,7 +3189,7 @@ Number of target objects: 69561 (14 matched)</code></pre>
 </h4>
 <p>The first step is to identify which MS2 spectra belong to the defined chromatographic features. We define the retention time and m/z ranges for all features and then extract the corresponding MS2 scans.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define ranges for all features based on the LC-MS analysis</span></span>
 <span><span class="va">target_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XcmsExperiment.html" class="external-link">featureArea</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span></span>
 <span></span>
@@ -3209,70 +3212,23 @@ Number of target objects: 69561 (14 matched)</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>Total spectra matched: 355</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Number of features with at least one MS2 spectrum: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Number of features with at least one MS2 spectrum: 20</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Combine the individual Spectra objects into one list</span></span>
-<span><span class="va">ms2_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra</a></span><span class="op">(</span><span class="va">ms2_all</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames
-Warning in rbindlistWithRownames(list(res@spectraData,
-objects[[i]]@spectraData), : Dropping rownames: duplicated rownames present or
-rownames not available for all data.frames</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb181"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Assign the feature identifier to each MS2 spectrum so we can track them</span></span>
+<span><span class="va">ms2_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">concatenateSpectra</a></span><span class="op">(</span><span class="va">ms2_all</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Assign the feature identifier to each MS2 spectrum so we can track them</span></span>
 <span><span class="va">ms2_all</span><span class="op">$</span><span class="va">feature_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span>, <span class="va">l</span><span class="op">)</span></span></code></pre></div>
 </div>
 </section><section class="level3"><h4 id="combining-spectra-into-consensus-spectra">Combining Spectra into Consensus Spectra<a class="anchor" aria-label="anchor" href="#combining-spectra-into-consensus-spectra"></a>
 </h4>
-<p>Often, a single feature will trigger multiple MS2 scans. To obtain a high-quality spectrum for annotation, we merge these multiple scans into a single “consensus” spectrum per feature. In this step, we keep only those peaks that are present in at least 75% of the scans for a given feature to reduce noise.</p>
+<p>Often, a single feature will trigger multiple MS2 scans. To obtain a high-quality spectrum for annotation, we merge these multiple scans into a single <em>consensus</em> spectrum per feature. In this step, we keep only those peaks that are present in at least 75% of the scans for a given feature to reduce noise.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 2. Combine into Consensus Spectra</span></span>
 <span><span class="co"># Keep peaks present in at least 75% of spectra for that feature</span></span>
 <span><span class="va">ms2_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/combineSpectra.html" class="external-link">combineSpectra</a></span><span class="op">(</span></span>
@@ -3287,7 +3243,7 @@ rownames not available for all data.frames</code></pre>
 </h4>
 <p>Finally, we export the data in the specific formats required by GNPS. This involves creating a feature quantification table (.txt) and a spectral data file (.mgf). Note that we filter the feature table to ensure it strictly matches the features present in the MGF file.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb183"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb180"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Export Feature Table (Quantification)</span></span>
 <span><span class="va">fvals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/XCMSnExp-peak-grouping-results.html" class="external-link">featureValues</a></span><span class="op">(</span><span class="va">lcms1</span>, method <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">fvals</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">lcms1</span><span class="op">)</span><span class="op">$</span><span class="va">sample_desc</span></span>
@@ -3316,7 +3272,7 @@ rownames not available for all data.frames</code></pre>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">export</a></span><span class="op">(</span><span class="va">ms2_all_gnps</span>, backend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/MsBackendMgf/man/MsBackendMgf.html" class="external-link">MsBackendMgf</a></span><span class="op">(</span><span class="op">)</span>, file <span class="op">=</span> <span class="st">"xcms_ms2_spectra.mgf"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>The 2 exported files <code>xcms_ms2_features.txt</code> and <code>xcms_ms2_spectra.mgf</code> can then be uploaded to GNPS2 for feature-based molecular networking analysis.</p>
+<p>The 2 exported files <em>xcms_ms2_features.txt</em> and <em>xcms_ms2_spectra.mgf</em> can then be uploaded to GNPS2 for feature-based molecular networking analysis.</p>
 </section></section></section><section class="section level2"><h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <p>In this tutorial, we describe an end-to-end workflow for LC-MS-based untargeted metabolomics experiments, conducted entirely within R using packages from the Bioconductor project or base R functionality. While other excellent software exists to perform similar analyses, the power of an R-based workflow lies in its adaptability to individual data sets or research questions and its ability to build reproducible workflows and documentation.</p>
@@ -3325,7 +3281,7 @@ rownames not available for all data.frames</code></pre>
 </section><section class="section level2"><h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb184"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.6.1 (2026-06-24)
@@ -3356,18 +3312,18 @@ other attached packages:
  [3] MetaboAnnotation_1.16.0     CompoundDb_1.16.0
  [5] AnnotationFilter_1.36.0     AnnotationHub_4.2.2
  [7] BiocFileCache_3.2.0         dbplyr_2.6.0
- [9] gridExtra_2.3.1             ggfortify_0.4.19
+ [9] gridExtra_2.3.1             ggfortify_0.4.22
 [11] ggplot2_4.0.3               vioplot_0.5.1
-[13] zoo_1.8-15                  sm_2.2-6.0
+[13] zoo_1.9-0                   sm_2.2-6.0
 [15] pheatmap_1.0.13             RColorBrewer_1.1-3
-[17] pander_0.6.6                limma_3.68.4
+[17] pander_0.6.6                limma_3.68.5
 [19] MetaboCoreUtils_1.20.1      xcms_4.10.1
-[21] MsBackendMgf_1.20.0         MsBackendMetaboLights_1.6.1
+[21] MsBackendMgf_1.20.1         MsBackendMetaboLights_1.6.1
 [23] Spectra_1.22.2              BiocParallel_1.46.0
 [25] alabaster.se_1.12.0         alabaster.base_1.12.1
 [27] SummarizedExperiment_1.42.0 Biobase_2.72.0
 [29] GenomicRanges_1.64.0        Seqinfo_1.2.0
-[31] IRanges_2.46.0              S4Vectors_0.50.1
+[31] IRanges_2.46.0              S4Vectors_0.50.2
 [33] BiocGenerics_0.58.1         generics_0.1.4
 [35] MatrixGenerics_1.24.0       matrixStats_1.5.0
 [37] MsIO_0.0.17                 MsExperiment_1.14.0
@@ -3376,19 +3332,19 @@ other attached packages:
 [43] knitr_1.51
 
 loaded via a namespace (and not attached):
-  [1] later_1.4.8                 bitops_1.0-9
+  [1] later_1.4.8                 bitops_1.1-0
   [3] filelock_1.0.3              tibble_3.3.1
   [5] cellranger_1.1.0            preprocessCore_1.74.0
-  [7] XML_3.99-0.23               lifecycle_1.0.5
+  [7] XML_3.99-0.24               lifecycle_1.0.5
   [9] httr2_1.3.0                 doParallel_1.0.17
- [11] processx_3.9.0              lattice_0.22-9
+ [11] processx_3.9.0              lattice_0.23-1
  [13] MASS_7.3-66                 MultiAssayExperiment_1.38.0
- [15] magrittr_2.0.5              rmarkdown_2.31
+ [15] magrittr_2.0.5              rmarkdown_2.32
  [17] yaml_2.3.12                 otel_0.2.0
  [19] MsCoreUtils_1.24.0          DBI_1.3.0
  [21] abind_1.4-8                 purrr_1.2.2
- [23] RCurl_1.98-1.19             rappdirs_0.3.4
- [25] MSnbase_2.37.0              ncdf4_1.24
+ [23] RCurl_1.98-1.20             rappdirs_0.3.4
+ [25] MSnbase_2.38.1              ncdf4_1.24
  [27] codetools_0.2-20            DelayedArray_0.38.2
  [29] DT_0.34.0                   xml2_1.6.0
  [31] tidyselect_1.2.1            farver_2.1.2
@@ -3400,12 +3356,12 @@ loaded via a namespace (and not attached):
  [43] xfun_0.60                   dplyr_1.2.1
  [45] HDF5Array_1.40.0            withr_3.0.3
  [47] BiocManager_1.30.27         fastmap_1.2.0
- [49] rhdf5filters_1.24.0         digest_0.6.39
+ [49] rhdf5filters_1.24.1         digest_0.6.39
  [51] R6_2.6.1                    rsvg_2.7.0
- [53] RSQLite_3.53.3              h5mread_1.4.0
- [55] tidyr_1.3.2                 data.table_1.18.4
+ [53] RSQLite_3.53.3              h5mread_1.4.1
+ [55] tidyr_1.3.2                 data.table_1.18.6.1
  [57] prettyunits_1.2.0           PSMatch_1.16.0
- [59] httr_1.4.8                  htmlwidgets_1.6.4
+ [59] httr_1.4.9                  htmlwidgets_1.6.4
  [61] S4Arrays_1.12.0             pkgconfig_2.0.3
  [63] gtable_0.3.6                blob_1.3.0
  [65] S7_0.2.2                    impute_1.86.0
@@ -3414,7 +3370,7 @@ loaded via a namespace (and not attached):
  [71] clue_0.3-68                 scales_1.4.0
  [73] alabaster.matrix_1.12.0     png_0.1-9
  [75] rstudioapi_0.19.0           reshape2_1.4.5
- [77] rjson_0.2.23                curl_7.1.0
+ [77] rjson_0.2.23                curl_8.0.0
  [79] cachem_1.1.0                rhdf5_2.56.0
  [81] stringr_1.6.0               BiocVersion_3.23.1
  [83] parallel_4.6.1              AnnotationDbi_1.74.0
@@ -3422,16 +3378,16 @@ loaded via a namespace (and not attached):
  [87] pillar_1.11.1               grid_4.6.1
  [89] alabaster.schemas_1.12.0    vctrs_0.7.3
  [91] MsFeatures_1.20.0           pcaMethods_2.4.0
- [93] cluster_2.1.8.2             evaluate_1.0.5
+ [93] cluster_2.1.8.3             evaluate_1.0.5
  [95] cli_3.6.6                   compiler_4.6.1
  [97] rlang_1.3.0                 crayon_1.5.3
  [99] labeling_0.4.3              QFeatures_1.22.0
 [101] ChemmineR_3.64.0            ps_1.9.3
 [103] affy_1.90.0                 plyr_1.8.9
-[105] fs_2.1.0                    stringi_1.8.7
-[107] Biostrings_2.80.1           lazyeval_0.2.3
-[109] Matrix_1.7-5                hms_1.1.4
-[111] bit64_4.8.2                 Rhdf5lib_2.0.0
+[105] fs_2.1.0                    stringi_1.8.9
+[107] Biostrings_2.80.2           lazyeval_0.2.3
+[109] Matrix_1.7-6                hms_1.1.4
+[111] bit64_4.8.6                 Rhdf5lib_2.0.0
 [113] KEGGREST_1.52.2             statmod_1.5.2
 [115] alabaster.ranges_1.12.0     mzR_2.46.0
 [117] igraph_2.3.3                memoise_2.0.1

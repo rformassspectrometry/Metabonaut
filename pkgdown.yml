@@ -1,6 +1,6 @@
 pandoc: '3.10'
 pkgdown: 2.2.1.9000
-pkgdown_sha: 179cfaee3d4e17eaa9e7d7c700b1269dc62e4d46
+pkgdown_sha: f69b62a7e74b58b42170284b6f3f56c674e7a3f8
 articles:
   a-end-to-end-untargeted-metabolomics: a-end-to-end-untargeted-metabolomics.html
   advanced_feature_annotation_with_RuSirius: advanced_feature_annotation_with_RuSirius.html
@@ -12,7 +12,7 @@ articles:
   large-scale-analysis: large-scale-analysis.html
   notame_normalization_and_feature_selection: notame_normalization_and_feature_selection.html
   SpectriPy-tutorial-metabonaut: SpectriPy-tutorial-metabonaut.html
-last_built: 2026-07-17T16:04Z
+last_built: 2026-09-04T10:20Z
 urls:
   reference: https://rformassspectrometry.github.io/Metabonaut/reference
   article: https://rformassspectrometry.github.io/Metabonaut/articles

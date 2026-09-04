@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Install</h1>
 
 
-      <p class="date">2026-07-17</p>
+      <p class="date">2026-09-04</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/install_v0.qmd" class="external-link"><code>vignettes/install_v0.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -85,7 +85,7 @@
 
 
 
-    <p>For manual installation, an <a href="https://www.r-project.org/" class="external-link">R</a> version &gt;= 4.4.0 is required.</p>
+    <p>For manual installation, an <a href="https://www.r-project.org/" class="external-link">R</a> version &gt;= 4.6.0 is required.</p>
 <section class="section level2"><h2 id="running-workflows-in-the-cloud">Running workflows in the cloud<a class="anchor" aria-label="anchor" href="#running-workflows-in-the-cloud"></a>
 </h2>
 <p>No installation is needed to run the workflows: Metabonaut is available as a <em>Curated Workshop</em> on the <a href="https://workshop.bioconductor.org" class="external-link">Bioconductor Workshop platform</a>, a Galaxy-based service hosted on the Jetstream2 academic cloud (NSF-ACCESS).</p>
@@ -97,12 +97,13 @@
 <p>Note that these sessions are ephemeral: all data and progress are erased when the workshop is stopped, so download a local copy of anything you want to keep.</p>
 </section><section class="section level2"><h2 id="running-workflows-locally">Running workflows locally<a class="anchor" aria-label="anchor" href="#running-workflows-locally"></a>
 </h2>
-<p>To install on your computer all the packages necessary for the workflows run the code as follow:</p>
+<p>To install all the packages required to run the workflows locally run the code as follow in an R session (R &gt;= 4.6.0):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">'RforMassSpectrometry/MsIO'</span>, ask <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                     dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span></span>
+<span>    <span class="st">"RforMassSpectrometry/MsIO@a669fa1303a023161581b7a16caed3ed20a43299"</span>,</span>
+<span>    ask <span class="op">=</span> <span class="cn">FALSE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"RforMassSpectrometry/Metabonaut"</span>,</span>
 <span>                     dependencies <span class="op">=</span> <span class="cn">TRUE</span>, ask <span class="op">=</span> <span class="cn">FALSE</span>, update <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -116,19 +117,26 @@
 <span><span class="co"># Delete them:</span></span>
 <span><span class="fu">gitcreds</span><span class="fu">::</span><span class="fu"><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds_delete</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
+<p>The workflow source files (quarto and Rmarkdown documents) can be downloaded from Metabonaut’s GitHub <a href="https://github.com/RforMassSpectrometry/Metabonaut" class="external-link">repository</a> (download either individual files from the <em>vignettes</em> folder, or the full repository).</p>
 </section><section class="section level2"><h2 id="docker-image">Docker image<a class="anchor" aria-label="anchor" href="#docker-image"></a>
 </h2>
-<p>The vignettes files along with an R runtime environment including all required packages and the RStudio (Posit) editor are all bundled in a <em>docker</em> container.</p>
+<p>The vignettes files along with an R runtime environment including all required packages and data as well as the RStudio (Posit) editor are all bundled in a <em>docker</em> container.</p>
 <p>After installation, this docker container can be run on the computer and the code and examples from the vignettes can be evaluated within this environment (without the need to install any additional packages or files).</p>
 <ul>
 <li>If you don’t already have, install <a href="https://www.docker.com/" class="external-link">docker</a>. Find installation information <a href="https://docs.docker.com/desktop/" class="external-link">here</a>.</li>
 <li>Get the <a href="https://hub.docker.com/r/rformassspectrometry/metabonaut" class="external-link">docker image</a> of this tutorial e.g. from the command line with:</li>
 </ul>
-<pre><code>docker pull rformassspectrometry/metabonaut:latest</code></pre>
+<pre><code>docker pull rformassspectrometry/metabonaut:v1.6.2</code></pre>
+<div>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>ℹ️ the tag <em>v1.6.2</em> selects the docker image specific for Metabonaut version 1.6.2. Docker images for upcoming versions releases will be made available using a different tag (e.g. v1.6.3) ensuring images from older versions will also be available in future.</p>
+</blockquote>
+</div>
 <ul>
 <li>Start the docker container, either through the Docker Desktop, or on the command line with</li>
 </ul>
-<pre><code>docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:latest</code></pre>
+<pre><code>docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2</code></pre>
 <ul>
 <li>Enter <a href="http://localhost:8787" class="external-link"><code>http://localhost:8787</code></a> in a web browser and log in with username <code>rstudio</code> and password <code>bioc</code>.</li>
 <li>In the RStudio server version: open any of the Quarto files in the <em>vignettes</em> folder and evaluate the R code blocks in that document.</li>

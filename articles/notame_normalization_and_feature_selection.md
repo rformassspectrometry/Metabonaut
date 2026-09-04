@@ -4,8 +4,8 @@
 
 Herein, we will perform normalization and feature selection using the
 *notame* R packages, originally developed in parallel with a protocol
-article published in the “Metabolomics Data Processing and Data
-Analysis—Current Best Practices” special issue of the Metabolites
+article published in the *Metabolomics Data Processing and Data
+Analysis—Current Best Practices* special issue of the Metabolites
 journal ([Klåvus et al. 2020](#ref-klavus_notame_2020)). The main
 outcome is identifying interesting features for laborious downstream
 steps relating to biological context, such as annotation and pathway
@@ -25,7 +25,8 @@ would want to look out for.
 ## Setup
 
 Let’s prepare by attaching packages and loading the preprocessed data as
-a SummarizedExperiment object returned from `MSExperiment::quantify()`.
+a `SummarizedExperiment` object returned from
+[`xcms::quantify()`](https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html).
 
 ``` r
 
@@ -63,10 +64,10 @@ se
 
 The `SummarizedExperiment` container supports several assays. In
 *notame*, you need to specify the assay using the `assay.type` parameter
-if using multiple assays. Herein, we have two assays: “raw” contains the
-detected peaks without gap-filling, whereas “raw_filled” contains the
-gap-filled peak table. For this demo to go smoothly, we prepare the
-SummarizedExperiment object for all the functions at once, mostly by
+if using multiple assays. Herein, we have two assays: `"raw"` contains
+the detected peaks without gap-filling, whereas `"raw_filled"` contains
+the gap-filled peak table. For this demo to go smoothly, we prepare the
+`SummarizedExperiment` object for all the functions at once, mostly by
 renaming and creating columns.
 
 ``` r
@@ -336,7 +337,7 @@ We flag low-quality features, excluding them from downstream steps. In
 addition to the D-ratio and detection rate in the trunk of the workflow,
 we flag features by their relative standard deviation in QC samples. The
 non- parametric, robust versions of the D-ratio and relative standard
-deviation are used([Broadhurst et al.
+deviation are used ([Broadhurst et al.
 2018](#ref-broadhurst_guidelines_2018)).
 
 ``` r
@@ -424,14 +425,14 @@ independent variables. A) p-values. B) FDR-adjusted p-values (q-values).
 The p-value histogram for looks promising; it is a relatively uniform
 distribution with an overabundance of low p-values. However, there are
 no significant features after correction for multiple testing. For
-demonstration purposes, we’ll consider the feature “FT0845”, which was
+demonstration purposes, we’ll consider the feature *FT0845*, which was
 identified as caffeine in the trunk of the workflow, most interesting.
 
 After differential abundance analysis or feature selection using
 supervised learning, for example, the number of significant features or
 a ranking cutoff allows for manual inspection of feature-wise plots.
 *notameViz* includes a variety of feature-wise visualizations adaptable
-to a variety of study designs. For feature “FT0845”, the abundance of
+to a variety of study designs. For feature *FT0845*, the abundance of
 CTR samples is reduced after normalization.
 
 ``` r
@@ -451,7 +452,7 @@ Figure 10. Beeswarm plots for the lowest p-value feature. A) Before
 normalization. B) After normalization.
 
 The results are also visualized with a variety of comprehensive
-visualizations. The volcano plot below shows that feature “FT0845” is
+visualizations. The volcano plot below shows that feature *FT0845* is
 distinct in having a low p-value and the second-largest fold-change.
 Manhattan plots and cloud plots could also be used to inspect how
 interesting features relate to m/z and retention time. We often
@@ -476,11 +477,14 @@ related to fold-change (log2 scale).
 
 Caffeine is a mild diuretic and can concentrate blood in high doses, so
 a difference in biological dilution between the study groups can be
-expected. The overall structure of the data seems to be intact after
-normalization. On the other hand, the QC samples were from a different
-source so the most probable dilution factors may not have been
-determined accurately for the biological samples and drift correction
-likely suffered as well.
+expected. Due to the low number of replicates and the potential
+confounding with a difference in life style between the compared sample
+groups, any biological interpretation of results from this data set
+should however be taken with care. The overall structure of the data
+seems to be intact after normalization. On the other hand, the QC
+samples were from a different source so the most probable dilution
+factors may not have been determined accurately for the biological
+samples and drift correction likely suffered as well.
 
 ## Session information
 
@@ -515,12 +519,12 @@ sessionInfo()
     other attached packages:
      [1] notameStats_1.2.0           notameViz_1.2.0
      [3] notame_1.2.0                ggplot2_4.0.3
-     [5] limma_3.68.4                cowplot_1.2.0
+     [5] limma_3.68.5                cowplot_1.2.0
      [7] BiocParallel_1.46.0         alabaster.se_1.12.0
      [9] alabaster.base_1.12.1       SummarizedExperiment_1.42.0
     [11] Biobase_2.72.0              GenomicRanges_1.64.0
     [13] Seqinfo_1.2.0               IRanges_2.46.0
-    [15] S4Vectors_0.50.1            BiocGenerics_0.58.1
+    [15] S4Vectors_0.50.2            BiocGenerics_0.58.1
     [17] generics_0.1.4              MatrixGenerics_1.24.0
     [19] matrixStats_1.5.0           quarto_1.5.1.9002
     [21] knitr_1.51
@@ -537,19 +541,19 @@ sessionInfo()
     [25] abind_1.4-8              HDF5Array_1.40.0         withr_3.0.3
     [28] purrr_1.2.2              itertools_0.1-3          grid_4.6.1
     [31] Rhdf5lib_2.0.0           iterators_1.0.14         scales_1.4.0
-    [34] MASS_7.3-66              cli_3.6.6                rmarkdown_2.31
+    [34] MASS_7.3-66              cli_3.6.6                rmarkdown_2.32
     [37] otel_0.2.0               rstudioapi_0.19.0        ggbeeswarm_0.7.3
     [40] rhdf5_2.56.0             stringr_1.6.0            parallel_4.6.1
     [43] formatR_1.14             XVector_0.52.0           alabaster.schemas_1.12.0
-    [46] vctrs_0.7.3              Matrix_1.7-5             jsonlite_2.0.0
+    [46] vctrs_0.7.3              Matrix_1.7-6             jsonlite_2.0.0
     [49] beeswarm_0.4.0           alabaster.ranges_1.12.0  foreach_1.5.2
-    [52] h5mread_1.4.0            tidyr_1.3.2              ggdendro_0.2.0
+    [52] h5mread_1.4.1            tidyr_1.3.2              ggdendro_0.2.0
     [55] missForest_1.6.1         glue_1.8.1               codetools_0.2-20
-    [58] ps_1.9.3                 stringi_1.8.7            gtable_0.3.6
+    [58] ps_1.9.3                 stringi_1.8.9            gtable_0.3.6
     [61] futile.logger_1.4.9      later_1.4.8              tibble_3.3.1
     [64] pillar_1.11.1            pcaMethods_2.4.0         htmltools_0.5.9
-    [67] rhdf5filters_1.24.0      randomForest_4.7-1.2     R6_2.6.1
-    [70] Rdpack_2.6.6             evaluate_1.0.5           lattice_0.22-9
+    [67] rhdf5filters_1.24.1      randomForest_4.7-1.2     R6_2.6.1
+    [70] Rdpack_2.6.6             evaluate_1.0.5           lattice_0.23-1
     [73] rbibutils_2.4.1          futile.options_1.0.1     Rcpp_1.1.2
     [76] SparseArray_1.12.2       ranger_0.18.0            xfun_0.60
     [79] pkgconfig_2.0.3         

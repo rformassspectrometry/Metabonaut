@@ -1,7 +1,7 @@
 # Install
 
 For manual installation, an [R](https://www.r-project.org/) version \>=
-4.4.0 is required.
+4.6.0 is required.
 
 ## Running workflows in the cloud
 
@@ -25,14 +25,15 @@ want to keep.
 
 ## Running workflows locally
 
-To install on your computer all the packages necessary for the workflows
-run the code as follow:
+To install all the packages required to run the workflows locally run
+the code as follow in an R session (R \>= 4.6.0):
 
 ``` r
 
 install.packages("BiocManager")
-BiocManager::install('RforMassSpectrometry/MsIO', ask = FALSE,
-                     dependencies = TRUE)
+BiocManager::install(
+    "RforMassSpectrometry/MsIO@a669fa1303a023161581b7a16caed3ed20a43299",
+    ask = FALSE, dependencies = TRUE)
 
 BiocManager::install("RforMassSpectrometry/Metabonaut",
                      dependencies = TRUE, ask = FALSE, update = TRUE)
@@ -51,11 +52,17 @@ gitcreds::gitcreds_get()
 gitcreds::gitcreds_delete()
 ```
 
+The workflow source files (quarto and Rmarkdown documents) can be
+downloaded from Metabonaut’s GitHub
+[repository](https://github.com/RforMassSpectrometry/Metabonaut)
+(download either individual files from the *vignettes* folder, or the
+full repository).
+
 ## Docker image
 
 The vignettes files along with an R runtime environment including all
-required packages and the RStudio (Posit) editor are all bundled in a
-*docker* container.
+required packages and data as well as the RStudio (Posit) editor are all
+bundled in a *docker* container.
 
 After installation, this docker container can be run on the computer and
 the code and examples from the vignettes can be evaluated within this
@@ -71,14 +78,21 @@ files).
 
 &nbsp;
 
-    docker pull rformassspectrometry/metabonaut:latest
+    docker pull rformassspectrometry/metabonaut:v1.6.2
+
+> **Note**
+>
+> ℹ️ the tag *v1.6.2* selects the docker image specific for Metabonaut
+> version 1.6.2. Docker images for upcoming versions releases will be
+> made available using a different tag (e.g. v1.6.3) ensuring images
+> from older versions will also be available in future.
 
 - Start the docker container, either through the Docker Desktop, or on
   the command line with
 
 &nbsp;
 
-    docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:latest
+    docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2
 
 - Enter [`http://localhost:8787`](http://localhost:8787) in a web
   browser and log in with username `rstudio` and password `bioc`.

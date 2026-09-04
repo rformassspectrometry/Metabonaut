@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment • Metabonaut</title>
+<title>mzTab-M file format: import-export of mzTab-M 2.1 files from SummarizedExperiment • Metabonaut</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="generation_of_mzTabM_file_files/libs/quarto-html/popper.min.js"></script><script src="generation_of_mzTabM_file_files/libs/quarto-html/tippy.umd.min.js"></script><link href="generation_of_mzTabM_file_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="generation_of_mzTabM_file_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="mzTab-M file format: import-export of mzTab-M 2.1 files from SummarizedExperiment">
 <meta property="og:image" content="https://rformassspectrometry.github.io/Metabonaut/logo.png">
 </head>
 <body>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Metabonaut</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,10 +71,10 @@
 </nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>mzTab-M file format: import-export of mzTab-M 2.1 files from Summarized Experiment</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>mzTab-M file format: import-export of mzTab-M 2.1 files from SummarizedExperiment</h1>
 
       <p class="author">Gabriele Tomè, Philippine Louail, Johannes Rainer</p>
-      <p class="date">2026-07-17</p>
+      <p class="date">2026-09-04</p>
 
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/Metabonaut/blob/devel/vignettes/generation_of_mzTabM_file.qmd" class="external-link"><code>vignettes/generation_of_mzTabM_file.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -94,8 +94,8 @@
 </div>
 <section class="section level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The file <em>mzTab-M</em> is a lightweight, tab-delimited file format for reporting quantitative results from metabolomics/lipidomics approaches. This format aims to give local LIMS systems and MS metabolomics repositories a simple way to share and combine basic information.</p>
-<p>This document shows how to export and import a mzTab-M file into R via the package <a href="https://github.com/rformassspectrometry/RmzTabM" class="external-link">RmzTabM</a>, which provides the API and core functionality to read and write files in mzTab-M format.</p>
+<p><em>mzTab-M</em> is a lightweight, tab-delimited file format for reporting quantitative results from metabolomics/lipidomics experiments. This format aims to give local LIMS systems and MS metabolomics repositories a simple way to share and combine basic information.</p>
+<p>This document shows how to export and import a mzTab-M file into R <em>via</em> the <em><a href="https://bioconductor.org/packages/3.23/RmzTabM" class="external-link">RmzTabM</a></em> Bioconductor package, which provides the API and core functionality to read and write files in this format.</p>
 <p>The <em>RmzTabM</em> package supports mzTab-M version <strong>2.1</strong>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
@@ -109,7 +109,7 @@
 <p>For a description of the mzTab-M format and the set of mandatory and optional fields refer to the official <a href="https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/mzTab_format_specification_2_1-M.adoc" class="external-link">format definition</a>.</p>
 </section><section class="section level2"><h2 id="general-information-on-the-mztab-m-format">General information on the mzTab-M format<a class="anchor" aria-label="anchor" href="#general-information-on-the-mztab-m-format"></a>
 </h2>
-<p>The mzTab-M format consists of four cross-referenced data tables: metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF) and the Small Molecule Evidence (SME). The MTD section is supposed to contain all experiment and measurement relevant information. The SML section contains the final results of an analysis that should be reported, i.e., the (annotated) molecules and their respective abundances. The SMF section contains information on the measured (LC-MS) <em>features</em> and their abundance values. The SME section contains information on the annotation process (and reliability) of the molecules reported in the SML section. The SML is supposed to be a subset of the SMF table. The structure and relationship between rows in these different tables is defined by the mzTab-M standard and follows strict rules. All mzTab-M files are validated using either the <a href="https://apps.lifs-tools.org/mztabvalidator/" class="external-link">online</a> or local Java validator to ensure compliance. In RmzTabM, this validation is executed locally via the offline Java tool.</p>
+<p>The mzTab-M format consists of four cross-referenced data tables: metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF) and the Small Molecule Evidence (SME). The MTD section is supposed to contain all experiment and measurement relevant information. The SML section contains the final results of an analysis that should be reported, i.e., the (annotated) molecules and their respective abundances. The SMF section contains information on the measured (LC-MS) <em>features</em> and their abundance values. The SME section contains information on the annotation process (and reliability) of the molecules reported in the SML section. The SML is supposed to be a subset of the SMF table. The structure and relationship between rows in these different tables is defined by the mzTab-M standard and follows strict rules. All mzTab-M files are validated using either the <a href="https://apps.lifs-tools.org/mztabvalidator/" class="external-link">online</a> or local Java validator to ensure compliance. In <em>RmzTabM</em>, this validation is executed locally via the offline Java tool.</p>
 </section><section class="section level2"><h2 id="package">Package<a class="anchor" aria-label="anchor" href="#package"></a>
 </h2>
 <div class="cell">
@@ -120,23 +120,24 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sneumann/xcms" class="external-link">xcms</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="section level2"><h2 id="export-of-a-summarizedexperiment-into-mztab-m-file">Export of a SummarizedExperiment into mzTab-M file<a class="anchor" aria-label="anchor" href="#export-of-a-summarizedexperiment-into-mztab-m-file"></a>
+</section><section class="section level2"><h2 id="export-of-a-summarizedexperiment-to-mztab-m">Export of a <code>SummarizedExperiment</code> to mzTab-M<a class="anchor" aria-label="anchor" href="#export-of-a-summarizedexperiment-to-mztab-m"></a>
 </h2>
 <section class="level2"><h3 id="data-import">Data import<a class="anchor" aria-label="anchor" href="#data-import"></a>
 </h3>
-<p>In this document we export the preprocessed data set used in the <em>Metabonaut</em> <a href="https://rformassspectrometry.github.io/metabonaut/articles/end-to-end-untargeted-metabolomics.html" class="external-link">end-to-end metabolomics data workflow</a> in mzTab-M format, based on the Metabolights data set <em>MTBLS8735</em>. After collecting all necessary experimental metadata, we export this result object as a mzTab-M file with only the metadata and the small feature abundances (MTD+SMF).</p>
+<p>In this document we export the preprocessed data set used in the <em>Metabonaut</em> <a href="https://rformassspectrometry.github.io/metabonaut/articles/end-to-end-untargeted-metabolomics.html" class="external-link">end-to-end metabolomics data workflow</a> in mzTab-M format. The original MS data is available in the Metabolights repository with accession <em>MTBLS8735</em>. After collecting all necessary experimental metadata, we export this result object as a mzTab-M file with only the metadata and the small feature abundances (MTD+SMF).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## load preprocessed dataset</span></span>
 <span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/alabaster.base/man/readObject.html" class="external-link">readObject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"preprocessed_res"</span>,</span>
-<span>                               package <span class="op">=</span> <span class="st">"Metabonaut"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                             package <span class="op">=</span> <span class="st">"Metabonaut"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="level2"><h3 id="creation-of-mztabm-object">Creation of MzTabM object<a class="anchor" aria-label="anchor" href="#creation-of-mztabm-object"></a>
+</section><section class="level2"><h3 id="creation-of-the-mztabm-object">Creation of the <code>MzTabM</code> object<a class="anchor" aria-label="anchor" href="#creation-of-the-mztabm-object"></a>
 </h3>
-<p>The <em>RmzTabM</em> package defines a <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">MzTabM()</a></code> convenience function to create a mzTab-M file from a <code>SummarizedExperiment</code> object. Information provided in such objects is automatically converted and formatted into content for the right mzTab-M section. The user simply needs to define the columns containing information for the various mzTab-M fields and a mzTab-M is compiled. This MzTabM object should then be completed adding any missing data.</p>
+<p>The <em>RmzTabM</em> package defines a <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">MzTabM()</a></code> convenience function to create a mzTab-M file from a <code>SummarizedExperiment</code> object. Information provided in such objects is automatically converted and formatted into content for the right mzTab-M section. The user simply needs to define the columns containing information for the various mzTab-M fields and a mzTab-M is compiled. The resulting <code>MzTabM</code> object should then be manually completed adding eventually missing data.</p>
 <section class="level3"><h4 id="define-missing-data-sets-metadata-mtd">Define missing data set’s metadata (MTD)<a class="anchor" aria-label="anchor" href="#define-missing-data-sets-metadata-mtd"></a>
 </h4>
-<p>Comprehensive data set descriptions and metadata are important to enable re-use of the data and follow FAIR principles. The mzTab-M format has stringent requirement for mandatory fields and their format. Most of the fields are CV parameters and the <strong>PSI Mass Spectrometry Controlled Vocabulary (PSI-MS)</strong> is the primary CV used to annotate mass spectrometry-specific fields in mzTab-M. It was built collaboratively by MS software vendors and academic groups working in mass spectrometry and MS informatics. The CV is community-maintained: new terms can be requested through the PSI-MS mailing list. For more details see the <a href="https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/specification.html#the-psi-mass-spectrometry-controlled-vocabulary-cv" class="external-link">mzTab-M specification, section 4.2 “The PSI Mass Spectrometry Controlled Vocabulary (CV)”</a>. We need to add/adapt some columns of the <code>SummarizedExperiment</code>’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> to complete or match the expected format:</p>
+<p>Comprehensive data set descriptions and metadata are important to enable re-use of the data and follow FAIR principles. The mzTab-M format has stringent requirements for mandatory fields and their format. Most of the fields are controlled vocabulary (CV) parameters and the <strong>PSI Mass Spectrometry Controlled Vocabulary (PSI-MS)</strong> is the primary CV used to annotate mass spectrometry-specific fields in mzTab-M. It was built collaboratively by MS software vendors and academic groups working in mass spectrometry and MS informatics. The CV is community-maintained: new terms can be requested through the PSI-MS mailing list. For more details see the <a href="https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/specification.html#the-psi-mass-spectrometry-controlled-vocabulary-cv" class="external-link">mzTab-M specification, section 4.2 “The PSI Mass Spectrometry Controlled Vocabulary (CV)”</a>.</p>
+<p>We need to add/adapt some columns of the <code>SummarizedExperiment</code>’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> to complete or match the expected format:</p>
 <ul>
 <li>use a CV param for species: <code>"[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]"</code>
 </li>
@@ -170,7 +171,7 @@
 </div>
 </section><section class="level3"><h4 id="define-metadata-mtd-section">Define Metadata (MTD) section<a class="anchor" aria-label="anchor" href="#define-metadata-mtd-section"></a>
 </h4>
-<p>Now we can use the previous information to compile the data set’s metadata. To this end we define the column names in the <code>SummarizedExperiment</code>’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> that contain information for sample, measurement run and assay mzTab-M fields. This mapping of mzTab-M fields to column names can be defined with the <code><a href="https://rdrr.io/pkg/RmzTabM/man/mtdFromSampleData.html" class="external-link">sampleCols()</a></code>, <code><a href="https://rdrr.io/pkg/RmzTabM/man/mtdFromSampleData.html" class="external-link">msRunCols()</a></code> and <code><a href="https://rdrr.io/pkg/RmzTabM/man/mtdFromSampleData.html" class="external-link">assayCols()</a></code> helper functions. We use for example the content of the column <code>"sample_name"</code> for the mzTab-M <em>sample</em> name. Content from the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> columns <code>"species"</code>, <code>"tissue"</code> and <code>"sample_type"</code> is used for mzTab-M sample fields <code>species</code>, <code>tissue</code> and <code>sample_type</code>.</p>
+<p>Now we can use the previous information to compile the data set’s metadata. To this end we define the column names in the <code>SummarizedExperiment</code>’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> that contain information for the <em>sample</em>, <em>measurement run</em> and <em>assay</em> mzTab-M fields. This mapping of mzTab-M fields to column names can be defined with the <code><a href="https://rdrr.io/pkg/RmzTabM/man/mtdFromSampleData.html" class="external-link">sampleCols()</a></code>, <code><a href="https://rdrr.io/pkg/RmzTabM/man/mtdFromSampleData.html" class="external-link">msRunCols()</a></code> and <code><a href="https://rdrr.io/pkg/RmzTabM/man/mtdFromSampleData.html" class="external-link">assayCols()</a></code> helper functions, respectively. In our example we use the content of column <code>"sample_name"</code> as the mzTab-M <em>sample</em> name. Content from the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> columns <code>"species"</code>, <code>"tissue"</code> and <code>"sample_type"</code> is used for mzTab-M sample fields <em>species</em>`, <em>tissue</em> and <em>sample_type</em>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## define mapping of `colData()` column names to mzTab-M sample fields</span></span>
@@ -185,7 +186,7 @@
 <span>                    instrument_ref <span class="op">=</span> <span class="st">"instrument"</span>, scan_polarity <span class="op">=</span> <span class="st">"polarity"</span><span class="op">)</span></span>
 <span><span class="va">acols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/mtdFromSampleData.html" class="external-link">assayCols</a></span><span class="op">(</span>assay <span class="op">=</span> <span class="st">"derived_spectra_data_file"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>The column <code>"derived_spectra_data_file"</code> contains the MS data file name which we use both to define the MS runs and assays (assuming thus a 1:1 mapping between them).</p>
+<p>The column <code>"derived_spectra_data_file"</code> contains the MS data file name which we use to define both the MS runs and assays (assuming thus a 1:1 mapping between them).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">derived_spectra_data_file</span></span></code></pre></div>
@@ -197,7 +198,7 @@
  [9] "FILES/MS_F_POS.mzML"         "FILES/MS_QC_POOL_4_POS.mzML"</code></pre>
 </div>
 </div>
-<p>At last we define also the study variables of the experiment. These can be technical characteristics or phenotype(s) of the samples. The present experiment consists of plasma samples of individuals with or without a cardiovascular disease (CVD) and repeated measurements of an external (serum) sample pools that was used as quality control sample. These are defined in <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> columns <code>"blood_sample_type"</code>, <code>"age"</code> and <code>"phenotype"</code>.</p>
+<p>At last we define also the study variables of the experiment. These can be technical characteristics or phenotype(s) of the samples. The present experiment consists of plasma samples of individuals with or without a cardiovascular disease (CVD) and repeated measurements of an external (serum) sample pool that was used as quality control sample. These are defined in <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> columns <code>"blood_sample_type"</code>, <code>"age"</code> and <code>"phenotype"</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blood_sample_type"</span>, <span class="st">"phenotype"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -275,7 +276,7 @@
 </table>
 </div>
 </div>
-<p>With this information defined we can use the <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">MzTabM()</a></code> function to create a template mzTab-M for the present experiment. Parameter <code>groups</code> defines the column names of the <code>SummarizedExperiment</code>’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> to be used as mzTab-M <em>study variable groups</em>.</p>
+<p>We can now use the <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">MzTabM()</a></code> function to create a template mzTab-M for the present experiment. Parameter <code>groups</code> defines the column names of the <code>SummarizedExperiment</code>’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> that represent the mzTab-M <em>study variable groups</em> (i.e., the sample’s phenotype or technical characteristics).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mzt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">MzTabM</a></span><span class="op">(</span><span class="va">se</span>, id <span class="op">=</span> <span class="st">"MTBLS8735"</span>, sampleCols <span class="op">=</span> <span class="va">scols</span>,</span>
@@ -285,13 +286,13 @@
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class MzTabM
 mzTab-M version 2.1.0-M
- MTD section with 189 rows.</code></pre>
+ MTD section with 181 rows.</code></pre>
 </div>
 </div>
-<p>This <code>MzTabM</code> object contains only metadata information, but no abundances/feature data yet. Also, some general metadata are still missing and, if exported to a mzTab-M file, it might not yet validate. We are next adding the small molecule feature (SMF) content and, in the subsequent section <em>Completing the metadata content</em>, adding any missing required metadata fields.</p>
+<p>This <code>MzTabM</code> object contains only metadata information, but no abundances/feature data yet. Also, some general metadata are still missing and, if exported to a mzTab-M file, it might not yet validate. We add next the small molecule feature (SMF) content and, in the subsequent section <em>Completing the metadata content</em>, add any missing required metadata fields.</p>
 </section><section class="level3"><h4 id="add-feature-abundance-matrix-smf">Add feature abundance matrix (SMF)<a class="anchor" aria-label="anchor" href="#add-feature-abundance-matrix-smf"></a>
 </h4>
-<p>We next add feature abundance information to the mzTab-M. While the abundance values can be taken from one of the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay()</a></code>s from the <code>SummarizedExperiment</code>, we need to provide also feature characteristics. These are usually available in the <code>SummarizedExperiment</code>s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code>:</p>
+<p>We next add feature abundance information to the mzTab-M. While the abundance values can be taken from one of the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay()</a></code>s from the <code>SummarizedExperiment</code>, we need also to provide feature characteristics. These are usually available in the <code>SummarizedExperiment</code>s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"pipe"</span><span class="op">)</span></span></code></pre></div>
@@ -414,19 +415,19 @@ mzTab-M version 2.1.0-M
 </table>
 </div>
 </div>
-<p>For our example we use column <code>"mzmed"</code> which defines the features median <em>m/z</em> value which can be mapped to the SMF field <em>exp_mass_to_charge</em> and <code>"rtmed"</code> that reports the median retention time of the feature which can be used for the SMF field <em>retention_time_in_seconds</em>. We will in addition add an optional field <em>feature_id</em> to report and add the IDs of the individual features from the <code>SummarizedExperiment</code>, which we add as a column <code>"feature_id"</code> to the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code>:</p>
+<p>For our example we use column <code>"mzmed"</code> which provides the features’ median <em>m/z</em> value and which we map to the SMF field <em>exp_mass_to_charge</em>. Similarly, we use column <code>"rtmed"</code> with the median retention time of the feature and map that to the SMF field <em>retention_time_in_seconds</em>. We in addition add an optional field <em>feature_id</em> to report and add the IDs of the individual features from the <code>SummarizedExperiment</code>. Below we first add this information as a new column <code>"feature_id"</code> to the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">feature_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>Similar to the metadata column mappings above, we define a mapping of SMF fields to <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> columns using the <code><a href="https://rdrr.io/pkg/RmzTabM/man/SummarizedExperiment-mzTab-M.html" class="external-link">smfCols()</a></code> helper function:</p>
+<p>Similar to the previous metadata column mappings, we define a mapping of SMF fields to <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> columns using the <code><a href="https://rdrr.io/pkg/RmzTabM/man/SummarizedExperiment-mzTab-M.html" class="external-link">smfCols()</a></code> helper function:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">smf_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/SummarizedExperiment-mzTab-M.html" class="external-link">smfCols</a></span><span class="op">(</span>exp_mass_to_charge <span class="op">=</span> <span class="st">"mzmed"</span>,</span>
 <span>                    retention_time_in_seconds <span class="op">=</span> <span class="st">"rtmed"</span>,</span>
 <span>                    feature_id <span class="op">=</span> <span class="st">"feature_id"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>Providing these additional SMF mapping in the <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">MzTabM()</a></code> call above will compile a <code>MzTabM</code> object with an MTD and SMF section from the <code>SummarizedExperiment</code>. Parameter <code>assayName</code> defines which of the <code>SummarizedExperiment</code>’s assays will be used the SMF section.</p>
+<p>Providing these additional SMF mapping in the <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">MzTabM()</a></code> call above will compile a <code>MzTabM</code> object with an MTD and SMF section from the <code>SummarizedExperiment</code>. Parameter <code>assayName</code> defines which of the available assays in the <code>SummarizedExperiment</code> will be used for the SMF section.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Create a MTD+SMF MzTabM object from the SummarizedExperiment</span></span>
@@ -438,7 +439,7 @@ mzTab-M version 2.1.0-M
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class MzTabM
 mzTab-M version 2.1.0-M
- MTD section with 189 rows.
+ MTD section with 181 rows.
  SMF section with 9068 rows and 22 columns.</code></pre>
 </div>
 </div>
@@ -448,7 +449,7 @@ mzTab-M version 2.1.0-M
 <p>ℹ️ we could also use <code>smf(se, assayName = "raw_filled", smfCols. = smf_cols)</code> to extract the SMF table from the <code>SummarizedExperiment</code> and add that manually to the <code>MzTabM</code> object.</p>
 </blockquote>
 </div>
-<p>This <code>mzt</code> variable now contains the mzTab-M content that could be extracted from the <code>SummarizedExperiment</code>. The first rows of the metadata section are:</p>
+<p>This <code>mzt</code> variable now contains the mzTab-M content extracted from the <code>SummarizedExperiment</code>. The first rows of the metadata section are:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM.html" class="external-link">mtd</a></span><span class="op">(</span><span class="va">mzt</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"pipe"</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Field"</span>, <span class="st">"Value"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -473,7 +474,7 @@ mzTab-M version 2.1.0-M
 </tr>
 <tr class="odd">
 <td style="text-align: left;">software[1]</td>
-<td style="text-align: left;">[,,RmzTabM,RmzTabM version 0.97.18]</td>
+<td style="text-align: left;">[,,RmzTabM,RmzTabM version 0.99.1]</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">quantification_method</td>
@@ -702,10 +703,10 @@ mzTab-M version 2.1.0-M
 </table>
 </div>
 </div>
-<p>The object now has MTD and SMF sections, but some required metadata still must be added manually before export. In the next section we will complete the data adding some metadata fields that could not be derived from the result object.</p>
+<p>While the object has MTD and SMF sections, some metadata still must be added manually to generate a complete mzTab-M file.</p>
 </section><section class="level3"><h4 id="completing-the-metadata-content">Completing the metadata content<a class="anchor" aria-label="anchor" href="#completing-the-metadata-content"></a>
 </h4>
-<p>Some of the metadata information must be manually added, because it can not be extracted from the <code>SummarizedExperiment</code>. This depends also on the information compiled into the mzTab-M file. We used for example the <em>BTO</em> and <em>NCBITaxon</em> ontologies to describe the samples, but these two are not added by default. The <code><a href="https://rdrr.io/pkg/RmzTabM/man/setMtdCv.html" class="external-link">getMtdCv()</a></code> function can be used to get the set of defined controlled vocabularies (ontologies) in the <code>MzTabM</code> object:</p>
+<p>Some of the metadata information must be manually added, because it can not be extracted from the <code>SummarizedExperiment</code>. Which metadata needs to be added depends on experimental settings and the type of data and variables present in the <code>MzTabM</code> object. We used for example the <em>BTO</em> and <em>NCBITaxon</em> ontologies to describe the samples, but these two CVs are not added by default. To get the controlled vocabularies that are already defined in the <code>MzTabM</code> object we can use the <code><a href="https://rdrr.io/pkg/RmzTabM/man/setMtdCv.html" class="external-link">getMtdCv()</a></code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/setMtdCv.html" class="external-link">getMtdCv</a></span><span class="op">(</span><span class="va">mzt</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"pipe"</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Field"</span>, <span class="st">"Value"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -734,7 +735,7 @@ mzTab-M version 2.1.0-M
 </tr>
 <tr class="even">
 <td style="text-align: left;">cv[1]-uri</td>
-<td style="text-align: left;">https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo</td>
+<td style="text-align: left;">https://www.ebi.ac.uk/ols4/ontologies/ms</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">cv[2]-label</td>
@@ -785,15 +786,15 @@ mzTab-M version 2.1.0-M
 <span>                uri <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://www.ebi.ac.uk/ols4/ontologies/bto"</span>,</span>
 <span>                        <span class="st">"https://www.ebi.ac.uk/ols4/ontologies/ncbitaxon"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>Also, we add <em>xcms</em> as software to the <code>MzTabM</code>:</p>
+<p>Also, since the preprocessing was performed using <em>xcms</em>, we add it as <em>software</em> to the <code>MzTabM</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mzt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/setMtdField.html" class="external-link">setMtdField</a></span><span class="op">(</span><span class="va">mzt</span>, <span class="st">"software"</span>, <span class="st">"[MS, MS:1001582, xcms, 4.10.0]"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/setMtdField.html" class="external-link">getMtdField</a></span><span class="op">(</span><span class="va">mzt</span>, <span class="st">"software"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                          software[1]                           software[2]
-"[,,RmzTabM,RmzTabM version 0.97.18]"      "[MS, MS:1001582, xcms, 4.10.0]" </code></pre>
+<pre><code>                         software[1]                          software[2]
+"[,,RmzTabM,RmzTabM version 0.99.1]"     "[MS, MS:1001582, xcms, 4.10.0]" </code></pre>
 </div>
 </div>
 <p>Next, we need to add instrument information to the <code>MzTabM</code> object.</p>
@@ -820,14 +821,14 @@ mzTab-M version 2.1.0-M
 <p>Now we have a complete mzTab-M content compiled and can proceed to export it.</p>
 </section></section><section class="level2"><h3 id="export-mztabm-object-to-an-mztab-m-file">Export MzTabM object to an mzTab-M file<a class="anchor" aria-label="anchor" href="#export-mztabm-object-to-an-mztab-m-file"></a>
 </h3>
-<p>The MzTabM object, containing the MTD and SMF sections, is ready for export to an mzTab-M file. Following generation, the file is verified using the mzTab-M validator.</p>
+<p>The <code>MzTabM</code> object, containing the MTD and SMF sections, is ready for export to an mzTab-M file. Following generation, the file is verified using the mzTab-M validator.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM-export.html" class="external-link">writeMzTabM</a></span><span class="op">(</span><span class="va">mzt</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"MTBLS8735_mtd_smf.mzTab"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-</section></section><section class="section level2"><h2 id="import-of-a-summarizedexperiment-from-mztab-m-file">Import of a SummarizedExperiment from mzTab-M file<a class="anchor" aria-label="anchor" href="#import-of-a-summarizedexperiment-from-mztab-m-file"></a>
+</section></section><section class="section level2"><h2 id="import-of-a-summarizedexperiment-from-mztab-m">Import of a <code>SummarizedExperiment</code> from mzTab-M<a class="anchor" aria-label="anchor" href="#import-of-a-summarizedexperiment-from-mztab-m"></a>
 </h2>
-<p>The mzTab-M file generated above can be read back into R using the <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM-import.html" class="external-link">readMzTabM()</a></code> function. The file is verified using the mzTab-M validator and loaded into a <code>MzTabM</code> object.</p>
+<p>The above generated mzTab-M file can also be read back into R using the <code><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM-import.html" class="external-link">readMzTabM()</a></code> function. The file is verified using the mzTab-M validator and loaded into a <code>MzTabM</code> object.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mzt_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/MzTabM-import.html" class="external-link">readMzTabM</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"MTBLS8735_mtd_smf.mzTab"</span><span class="op">)</span><span class="op">)</span></span>
@@ -835,11 +836,11 @@ mzTab-M version 2.1.0-M
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class MzTabM
 mzTab-M version 2.1.0-M
- MTD section with 210 rows.
+ MTD section with 202 rows.
  SMF section with 9068 rows and 22 columns.</code></pre>
 </div>
 </div>
-<p>Now we have a <code>MzTabM</code> object with the MTD and SMF sections loaded. To make it easier to work with the data, we can convert it to a <code>SummarizedExperiment</code> object using the <code><a href="https://rdrr.io/pkg/RmzTabM/man/SummarizedExperiment-mzTab-M.html" class="external-link">makeSummarizedExperimentFromMzTabM()</a></code> function. By default, the function will use as feature IDs the values in the columns <code>SMF_ID</code> and keep the column names of the <code>rowData</code> as reported in the SMF header. In this case, we want to use the original feature IDs from the <code>rowData</code> of the <code>SummarizedExperiment</code> object that are in the optional SMF field <code>opt_global_feature_id</code>. We also specify the mapping of the SMF fields to the original <code>rowData</code> columns using the <code>smfCols</code> define above.</p>
+<p>Now we have a <code>MzTabM</code> object with the MTD and SMF sections loaded. To make it easier to work with the data, we can convert it to a <code>SummarizedExperiment</code> object using the <code><a href="https://rdrr.io/pkg/RmzTabM/man/SummarizedExperiment-mzTab-M.html" class="external-link">makeSummarizedExperimentFromMzTabM()</a></code> function. By default, the function will use the content of column <code>SMF_ID</code> as feature IDs and keep the column names of the <code>rowData</code> as reported in the SMF header. In this case, we want to use the original feature IDs from the <code>rowData</code> of the <code>SummarizedExperiment</code> object that are in the optional SMF field <code>opt_global_feature_id</code>. We also specify the mapping of the SMF fields to the original <code>rowData</code> columns using the <code>smfCols</code> define above.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RmzTabM/man/SummarizedExperiment-mzTab-M.html" class="external-link">makeSummarizedExperimentFromMzTabM</a></span><span class="op">(</span></span>
@@ -858,19 +859,19 @@ rownames(9068): FT0001 FT0002 ... FT9067 FT9068
 rowData names(4): SMF_ID mzmed rtmed opt_global_feature_id
 colnames(10): MS_QC_POOL_1_POS.mzML MS_A_POS.mzML ... MS_F_POS.mzML
   MS_QC_POOL_4_POS.mzML
-colData names(18): id sample_ref ... phenotype blood_sample_type</code></pre>
+colData names(18): id sample_ref ... blood_sample_type phenotype</code></pre>
 </div>
 </div>
-<p>The reconstructed <code>SummarizedExperiment</code> contains the same measurement data. Differences in <code>rowData</code> and <code>colData</code> reflect that only fields present in the SMF and MTD sections are loaded and that column names follow the mzTab-M specification.</p>
+<p>The reconstructed <code>SummarizedExperiment</code> contains the same abundance data as the original one. Differences in the <code>SummarizedExperiment</code>’s <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> and <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> depend on which columns were exported and to which mzTab-M fields they were converted/mapped.</p>
 </section><section class="section level2"><h2 id="outlook">Outlook<a class="anchor" aria-label="anchor" href="#outlook"></a>
 </h2>
 <p>Exporting analysis results to mzTab-M plugs a given workflow into a broader ecosystem of standardized, interoperable metabolomics data. A few reasons why this matters:</p>
 <ul>
 <li><p><em>Interoperability</em>: mzTab-M is a community-endorsed standard developed under the HUPO Proteomics Standards Initiative (PSI). Results exported in this format can be read, compared, and re-analyzed by any tool that supports the standard, eliminating the need to write custom parsers for every combination of software.</p></li>
-<li><p><em>Reproducibility and Reuse</em>: A self-contained, well-documented results file makes it much easier for others to understand exactly how a set of features, identifications, and quantification values were derived.</p></li>
+<li><p><em>Reproducibility and Reuse</em>: A self-contained, well-documented results file makes it much easier for other researchers to understand exactly how a set of features, identifications, and quantification values were derived.</p></li>
 <li><p><em>FAIR Data</em>: Exporting directly to this format lowers the barrier to sharing data following the FAIR principles, which in turn supports meta-analyses and the reuse of published datasets. It also simplifies the submission process for new datasets to online repositories.</p></li>
 </ul>
-<p>At present, this package supports the import and export of mzTab-M files as <code>SummarizedExperiment</code> objects. The next step is to support exporting mzTab-M directly from <code>xcms</code> result objects, without an intermediate manual conversion step. This would make it straightforward to go from raw data processing in <code>xcms</code> to a deposition- or exchange-ready mzTab-M file in a single, reproducible pipeline.</p>
+<p>At present, this <em><a href="https://bioconductor.org/packages/3.23/RmzTabM" class="external-link">RmzTabM</a></em> supports the import and export of mzTab-M files as <code>SummarizedExperiment</code> objects. The next step is to support exporting mzTab-M directly from <em><a href="https://bioconductor.org/packages/3.23/xcms" class="external-link">xcms</a></em> result objects, without an intermediate manual conversion step. This would make it straightforward to go from raw data processing in <em>xcms</em> to a deposition- or exchange-ready mzTab-M file in a single, reproducible pipeline.</p>
 </section><section class="section level2"><h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="cell">
@@ -903,12 +904,12 @@ attached base packages:
 other attached packages:
  [1] SummarizedExperiment_1.42.0 Biobase_2.72.0
  [3] GenomicRanges_1.64.0        Seqinfo_1.2.0
- [5] IRanges_2.46.0              S4Vectors_0.50.1
+ [5] IRanges_2.46.0              S4Vectors_0.50.2
  [7] BiocGenerics_0.58.1         generics_0.1.4
  [9] MatrixGenerics_1.24.0       matrixStats_1.5.0
 [11] xcms_4.10.1                 BiocParallel_1.46.0
 [13] MsIO_0.0.17                 alabaster.base_1.12.1
-[15] RmzTabM_0.97.18             BiocStyle_2.40.0
+[15] RmzTabM_0.99.1              BiocStyle_2.40.0
 [17] quarto_1.5.1.9002           knitr_1.51
 
 loaded via a namespace (and not attached):
@@ -920,38 +921,38 @@ loaded via a namespace (and not attached):
  [11] stringr_1.6.0               ProtGenerics_1.44.0
  [13] crayon_1.5.3                pkgconfig_2.0.3
  [15] MetaboCoreUtils_1.20.1      fastmap_1.2.0
- [17] XVector_0.52.0              rmarkdown_2.31
+ [17] XVector_0.52.0              rmarkdown_2.32
  [19] ps_1.9.3                    preprocessCore_1.74.0
  [21] purrr_1.2.2                 xfun_0.60
  [23] MultiAssayExperiment_1.38.0 jsonlite_2.0.0
  [25] progress_1.2.3              later_1.4.8
- [27] rhdf5filters_1.24.0         DelayedArray_0.38.2
+ [27] rhdf5filters_1.24.1         DelayedArray_0.38.2
  [29] Rhdf5lib_2.0.0              prettyunits_1.2.0
- [31] parallel_4.6.1              cluster_2.1.8.2
- [33] R6_2.6.1                    stringi_1.8.7
- [35] RColorBrewer_1.1-3          limma_3.68.4
+ [31] parallel_4.6.1              cluster_2.1.8.3
+ [33] R6_2.6.1                    stringi_1.8.9
+ [35] RColorBrewer_1.1-3          limma_3.68.5
  [37] iterators_1.0.14            Rcpp_1.1.2
- [39] Matrix_1.7-5                igraph_2.3.3
+ [39] Matrix_1.7-6                igraph_2.3.3
  [41] tidyselect_1.2.1            rstudioapi_0.19.0
  [43] abind_1.4-8                 yaml_2.3.12
  [45] doParallel_1.0.17           codetools_0.2-20
  [47] affy_1.90.0                 processx_3.9.0
- [49] lattice_0.22-9              tibble_3.3.1
+ [49] lattice_0.23-1              tibble_3.3.1
  [51] plyr_1.8.9                  S7_0.2.2
  [53] evaluate_1.0.5              Spectra_1.22.2
  [55] alabaster.schemas_1.12.0    pillar_1.11.1
  [57] affyio_1.82.0               BiocManager_1.30.27
- [59] foreach_1.5.2               MSnbase_2.37.0
+ [59] foreach_1.5.2               MSnbase_2.38.1
  [61] MALDIquant_1.22.3           ncdf4_1.24
  [63] hms_1.1.4                   ggplot2_4.0.3
  [65] scales_1.4.0                MsExperiment_1.14.0
  [67] alabaster.ranges_1.12.0     glue_1.8.1
  [69] alabaster.matrix_1.12.0     MsFeatures_1.20.0
  [71] lazyeval_0.2.3              tools_4.6.1
- [73] mzID_1.50.0                 data.table_1.18.4
+ [73] mzID_1.50.0                 data.table_1.18.6.1
  [75] QFeatures_1.22.0            vsn_3.80.0
  [77] mzR_2.46.0                  fs_2.1.0
- [79] XML_3.99-0.23               rhdf5_2.56.0
+ [79] XML_3.99-0.24               rhdf5_2.56.0
  [81] grid_4.6.1                  impute_1.86.0
  [83] tidyr_1.3.2                 MsCoreUtils_1.24.0
  [85] PSMatch_1.16.0              HDF5Array_1.40.0
@@ -961,7 +962,7 @@ loaded via a namespace (and not attached):
  [93] alabaster.se_1.12.0         digest_0.6.39
  [95] SparseArray_1.12.2          farver_2.1.2
  [97] htmltools_0.5.9             lifecycle_1.0.5
- [99] h5mread_1.4.0               statmod_1.5.2
+ [99] h5mread_1.4.1               statmod_1.5.2
 [101] MASS_7.3-66                </code></pre>
 </div>
 </div>

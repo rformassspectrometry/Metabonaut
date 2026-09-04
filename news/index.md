@@ -2,6 +2,30 @@
 
 ## Metabonaut 1.6
 
+### Changes in 1.6.2
+
+- Fix Docker image to lock packages installed from GitHub to a specific
+  commit/version: *MsIO* (0.0.17), *RmzTabM* (0.99.1), *RuSirius*
+  (1.0.4).
+- Use *SpectriPy* from Bioconductor 3.23 release branch.
+- Update installation and usage descriptions.
+- Fix typos and formatting errors in the *Using and Creating
+  Metabolomics Data Annotation Resources* and expand some textual
+  passages.
+- Fix typos and expand descriptions in the *LC-MS/MS Data Annotation
+  using R and Python* vignette.
+- Fix typos, format and reformulate some descriptions in the *mzTab-M
+  file format: import-export of mzTab-M 2.1 files from
+  SummarizedExperiment*.
+- Fix typos and small formatting issues in the *Normalization and
+  feature selection with the notame package* vignette.
+- Remove comments and complete partial sentences in the *Dataset
+  investigation: What to do when you get your data* vignette.
+- Remove unfinished/placeholder sections from the *Dataset
+  Investigation* and *End-to-End* vignettes.
+- Point the README to the versioned docker image tag, consistent with
+  the installation instructions.
+
 ### Changes in 1.6.1
 
 - Install *RmzTabM* in the docker image for the mzTab-M vignette.
