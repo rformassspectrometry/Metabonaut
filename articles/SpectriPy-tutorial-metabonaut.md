@@ -370,12 +370,15 @@ scores = calculate_scores(references = clean_mgf_py,
 ```
 
     Calculating similarities:   0%|          | 0/78 [00:00<?, ?it/s]
-    Calculating similarities:   1%|1         | 1/78 [00:01<02:15,  1.76s/it]
-    Calculating similarities:  26%|##5       | 20/78 [00:01<00:03, 14.73it/s]
-    Calculating similarities:  51%|#####1    | 40/78 [00:01<00:01, 32.48it/s]
-    Calculating similarities:  73%|#######3  | 57/78 [00:02<00:00, 49.03it/s]
-    Calculating similarities:  99%|#########8| 77/78 [00:02<00:00, 70.77it/s]
-    Calculating similarities: 100%|##########| 78/78 [00:02<00:00, 35.77it/s]
+    Calculating similarities:   1%|1         | 1/78 [00:02<03:04,  2.40s/it]
+    Calculating similarities:  15%|#5        | 12/78 [00:02<00:10,  6.54it/s]
+    Calculating similarities:  29%|##9       | 23/78 [00:02<00:03, 14.16it/s]
+    Calculating similarities:  44%|####3     | 34/78 [00:02<00:01, 23.28it/s]
+    Calculating similarities:  58%|#####7    | 45/78 [00:02<00:00, 33.32it/s]
+    Calculating similarities:  71%|#######   | 55/78 [00:02<00:00, 41.84it/s]
+    Calculating similarities:  85%|########4 | 66/78 [00:03<00:00, 52.70it/s]
+    Calculating similarities:  99%|#########8| 77/78 [00:03<00:00, 63.67it/s]
+    Calculating similarities: 100%|##########| 78/78 [00:03<00:00, 24.71it/s]
 
 ``` python
 scores
@@ -588,7 +591,7 @@ sessionInfo()
      [7] snakecase_0.11.1       cluster_2.1.8.3        IRanges_2.46.0
     [10] png_0.1-9              yaml_2.3.12            fastmap_1.2.0
     [13] lattice_0.23-1         here_1.0.2             ProtGenerics_1.44.0
-    [16] knitr_1.51             MASS_7.3-66            rprojroot_2.1.1
+    [16] knitr_1.52             MASS_7.3-66            rprojroot_2.1.1
     [19] rlang_1.3.0            xfun_0.60              fs_2.1.0
     [22] MsCoreUtils_1.24.0     otel_0.2.0             cli_3.6.6
     [25] withr_3.0.3            digest_0.6.39          grid_4.6.1

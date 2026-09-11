@@ -594,7 +594,7 @@ sessionInfo()
     [11] xcms_4.10.1                 BiocParallel_1.46.0
     [13] MsIO_0.0.17                 alabaster.base_1.12.1
     [15] RmzTabM_0.99.1              BiocStyle_2.40.0
-    [17] quarto_1.5.1.9002           knitr_1.51
+    [17] quarto_1.5.1.9003           knitr_1.52
 
     loaded via a namespace (and not attached):
       [1] DBI_1.3.0                   rlang_1.3.0

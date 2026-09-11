@@ -526,8 +526,8 @@ sessionInfo()
     [13] Seqinfo_1.2.0               IRanges_2.46.0
     [15] S4Vectors_0.50.2            BiocGenerics_0.58.1
     [17] generics_0.1.4              MatrixGenerics_1.24.0
-    [19] matrixStats_1.5.0           quarto_1.5.1.9002
-    [21] knitr_1.51
+    [19] matrixStats_1.5.0           quarto_1.5.1.9003
+    [21] knitr_1.52
 
     loaded via a namespace (and not attached):
      [1] tidyselect_1.2.1         viridisLite_0.4.3        vipor_0.4.7

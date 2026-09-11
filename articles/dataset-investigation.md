@@ -899,7 +899,7 @@ sessionInfo()
     [17] BiocGenerics_0.58.1         generics_0.1.4
     [19] MsIO_0.0.17                 MsExperiment_1.14.0
     [21] ProtGenerics_1.44.0         BiocStyle_2.40.0
-    [23] quarto_1.5.1.9002           knitr_1.51
+    [23] quarto_1.5.1.9003           knitr_1.52
 
     loaded via a namespace (and not attached):
       [1] rstudioapi_0.19.0           jsonlite_2.0.0

@@ -62,9 +62,9 @@ full repository).
 
 The vignettes files along with an R runtime environment including all
 required packages and data as well as the RStudio (Posit) editor are all
-bundled in a *docker* container.
+bundled in a *Docker* container.
 
-After installation, this docker container can be run on the computer and
+After installation, this Docker container can be run on the computer and
 the code and examples from the vignettes can be evaluated within this
 environment (without the need to install any additional packages or
 files).
@@ -78,23 +78,37 @@ files).
 
 &nbsp;
 
-    docker pull rformassspectrometry/metabonaut:v1.6.2
+    docker pull rformassspectrometry/metabonaut:v1.6.2@sha256:TODO
 
 > **Note**
 >
-> ℹ️ the tag *v1.6.2* selects the docker image specific for Metabonaut
-> version 1.6.2. Docker images for upcoming versions releases will be
-> made available using a different tag (e.g. v1.6.3) ensuring images
-> from older versions will also be available in future.
+> ℹ️ the tag *v1.6.2* selects the docker image for Metabonaut version
+> 1.6.2 and the `@sha256:<digest>` ensures that a specific archived
+> image is loaded from Dockerhub. Docker images for upcoming versions
+> releases will be made available using a different tag (e.g. v1.6.3)
+> hence images from older versions will also be available in future.
 
 - Start the docker container, either through the Docker Desktop, or on
   the command line with
 
 &nbsp;
 
-    docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2
+    docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2@sha256:TODO
 
 - Enter [`http://localhost:8787`](http://localhost:8787) in a web
   browser and log in with username `rstudio` and password `bioc`.
 - In the RStudio server version: open any of the Quarto files in the
   *vignettes* folder and evaluate the R code blocks in that document.
+
+> **Note**
+>
+> ℹ️ The Metabonaut Docker image could also be build with the
+> *Dockerfile* included in this repository. The resulting Docker image
+> will however not have the identical software stack than the archived
+> image on Dockerhub, but will include R packages available at build
+> time. This will mostly affect packages from CRAN, while Bioconductor
+> packages are supposed to be stable within the same release. Results
+> from the vignettes are therefore not expected to differ, even if run
+> using a Docker container that was newly built from the Dockerfile. To
+> guarantee reproducibility it is suggested to use the archived Docker
+> image, identified by the tag and digest above.

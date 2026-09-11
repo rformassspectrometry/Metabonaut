@@ -42,18 +42,19 @@
 Source:
 [`inst/CITATION`](https://github.com/rformassspectrometry/Metabonaut/blob/devel/inst/CITATION)
 
-Philippine Louail, Marilyn De Graeve, Anna Tagliaferri, Daniel Marques
-de Sá e Silva, Vinicius Verri Hernandes, Kozo Nishida, Vilhelm Suksi, &
-Johannes Rainer. (2026). rformassspectrometry/Metabonaut: v1.4.0.
-Zenodo. https://doi.org/10.5281/zenodo.18172608
+Philippine Louail, Marilyn De Graeve, Alexandru Mahmoud, Daniel Marques
+de Sá e Silva, Kozo Nishida, Vilhelm Suksi, Anna Tagliaferri, Gabriele
+Tomè, Vinicius Verri Hernandes, & Johannes Rainer. (2026).
+rformassspectrometry/Metabonaut: v1.6.2. Zenodo.
+https://doi.org/10.5281/zenodo.22300919
 
     @Misc{,
-      title = {rformassspectrometry/Metabonaut: v1.4.0},
-      author = {Philippine Louail and Marilyn {De Graeve} and Anna Tagliaferri and Daniel {Marques de Sá e Silva} and Vinicius {Verri Hernandes} and Kozo Nishida and Vilhelm Suksi and Johannes Rainer},
+      title = {rformassspectrometry/Metabonaut: v1.6.2},
+      author = {Philippine Louail and Marilyn {De Graeve} and Alexandru Mahmoud and Daniel {Marques de Sá e Silva} and Kozo Nishida and Vilhelm Suksi and Anna Tagliaferri and Gabriele Tomè and Vinicius {Verri Hernandes} and Johannes Rainer},
       publisher = {Zenodo},
       year = {2026},
-      month = {January},
-      version = {v1.4.0},
-      doi = {10.5281/zenodo.18172608},
-      url = {https://doi.org/10.5281/zenodo.18172608},
+      month = {September},
+      version = {v1.6.2},
+      doi = {10.5281/zenodo.22300919},
+      url = {https://doi.org/10.5281/zenodo.22300919},
     }

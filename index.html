@@ -89,7 +89,7 @@
 <li>
 <strong>In your browser (no installation)</strong>: Metabonaut is available as a <em>Curated Workshop</em> on the <a href="https://workshop.bioconductor.org" class="external-link"><strong>Bioconductor Workshop platform</strong></a>, a Galaxy-based service running on the Jetstream2 academic cloud (NSF-ACCESS). Log in with a Bioconductor account, launch the <strong>Metabonaut</strong> workshop, and you get your own private RStudio session with all packages and the example data already installed, free of charge. ⚠️ Workshop sessions are <strong>ephemeral</strong>: all data and progress are erased when the workshop is stopped, so save a local copy of anything you want to keep.</li>
 <li>
-<strong>Docker</strong>: pull <code>rformassspectrometry/metabonaut:v1.6.2</code> and run it locally. See the <a href="https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html">installation instructions</a>.</li>
+<strong>Docker</strong>: pull <code>rformassspectrometry/metabonaut:v1.6.2@sha256:TODO</code> and run it locally. See the <a href="https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html">installation instructions</a>.</li>
 <li>
 <strong>Local R installation</strong>: install the package and its dependencies yourself, also described in the <a href="https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html">installation instructions</a>.</li>
 </ul>
@@ -174,7 +174,8 @@
 <div class="section level2">
 <h2 id="pushpin-reproducibility--updates">📌 Reproducibility &amp; Updates<a class="anchor" aria-label="anchor" href="#pushpin-reproducibility--updates"></a>
 </h2>
-<p>We strive for <strong>reproducibility</strong>. These workflows are designed to remain stable over time, allowing you to run all vignettes together as one comprehensive <strong>super-vignette</strong>.</p>
+<p>We strive for <strong>reproducibility</strong>. These workflows are designed to remain stable over time, allowing you to run all vignettes together as one comprehensive <strong>super-vignette</strong>. An archived Docker image can be used to fully replicate the results. The Metabonaut Docker image can also be re-build based on the repository’s <a href="Dockerfile">Dockerfile</a>, which will however not create an <em>identical</em> image due to eventually different versions of CRAN packages available at build time.</p>
+<p>The archived Metabonaut Docker image for version 1.6.2 is <code>rformassspectrometry/metabonaut:v1.6.2@sha256:b963d18e1496742af4e75a7992ba386de6c7b00fd3cc9c8100e1dac04d329c20</code></p>
 <ul>
 <li>
 <strong>Major updates</strong> will be documented here.
