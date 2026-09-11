@@ -3132,9 +3132,10 @@ write.table(
 )
 
 # Export MGF File (Spectra)
-# Helper function to format for GNPS
+# Helper function to format spectra for GNPS defined in the
+# jorainer/xcms-gnps-tools GitHub repository
 source(
-  "https://raw.githubusercontent.com/jorainer/xcms-gnps-tools/master/customFunctions.R"
+  "https://raw.githubusercontent.com/jorainer/xcms-gnps-tools/ab8be913985cf244eb94acb648a0280037d83837/customFunctions.R"
 )
 ms2_all_gnps <- formatSpectraForGNPS(ms2_all)
 
