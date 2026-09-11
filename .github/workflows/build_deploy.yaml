@@ -15,7 +15,7 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    container: rformassspectrometry/metabonaut:latest
+    container: rformassspectrometry/metabonaut:v1.6.2@sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
