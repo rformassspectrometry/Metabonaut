@@ -25,7 +25,7 @@ There are three ways to run the workflows, from the least to the most setup:
     ⚠️ Workshop sessions are **ephemeral**: all data and progress are erased
     when the workshop is stopped, so save a local copy of anything you want to
     keep.
--   **Docker**: pull `rformassspectrometry/metabonaut:v1.6.2` and run it
+-   **Docker**: pull `rformassspectrometry/metabonaut:v1.6.2@sha256:TODO` and run it
     locally. See the
     [installation instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
 -   **Local R installation**: install the package and its dependencies
@@ -106,9 +106,16 @@ For a full list of all available vignettes, visit the
 
 ## 📌 Reproducibility & Updates
 
-We strive for **reproducibility**. These workflows are designed to
-remain stable over time, allowing you to run all vignettes together as
-one comprehensive **super-vignette**.
+We strive for **reproducibility**. These workflows are designed to remain stable
+over time, allowing you to run all vignettes together as one comprehensive
+**super-vignette**. An archived Docker image can be used to fully replicate the
+results. The Metabonaut Docker image can also be re-build based on the
+repository's [Dockerfile](Dockerfile), which will however not create an
+*identical* image due to eventually different versions of CRAN packages
+available at build time.
+
+The archived Metabonaut Docker image for version 1.6.2 is
+`rformassspectrometry/metabonaut:v1.6.2@sha256:b963d18e1496742af4e75a7992ba386de6c7b00fd3cc9c8100e1dac04d329c20`
 
 -   **Major updates** will be documented here.
     -   Metabonaut (1.6.2) now works with a stable version of Bioconductor

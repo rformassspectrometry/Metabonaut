@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM bioconductor/bioconductor_docker:RELEASE_3_23
+FROM bioconductor/bioconductor_docker:RELEASE_3_23@sha256:821dbf9ac119eac41f177531c7ca8fc7084c99c04eb218a1aa7f52cb63bad5d9
 
 LABEL name="rformassspectrometry/Metabonaut" \
       url="https://github.com/rformassspectrometry/Metabonaut" \
