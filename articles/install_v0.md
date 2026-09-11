@@ -78,22 +78,25 @@ files).
 
 &nbsp;
 
-    docker pull rformassspectrometry/metabonaut:v1.6.2@sha256:TODO
+    docker pull rformassspectrometry/metabonaut:v1.6.2@sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2
 
 > **Note**
 >
 > ℹ️ the tag *v1.6.2* selects the docker image for Metabonaut version
-> 1.6.2 and the `@sha256:<digest>` ensures that a specific archived
-> image is loaded from Dockerhub. Docker images for upcoming versions
-> releases will be made available using a different tag (e.g. v1.6.3)
-> hence images from older versions will also be available in future.
+> 1.6.2 and the
+> `@sha256:sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2`
+> ensures that a specific archived image is loaded from Dockerhub. This
+> is the exact same docker image that was used to render these
+> vignettes. Docker images for upcoming versions releases will be made
+> available using a different tag (e.g. v1.6.3) hence images from older
+> versions will also be available in future.
 
 - Start the docker container, either through the Docker Desktop, or on
   the command line with
 
 &nbsp;
 
-    docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2@sha256:TODO
+    docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2@sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2
 
 - Enter [`http://localhost:8787`](http://localhost:8787) in a web
   browser and log in with username `rstudio` and password `bioc`.

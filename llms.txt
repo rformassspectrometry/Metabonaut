@@ -26,7 +26,8 @@ setup:
   data already installed, free of charge. ⚠️ Workshop sessions are
   **ephemeral**: all data and progress are erased when the workshop is
   stopped, so save a local copy of anything you want to keep.
-- **Docker**: pull `rformassspectrometry/metabonaut:v1.6.2@sha256:TODO`
+- **Docker**: pull
+  `rformassspectrometry/metabonaut:v1.6.2@sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2`
   and run it locally. See the [installation
   instructions](https://rformassspectrometry.github.io/Metabonaut/articles/install_v0.html).
 - **Local R installation**: install the package and its dependencies

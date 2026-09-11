@@ -126,17 +126,17 @@
 <li>If you don’t already have, install <a href="https://www.docker.com/" class="external-link">docker</a>. Find installation information <a href="https://docs.docker.com/desktop/" class="external-link">here</a>.</li>
 <li>Get the <a href="https://hub.docker.com/r/rformassspectrometry/metabonaut" class="external-link">docker image</a> of this tutorial e.g. from the command line with:</li>
 </ul>
-<pre><code>docker pull rformassspectrometry/metabonaut:v1.6.2@sha256:TODO</code></pre>
+<pre><code>docker pull rformassspectrometry/metabonaut:v1.6.2@sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2</code></pre>
 <div>
 <blockquote>
 <p><strong>Note</strong></p>
-<p>ℹ️ the tag <em>v1.6.2</em> selects the docker image for Metabonaut version 1.6.2 and the <code>@sha256:&lt;digest&gt;</code> ensures that a specific archived image is loaded from Dockerhub. Docker images for upcoming versions releases will be made available using a different tag (e.g. v1.6.3) hence images from older versions will also be available in future.</p>
+<p>ℹ️ the tag <em>v1.6.2</em> selects the docker image for Metabonaut version 1.6.2 and the <code>@sha256:sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2</code> ensures that a specific archived image is loaded from Dockerhub. This is the exact same docker image that was used to render these vignettes. Docker images for upcoming versions releases will be made available using a different tag (e.g. v1.6.3) hence images from older versions will also be available in future.</p>
 </blockquote>
 </div>
 <ul>
 <li>Start the docker container, either through the Docker Desktop, or on the command line with</li>
 </ul>
-<pre><code>docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2@sha256:TODO</code></pre>
+<pre><code>docker run -e PASSWORD=bioc -p 8787:8787 rformassspectrometry/metabonaut:v1.6.2@sha256:e17ab1dd7b397798d70c1bf03c923dfa4ea6f7b96263d79d92eb748f47e38ef2</code></pre>
 <ul>
 <li>Enter <a href="http://localhost:8787" class="external-link"><code>http://localhost:8787</code></a> in a web browser and log in with username <code>rstudio</code> and password <code>bioc</code>.</li>
 <li>In the RStudio server version: open any of the Quarto files in the <em>vignettes</em> folder and evaluate the R code blocks in that document.</li>
