@@ -11,6 +11,15 @@ demonstrate how to adapt various algorithms to specific datasets and
 seamlessly integrate R packages for efficient, reproducible data
 processing.
 
+## 📰 Cite us
+
+Louail P, De Graeve M, Mahmoud A, Marques de Sá E Silva D, Nishida K, Suksi V,
+Tagliaferri A, Tomè G, Verri Hernandes V, Rainer J. Metabonaut: an open
+educational resource for learning reproducible, script-based untargeted LC-MS/MS
+metabolomics. *Metabolomics*. 2026 Oct 3;22(5):165. doi:
+[10.1007/s11306-026-02538-x](https://doi.org/10.1007/s11306-026-02538-x).
+PMID: 42829392.
+
 ## 🚀 Getting Started
 
 There are three ways to run the workflows, from the least to the most setup:
