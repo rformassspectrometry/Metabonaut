@@ -1,7 +1,7 @@
 citHeader("To cite this workflow:")
 
-citEntry(entry = "Misc",
-         title  = "rformassspectrometry/Metabonaut: v1.6.2",
+citEntry(entry = "article",
+         title  = "Metabonaut: an open educational resource for learning reproducible, script-based untargeted LC-MS/MS metabolomics",
          author = personList(
            person(given = "Philippine", family = "Louail"),
            person(given = "Marilyn", family = "De Graeve"),
@@ -14,16 +14,21 @@ citEntry(entry = "Misc",
            person(given = "Vinicius", family = "Verri Hernandes"),
            person(given = "Johannes", family = "Rainer")
          ),
-         publisher = "Zenodo",
+         publisher = "Metabolomics",
          year = "2026",
          month = "September",
          version = "v1.6.2",
-         doi = "10.5281/zenodo.22300919",
-         url = "https://doi.org/10.5281/zenodo.22300919",
-         textVersion = paste0("Philippine Louail, Marilyn De Graeve, Alexandru Mahmoud, ",
-                              "Daniel Marques de Sá e Silva, Kozo Nishida, Vilhelm Suksi, ",
-                              "Anna Tagliaferri, Gabriele Tomè, Vinicius Verri Hernandes, ",
-                              "& Johannes Rainer. (2026). ",
-                              "rformassspectrometry/Metabonaut: v1.6.2. ",
-                              "Zenodo. https://doi.org/10.5281/zenodo.22300919")
+         doi = " 10.1007/s11306-026-02538-x",
+         url = "https://doi.org/10.1007/s11306-026-02538-x",
+         volume = "22",
+         issue = "5",
+         textVersion = paste0("Louail P, De Graeve M, Mahmoud A, ",
+                              "Marques de Sá e Silva, D, Nishida K, Suksi V, ",
+                              "Tagliaferri A, Tomè G, Verri Hernandes V, ",
+                              "Rainer J. Metabonaut: an open educational ",
+                              "resource for learning reproducible, script-based",
+                              " untargeted LC-MS/MS metabolomics. ",
+                              "Metabolomics. 2026 Oct 3;22(5):165. ",
+                              "doi: 10.1007/s11306-026-02538-x. ",
+                              "PMID: 42829392.")
 )
